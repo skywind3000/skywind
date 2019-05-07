@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>网络编程 | Skywind Inside</title>
+    <meta property="og:title" content="网络编程 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="网络编程">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml+xml" href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/index.xml" title="Skywind Inside" />
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    
+                    <h3 class="archive-title">
+                        分类
+                        <span class="keyword">网络编程</span>
+                        中的文章
+                    </h3>
+                    
+
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1628/">KCP同 UDT/ENET的性能比较</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年2月18日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>如果不丢包那么 KCP（<a href="https://github.com/skywind3000/kcp">https://github.com/skywind3000/kcp</a>）和
+TCP性能差不多，KCP不会有任何优势，但是网络会卡，造成卡的原因就是丢包和抖动，有同学在内网这样好的环境下没有用任何丢包模拟直接跑，跑出来的数据是差不多的，但是放到公网上，放到3G/4G网络情况下，差距就很明显了，公网在高峰期有平均接近10%的丢包，wifi/3g/4g下更糟糕，这正是造成各种网络卡顿的元凶。</p>
+
+<p>感谢 <a href="https://github.com/libinzhangyuan/asio_kcp">asio-kcp</a> 的作者 zhangyuan 对 KCP 与 enet, udt做过的一次横向评测，结论如下：</p>
+
+<ul>
+<li>ASIO-KCP has good performace in wifi and phone network(3G, 4G).</li>
+<li>Extra using 20% ~ 50% network flow for speed improvement.</li>
+<li>The kcp is the first choice for realtime pvp game.</li>
+<li>The lag is less than 1 second when network lag happen. 3 times better than enet when lag happen.</li>
+<li>The enet is a good choice if your game allow 2 second lag.</li>
+<li>UDT is a bad idea. It always sink into badly situation of more than serval seconds lag. And the recovery is not expected.</li>
+<li>enet has the problem of lack of doc. And it has lots of functions that you may intrest. kcp&rsquo;s doc is chinese. Good thing is the function detail which is writen in code is english. And you can use asio_kcp which is a good wrap.</li>
+<li>The kcp is a simple thing. You will write more code if you want more feature.</li>
+<li>UDT has a perfect doc. UDT may has more bug than others as I feeling.</li>
+</ul>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1628/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1460/">网络程序计时器通常用啥实现？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年7月26日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>通常来讲，就是利用 select 的空余时间，来进行时钟检查，不管是 select / poll / epoll/ kevent，以下统称 select，它有一个等待时间作为参数，即没有事件时，最多 wait 多少时间，我们把这个作为网络库的基准频率，比如 10MS，或者 20MS, 25MS, 50MS，都是常用的几个值。</p>
+
+<p>就是说网络库调用 select 等待事件时如果没有事件，那么最长等待 10MS 就返回了，这时再处理完所有网络事件后，就可以来处理时钟数据了。事件处理函数就是这样：</p>
+
+<pre><code class="language-python">def update_events(milisec = 10):  
+	result = selector.select(milisec)  
+	for fd, event in result:  
+		do something with socket event  
+	current = time.time()  
+	update_timer(current)
+
+while 1:  
+	WAIT_MILLISEC = 10  
+	update_events(WAIT_MILLISEC)
+</code></pre>
+
+<p>关键就是这个两次 select 中间 update_timer 的任务：集合中检查需要唤醒的时钟，并且调用它们的回调函数，来驱动整个服务器的时钟运行，以最简单的扫描法为例：</p>
+
+<pre><code class="language-python">def update_timer (current):  
+	for timer in available_timers:  
+	while current &gt;= timer.expires:  
+		timer.callback(current)  
+		timer.expires += timer.period
+</code></pre>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1460/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1343/">再谈网游同步技术</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年5月9日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>实时动作游戏在近年来得到迅猛的发展。而游戏同步问题，成为大家继续解决的核心问题之一。早在 2004年，国内游戏开发还处于慢节奏 RPG满天飞的情况下，我就开始实时动作游戏研究，分别在 2005-2006期间写了一系列相关文章，被好多网站转载：</p>
+
+<p>帧间同步模式：《帧锁定同步算法》（2007）： <a href="http://www.skywind.me/blog/archives/131">http://www.skywind.me/blog/archives/131</a></p>
+
+<p>玩法规避模式：《网络游戏同步法则》（2005）： <a href="http://www.skywind.me/blog/archives/112">http://www.skywind.me/blog/archives/112</a></p>
+
+<p>预测插值模式：《影子跟随算法》（2007）： <a href="http://www.skywind.me/blog/archives/1145">http://www.skywind.me/blog/archives/1145</a></p>
+
+<p>如今十年过去，网上越来越多的人开始讨论游戏同步技术了，然而很多文章往往只针对某种特定的游戏情况，而观点又经常以偏概全。很多人并没有真正开发过实时动作游戏，更别说了解同步技术的前世今生了。转载别人的观点并加上自己理解的人很多，实际动过手的人很少。避免给更多人造成无谓的误导，我今天基于先前的实践和对欧美动作游戏，战网游戏，主机游戏（PSN，XBox
+Live等）网络技术的了解，来对这个问题做一个简单总结：</p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1343/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1327/">游戏服务端架构发展史（下）</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年5月4日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>（占位符）</p>
+
+<p>《游戏服务端架构发展史》转载请著名出处：<a href="http://www.skywind.me">http://www.skywind.me</a></p>
+
+<p><a href="http://www.skywind.me/blog/archives/1265">游戏服务端架构发展史（上）</a></p>
+
+<p><a href="http://www.skywind.me/blog/archives/1301">游戏服务端架构发展史（中）</a></p>
+
+<p><a href="http://www.skywind.me/blog/archives/1327">游戏服务端架构发展史（下）</a></p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1327/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1301/">游戏服务端架构发展史（中）</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年4月26日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>《游戏服务端发展史》转载请著名出处：<a href="http://www.skywind.me/blog/archives/1301">http://www.skywind.me/blog/archives/1301</a></p>
+
+<h4 id="类型4-第三代游戏服务器-2007">类型4：第三代游戏服务器 2007</h4>
+
+<p>从魔兽世界开始无缝世界地图已经深入人心，比较以往游戏玩家走个几步还需要切换场景，每次切换就要等待 LOADING个几十秒是一件十分破坏游戏体验的事情。于是对于 2005年以后的大型
+MMORPG来说，无缝地图已成为一个标准配置。比较以往按照地图来切割游戏而言，无缝世界并不存在一块地图上面的人有且只由一台服务器处理了：</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb29.png" alt="image" /></p>
+
+<p>每台 Node服务器用来管理一块地图区域，由 NodeMaster（NM）来为他们提供总体管理。更高层次的 World则提供大陆级别的管理服务。这里省略若干细节服务器，比如传统数据库前端，登录服务器，日志和监控等，统统用 ADMIN概括。在这样的结构下，玩家从一块区域走向另外一块区域需要简单处理一下：</p>
+
+<p><img src="http://www.skywind.me/blog/wp-content/uploads/2015/04/image_thumb30.png" alt="image" /></p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1301/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1265/">游戏服务端架构发展史（上）</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年4月24日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>手游页游和端游，本质上没有区别，区别的是游戏类型：</p>
+
+<p>《游戏服务端架构发展史》转载请著名出处：<a href="http://www.skywind.me/blog/archives/1265">http://www.skywind.me/blog/archives/1265</a></p>
+
+<h4 id="类型1-卡牌-跑酷等弱交互服务端">类型1：卡牌，跑酷等弱交互服务端</h4>
+
+<p>卡牌跑酷类因为交互弱，玩家和玩家之间不需要实时面对面PK，打一下对方的离线数据，计算下排行榜，买卖下道具即可，所以实现往往使用简单的 HTTP服务器：</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb18.png" alt="image" /></p>
+
+<p>登录时可以使用非对称加密（RSA, DH），服务器根据客户端uid，当前时间戳还有服务端私钥，计算哈希得到的加密 key 并发送给客户端。之后双方都用 HTTP通信，并用那个key进行RC4加密。客户端收到key和时间戳后保存在内存，用于之后通信，服务端不需要保存 key，因为每次都可以根据客户端传上来的 uid 和 时间戳 以及服务端自己的私钥计算得到。用模仿 TLS的行为，来保证多次
+HTTP请求间的客户端身份，并通过时间戳保证同一人两次登录密钥不同。</p>
+
+<p>每局开始时，访问一下，请求一下关卡数据，玩完了又提交一下，验算一下是否合法，获得什么奖励，数据库用单台 MySQL或者 MongoDB即可，后端的 Redis做缓存（可选）。如果要实现通知，那么让客户端定时15秒轮询一下服务器，如果有消息就取下来，如果没消息可以逐步放长轮询时间，比如30秒；如果有消息，就缩短轮询时间到10秒，5秒，即便两人聊天，延迟也能自适应。</p>
+
+<p>此类服务器用来实现一款三国类策略或者卡牌及酷跑的游戏已经绰绰有余，这类游戏因为逻辑简单，玩家之间交互不强，使用 HTTP来开发的话，开发速度快，调试只需要一个浏览器就可以把逻辑调试清楚了。</p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1265/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1048/">快速可靠协议-KCP</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2012年12月22日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <h3 id="简介">简介</h3>
+
+<p>KCP是一个快速可靠协议，能以比 TCP浪费10%-20%的带宽的代价，换取平均延迟降低 30%-40%，且最大延迟降低三倍的传输效果。纯算法实现，并不负责底层协议（如UDP）的收发，需要使用者自己定义下层数据包的发送方式，以 callback的方式提供给 KCP。 连时钟都需要外部传递进来，内部不会有任何一次系统调用。</p>
+
+<p>整个协议只有 ikcp.h, ikcp.c两个源文件，可以方便的集成到用户自己的协议栈中。也许你实现了一个P2P，或者某个基于 UDP的协议，而缺乏一套完善的ARQ可靠协议实现，那么简单的拷贝这两个文件到现有项目中，稍微编写两行代码，即可使用。</p>
+
+<h3 id="技术特性">技术特性</h3>
+
+<p>TCP是为流量设计的（每秒内可以传输多少KB的数据），讲究的是充分利用带宽。而 KCP是为流速设计的（单个数据包从一端发送到一端需要多少时间），以10%-20%带宽浪费的代价换取了比 TCP快30%-40%的传输速度。TCP信道是一条流速很慢，但每秒流量很大的大运河，而KCP是水流湍急的小激流。KCP有正常模式和快速模式两种，通过以下策略达到提高流速的结果：</p>
+
+<p><strong>RTO翻倍vs不翻倍：</strong></p>
+
+<p>TCP超时计算是RTOx2，这样连续丢三次包就变成RTOx8了，十分恐怖，而KCP启动快速模式后不x2，只是x1.5（实验证明1.5这个值相对比较好），提高了传输速度。</p>
+
+<p><strong>选择性重传 vs 全部重传：</strong></p>
+
+<p>TCP丢包时会全部重传从丢的那个包开始以后的数据，KCP是选择性重传，只重传真正丢失的数据包。</p>
+
+<p><strong>快速重传：</strong></p>
+
+<p>发送端发送了1,2,3,4,5几个包，然后收到远端的ACK: 1, 3, 4, 5，当收到ACK3时，KCP知道2被跳过1次，收到ACK4时，知道2被跳过了2次，此时可以认为2号丢失，不用等超时，直接重传2号包，大大改善了丢包时的传输速度。</p>
+
+<p><strong>延迟ACK vs 非延迟ACK：</strong></p>
+
+<p>TCP为了充分利用带宽，延迟发送ACK（NODELAY都没用），这样超时计算会算出较大 RTT时间，延长了丢包时的判断过程。KCP的ACK是否延迟发送可以调节。</p>
+
+<p><strong>UNA vs ACK+UNA：</strong></p>
+
+<p>ARQ模型响应有两种，UNA（此编号前所有包已收到，如TCP）和ACK（该编号包已收到），光用UNA将导致全部重传，光用ACK则丢失成本太高，以往协议都是二选其一，而 KCP协议中，除去单独的 ACK包外，所有包都有UNA信息。</p>
+
+<p><strong>非退让流控：</strong></p>
+
+<p>KCP正常模式同TCP一样使用公平退让法则，即发送窗口大小由：发送缓存大小、接收端剩余接收缓存大小、丢包退让及慢启动这四要素决定。但传送及时性要求很高的小数据时，可选择通过配置跳过后两步，仅用前两项来控制发送频率。以牺牲部分公平性及带宽利用率之代价，换取了开着BT都能流畅传输的效果。</p>
+
+<h3 id="基本使用">基本使用</h3>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1048/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/962/">参考ZeroMQ改进服务器</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年6月25日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>今天参考 ZeroMQ的观点为我们的网络模块增加了一个“订阅模式”，及客户端包头用四字节表示，低24位为长度，高八位为“消息分类”。后端连接网络层的若干“频道”可以根据自己的喜好订阅“分类消息”，那么客户端发送该分类消息到网络层的时候，将会被抄送到订阅过该分类的频道。每个频道还可以订阅若干系统消息，比如连接开始、断开、时钟等等。</p>
+
+<p>我们的服务器自2004年底到现在，一直是网络和逻辑分离在不同的进程（主机）中间，网络模块可以连接多个提供服务的“频道”，只是配合休闲游戏的模型，当前只有一个频道可以和特定玩家进行交互。不过其基于多频道的模型使得这次改进很容易，改了三个小时，又跑了几个小时的测试用例，基本通过。</p>
+
+<p>以后交易，聊天，逻辑等，都可以分布在不同的频道里面同时为玩家提供服务了。</p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/962/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/166/">[业余土制] 简易网络库 easenet</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2010年12月11日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE">开源项目</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>1. 跨平台网络库</p>
+
+<p>2. 异步事件：kevent, iocp, epoll, poll, select封装</p>
+
+<p>3. 内存管理：SlabPlus</p>
+
+<p>4. 可靠协议：类tcp纯协议实现，包括重传机制，窗口管理，流量控制，拥塞处理。</p>
+
+<p>5. 多种工具：缓存池，环状缓存，高性能hashmap等。</p>
+
+<p>代码贴上：  项目地址：<a href="http://code.google.com/p/easenet/">http://code.google.com/p/easenet/</a></p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/166/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/163/">[业余土制] Python P2P模块</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2010年12月10日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE">开源项目</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>项目地址：<a href="http://code.google.com/p/pyp2p/">http://code.google.com/p/pyp2p/</a></p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/163/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+
+                    
+
+
+<ol class="page-navigator">
+    
+
+    
+    <li  class="current">
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">1</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/page/2/">2</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/page/2/">下一页</a>
+    </li>
+    
+</ol>
+
+
+
+                </div>
+            </div>
+
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+
+</body>
+</html>

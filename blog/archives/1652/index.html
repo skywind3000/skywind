@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ATOM 同 Vim/Emacs/Sublime 的深度比较 | Skywind Inside</title>
+    <meta property="og:title" content="ATOM 同 Vim/Emacs/Sublime 的深度比较 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2016-03-16T10:11:00&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2016-03-16T10:11:00&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="ATOM 同 Vim/Emacs/Sublime 的深度比较">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/1652/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">ATOM 同 Vim/Emacs/Sublime 的深度比较</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2016年3月16日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>用过不少编辑器：UltraEdit / EditPlus / (G) Vim / GEdit / NotePad++ / TextMate / ProgrammerPad / Sublime 。确实是工作上用他们写过代码的。而 VSC / Emacs 只是体验了一下基本使用方法，算不上真用。用下来的结论是：Atom 比 Vim 更 Vim，比 Emacs 更 Emacs，同样，比 Sublime
+更 Sublime。</p>
+
+<p>Atom 唯一的槽点就是“卡”，不过那是去年的情况了，1.0后性能数次大提升，比起sublime/vsc之类虽不算流畅，但同时编辑20个数千行的文件没有压力。如今让人感觉慢的地方主要是启动loading（也大大短于eclipse, idea），使用时并没察觉它比其他编辑器慢再哪。而文本编辑器的快慢，更重要的是“让你工作更快更有效率”。下面说说为何 Atom比其他更有效率：</p>
+
+<h3 id="兼容vim模式">兼容VIM模式</h3>
+
+<p>这无疑团结了一大班 Vim过来的用户，Sublime虽然也有VIM模式，但是Sublime在 mac下面的vim模式有bug，我习惯用 hjkl来移动光标，sublime再mac下hjkl移动有问题，且我习惯CTRL_[来返回NORMAL，手指不离开主键盘区，而sublime的vim模式只支持ESC返回，加上其作者经常神秘消失，最稳定的2.x版本已三年没有更新，这些问题一直得不到修正。</p>
+
+<p>由于Atom的定制程度直追 Vim/Emacs，它的vim模式能够使用插件来实现，而不像sublime必须builtin，Atom的VIM模式除了官方实现外还有很多用户实现，各有所长，你不喜欢可以换，Sublime就傻逼了，觉得builtin的不行，你就没办法了，而且作者不更新你也没办法。</p>
+
+<p>Atom里的Vim模式并不是强制的，你可以用也可以不用，这样入门用户也不会觉得困难，但是如果你用惯Vim的话，使用Vim模式可以取得更好的效率，我觉得Vim / Atom-VimMode能够提升效率的地方有以下三方面：</p>
+
+<p>1. 手指不离开主键盘区：</p>
+
+<p>所有功能皆能在主键盘区完成，不用去按方向键，不用把手挪去按Home / End，更不用动鼠标。就像咏春中强调中线理论，认为一切动作围绕中轴线开展，守护自己中轴线的同时攻击别人的中轴线。Vim / Atom-VimMode中，双手不但从不离开主键盘，并且八根手指随时守护再HOME位（ASDF, JKL;）有动作就移动，然后马上归位。</p>
+
+<p>2. 细粒度微操作：</p>
+
+<p>星际、dota玩的好，微操是基本功，微操作更精确，效率更高，Vim/Atom-VimMode一样，比如：</p>
+
+<blockquote>
+<p>if (xxxx) {<br />
+}</p>
+</blockquote>
+
+<p>很多人编写代码的时候都会习惯“成对编码”，写了申请资源的代码，先把释放资源写了，写了左括号，先把右括号给补充完，当你写完第二行代码时，需要用到“再1-2行中间插入一行”，此时你的光标停留在第二行，传统编辑器你需要：按上箭头移动光标到第一行 -&gt; 按END键去到第一行末尾 -&gt; 按回车插入一行，mac下的END键还需要用CMD+右来组合出来，而Vim/Atom-
+VimMode中，你只需要shift+o即可，手指完全不离开主键盘区，不用像传统编辑器那样，右手先移动到箭头区又移动到HOME的小键盘区，再移动回主键盘区这么麻烦，类似还有：<br />
+使用o直接再下一行插入，避免 END/回车<br />
+使用I再行首插入，避免移动半天光标。<br />
+向前/后移动一个单词到单词头、尾。<br />
+快速更改当前单词，用/来快速搜索移动光标。<br />
+dd+p来快速移动代码块，取代shift+方向键半天。<br />
+shift-j 来两行合并成一行，代替 HOME, back 若干次。<br />
+。。。<br />
+你再编辑代码的时候，90%的情况可以直接一步完成，这就叫细粒度微操，而且整个过程手都不需要离开主键盘，不像传统编辑器那样，若干笨重的操作组合再一起，操作不够细步骤多的同时手还要再：主键盘区，方向键区，扩展键区 来回移动，效率奇低。而Vim/Atom-VimMode下，手指随时守护在home区（ASDF
+JKL；），所有微操都是围绕HOME区进行，不会移动到任何主键盘以外的区域，更别说用鼠标、触摸板。</p>
+
+<p>3. 批量操作：</p>
+
+<p>比如要给下面代码每行后面加一个分号：</p>
+
+<blockquote>
+<p>var x = 1<br />
+var y = 2<br />
+var z = 3<br />
+console.log(&lsquo;result is &rsquo; + (x + y + z).toString())</p>
+</blockquote>
+
+<p>一般做法是：移动光标到行末-&gt;END-&gt;分号-&gt;移动光标到下一行，Vim里面不需要移动光标到行末，只需要循环敲入：“A;<ESC>j” 即可，本来操作就少很多，但是这还不是最少操作，更少操作是利用Vim里面的句号“.”功能重复上一次操作，即第一行“A;”补充了一个分号后，第二行只需要按一下&rdquo;.&ldquo;即可重复，于是最后操作变为：<br />
+第一行：A;<ESC><br />
+后面所有行：J.</p>
+
+<p>超级爽快的操作，这样的操作还很多，你还可以单条命令对一万行代码重复上述步骤，或者把c代码拷贝到go里面先一句话把所有分号给删除了。Vim下面的名言：绝不重复。</p>
+
+<p>总之如果你熟悉 VIM模式，用 Atom能感到完全自由的方式，随心所欲的书写代码，而不是被书写这件事情费脑筋，解放大脑完全用于思考而不用于打字。但是同时对不习惯VIM的人照样友好，或者对想使用VIM的便利却又痛恨VIM这个软件的简陋的人带来了福音。</p>
+
+<h3 id="脊柱记忆">脊柱记忆</h3>
+
+<p>“同样动作重复300次，肌肉就会有记忆，而一个动作重复600次，脊椎就会有记忆”<br />
+-- 李小龙</p>
+
+<p>编辑器就是关于脊柱记忆的东西，所以多投入一些时间去了解你使用的编辑器，掌握他们的各种快捷操作和高级功能是一个能让你事半功倍的好主意。</p>
+
+<p>格斗游戏玩的好的人有很多，下等高手靠熟练，中等高手靠反应，上等高手靠意识。更熟练的掌握你的编辑器，让更多日常工作固化成记忆记录再你的脊椎上，使用的时候，脊椎这枚协处理器就能完成代码编写，一个操作，刚一想到，脊椎就自动执行出来了，小脑腾出空间来组织判断，大脑腾出空间来思考更重要的东西，就像你走路，你不用思考迈腿那么自然，别人一拳过来，你潜意识一动，一连串动作就出去了，一只飞蛾飞过来，你潜意识的闭上眼
+睛保护眼部，这就是脊椎记忆，如果还要经过大脑绕一圈，反应慢不说，大脑这颗cpu都用在这些琐事上了，思考的时间自然少了不少。</p>
+
+<p>所以从内到外的了解你的编辑器，并且熟练掌握他们，是对你提高工作效率的最佳投资，Atom的全平台支持，开放源代码，深度可定制等三个特点，比起其他闭源的，平台支持不全的，扩展少的编辑器来说能让你有不同层面的了解机会，同时为你提供足够的空间。</p>
+
+<h3 id="深度可定制系统">深度可定制系统</h3>
+
+<p>im/Emacs的精髓在于：“可以调教”，本来不顺手的东西，只要容易调教，假以时日，都会慢慢变得越来越顺手，越来越“懂你”，越来越“贴心”，以至于后面大家都离不开它了。而 Atom 也同样是一款容易被你调教的编辑器。先前给vim写过插件，给sublime写过插件，如今给Atom写过插件，横向对比下来，几个结论：</p>
+
+<p>插件能做事情多少：Atom &gt; Vim &gt;&gt; sublime<br />
+插件开发学习门槛：Vim &gt; Atom &gt; sublime<br />
+插件开发文档丰富：Atom &gt; sublime &gt;&gt; Vim</p>
+
+<p>Atom 的定制化程度远远高过sublime之类（不用实际看法，看看双方开发文档即可），直追 Vim / Emacs，sublime的大部分定制无外乎改改json，插件能做的事情相当有限。</p>
+
+<p>Atom 的定制化系统主要有三方面：</p>
+
+<p>1. 细致：</p>
+
+<p>设计之初就考虑的事情，方方面面都能定制，见官方文档，以及插件：vim-mode，minimap （稍微了解下这两个类似的功能再 Atom 和 sublime的实现就能知道 sublime被甩了多少条街了）。可以细粒度的控制编辑器内所有行为，小到移动一下光标，删除当前一个字符，大到打开一个面板，比如 “core:more-up” 可以向上移动一行光标，“window:focus-pane-on-
+left” 可以把焦点设置到左边的面板，atom内核和大量第一方第三方packages 都是以命令的方式把基础功能提供出来，你可以随意互相调用或者设置热键。<br />
+除去命令外，API层面，几乎每个部件每个像素点都可控，比如这样的插件你永远无法再 Vim / Emacs / Sublime 下面见得到：activate-power-mode。</p>
+
+<p>2. 直观：</p>
+
+<p>由于使用 javascript/coffee进行开发，但 javascript/coffee是属于即便你没写过他们，读都能读得懂，VimScript就不一样了，虽然也能做相同的事情，但实话实说，晦涩难写，比如我要取得当前文件的路径和文件名，在 VimScript里面需要这么写：</p>
+
+<blockquote>
+<p>let l:path = expand(&lsquo;%:p:h&rsquo;)<br />
+let l:name = expand(&lsquo;%:t:r&rsquo;)<br />
+或者<br />
+let l:name = expand(&lsquo;%&lt;&lsquo;)</p>
+</blockquote>
+
+<p>而在 Atom 里我们用atom自己的功能直接取出路径来，然后进行切割：</p>
+
+<blockquote>
+<p>var fullpath =atom.workspace.getActiveTextEditor().getPath();<br />
+var filename = path.basename(fullpath);<br />
+var filepath = path.dirname(fullpath);</p>
+</blockquote>
+
+<p>就问大家一下？哪段代码更友好直观？你一眼就知道在做什么？你更愿意用按照哪段代码进行插件开发？是上面的VimScript？还是下面的 javascript ？</p>
+
+<p>结论是很清晰的，Atom的 javascript开发插件更简单直观，即便没文档，看别人怎么写的自己也会了，同时灵活性大大高于VmScript，各种事件处理回调，javascript天生擅长做这些事情，还有第二行，第三行，我们用到了 node.js 的 path模块，进行文件路径切割。这样的写法，再VimScript 里面基本是无法想象的。</p>
+
+<p>Vim是强大，但是毕竟是30年前的东西了，即便最熟练的 Vimer 也都承认 VimScript 的晦涩难懂，阻碍了很多人为其开发插件。而给Atom开发插件，只需要掌握javascript，掌握 javascript的人很多，学习了javascript你也可以用在很多地方。不像VimScript那样只能用在Vim里面，而正因为其晦涩，Vim新版本开始支持内嵌 python的写法：</p>
+
+<blockquote>
+<p>python &lt;&lt; EOF<br />
+import random<br />
+print random.randint(0,10)<br />
+EOF</p>
+</blockquote>
+
+<p>VimScript中 Python等动态的支持正是说明其开发维护者也承认 VimScript 本身的古老，对比现代编程语言已经有些格格不入了，缺乏强大的描述能力，难以构建复杂的功能模块，才会去支持Python内嵌这样的写法。可大量的工作还是需要再Python之外完成，同时，并非所有平台自带的Vim都支持python，除了mac外，所有debian / ubuntu 发行版自带的Vim都不支持
+Python。导致你想写一个通用的扩展还得判断下是否 has(&lsquo;python&rsquo;) 没有的话老老实实用 VimScript 去实现它，这不是折磨人么？</p>
+
+<p>Sublime里面可以用原生 Python 写扩展，比 VimScript爽，但是 sublime 的插件能做的事情还不及VimScript的一半，所以怎么能指望他们能写出高端的功能来呢？</p>
+
+<p>3. 强大：</p>
+
+<p>Atom的内核 Electron （原来的 Atom-shell）可以理解成：Chromium + Node.JS，而整个Atom的界面，你可以理解成就是一颗 HTML 的 DOM 树结构，这意味着你可以这样：</p>
+
+<blockquote>
+<p>var div = document.createElement(&ldquo;div&rdquo;);<br />
+div.innerText = &ldquo;abc&rdquo;;<br />
+atom.workspace.addBottomPanel(div);</p>
+</blockquote>
+
+<p>就可以简单的在 atom 里面增加一个显示对象，这意味着再给div加个 html的 onclick就可以实现GUI交互，界面上的对象随便写点html代码就可以控制效果，意味着你可以使用 jQuery 来为atom增加新面板，意味着你只需要写一个简单的 .css 文件就可以把 Atom 整个编辑器的外观给修改了。这在 Vim/Emacs 中是几乎不可想象的事情，sublime基本就别提了。<br />
+大量的前端开发技术和 Node.JS 基础模块供你任意使用，正是由于近年 Chromium / node.js 系列技术的成熟，和 Atom / Visual Studio Code 这类基于前端技术的客户端软件的成功，让我看到了客户端（桌面+移动）软件开发的新方向。</p>
+
+<h3 id="做vim-emacs不能做的事情">做VIM/Emacs不能做的事情</h3>
+
+<p>Vim/Emacs过去给人的映像是：几乎能做任何事情，确实如此，但毕竟是二三十年前的东西了，而他们一直坚挺到现在一方面是操作便利，更重要的是这么长时间还没有出现一款又开源又具备同样操作便利性和可扩展性的编辑器，所以Vimer, Emacser 们最乐意展示给别人看的就是他们又安装了什么插件，急于展示可以把 Vim / Emacs 装扮成了一个多像 IDE
+的东西，而今天这个“可以做任何事情”的高度可定制特性已经被Atom所吸收并完全超越，就像 Atom 的开发blog：“ Introducing Atom” 上说的一样，对易用性和可展性 “决不妥协” ：<br />
+We think we can do better. Our goal is a zero-compromise combination of hackability and usability: an editor that will be welcoming to an elementary school student on their first day learning to code,
+but also a tool they won&rsquo;t outgrow as they develop into seasoned hackers.</p>
+
+<p>抛开易用性的这个 Atom 的明显优势不说，前面其实已说了不少 Atom 比 Vim/Emacs 更灵活强大的地方，可能有些人还有疑惑，不是说 Emacs “没有不能做的事情” 么？你看 Atom的面板里面可以嵌入一个 Terminal，Vim/Emacs一样可以嵌入啊，为何还说 Atom 比它强啊？</p>
+
+<p>没错，Vim用久了会产生心理舒适区，多模式编辑使人神清气爽，命令化文本处理让你赏心悦目，但是受限于本身机制用久了会容易痛苦挣扎：虽然vim的各种扩展似乎什么事情都能做，但每个扩展却只能做到70分，总有那么30%的地方做不到位。所以用的时间长了，上半身爽的要死，下半身痛不欲生。。。。</p>
+
+<p>Vim/Emacs即便大部分扩展功能也都可以称为“能用”，可几十年的历史包袱太沉，很多事情对他们来讲就是禁区，比如诡异的标签功能，容易误操作的buffer/窗口切换，缺乏异步机制，编译时间长只有傻等着，无法跟Atom一样边读代码，边运行程序看结果，对照输出结果和源代码找问题，连实现个内嵌终端都用了若干年，还实现的那么别扭。。。。。。。。。</p>
+
+<p>这类硬伤有许多，再举个最简单的例子，minimap，就是 sublime那种大家喜欢的文档缩略图，这个现代编辑器必备的功能，谁能用 Vim/Emacs 实现一下看看？Atom 可以衍生出 Visual Studio Code 这样漂亮的编辑器，Vim/Emacs能衍生么？Atom可以随便用各种先进的前端技术，不当可以嵌 Terminal我甚至可以再 Atom 嵌入一个 js版本的 DOSBOX
+玩老游戏《命令与征服》：<br />
+<a href="https://archive.org/details/softwarelibrary_msdos_games">https://archive.org/details/softwarelibrary_msdos_games</a><br />
+Play DOS games online</p>
+
+<p>当然这样并没有任何卯用，但是如果我再 Atom里面内嵌一个浏览器，方便的实时预览html/css的效果呢？或者 Atom 里面内嵌一个 Markdown Previewer ，实时查看 Markdown 的效果呢？请问 Vim/Emacs 里怎么实现法？</p>
+
+<p>短短两年的时间，这么多优秀的插件，只想说，如今 Atom 作为 Vim/Emacs 的继承者和超越者出现了，所以社区对 Atom 的反应也是热烈的，看看下面一组数据，截止今天（2016年3月15日），Atom共有扩展插件 3500+ 个，发布不到两年的时间，这是什么概念呢？<br />
+Sublime的插件（Stats - Package Control）大概 3500+个，但是sublime发布了5年的时间。<br />
+Emacs 的插件大概有2900个，可Emacs发布到今天已经过去 25+年的时间。<br />
+Vim 的各种插件虽然有9000个，但是Vi/Vim系列的历史长达 30+年，是atom的15倍。</p>
+
+<p>这就叫社区的活跃度的区别，为什么短短两年那么多开发者先后给atom贡献了各种高质量的扩展，为什么大家对atom的热情那么高？为何好多人接触了atom一段时间后都深深的爱上了它？这是有原因的。</p>
+
+<h3 id="再谈性能优化">再谈性能优化</h3>
+
+<p>很多人错误的觉得 Atom慢是因为使用了 JavaScript/Coffee 等 Web 技术，所以先天慢，其实这是个误区，即便使用 Web 技术它也还能快很多，同时再慢可以往C++层的 Electron 挪啊，这也是这几个版本优化的一些方向，基于 Atom 开发的 Visual Studio Code 可以那么流畅， Atom 性能优化空间还很大，了不起多参考下自己的儿子，同样开源的
+vscode怎么做的。</p>
+
+<p>同时 Atom编辑器1.0版本以来性能得到了很大的提升，主要是两个方面，一方面是js层的各种渲染优化，控件优化，延迟绘制，延迟加载，只绘制当前需要的东西等，另外一方面是将一些核心数据结构移动到 Electron 的
+C++层，如今1.54版本性能较去年版本已经有了本质区别，运行时加载是慢些（但也比eclipse快很多），实际使用并没觉得不如别的编辑器，况且，js层的优化和C层的优化未来还有很大的空间可以进步。</p>
+
+<p>不过我不太喜欢 vscode 使用 Typed Script 进行开发，用点标准技术不行么，Atom使用 JavaScript/Coffee 写的多爽，如今 Atom 正在准备慢慢的切换到 JavaScript 的新标准 ES6 上。其次 vscode 快是快在“做的事情少”，主要是可扩展性方面的努力远不及 Atom，插件机制相对弱智，所以 vscode
+的社区如今还不是特别活跃，扩展也少，发布一年多只有差不多300+个扩展，远不如 Atom 的情况，如果 vscode 还是按照现有结构开发下去，可能永远不会拥有 Atom的灵活度，这样再未来就无法拥有各种丰富多彩的插件。</p>
+
+<h3 id="再说开源免费">再说开源免费</h3>
+
+<p>UltraEdit 单用户版本价格： 79 美刀<br />
+UltraEdit 服务器版价格： 229 美刀（多人登录同一台服务器的桌面使用），企业版更贵<br />
+EditPlus 单用户版价格： 35 美刀，而且还只有windows版本，<br />
+Sublime 单用户版价格：70 美刀<br />
+TextMate 单用户版价格：48 欧元，而且还只有mac版本。</p>
+
+<p>这些都是钱啊，可能你会说可以免费试用或者破解啊，是的个人可以，但正常来说sublime这些试用指不能拿来搞生产不能拿来工作的，个人你用用可以，但国外人家守规矩，不会乱用，这意味着失去一大批为其开发扩展的国外开发者，同时站在公司考虑IT方案的角度，免费试用和破解将来都是潜在的麻烦，现在上百人的公司微软都会来收windows的钱了，版权问题越来越严肃，你得把这笔潜在费用考虑进去，同时这些闭源的或者单平
+台的东西，并不值得再上面花费过多精力和投资。</p>
+
+<p>抛开扩展性问题和价格问题，我们再来看各个热门的免费编辑器的试用情况：</p>
+
+<p>Notepad++：免费，开源，只能运行于windows<br />
+PSPad：免费，不开源，只能运行再 Windows<br />
+Gedit：免费，开源，只能跑再 GNome下，Ubuntu用用，Windows/mac版本简直是残缺的。<br />
+Programmer&rsquo;s Notepad : 免费开源，只能跑 Windows<br />
+Notepad2：免费bu不开源，只能跑 Windows</p>
+
+<p>更关键的是：闭源的东西个人作者可能失去兴趣不再更新，商业公司的话，你需要一个功能，就只能无限期的等待他们发慈悲加入进去。而免费开源的很多其他编辑器除去平台兼容性问题外，更重要的时扩展性差。</p>
+
+<p>而同时满足：免费+开放+强扩展性的编辑器如今就只出现过三个：Vim / Emacs / Atom。他们是真正属于使用者的编辑器，他们能变成使用者希望变成的样子。这些曾经出现过得收费的或者免费的编辑器，凭借着一两个自身独有的 “卖点”，再某些时间段内都曾经流行过，可就像流星一样一闪而过，如今他们都统统完成了自己的历史使命，新的一页可以翻开了。终端环境的话确实 Vim / Emacs
+继续下去，但桌面环境的话，Atom将会继续向前，走出新的一步。</p>
+
+<h3 id="atom使用答疑">Atom使用答疑</h3>
+
+<p>怎么取消末尾空白行自动剔除？<br />
+-- 禁用自带 whitespace 插件即可。</p>
+
+<p>怎么将TAB从空格改为真TAB？<br />
+-- 设置-&gt;Tab Mode 从 Soft 改为 Hard，同时将长度设置为4</p>
+
+<p>我喜欢查看 空格和 TAB，还有换行符，让他们显示出来？<br />
+-- Settings-&gt;Editor-&gt;Show Invisibles</p>
+
+<p>如何取消括号补全？<br />
+-- 设置-&gt;Packages-&gt;禁用 Bracket 插件即可。</p>
+
+<p>我从 sublime 过来，如何增加文档缩略图 minimap？<br />
+-- 设置-&gt;Install-&gt;安装 MiniMap 即可</p>
+
+<p>如何启用Vim模式？<br />
+-- 设置-&gt;Install-&gt;VimMode</p>
+
+<p>如何禁止按回车实现自动补全（有时想换行但是变成使用补全了）？<br />
+-- 设置-&gt;Packages-&gt;Autocomplete Plus-&gt;将Tab+Enter改为Tab only</p>
+
+<p>我是 C/C++ 开发者，如何一键编译一键执行代码？<br />
+-- 安利下我自己写的插件：Atom有什么优秀插件？ - 韦易笑的回答</p>
+
+<p>我是前端开发者，用惯了 Sublime的 Emmet，Atom下怎么办？<br />
+-- 也有 Emmet。</p>
+
+<p>国内有时无法自动下载安装 package怎么办？<br />
+-- 等三五分钟重试，有些cdn的ip (amazon) 被gfw掉了，或者全局代理翻墙，或者直接从github上clone到 ~/.atom/packages下手动安装即可。</p>
+
+<p>ATOM的编码如何自动识别GBK的文件呢？<br />
+-- Atom开发组调研了若干编译器和firefox等浏览器自动识别编码的代码后，发现这是一个完全不严谨基本靠猜的工作，为保证安全性，atom默认打开文件时是指定文件编码为utf-8（可改），你可以改为GBK，但这样对utf-8的文件不友好了。atom有自动识别功能，要在打开文件后，ctrl-shift-u来打开编码选择面板，然后选择 auto
+detect。如果你无法接受这种默认方式的话，有一个叫做 auto-encoding 的插件安装后可以帮你再打开文件的时候自动识别编码。</p>
+
+<p>有时候.h文件被自动识别成C文件而不是cpp文件，导致语法高亮无法识别class等关键字怎么办？<br />
+-- 只需要在你的 config.cson 中的 core项目下加入这样几行即可：<br />
+core:<br />
+customFileTypes:<br />
+&ldquo;source.cpp&rdquo;: [<br />
+&ldquo;h&rdquo;<br />
+]<br />
+。。。。。。</p>
+
+<h3 id="vim移植攻略">VIM移植攻略</h3>
+
+<p>我在 Vim插入模式下习惯 inoremap C-HJKL来上下左右移动，十分方便，可到了Atom里该怎么办？<br />
+-- File -&gt; Open Your Keymap，按照注释设置你的新的键位，如：&rsquo;alt-j&rsquo;: &lsquo;core:move-down&rsquo;。</p>
+
+<p>我再 Vim下面喜欢设置各种indent，各种smart tab，tab expand再Atom里面怎么设置？<br />
+-- Settings 第一个面板就有。</p>
+
+<p>我再 Vim 下面喜欢把大写的 HJKL 设置成 5h, 5j, 5k, 5l，这样按住shift实现快速移动，请问Atom怎么设置？<br />
+-- 你可能需要自己写点js代码了，不过这在vim里面也是不对的用法，你把J这个粘合两行的命令给覆盖了，行间移动我喜欢用vim的CTRL_U, CTRL_D来滚动半页，行内快速移动，我喜欢5w，或者直接fx。</p>
+
+<p>我再 Vim中喜欢使用 Taglist/Tagbar 来进行索引，来到 Atom 有没有类似的插件？<br />
+-- 请使用：symbols-tree-view 代替之，而且不依赖ctags，实时分析当前文件内容，超级漂亮，使用ctrl-alt-o切换是否显示。其实内置功能 CMD-R （osx的键位，win下查一下，内置插件symbol-view）可以查看当前代码的函数列表，点击也可以跳转过去，同样也不依赖ctags，轻量级使用的话，内置这个足够了。</p>
+
+<p>我从 Vim过来，如何实现Vim的 YouCompleteMe超级补全插件？<br />
+-- 安装 autocomplete-clang 或者 YouCompleteMe 插件即可。不过 Atom 本身内置的补全就已经很强大了，你可以先试试，况且Atom用这些东西还不像vim用 YCM那样还需要编译个带python的版本，还要编译clang一半天那么麻烦。</p>
+
+<p>我在 Vim中喜欢用 vim-multiply-cursors 做批量操作，Atom怎么弄？<br />
+-- multi-cursor-plus</p>
+
+<p>我再 Vim中写python，过来 Atom 下找不到顺手的工具了怎么办？<br />
+-- 你可以查看：autocomplete-python<br />
+。。。。。</p>
+
+<p>如何快速打开文件，类似 e命令？<br />
+-- 十分强大的 advanced-open-file 插件</p>
+
+<p>我想快速移动光标，怎么破？<br />
+-- 本身 Atom 就提供一系列快捷键用于快速移动，不够的话 <a href="http://atom.io/packages">http://atom.io/packages</a> 下面有很多插件可以搜索，可以找找类似 move, jump 的很多包是否适合，比如 move-by-paragraph，了不起改两行js，不过 vim mode下面很多 { } 等命令快速移动光标已经能满足很多要求了。</p>
+
+<p>我习惯用noremap定义很多自己习惯的组合操作，一个快捷键完成一堆命令，这该怎么移植？<br />
+-- keymap时使用组合命令需要自己写两行 ~/.atom/init.coffee，见官方文档：<a href="https://atom.io/docs/latest/behind-atom-keymaps-in-depth">https://atom.io/docs/latest/behind-atom-keymaps-in-depth</a>，这对喜欢折腾的 Vimer 应该不是难事，同时有人写了个扩展插件专门做这件事情的，可以看看能不能用：<https://atom.io/packages/sequential-
+command>。</p>
+
+<p>。。。。。。</p>
+
+<p>这段会不断更新补充，关于各种编辑器过来的人的习惯，喜欢折腾的Vim用户，Atom给大家足够折腾的空间，用不着刻意把 Atom 装扮成一个100%的vim，随着时间的推移用 Atom的方式使用Atom能让你获得更高的效率。</p>
+
+<p>简单用一下的话，这样就可以了：</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2016/03/1458122320_thumb.png" alt="" /></p>
+
+<p>左边是 Atom再带的 Tree View，可以用来管理项目或者直接管理文件，右边是taglist/tagbar 的代替者：symbol-tree-view，中间文件分两边同时编辑两个文件，上面分tab，按cmd+数字直接跳转，左右两边panel设置快捷键组合切换，下面的Atom Shell
+Commands调用编译器编译工程或者单个源文件，编译器的错误输出可以根据正则匹配出对应出错的文件名和行号，快速跳转。</p>
+
+<p>用了autocomplete-python插件来补全python，其他语言的话，系统自带的autocomplete-plus以经足够我用了，十分喜欢YCM的人，autocomplete-clang可以满足你们。</p>
+
+<p>注：Atom是通用编辑器，真的写java我还是会用eclipse这种针对语言级别的IDE来调试安卓或者管理模拟器，但是其他语言，我现在都完全切换Atom了。</p>
+
+<p>Vim/Emacs的世界里有个著名的笑话：“世界上只有三种程序员：使用Emacs的程序员，使用Vim的程序员和使用其他编辑器的程序员”，如今可以改一改了。</p>
+
+<p>最后开个小玩笑，<br />
+使用其他编辑器的感觉是：哦，原来是这样啊。<br />
+使用Vim/Emacs的感觉是：哇，居然能这样啊，（又用一段时间再次）哇，居然能这样啊。<br />
+然而使用Atom的感觉是：Oh my god, Oh, my god !! oh ! oh! &hellip; oh! （最后激动的话都说不完整了）。</p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/1391/">游戏中角色变色如何实现？</a></li>
+        
+        <li><a href="/blog/archives/1638/">Atom 编辑器的插件开发</a></li>
+        
+        <li><a href="/blog/archives/1628/">KCP同 UDT/ENET的性能比较</a></li>
+        
+        <li><a href="/blog/archives/1609/">如何写一个视频编码器演示篇</a></li>
+        
+        <li><a href="/blog/archives/1587/">内存拷贝优化（3）-深入优化</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E">知乎</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

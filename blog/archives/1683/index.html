@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>超越 SDL/DirectDraw/GDI 性能的位图库 | Skywind Inside</title>
+    <meta property="og:title" content="超越 SDL/DirectDraw/GDI 性能的位图库 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2016-04-28T16:00:37&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2016-04-28T16:00:37&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="超越 SDL/DirectDraw/GDI 性能的位图库">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/1683/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">超越 SDL/DirectDraw/GDI 性能的位图库</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2016年4月28日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>开源一个高性能位图库，之前对我的二维图形库 <a href="https://github.com/skywind3000/pixellib">pixellib</a> 进行了精简和重写，最终形成一个只包含两个文件（BasicBitmap.h, BasicBitmap.cpp）的图形基础库。 在今天 GPU 绘制横行天下的时候，任然有很多时候需要使用到纯
+CPU实现的图形库，比如图像处理，视频预处理与合成，界面，以及GPU无法使用的情况（比如某个应用把gpu占满了，或者无法通过gpu做一些十分灵活的事情时），纹理处理，简单图片加载保存等。 支持 SSE2/AVX 优化，比 DirectDraw 快 40%（全系统内存绘制），比 SDL 快 10%，比GDI快 38%。如果你需要一个方便的高性能位图库，足够高性能的同时保证足够紧凑。
+如果你有上述需求，那么你和我一样需要用到 BasicBitmap，只需要把 BasicBitmap.h/.cpp 两个文件拷贝到你的代码中即可。我正是为了这个目的编写了这两个文件。</p>
+
+<h3 id="特性介绍">特性介绍</h3>
+
+<ul>
+<li>高度优化的 C++ 代码，可以在任意平台编译并运行</li>
+<li>多重像素格式，从8位到32位：A8R8G8B8, R8G8B8, A4R4G4B4, R5G6B5, A8, 等.</li>
+<li>Blit (Bit Blt) ，包含透明和非透明的模式。</li>
+<li>像素格式快速转换</li>
+<li>使用不同的 Compositor 进行 Blending</li>
+<li>使用不同的过滤器进行缩放（nearest, linear, bilinear）</li>
+<li>高质量位图重采样（Bicubic/Box）</li>
+<li>支持从内存或者文件直接读取 BMP/TGA 文件</li>
+<li>支持从内存或者文件直接读取 PNG/JPEG 文件（Windows下）</li>
+<li>保存图片为 BMP/PPM 文件</li>
+<li>核心绘制函数可以被外部实现通过设置函数指针重载（比如 SSE2实现）</li>
+<li>比 DirectDraw 快 40% 的性能进行绘制（打开 AVX/SSE2支持）</li>
+<li>比 GDI 的 AlphaBlend 函数快34%的性能进行混色</li>
+<li>Self-contained, 不依赖任何其他第三方库</li>
+<li>高度紧凑，只需要拷贝 BasicBitmap.h/.cpp 两个文件到你项目即可</li>
+</ul>
+
+<h3 id="项目地址">项目地址</h3>
+
+<ul>
+<li><a href="https://github.com/skywind3000/BasicBitmap">https://github.com/skywind3000/BasicBitmap</a></li>
+</ul>
+
+<h3 id="blit-性能比较">Blit 性能比较</h3>
+
+<p>Full window (800x600) blitting (both opacity and transparent), compare to GDI/SDL/DirectDraw:</p>
+
+<table>
+<thead>
+<tr>
+<th>32 Bits Blit</th>
+<th>Opacity</th>
+<th>Transparent</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>BasicBitmap C++</td>
+<td>fps=2325</td>
+<td>fps=1368</td>
+</tr>
+
+<tr>
+<td>BasicBitmap AVX/SSE2</td>
+<td>fps=2904</td>
+<td>fps=2531</td>
+</tr>
+
+<tr>
+<td>GDI</td>
+<td>fps=2333</td>
+<td>fps=1167</td>
+</tr>
+
+<tr>
+<td>SDL</td>
+<td>fps=2671</td>
+<td>fps=1015</td>
+</tr>
+
+<tr>
+<td>DirectDraw</td>
+<td>fps=2695</td>
+<td>fps=2090</td>
+</tr>
+</tbody>
+</table>
+
+<p>Note: use BltFast with DirectDrawSurface7 in System Memory to perform Opacity &amp; Transparent blit. BitBlt and TransparentBlt(msimg32.dll) are used in the GDI testing case.</p>
+
+<table>
+<thead>
+<tr>
+<th>16 Bits Blit</th>
+<th>Opacity</th>
+<th>Transparent</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>BasicBitmap C++</td>
+<td>fps=4494</td>
+<td>fps=1253</td>
+</tr>
+
+<tr>
+<td>BasicBitmap AVX/SSE2</td>
+<td>fps=9852</td>
+<td>fps=2909</td>
+</tr>
+
+<tr>
+<td>DirectDraw BltFast</td>
+<td>fps=5889</td>
+<td>fps=861</td>
+</tr>
+</tbody>
+</table>
+
+<p>Blitting performance in SDL &amp; GDI are slower than DirectDraw, just compare to ddraw as well.</p>
+
+<table>
+<thead>
+<tr>
+<th>8 Bits Blit</th>
+<th>Opacity</th>
+<th>Transparent</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>BasicBitmap C++</td>
+<td>fps=11142</td>
+<td>fps=1503</td>
+</tr>
+
+<tr>
+<td>BasicBitmap AVX/SSE2</td>
+<td>fps=18181</td>
+<td>fps=5449</td>
+</tr>
+
+<tr>
+<td>DirectDraw BltFast</td>
+<td>fps=14705</td>
+<td>fps=4832</td>
+</tr>
+</tbody>
+</table>
+
+<p>DirectDrawSurface in <em>Video Memory</em> takes the benefit of hardware acceleration which is definitely faster than BasicBitmap. If you really need hardware acceleration, use OpenGL/DX as well.</p>
+
+<p><em>BasicBitmap</em> is a software implementation which aims to achieve the best performance in all other software implementations: like GDI/GDI+, SDL/DirectDraw in System Memory, for examples.</p>
+
+<p>So just compare to DirectDrawSurface in <em>System Memory</em>. Use it in the condition that you only need a lightweight software solution: GUI/Cross Platform/hardware unavailable/image processing/video compositing, etc.</p>
+
+<h3 id="混色性能比较">混色性能比较</h3>
+
+<table>
+<thead>
+<tr>
+<th>SRC OVER</th>
+<th>FPS</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>BasicBitmap C++</td>
+<td>594</td>
+</tr>
+
+<tr>
+<td>BasicBitmap SSE2</td>
+<td>1731</td>
+</tr>
+
+<tr>
+<td>GDI (msimg32.dll)</td>
+<td>1137</td>
+</tr>
+</tbody>
+</table>
+
+<p>note: 800x600 full window src-over blending vs GDI&rsquo;s AlphaBlend function (in msimg32.dll).</p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/1587/">内存拷贝优化（3）-深入优化</a></li>
+        
+        <li><a href="/blog/archives/1573/">内存拷贝优化（2）-全尺寸拷贝优化</a></li>
+        
+        <li><a href="/blog/archives/137/">[自制开源] 轻量级图形库 PixelLib</a></li>
+        
+        <li><a href="/blog/archives/1498/">如何写一个软件渲染器？</a></li>
+        
+        <li><a href="/blog/archives/1480/">如何设计一个内存分配器？</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96">优化</a></li>
+                                
+                                <li><a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2">图形</a></li>
+                                
+                                <li><a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96">汇编</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

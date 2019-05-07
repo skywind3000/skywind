@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>VimScript 五分钟入门（翻译） | Skywind Inside</title>
+    <meta property="og:title" content="VimScript 五分钟入门（翻译） - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2018-05-26T09:24:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2018-05-26T09:24:13&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="VimScript 五分钟入门（翻译）">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/2193/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">VimScript 五分钟入门（翻译）</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2018年5月26日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>译注：折腾 Vim 当然要能看懂和改写相关脚本，而中文资料匮乏，缺一个提纲挈领的教程。本文翻译自 Andrew Scala 的 《<a href="http://andrewscala.com/vimscript/">Five Minute Vimscript</a>》，立足于让你用最短的时间掌握 VimScript 的基础和要点，你可以把它看成一份语言速查表。</p>
+
+<p>Vim有着丰富的内建文档系统，使用 <code>:h &lt;关键词&gt;</code> 就可以阅读，如果你想在方便的尝试各种 vimscript ，你可以通过 NORMAL 模式下使用 <code>gQ</code> 命令进入 VimScript 的交互式环境调试命令。</p>
+
+<p>注意：下面的例子中会包含一些形如 <code>&lt;符号&gt;</code> 的符号，意味着正式使用时应该被完全替换成真实的东西，包括左右两边的尖括号。而单独的 <code>&lt;</code> 和 <code>&gt;</code> 在 VimScript 中被用作比较符号。</p>
+
+<h4 id="变量">变量</h4>
+
+<ul>
+<li><code>let</code> 命令用来对变量进行初始化或者赋值。</li>
+<li><code>unlet</code> 命令用来删除一个变量。</li>
+<li><code>unlet!</code> 命令同样可以用来删除变量，但是会忽略诸如变量不存在的错误提示。</li>
+</ul>
+
+<p>默认情况下，如果一个变量在函数体以外初始化的，那么它的作用域是全局变量；而如果它是在函数体以内初始化的，那它的作用于是局部变量。同时你可以通过变量名称前加冒号前缀明确的指明变量的作用域：</p>
+
+<ul>
+<li>g:var - 全局</li>
+<li>a:var - 函数参数</li>
+<li>l:var - 函数局部变量</li>
+<li>b:var - buffer 局部变量</li>
+<li>w:var - window 局部变量</li>
+<li>t:var - tab 局部变量</li>
+<li>s:var - 当前脚本内可见的局部变量</li>
+<li>v:var - Vim 预定义的内部变量</li>
+</ul>
+
+<p>你可以通过 $name 的模式读取或者改写环境变量，同时可以用 &amp;option 的方式来读写 vim 内部的设置值。</p>
+
+<h4 id="数据类型">数据类型</h4>
+
+<p><strong>Number</strong>：32 位有符号整数
+    -123
+    0x10
+    0177</p>
+
+<p><strong>Float</strong>: 浮点数，需要编译 Vim 的时候，有 <code>+float</code> 特性支持
+    123.456
+    1.15e-6
+    -1.1e3</p>
+
+<p><strong>String</strong>: NULL 结尾的 8位无符号字符串
+    &ldquo;ab\txx\&ldquo;&ndash;&rdquo;
+    &lsquo;x-z&rdquo;a,c&rsquo;</p>
+
+<p><strong>Funcref</strong>: 函数引用，函数引用类型的变量名必须以大写字母开头
+    :let Myfunc = function(&ldquo;strlen&rdquo;)
+    :echo Myfunc(&lsquo;foobar&rsquo;) &ldquo; Call strlen on &lsquo;foobar&rsquo;.
+    6</p>
+
+<p><strong>List</strong>: 有序列表
+    :let mylist = [1, 2, [&lsquo;a&rsquo;, &lsquo;b&rsquo;]]
+    :echo mylist[0]
+    1
+    :echo mylist[2][0]
+    a
+    :echo mylist[-2]
+    2
+    :echo mylist[999]
+    E684: list index out of range: 999
+    :echo get(mylist, 999, &ldquo;THERE IS NO 1000th ELEMENT&rdquo;)
+    THERE IS NO 1000th ELEMENT</p>
+
+<p><strong>Dictionary</strong>: 无序的 Key/Value 容器
+    :let mydict = {&lsquo;blue&rsquo;: &ldquo;#0000ff&rdquo;, &lsquo;foo&rsquo;: {999: &ldquo;baz&rdquo;}}
+    :echo mydict[&ldquo;blue&rdquo;]
+    #0000ff
+    :echo mydict.foo
+    {999: &ldquo;baz&rdquo;}
+    :echo mydict.foo.999
+    baz
+    :let mydict.blue = &ldquo;BLUE&rdquo;
+    :echo mydict.blue
+    BLUE</p>
+
+<p>没有布尔类型，整数 0 被当作假，其他被当作真。字符串在比较真假前会被转换成整数，大部分字符串都会被转化为 0，除非以非零开头的字符串才会转化成非零。</p>
+
+<p>VimScript 的变量属于动态弱类型。</p>
+
+<pre><code>:echo 1 . &quot;foo&quot;
+1foo
+:echo 1 + &quot;1&quot;
+2
+:function! TrueFalse(arg)
+:   return a:arg? &quot;true&quot; : &quot;false&quot;
+:endfunction
+:echo TrueFalse(&quot;foobar&quot;)
+false
+:echo TrueFalse(&quot;1000&quot;)
+true
+:echo TrueFalse(&quot;x1000&quot;)
+false
+:echo TrueFalse(&quot;1000x&quot;)
+true
+:echo TrueFalse(&quot;0&quot;)
+false
+</code></pre>
+
+<p><strong>字符串比较</strong></p>
+
+<ul>
+<li><code>&lt;string&gt;</code> == <code>&lt;string&gt;</code>: 字符串相等</li>
+<li><code>&lt;string&gt;</code> != <code>&lt;string&gt;</code>: 字符串不等</li>
+<li><code>&lt;string&gt;</code> =~ <code>&lt;pattern&gt;</code>: 匹配 pattern</li>
+<li><code>&lt;string&gt;</code> !~ <code>&lt;pattern&gt;</code>: 不匹配 pattern</li>
+<li><code>&lt;operator&gt;#</code>: 匹配大小写</li>
+<li><code>&lt;operator&gt;?</code>: 不匹配大小写</li>
+</ul>
+
+<p>注意：设置选项 <code>ignorecase</code> 会影响 == 和 != 的默认比较结果，可以在比较符号添加 ? 或者 # 来明确指定大小写是否忽略。</p>
+
+<p><code>&lt;string&gt;</code> . <code>&lt;string&gt;</code>: 字符串链接</p>
+
+<pre><code>:function! TrueFalse(arg)
+:   return a:arg? &quot;true&quot; : &quot;false&quot;
+:endfunction
+:echo TrueFalse(&quot;X start&quot; =~ 'X$')
+false
+:echo TrueFalse(&quot;end X&quot; =~ 'X$')
+true
+:echo TrueFalse(&quot;end x&quot; =~# 'X$')
+false
+</code></pre>
+
+<p><strong>If, For, While, and Try/Catch</strong></p>
+
+<p>条件判断：</p>
+
+<pre><code>if &lt;expression&gt;
+    ...
+elseif &lt;expression&gt;
+    ...
+else
+    ...
+endif
+</code></pre>
+
+<p>循环：</p>
+
+<pre><code>for &lt;var&gt; in &lt;list&gt;
+    continue
+    break
+endfor
+</code></pre>
+
+<p>复杂循环：</p>
+
+<pre><code>for [var1, var2] in [[1, 2], [3, 4]]
+    &quot; on 1st loop, var1 = 1 and var2 = 2
+    &quot; on 2nd loop, var1 = 3 and var2 = 4
+endfor
+</code></pre>
+
+<p>While 循环：</p>
+
+<pre><code>while &lt;expression&gt;
+endwhile
+</code></pre>
+
+<p>异常捕获：</p>
+
+<pre><code>try
+    ...
+catch &lt;pattern (optional)&gt;
+    &quot; HIGHLY recommended to catch specific error.
+finally
+    ...
+endtry
+</code></pre>
+
+<p><strong>函数</strong></p>
+
+<p>使用 <code>function</code> 关键字定义一个函数，使用 <code>function!</code> 覆盖一个函数的定义，函数和变量一样也有作用范围的约束。需要注意函数名必须以大写字母开头。</p>
+
+<pre><code>function! &lt;Name&gt;(arg1, arg2, etc)
+    &lt;function body&gt;
+endfunction
+</code></pre>
+
+<p><code>delfunction &lt;function&gt;</code> 删除一个函数</p>
+
+<p><code>call &lt;function&gt;</code> 调用一个函数，函数调用前的 call 语句是必须的，除非在一个表达式里。</p>
+
+<p>例如：强制创建一个全局函数（使用感叹号），参数使用 <code>...</code> 这种不定长的参数形式时，a:1 表示 <code>...</code> 部分的第一个参数，a:2 表示第二个，如此类推，a:0 用来表示 <code>...</code> 部分一共有多少个参数。</p>
+
+<pre><code>function! g:Foobar(arg1, arg2, ...)
+    let first_argument = a:arg1
+    let index = 1
+    let variable_arg_1 = a:{index} &quot; same as a:1
+    return variable_arg_1
+endfunction
+</code></pre>
+
+<p>有一种特殊的调用函数的方式，可以指明该函数作用的文本区域是从当前缓冲区的第几行到第几行，按照 <code>1,3call Foobar()</code> 的格式调用一个函数的话，该函数会在当前文件的第一行到第三行每一行执行一遍，再这个例子中，该函数总共被执行了三次。</p>
+
+<p>如果你在函数声明的参数列表后添加一个 <code>range</code> 关键字，那函数就只会被调用一次，这时两个名为 <code>a:firstline</code> 和 <code>a:lastline</code> 的特殊变量可以用在该函数内部使用。</p>
+
+<p>例如：强制创建一个名为 <code>RangeSize</code> 的函数，用来显示被调用时候的文本范围：</p>
+
+<pre><code>function! b:RangeSize() range
+    echo a:lastline - a:firstline
+endfunction
+</code></pre>
+
+<p><strong>面向对象</strong></p>
+
+<p>Vim 没有原生的类的支持，但是你可以用字典模拟基本的类。为了定义一个类的方法，可以在函数声明时使用 <code>dict</code> 关键字来将内部字典暴露为 <code>self</code> 关键字：</p>
+
+<pre><code>let MyClass = {&quot;foo&quot;: &quot;Foo&quot;}
+function MyClass.printFoo() dict
+    echo self.foo
+endfunction
+</code></pre>
+
+<p>类的实现更类似于 singleton，为了在 VimScript 中创建类的实例，我们对字典使用 <code>deepcopy()</code> 方法进行拷贝：</p>
+
+<pre><code>:let myinstance = deepcopy(MyClass)
+:call myinstance.printFoo()
+Foo
+:let myinstance.foo = &quot;Bar&quot;
+:call myinstance.printFoo()
+Bar
+</code></pre>
+
+<p><strong>接下来做什么？</strong></p>
+
+<p>现在既然你已经知道了大致原理，下面给你推荐一些好的资源</p>
+
+<p>教程:</p>
+
+<ul>
+<li><a href="http://vimcdoc.sourceforge.net/doc/usr_41.html">Vim 中文帮助文档（usr_41） - 编写 Vim 脚本</a></li>
+<li><a href="https://www.ibm.com/developerworks/linux/library/l-vim-script-1/index.html">IBM’s “Scripting the Vim Editor”</a></li>
+<li><a href="https://github.com/lymslive/vimllearn">Vim 脚本指北</a></li>
+<li><a href="https://github.com/vim-china/vim-script-style-guide">Vim 脚本开发规范</a></li>
+</ul>
+
+<p>其他:</p>
+
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/vimrc">知乎：Vim 专栏</a></li>
+</ul>
+
+<p><strong>感谢</strong></p>
+
+<p>希望你觉得本文对你有用，感谢阅读。</p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/2084/">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a></li>
+        
+        <li><a href="/blog/archives/2051/">Vim 中文速查表/Cheatsheet（全网最完善）</a></li>
+        
+        <li><a href="/blog/archives/2021/">终端软件里正确设置 ALT 键和 BACKSPACE 键</a></li>
+        
+        <li><a href="/blog/archives/1958/">如何优雅的使用 Vim</a></li>
+        
+        <li><a href="/blog/archives/1951/">Emacs/Vim 深度比较</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/vim">Vim</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

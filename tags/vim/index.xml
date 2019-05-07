@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vim on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/vim/</link>
+    <description>Recent content in Vim on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 26 May 2018 09:24:13 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/vim/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>VimScript 五分钟入门（翻译）</title>
+      <link>https://skywind3000.com/blog/archives/2193/</link>
+      <pubDate>Sat, 26 May 2018 09:24:13 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2193/</guid>
+      <description>&lt;p&gt;译注：折腾 Vim 当然要能看懂和改写相关脚本，而中文资料匮乏，缺一个提纲挈领的教程。本文翻译自 Andrew Scala 的 《&lt;a href=&#34;http://andrewscala.com/vimscript/&#34;&gt;Five Minute Vimscript&lt;/a&gt;》，立足于让你用最短的时间掌握 VimScript 的基础和要点，你可以把它看成一份语言速查表。&lt;/p&gt;
+
+&lt;p&gt;Vim有着丰富的内建文档系统，使用 &lt;code&gt;:h &amp;lt;关键词&amp;gt;&lt;/code&gt; 就可以阅读，如果你想在方便的尝试各种 vimscript ，你可以通过 NORMAL 模式下使用 &lt;code&gt;gQ&lt;/code&gt; 命令进入 VimScript 的交互式环境调试命令。&lt;/p&gt;
+
+&lt;p&gt;注意：下面的例子中会包含一些形如 &lt;code&gt;&amp;lt;符号&amp;gt;&lt;/code&gt; 的符号，意味着正式使用时应该被完全替换成真实的东西，包括左右两边的尖括号。而单独的 &lt;code&gt;&amp;lt;&lt;/code&gt; 和 &lt;code&gt;&amp;gt;&lt;/code&gt; 在 VimScript 中被用作比较符号。&lt;/p&gt;
+
+&lt;h4 id=&#34;变量&#34;&gt;变量&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;let&lt;/code&gt; 命令用来对变量进行初始化或者赋值。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;unlet&lt;/code&gt; 命令用来删除一个变量。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;unlet!&lt;/code&gt; 命令同样可以用来删除变量，但是会忽略诸如变量不存在的错误提示。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vim 8 下 C/C&#43;&#43; 开发环境搭建</title>
+      <link>https://skywind3000.com/blog/archives/2084/</link>
+      <pubDate>Sat, 21 Apr 2018 22:38:07 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2084/</guid>
+      <description>&lt;p&gt;挺多人问怎么在 Vim 中搭建 C/C++ 开发环境，我本来想找篇文章发给人家，结果网上看了一圈，要不就是内容太过陈旧，要不就是太过零碎，不成体系。2018 年了，Vim 8 发布已经一年半，各大 Linux 发行版和 Mac OS X自带的 Vim 都已经跟进到 8了，不少文章还在介绍一些十年前的老方法。于是有了这篇文章。&lt;/p&gt;
+
+&lt;p&gt;那如何高效的再 Vim 8 中开发 C/C++ 项目呢？假设你已经有一定 Vim 使用经验，并且折腾过 Vim 配置，能够相对舒适的在 Vim 中编写其他代码的时候，准备在 Vim 开始 C/C++ 项目开发，或者你已经用 Vim 编写了几年 C/C++ 代码，想要更进一步，让自己的工作更加顺畅的话，本文就是为你准备的：&lt;/p&gt;
+
+&lt;h3 id=&#34;插件管理&#34;&gt;插件管理&lt;/h3&gt;
+
+&lt;p&gt;为什么把插件管理放在第一个来讲呢？这是比较基本的一个东西，如今 Vim 下熟练开发的人，基本上手都有 20-50 个插件，遥想十年前，Vim里常用的插件一只手都数得过来。过去我一直使用老牌的 &lt;a href=&#34;https://github.com/VundleVim/Vundle.vim&#34;&gt;Vundle&lt;/a&gt; 来管理插件，但是随着插件越来越多，更新越来越频繁，Vundle
+这种每次更新就要好几分钟的东西实在是不堪重负了，在我逐步对 Vundle 失去耐心之后，我试用了 &lt;a href=&#34;https://github.com/junegunn/vim-plug&#34;&gt;vim-plug&lt;/a&gt; ，用了两天以后就再也回不去 Vundle了，它支持全异步的插件安装，安装50个插件只需要一分钟不到的时间，这在 Vundle
+下面根本不可想像的事情，插件更新也很快，不像原来每次更新都可以去喝杯茶去，最重要的是它支持插件延迟加载：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-viml&#34;&gt;&amp;quot; 定义插件，默认用法，和 Vundle 的语法差不多
+Plug &#39;junegunn/vim-easy-align&#39;
+Plug &#39;skywind3000/quickmenu.vim&#39;
+&amp;quot; 延迟按需加载，使用到命令的时候再加载或者打开对应文件类型才加载
+Plug &#39;scrooloose/nerdtree&#39;, { &#39;on&#39;:  &#39;NERDTreeToggle&#39; }
+Plug &#39;tpope/vim-fireplace&#39;, { &#39;for&#39;: &#39;clojure&#39; }
+&amp;quot; 确定插件仓库中的分支或者 tag
+Plug &#39;rdnetto/YCM-Generator&#39;, { &#39;branch&#39;: &#39;stable&#39; }
+Plug &#39;nsf/gocode&#39;, { &#39;tag&#39;: &#39;v.20150303&#39;, &#39;rtp&#39;: &#39;vim&#39; }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;定义好插件以后一个：&lt;code&gt;:PlugInstall&lt;/code&gt; 命令就并行安装所有插件了，比 Vundle 快捷不少，关键是 vim-plug 只有单个文件，正好可以放在我 github 上的 vim 配置仓库中，每次需要更新 vim-plug 时只需要 &lt;code&gt;:PlugUpgrade&lt;/code&gt;，即可自我更新。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vim 中文速查表/Cheatsheet（全网最完善）</title>
+      <link>https://skywind3000.com/blog/archives/2051/</link>
+      <pubDate>Wed, 07 Mar 2018 03:26:13 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2051/</guid>
+      <description>&lt;p&gt;春节期间整理了一份 Vim 中文速查表，免得经常东搜索西搜索的：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/skywind3000/awesome-cheatsheets/blob/master/editors/vim.txt&#34;&gt;https://github.com/skywind3000/awesome-cheatsheets/blob/master/editors/vim.txt&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;看了一下，应该是现在 Vim 所有中英文速查表里最完善的一份，有时候速查表比看书搜网页高效多了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>终端软件里正确设置 ALT 键和 BACKSPACE 键</title>
+      <link>https://skywind3000.com/blog/archives/2021/</link>
+      <pubDate>Fri, 23 Feb 2018 07:42:59 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2021/</guid>
+      <description>&lt;p&gt;不管你在终端下使用 vim/neovim, emacs, nano 或者 zsh，你都会碰到使用 ALT 键的情况（终端下叫做 meta键），而由于历史原因，大部分终端软件的默认设置都无法正确使用 ALT 键。&lt;/p&gt;
+
+&lt;p&gt;要在终端下正确使用 ALT键最简单的做法是：首先将终端软件的 “使用 Alt键作为 Meta键” 的功能打开，意思是如果你在终端下按下 ALT+X，那么终端软件将会发送 &lt;code&gt;&amp;lt;ESC&amp;gt;x&lt;/code&gt; 两个字节过去，字节码为：0x27, 0x78。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何优雅的使用 Vim</title>
+      <link>https://skywind3000.com/blog/archives/1958/</link>
+      <pubDate>Tue, 20 Jun 2017 11:14:54 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1958/</guid>
+      <description>&lt;p&gt;根据 Bram 前后几个关于高效使用 Vim的视频，大家每天需要花很多时间来编辑：代码、文档、邮件、日志 等等，除去这些外，还要分时间参加会议和人沟通，每个人的时间却都是不够的，优雅使用 Vim 无外乎：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;检测不高效的地方：你的整个工作流里，什么地方比较浪费时间？&lt;/li&gt;
+&lt;li&gt;寻找一个更快的方式：官方文档，学习他人经验，自己编写 VimScript&lt;/li&gt;
+&lt;li&gt;使它习惯化：开始使用，并且不断完善&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以上三点反复循环，能让你的 Vim 越来越顺手。所以重点是根据自己的工作流不断迭代。而不是象大部分教程那样教你安装一大堆插件。插件都是别人写的为了解决通用需求而提炼的东西，和每个人的具体需求都有差别。上面这三点我屡试不爽，随着时间增长，有种越来越顺手的感觉，举几个我具体碰到的例子：&lt;/p&gt;
+
+&lt;h4 id=&#34;问题1-边开发边参考网上解决方案的问题&#34;&gt;问题1：边开发边参考网上解决方案的问题&lt;/h4&gt;
+
+&lt;p&gt;比如碰到问题搜到一段代码，需要试一下，一会又看会 Chrome ，一会又切回 GVim 里去写代码，反复 ALT_TAB，有时候中间使用了一下资源管理器或者其他程序，ALT_TAB 的顺序就会被打乱，你一切换就切跑了，十分低效。&lt;/p&gt;
+
+&lt;p&gt;于是我用 VimScript + 内嵌 Python 写了一个功能，按快捷键可以让 GVim 在透明/不透明两种状态间自由切换：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/vim-demo-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;就是 VimScript 简单封装一个函数，里面用内嵌 Python 找到 GVim 的顶层 HWND，并设置透明度。平时默认不透明，需要参考其他资料时切换成透明，参考完了又快捷键切换回来，感觉比缘来切来切去顺畅很多。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Emacs/Vim 深度比较</title>
+      <link>https://skywind3000.com/blog/archives/1951/</link>
+      <pubDate>Sat, 24 Dec 2016 17:48:49 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1951/</guid>
+      <description>&lt;p&gt;生命在于折腾，折腾完了 Atom Editor，开始跟着陈斌大婶和 purcell的配置折腾 Emacs，比较下。很多人都在比较键位，比较插件，这是十分肤浅的，我们比较点深入的东西：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;代码结构&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Emacs 源代码：eLisp 79%, C 21%&lt;/li&gt;
+&lt;li&gt;Vim 源代码：C 52%, VimScript 48%&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;从代码结构上来讲，Emacs的代码最多的是 elisp，C代码只是一个微内核，Vim 里C代码还是大头。当然不排除 24.X, 25.X以后 Emacs源代码里带了好几个重量级的包，而 Vim向来比较精简一些，官方没带啥大点的插件有关。去除自带插件后，Emacs的 elisp代码比例应该会下降很多，不过总体来说，Emacs有更多组件使用 elisp开发而成，也就是说可以被用户修改或者替换的地方比
+Vim要多，当然速度也会相应慢一点（比如 Emacs新打开上万行的文件连续按住PageDown时cpu 100%占满），不过比较大 JB，Atom Editor来说，还是快不少。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;系统接口&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;大框架基本类似：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Vim 可以操作： buffer, window, tabpage, 光标，marker, region 跳转表等等。&lt;/li&gt;
+&lt;li&gt;Emacs 可以操作：buffer, window, frame, 光标，marker，region 异步进程 等等。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Vim 有 local，Emacs有 mode，Vim有事件触发，Emacs有各种钩子，基本大框架类似的。&lt;/p&gt;
+
+&lt;p&gt;键位设置也都很灵活，会配置的话，可以把 Emacs键位全部弄成 Vim的，比如 Evil，或者Vim里面也可以配制成进去就自动进入插入模式，全部用 Emacs键位。&lt;/p&gt;
+
+&lt;p&gt;具体到比如 buffer 或者窗口里面，Emacs的窗口或者 buffer /window 属性更多一些，Vim也有一些 Emacs没有的基础设施，比如 jumplist, quickfix之类的，不过 Emacs也可以用插件实现，实现 jumplist没问题，比较独立，但每个插件实现一个类似的 quickfix的东西，实在是比较蛋疼。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vim 里如何映射 CTRL-h 为 left ?</title>
+      <link>https://skywind3000.com/blog/archives/1857/</link>
+      <pubDate>Sun, 27 Nov 2016 19:14:45 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1857/</guid>
+      <description>&lt;p&gt;很多人习惯在配置文件中映射 CTRL+HJKL 为光标移动，却碰到了一些问题：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-VimL&#34;&gt;inoremap &amp;lt;c-h&amp;gt; &amp;lt;left&amp;gt;
+inoremap &amp;lt;c-j&amp;gt; &amp;lt;down&amp;gt;
+inoremap &amp;lt;c-k&amp;gt; &amp;lt;up&amp;gt;
+inoremap &amp;lt;c-l&amp;gt; &amp;lt;right&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;映射后无效或者映射以后按 &lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;键不能删除，这是什么原因呢？&lt;/p&gt;
+
+&lt;p&gt;很简单，因为你的终端软件（Xshell, SecureCRT）有些老，默认配置是按下&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;键以后 发送的是：^H (ASCII 码 0x08），而 ^H在你的 Vim 里被你 inoremap 成  了，所以你按了&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;会被认为按下了左键。&lt;/p&gt;
+
+&lt;p&gt;早在 VT100终端时代，^H（ASCII码 0x08）表示&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt; 而 ^? （ASCII码 0x7f）表示&lt;code&gt;&amp;lt;DEL&amp;gt;&lt;/code&gt;。过去 0x7f是留给 DELETE键使用的。而到了 VT220时代，DELETE已经变为 ^[[3~ （ASCII 码 0x1b, 0x5b, 0x33, 0x7e 共4个字节），而 ^? 的 0x7f 换给了我们的&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;，有些老点版本的终端软件，默认
+&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;还是使用 VT100的 ^H，比如 Xshell 4 Build 0142以前的版本，默认&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;是发送^H。SecureCRT直到6.x版本还在默认发送 VT100的 ^H。&lt;/p&gt;
+
+&lt;p&gt;你需要做的就是改一下终端默认配置而已，大部分不那么陈旧的终端软件，如今都是默认VT220的标准，比如 Xshell4 Build 0142及以后的 Xshell5，Putty，Mac下面的 Terminal.app, iTerm2，Ubuntu下面的 gnome-terminal，他们都是把 &lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt; 发送成 ^?&lt;/p&gt;
+
+&lt;p&gt;你可以在你服务端下面查看下默认的键位设置：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ stty -a
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在所有 Linux服务器的 erase （bs）基本都是 ^? 了（如果链接到非 Linux老操作系统 erase不是这个的话，需要改一下，可以在系统层改，也可以vim里面 set t_kb=&amp;hellip;），Vim里面也是认可 ^?的，可老旧的终端软件却默认发送 ^H，不过好在他们都支持修改：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vim 中正确使用 Alt映射</title>
+      <link>https://skywind3000.com/blog/archives/1846/</link>
+      <pubDate>Sat, 19 Nov 2016 13:23:55 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1846/</guid>
+      <description>&lt;p&gt;最简单的做法是：首先将终端软件的 “使用 Alt键作为 Meta键” 的功能打开，其次将 Alt的模式改为 &lt;strong&gt;ESC+字母&lt;/strong&gt;，意思是如果你在终端下按下 ALT+X，那么终端软件将会发送 &lt;code&gt;&amp;lt;ESC&amp;gt;x&lt;/code&gt; 两个字节过去，字节码为：0x27, 0x78。如果你使用过 NeoVim 或者 Emacs的话，这一步应该早就做过了。&lt;/p&gt;
+
+&lt;h2 id=&#34;xshell4-终端设置&#34;&gt;XShell4 终端设置：&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/vim_altmap_1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;securecrt-终端设置&#34;&gt;SecureCRT：终端设置&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/vim_altmap_2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;其他终端软件里：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Putty/MinTTY 默认ALT+X 就是发送 &lt;code&gt;&amp;lt;ESC&amp;gt;x&lt;/code&gt;过去&lt;/li&gt;
+&lt;li&gt;Mac下面的 iTerm2/Terminal.app 需要跟 XShell / SecureCRT一样设置一下&lt;/li&gt;
+&lt;li&gt;Ubuntu 下面的 GnomeTerminal 默认也是发送 &lt;code&gt;&amp;lt;ESC&amp;gt;x&lt;/code&gt;过去的&lt;/li&gt;
+&lt;li&gt;任意平台下面的 xterm 可以配置 &lt;code&gt;~/.Xdefaults&lt;/code&gt; 来设置这个行为。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这样的话，不管是 NeoVim 还是 Emacs都识别了，Vim 的话，你可以简单这样：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vim 异步运行 Shell 指令的插件 - AsyncRun</title>
+      <link>https://skywind3000.com/blog/archives/1835/</link>
+      <pubDate>Wed, 24 Aug 2016 09:09:15 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1835/</guid>
+      <description>&lt;p&gt;自制另一个新的 Vim 8.0 专用异步插件：&lt;a href=&#34;https://github.com/skywind3000/asyncrun.vim&#34;&gt;asyncrun.vim&lt;/a&gt;，它可以让你在 Vim 里面异步运行各种 Shell 指令并且把结果实时输出到 Quickfix，需要 Vim 7.4.1829 以上版本。&lt;/p&gt;
+
+&lt;h2 id=&#34;安装方法&#34;&gt;安装方法&lt;/h2&gt;
+
+&lt;p&gt;到插件首页 &lt;a href=&#34;https://github.com/skywind3000/asyncrun.vim&#34;&gt;https://github.com/skywind3000/asyncrun.vim&lt;/a&gt; 下载项目，并拷贝 &lt;code&gt;asyncrun.vim&lt;/code&gt; 到你的 &lt;code&gt;~/.vim/plugin&lt;/code&gt;。或者使用 Vundle 指向 &lt;code&gt;skywind3000/asyncrun.vim&lt;/code&gt; 来自动更新。&lt;/p&gt;
+
+&lt;h2 id=&#34;基本教程&#34;&gt;基本教程&lt;/h2&gt;
+
+&lt;p&gt;使用 gcc 异步编译当前文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:AsyncRun gcc % -o %&amp;lt;
+:AsyncRun g++ -O3 % -o %&amp;lt; -lpthread 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;该命令会在后台运行 gcc 并且把输出实时显示在 Quickfix 窗口，宏 &lt;code&gt;%&lt;/code&gt; 代表当前文件名，&lt;code&gt;%&amp;lt;&lt;/code&gt; 代表没有扩展名的文件名。&lt;/p&gt;
+
+&lt;p&gt;异步运行 make：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:AsyncRun make
+:AsyncRun make -f makefile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;异步调用 grep:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:AsyncRun! grep -R word . 
+:AsyncRun! grep -R &amp;lt;cword&amp;gt; .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;默认 :AsyncRun 运行命令后，输出添加到 Quickfix时 Quickfix 会自动滚动到最下面那一行，使用感叹号修饰符以后，可以避免 Quickfix 自动滚动。同时 &lt;code&gt;&amp;lt;cword&amp;gt;&lt;/code&gt; 代表当前光标下面的单词。&lt;/p&gt;
+
+&lt;p&gt;编译 go项目：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:AsyncRun go build %:p:h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;宏 &lt;code&gt;%:p:h&lt;/code&gt; 代表当前文件的目录&lt;/p&gt;
+
+&lt;p&gt;查询 man page，异步 git push ，以及把设置 F7异步编译当前文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:AsyncRun! man -S 3:2:1 &amp;lt;cword&amp;gt; 
+:AsyncRun git push origin master
+:noremap &amp;lt;F7&amp;gt; :AsyncRun gcc % -o %&amp;lt; &amp;lt;cr&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何在不同平台下打开新窗口运行程序？</title>
+      <link>https://skywind3000.com/blog/archives/1745/</link>
+      <pubDate>Thu, 12 May 2016 12:49:08 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1745/</guid>
+      <description>&lt;p&gt;如果可以让自己的工作效率提升一点点，那么即便花费几天来开发一些工具也是值得的。在不同操作系统下自动打开终端窗口来运行指定的命令就是这样一件能提高工作效率的事情。&lt;/p&gt;
+
+&lt;p&gt;就像 Visual Studio 调试命令行程序的人都对打开一个新窗口运行命令行程序的模式情有独钟。EditPlus 也提供新窗口运行程序（可惜只限windows）。&lt;/p&gt;
+
+&lt;p&gt;而如果你在使用 Sublime/Atom/GEdit/GVim
+之类的工具，你就会发现调试程序的时候程序基本上是在下面的面板中运行的，所有输出也是输出到下面的面板中。这时如果程序长时间运行是非常不方便的，又或者程序有交互（需要输入数据），基于GUI面板的运行方式也会显得十分笨重，而Vim/GVim之流更过分，一执行程序整个GUI就定住了，没法一边看代码一边查看一些长时间运行的程序状态，虽然Windows下的GVim可以用!start来解决（见&lt;a href=&#34;http://www.skywind.me/blog/archives/1708&#34;&gt;Gvim
+!start&lt;/a&gt;），但十分遗憾，Linux桌面或者Mac下面的Vim都没有这个 !start功能。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>GVim 中更好的运行程序</title>
+      <link>https://skywind3000.com/blog/archives/1708/</link>
+      <pubDate>Mon, 09 May 2016 08:24:10 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1708/</guid>
+      <description>&lt;p&gt;GVim（Windows）下面使用!运行程序是非常恶心的事情，比如调用python运行当前脚本：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:!python %
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;你会发现，整个VIM界面被冻结了，然后弹出cmd窗口，退出cmd后，还要返回GVim中按任意键才能编辑状态。&lt;/p&gt;
+
+&lt;p&gt;比如你正在调试一个程序，这个程序运行起来不是一分钟能出结果的时候，你想边对照输出结果，边在 GVim 里面查看和修改你的代码，你就会发现傻逼了。正确的做法是：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:!start python %
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样就不会卡住 Vim了，但是这个做法有个问题，程序结束的时候窗口马上关闭，因此还需要再进化一下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:silent !start cmd /c python % &amp;amp; pause
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这时你会发现优雅的调用了 python 来跑当前程序，并且GVIM不会被挂起，照样可以编辑，当程序结束的时候，CMD窗口还会pause等待你按任意键一下，这就比较清爽了，你可以把这条命令map到你常用的快捷键上，和 EditPlus里面一样一键运行之。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>更好的使用 Vim 标签（Tab）以及 Alt键映射</title>
+      <link>https://skywind3000.com/blog/archives/1690/</link>
+      <pubDate>Mon, 02 May 2016 15:19:01 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1690/</guid>
+      <description>&lt;p&gt;更好的使用 Vim7.0以后推出的标签（TAB）功能，同现代编辑器一样用标签（TAB）来管理多文件，代替传统 Buffer List：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2016/05/vim3.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;让 Minibufexplor/tabbar 这些上个世纪的插件都退场吧，直接使用标准的标签功能会更加舒服。 &lt;strong&gt;快捷键切换 TAB&lt;/strong&gt; 第一件事情就是要搞定标签快速切换问题，
+不管是:tabn X还是 Xgt都十分低效，我们需要更快速的在各个文件之间切换。最简单的是设置 0-9 来快速切换tab（默认leader是反斜杠，即先按下\键，再按数字键），不管终端还是GVIM都兼容：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;noremap &amp;lt;silent&amp;gt;&amp;lt;tab&amp;gt;m :tabnew&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;tab&amp;gt;e :tabclose&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;tab&amp;gt;n :tabn&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;tab&amp;gt;p :tabp&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;t :tabnew&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;g :tabclose&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;1 :tabn 1&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;2 :tabn 2&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;3 :tabn 3&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;4 :tabn 4&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;5 :tabn 5&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;6 :tabn 6&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;7 :tabn 7&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;8 :tabn 8&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;9 :tabn 9&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;0 :tabn 10&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;s-tab&amp;gt; :tabnext&amp;lt;CR&amp;gt;
+inoremap &amp;lt;silent&amp;gt;&amp;lt;s-tab&amp;gt; &amp;lt;ESC&amp;gt;:tabnext&amp;lt;CR&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其次，GVIM/MacVim 下设置 ALT-0-9 来切换TAB：&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>讲义 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/</link>
+    <description>Recent content in 讲义 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 22 Apr 2011 08:15:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[讲稿] ActionScript3 入门讲稿</title>
+      <link>https://skywind3000.com/blog/archives/732/</link>
+      <pubDate>Fri, 22 Apr 2011 08:15:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/732/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb42.png&#34; alt=&#34;image&#34; /&gt; &lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb43.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;若干年前学习 ActionScript的记录，下载地址：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/mw/images/3/3c/ActionScript3.rar&#34;&gt;http://www.skywind.me/mw/images/3/3c/ActionScript3.rar&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[转载] Why I Love Python – Thinking in C&#43;&#43; 作者用Python后的想法</title>
+      <link>https://skywind3000.com/blog/archives/721/</link>
+      <pubDate>Thu, 21 Apr 2011 04:03:40 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/721/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb.gif&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb1.gif&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;他横向对比了: Perl, C++, Java, Python，然后给出了10大使用Python的理由，比较经典。&lt;/p&gt;
+
+&lt;p&gt;下载地址：&lt;a href=&#34;http://www.skywind.me/mw/images/c/c2/Why_I_Love_Python.rar&#34;&gt;http://www.skywind.me/mw/images/c/c2/Why_I_Love_Python.rar&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[讲稿] CGDC2009 演讲：游戏峡谷地图自动生成</title>
+      <link>https://skywind3000.com/blog/archives/718/</link>
+      <pubDate>Thu, 21 Apr 2011 03:00:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/718/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT1_thumb1.png&#34; alt=&#34;PPT1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;2009年在上海 CGDC的演讲稿《游戏地图自动生成》，该算法主要用来生成山地峡谷地图。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT2_thumb.png&#34; alt=&#34;PPT2&#34; /&gt;&lt;br /&gt;
+&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT3_thumb.png&#34; alt=&#34;PPT3&#34; /&gt;&lt;br /&gt;
+&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT4_thumb.png&#34; alt=&#34;PPT4&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Tiled Map Editor 使用说明</title>
+      <link>https://skywind3000.com/blog/archives/427/</link>
+      <pubDate>Wed, 13 Apr 2011 16:10:03 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/427/</guid>
+      <description>&lt;p&gt;1. 首先下载 Tiled Map Editor： 地图编辑器：&lt;a href=&#34;http://www.skywind.me/mw/images/8/81/TiledMapEditor.7z&#34;&gt;http://www.skywind.me/mw/images/8/81/TiledMapEditor.7z&lt;/a&gt; 资源图片集：&lt;a href=&#34;http://www.skywind.me/mw/images/0/09/Server_in_12h_images.7z&#34;&gt;http://www.skywind.me/mw/images/0/09/Server_in_12h_images.7z&lt;/a&gt; 解压，然后下载资源图片解压，保存在examples目录下面 （点击Read
+more 阅读全文） 我们最终将编辑下图的地图，并用Python读出来： &lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb1.png&#34; alt=&#34;image&#34; /&gt; 2. 图块命名如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/Tile01_thumb.png&#34; alt=&#34;Tile01&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/Tile02_thumb.png&#34; alt=&#34;Tile02&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/Tile04_thumb.png&#34; alt=&#34;Tile04&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[讲义] 游戏客户端十二小时入门</title>
+      <link>https://skywind3000.com/blog/archives/176/</link>
+      <pubDate>Sat, 09 Apr 2011 04:32:27 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/176/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT1_thumb.png&#34; alt=&#34;PPT1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这是我2005-2007年在公司培训时候的讲义，当时现场效果相当热烈：&lt;/p&gt;
+
+&lt;p&gt;可以到下面地址下载：&lt;/p&gt;
+
+&lt;p&gt;课程用例下载：&lt;a href=&#34;http://www.skywind.me/blog/archives/83&#34;&gt;http://www.skywind.me/blog/archives/83&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image0021.gif&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image003.gif&#34; alt=&#34;clip_image003&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

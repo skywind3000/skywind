@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>影子跟随算法（2007年老文一篇） | Skywind Inside</title>
+    <meta property="og:title" content="影子跟随算法（2007年老文一篇） - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2007-12-12T14:43:00&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2007-12-12T14:43:00&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="影子跟随算法（2007年老文一篇）">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/1145/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">影子跟随算法（2007年老文一篇）</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2007年12月12日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a></span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <h3 id="算法简述">算法简述</h3>
+
+<p>动作类游戏如何在高延迟下实现同步？不同的客户端网络情况，如何实现延迟补偿？十年前开始关注该问题，转眼十年已过，看到大家还在问这类问题，旧文一篇，略作补充（关于游戏同步相关问题还可以见我写于2005年的另外两篇文章，<a href="http://www.skywind.me/blog/archives/131">帧锁定算法</a> 和
+<a href="http://www.skywind.me/blog/archives/112">网游同步法则</a>）：</p>
+
+<p>影子跟随算法由普通DR（dead reckoning）算法发展而来，我将其称为“影子跟随”意再表示算法同步策略的主要思想：</p>
+
+<p>1． 屏幕上现实的实体（entity）只是不停的追逐它的“影子”（shadow）。</p>
+
+<p>2． 服务器向各客户端发送各个影子的状态改变（坐标，方向，速度，时间）。</p>
+
+<p>3． 各个客户端收到以后按照当前重新插值修正影子状态。</p>
+
+<p>4． 影子状态是跳变的，但实体追赶影子是连续的，故整个过程是平滑的。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/04/clip_image002_thumb.jpg" alt="clip_image002" /></p>
+
+<p><strong>图 1 算法演示</strong></p>
+
+<p>前面的1号终端控制红色飞船P1向左飞，并把自己的状态时时告诉服务器</p>
+
+<p>后面的2号终端上接收到飞船P1的影子S1的状态（向左移动），并让P1的实体追赶S1</p>
+
+<p>网络性能指标一：带宽，限制了实时游戏的人数容量</p>
+
+<p>网络性能指标二：延时，决定了实时游戏的最低反应时间</p>
+
+<p>使用该算法可以容易的开发出一款马里奥赛车，或者Counter Strike，详细说明见后：</p>
+
+<h3 id="算法比较">算法比较：</h3>
+
+<p>1． 帧间同步：不同客户端每帧显示相同的内容，键盘/时钟数据传到服务器，服务器确认后所有终端做出响应，多用于局域网游戏，比如红警（需要等待客户端），街霸II的网络版（360），网速要求高，复杂度低。参考以及 LockStep和TimeWrap算法，以及我2007年旧文 <a href="http://www.skywind.me/blog/archives/131">帧锁定算法</a>。</p>
+
+<p>2． 插值同步：不同客户端显示不同步，但是状态同步，常见的Dead Reckoning（或叫导航插值），效果好，但复杂度高。常见于竞速类游戏和 FPS游戏。</p>
+
+<h3 id="算法定义">算法定义：</h3>
+
+<p>1． 时间：以贞为单位（FPS=10），一开始由服务器告诉向所有客户端，每5分钟同步。</p>
+
+<p>2． 玩家：每个玩家控制自己的实体，并在每贞将状态改变告知服务器。</p>
+
+<p>3． 状态：状态数据 = 实体ID + 坐标 + 方向 + 速度 + 时间（贞）。</p>
+
+<p>4． 插值：收到新状态包后将根据其运动方向与时间，根据现有时间计算当前的新状态。</p>
+
+<p>5． 跟随：实体不停的追踪自己的影子，追上后与影子保持状态同步。</p>
+
+<p>相位滞后：可选参数，实体与影子保持一定距离同步，相当于保持一定车距，这样在控制者突然停止的时候，不容易因为网络延迟跑过了又被拉回来。</p>
+
+<p>惯性移动：可选参数，开始移动或者停止或者改变方向都有加速度，这样就不需相位滞后了。</p>
+
+<p>每次服务器向各个客户端同步时间的时候，由于延迟，所有客户端的时间都是慢于服务器的，这没有关系，只要大家在一定误差范围内以相同的速度增加，就完全没有问题。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/04/clip_image003_thumb.gif" alt="clip_image003" /></p>
+
+<p><strong>图2 IDC网络响应</strong></p>
+
+<p>在公网平均130ms的Latency下，是不存在“完全的”的同步情况。如何通过消除/隐藏延时，将用户带入快速的交互式实时游戏中，体验完美的互动娱乐呢？</p>
+
+<p>让所有的用户屏幕上面表现出完全不同的表象是完全没有问题的；</p>
+
+<p>把这些完全不同表象完全柔和在一个统一的逻辑中也是完全没有问题的。</p>
+
+<p>需要根据具体情况，分清楚哪些我们可以努力，哪些我们不值得努力，弄明白实时游戏中同步问题关键之所在，巧妙的化解与规避游戏，最终在适合普遍用户网络环境中(200ms)，实现实时快速互动游戏。</p>
+
+<h3 id="案例解析-counter-strike">案例解析：Counter Strike</h3>
+
+<p>实现CS的话，首先我们需要给人物移动加上惯性，比如静止状态突然开始移动，那么需要0.5-1秒的加速过程，而移动中突然停止也需要0.5-1秒的减速过程，这样就实现了无差别同步，不需要相位滞后来避免拉扯影响用户感。</p>
+
+<p>同时开枪射击采用客户端判断，也就是说如果我看见你在墙前面，开枪射中，那么我向服务器发送“我击中你了”，这时有可能真实的你在墙后，那么表现出来的就是我看见我打中你了（减不减血由服务段判断），而你没有看见我，觉得我穿墙打中你了。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb.png" alt="image" /></p>
+
+<p><strong>图3 CS的同步逻辑</strong></p>
+
+<p>关键状态进行缓存，不然如果别人向前连续跳五次，每次取得状态都取到最高点的话，别人客户端上的影子和跟随的实体会奇怪的持续的飞在天上，所以需要将起跳和落地这两个关键状态缓存，实体追赶时只有追上的第一个状态（一号影子）才能追逐第二个状态（二号影子）。</p>
+
+<p>由此可以在完全时间同步的情况下平滑的跑动、跳跃，开枪射击采用客户端判断后手感得到提高，唯一需要担心的就是外挂，外挂多是实时游戏的代价，只能通过Cheating Death等工具防止了。</p>
+
+<h3 id="案例解析-马里奥赛车">案例解析：马里奥赛车</h3>
+
+<p>用该算法实现马里奥赛车是很简单的，影子和实体都使用惯性，由于赛车惯性很大，不容易有突变的状态更新，所以效果会比FPS游戏更好。</p>
+
+<p>玩家碰到道具后，马上在屏幕上隐藏该道具的显示并通知服务器，由服务器决断道具属谁，由于刚碰到道具就隐藏所以不会有碰到道具却在一段时间内无法取得延迟现象。</p>
+
+<p>游戏道具系统实现也很容易，比如那个将当前第一名炸毁的道具，它的描述是：原角色+对象角色+约定发生时间。既然知道对象是谁，什么时间发生，那就更本不需要怎么同步了，所有客户端和服务器在该时间让炸弹爆炸就得了，这种手法类似即时战略游戏。</p>
+
+<p>游戏还有一类道具是可以发射的乌龟壳，这个东西属于有弹道的发射物，类似Quake里面的某些武器，需要作一些同步处理，基本特性是服务器判断起决定作用，客户端同步判断，如果客户端与服务器都判断集中，那就集中；如果客户端判断集中而服务器判断没有集中，那会看到该角色似乎被打了一下，但很快又恢复了速度向前冲。</p>
+
+<p>由于赛车本身就具备惯性比较大的特点，因此同步效果是比较好的，可以在更大的延迟情况下表现得和FPS差不多（比如300ms效果相当于FPS的200ms）。</p>
+
+<h3 id="非可靠包">非可靠包：</h3>
+
+<p>该“影子跟随算法”支持非可靠传输协议，如果使用非可靠传输，那么我们按照特定频率（如每秒10次）定时发送状态更新，因为协议中每个更新包出了位置外还有速度、方向和时间，甚至还能加速加速度，因此我们丢一个包没有关系，可以根据后来的包重新计算插值。只有关键状态更新时才需要可靠传输，这就避免了TCP中丢包时RTO指数增长造成的延迟了。</p>
+
+<h3 id="负面情况">负面情况：</h3>
+
+<p>该算法缺点就是无法向“帧间同步”算法那样，每次发送按键给服务器，服务器处理后再反馈结果，在局域网中（平均延迟&lt;5ms），这样的效果相当于单机游戏一样即时，游戏性也能很复杂。然而在Internet中（平均延迟130ms，设计基准200ms，每秒最多发送10个数据包）该算法却不能像单机游戏那样有复杂的场景互动，有类似格斗游戏的即时的动作判定。</p>
+
+<p>许多策划在设计实时动作游戏时很多设计我们都难以实现，这样因为策划不容易明白哪些我们能做，哪些我们不能做。即便程序员精通同步理论，策划也经常碰壁。</p>
+
+<p>当多数设计被程序员回复“无法实现”后，策划只有采取一种消极设计（砍掉很多有意思的互动元素），于是网络游戏的表现力到今天还是差单机游戏一大截。</p>
+
+<p>这些问题也并不能因为“影子跟随算法”的提出而得到改进，大于100ms的判定时间，都很难做到即时。</p>
+
+<p>最后，该算法编码复杂度比其他同步策略高，因为服务器需要计算一份影子数据，各个客户端需要计算一份影子数据，还需要计算实体追赶，而这三种计算都需要在同样的时钟下保持一致，这就增加了编码与调试的复杂度。</p>
+
+<h3 id="总结话题">总结话题：</h3>
+
+<p>Internet特点是“高带宽，高延迟”，可以说从本质上Internet就不是为了游戏而设计的。故此Internet绝对意义的同步是不存在的。“影子跟随算法”的核心思想有几个：时钟同步，客户端先行，平滑追赶。通过这三个特性，我们能够在近似时间同步的情况下，模拟各种物体的移动过程，而使用该算法的前提是设计者需要根据各个游戏的特性研究不同的优化技巧，策略因游戏而变。</p>
+
+<p>比如发送状态更新包时，不需要每次都发送，而可以只发送改变的状态。什么时候我们觉得改变了？就是当客户端实体与自己的影子之间的误差大于某特定数值时我们才发送更新包，这样虽然玩家在原地做左右摇摆的小幅度移动，只要没有超出范围，都不需要发送新的状态更新，其他玩家机器上看起来，它是站着不动的。</p>
+
+<p>比如当发现某客户端5秒钟没有相应了，那么就将该人物的影子冻结住，永远不要为了等待某个数据而不让游戏进行下去。</p>
+
+<p>本算法需要客户端与服务器维护相同的时钟，当每5分钟同步的时候，直接根据服务器的时钟替换当前时钟就行了，不需要重新计算所有影子的位置，因为后续的状态数据将会马上刷新这些状态。更不需要将测量到的PING值考虑进去，该算法与PING具体值无关。</p>
+
+<p>当发现策划案子不可行时，寻找近似替代方案，比如减少“一次性的”“决定性的”事件发生，比如延长导弹在空中飞行的时间，比如将敌人加入HP分多次打死，而不是以及毙命，等等，都是大家可以发挥想象的地方。</p>
+
+<h3 id="相关例子">相关例子：</h3>
+
+<p>文章相关DEMO如果有需要的话，可向我索要。</p>
+
+<h3 id="文献参考">文献参考：</h3>
+
+<p>林伟（2007），<a href="http://www.skywind.me/blog/archives/131">帧锁定算法</a></p>
+
+<p>林伟（2005），<a href="http://www.skywind.me/blog/archives/112">网游同步法则</a></p>
+
+<p>Jesse Aronson (1997), <a href="http://www.gamasutra.com/features/19970919/aronson_01.htm">Dead Reckoning: Latency Hiding for Networked Games</a></p>
+
+<p>Yu-Shen Ng (1997), <a href="http://www.gamasutra.com/features/19970905/ng_01.htm">Designing Fast-Action Games For The Internet</a></p>
+
+<p>Wentong Cai (1999), <a href="http://portal.acm.org/citation.cfm?id=301461">An auto-adaptive dead reckoning algorithm for distributed interactive sim</a></p>
+
+<p>Micheal Abrash (1997), <a href="http://www.ddj.com/184410430;jsessionid=2MSZ10QGOFH2OQSNDLOSKHSCJUNN2JVN?_requestid=246708">Quake’s 3-D Engine: The Big Picture</a></p>
+
+<p>Nicholas Van Caldwell (2000), <a href="http://www.gamedev.net/reference/articles/article914.asp">Defeating Lag With Cubic Splines</a></p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/131/">帧锁定同步算法</a></li>
+        
+        <li><a href="/blog/archives/112/">网络游戏同步法则</a></li>
+        
+        <li><a href="/blog/archives/108/">网络游戏南北互通问题分析</a></li>
+        
+        <li><a href="/blog/archives/450/">年度旅游-2007（日本）</a></li>
+        
+        <li><a href="/blog/archives/191/">超越 STL-map/hash_map性能的DICT</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5">同步</a></li>
+                                
+                                <li><a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C">网络</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

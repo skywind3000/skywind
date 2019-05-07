@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Skywind Inside | 写自己的代码，让别人猜去吧！</title>
+    <meta property="og:title" content="Skywind Inside | 写自己的代码，让别人猜去吧！">
+    <meta property="og:type" content="website">
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Putty 本无树，MinGW 亦非台">
+    <meta property="og:url" content="https://skywind3000.com/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml+xml" href="https://skywind3000.com/index.xml" title="Skywind Inside" />
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <h1>
+                        <a id="logo" href="https://skywind3000.com/">
+                            Skywind Inside
+                        </a>
+                    </h1>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1573/" title="内存拷贝优化（2）-全尺寸拷贝优化" >内存拷贝优化（2）-全尺寸拷贝优化</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年12月18日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>四年前写过一篇小内存拷贝优化：<a href="http://www.skywind.me/blog/archives/143">http://www.skywind.me/blog/archives/143</a> 纠结了一下还是把全尺寸拷贝优化代码发布出来吧，没啥好保密的， 如今总结一下全尺寸内存拷贝优化的要点：</p>
+
+<ul>
+<li>策略区别：64字节以内用小内存方案，64K以内用中尺寸方案，大于64K用大内存拷贝方案。</li>
+<li>查表跳转：拷贝不同小尺寸内存，直接跳转到相应地址解除循环。</li>
+<li>目标对齐：64字节以上拷贝的先用普通方法拷贝几个字节让目标地址对齐，好做后面的事情。</li>
+<li>矢量拷贝：并行一次性读入N个矢量到 sse2 寄存器，再并行写出。</li>
+<li>缓存预取：使用 prefetchnta ，提前预取数据，等到真的要用时数据已经到位。</li>
+<li>内存直写：使用 movntdq 来直写内存，避免缓存污染。</li>
+</ul>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1573/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1566/" title="视频编码原理简介" >视频编码原理简介</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年11月24日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>要彻底理解视频编码原理，看书都是虚的，需要实际动手，实现一个简单的视频编码器：</p>
+
+<p>知识准备：基本图像处理知识，信号的时域和频域问题，熟练掌握傅立叶正反变换，一维、二维傅立叶变换，以及其变种，dct变换，快速dct变换。</p>
+
+<p>来自知乎问题：<a href="http://www.zhihu.com/question/22567173/answer/73610451">http://www.zhihu.com/question/22567173/answer/73610451</a></p>
+
+<h3 id="第一步-实现有损图像压缩和解压">第一步：实现有损图像压缩和解压</h3>
+
+<p>参考 JPEG原理，将RGB-&gt;YUV，然后Y/U/V看成三张不同的图片，将其中一张图片分为 8x8的block进行 dct变换（可以直接进行二维dct变换，或者按一定顺序将8x8的二维数组整理成一个64字节的一维数组），还是得到一个8x8的整数频率数据。于是表示图像大轮廓的低频信号（人眼敏感的信号）集中在 8x8的左上角；表示图像细节的高频信号集中在右下角。</p>
+
+<p>接着将其量化，所谓量化，就是信号采样的步长，8x8的整数频率数据块，每个数据都要除以对应位置的步长，左上角相对重要的低频信号步长是1，也就是说0-255，是多少就是多少。而右下角是不太重要的高频信号，比如步长取10，那么这些位置的数据都要/10，实际解码的时候再将他们*10恢复出来，这样经过编码的时候/10和解码的时候*10，那么步长为10的信号1, 13, 25, 37就会变成规矩的：0,
+10, 20, 30, 对小于步长10的部分我们直接丢弃了，因为高频不太重要。</p>
+
+<p>经过量化以后，8x8的数据块左上角的数据由于步长小，都是比较离散的，而靠近右下角的高频数据，都比较统一，或者是一串0，因此图像大量的细节被我们丢弃了，这时候，我们用无损压缩方式，比如lzma2算法（jpeg是rle + huffman）将这64个byte压缩起来，由于后面高频数据步长大，做了除法以后，这些值都比较小，而且比较靠近，甚至右下部分都是一串0，十分便于压缩。</p>
+
+<p>JPEG图像有个问题就是低码率时 block边界比较严重，现代图片压缩技术往往要配合一些de-block算法，比如最简单的就是边界部分几个像素点和周围插值模糊一下。</p>
+
+<p>做到这里我们实现了一个同 jpeg类似的静态图片有损压缩算法。在视频里面用来保存I帧数据。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1566/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1564/" title="多平台下录屏方式" >多平台下录屏方式</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年11月15日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>随便记录下，想得起来的多少写多少：</p>
+
+<p>Windows：</p>
+
+<pre><code>GDI 全屏：fullscreen desktop BitBlt 速度是 20ms / 帧  
+GDI 窗口：Win7+可以录制游戏和非游戏，XP以前只能录制普通界面，截不到游戏窗口  
+DirectDraw 全屏：full screen primary surface 异步到 offscreen-surface XP下闪电速度 1ms / 帧  
+D3D9: render target -&gt; offscreen surface XP下 16ms Win7 下 10ms  
+D3D Hook: Hook Device::Present -&gt; 保存 StateBlock -&gt; 截屏 -&gt; 恢复 StateBlock 极速！
+</code></pre>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1564/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1550/" title="Android Arm 编译优化选项评测" >Android Arm 编译优化选项评测</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年8月25日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>用不同测试用例具体测试 softfp, armv7-a, cortax 等优化选项，看选项不同性能差别多大。首先设计下面几个测试用例，包含字符串处理、复杂逻辑、整数运算、浮点运算几个方面：</p>
+
+<ul>
+<li>compress：进行 LZO/LZW 大规模压缩，测试搜索，字符串匹配，复杂分支等性能</li>
+<li>resample：进行一系列整数 DSP 运算，包括 resample 和 fir low pass</li>
+<li>int add：一亿次整数加法</li>
+<li>int mul：一亿次整数乘法</li>
+<li>int div：一亿次整数除法</li>
+<li>float add：一亿次浮点加法</li>
+<li>float mul：一亿次浮点乘法</li>
+<li>float div：一亿次浮点除法</li>
+<li>const div：一亿次整数除以常数255</li>
+<li>matrix：若干次矩阵乘法运算，同时考察浮点数乘法加法</li>
+<li>normalize：若干次矢量归一化运算，同时考察浮点数乘法，除法，加法，sqrt</li>
+</ul>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1550/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1545/" title="Android 命令行调试 C/C&#43;&#43;  程序" >Android 命令行调试 C/C&#43;&#43;  程序</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年8月25日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>传统方式调试 NDK 开发的程序比较麻烦，先要编译成 JNI，又要导出 java接口，还要再写一个 java 工程，改一个地方又要连续改几处，这样效率是很低的。最频繁使用的关键工作路径（编译/调试环节）如果能极致简化，那么可以带来开发效率的成倍提升。其实安卓官方是提供了命令行调试方法的，将你需要调试的 C代码用 NDK直接编译成可执行，然后到设备上执行：</p>
+
+<p>使用 NDK 导出独立工具链，方便以后使用，在 cygwin 下面，将 $NDK 环境变量代表的路径设置好，然后：</p>
+
+<pre><code class="language-bash">cd $NDK  
+chmod -R 755 *  
+build/tools/make-standalone-toolchain.sh --ndk-dir=$NDK --platform=android-9 --arch=arm --install-dir=/...../path-to-android-9
+</code></pre>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1545/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1498/" title="如何写一个软件渲染器？" >如何写一个软件渲染器？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年8月9日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>实现个简单的固定渲染管线软渲染器不算复杂，差不多700行代码就可以搞定了。之所以很多人用 D3D用的很熟，写软渲染却坑坑洼洼，主要是现在大部分讲图形的书，讲到透视投影时就是分析一下透视变换矩阵如何生成，顶点如何计算就跳到其他讲模型或者光照的部分了。</p>
+
+<p>因为今天基本上是直接用 D3D 或者 OGL，真正光栅化的部分不了解也不影响使用，所以大部分教材都直接跳过了一大段，摄像机坐标系如何转换？三角形如何生成？CVV边缘如何检测？四维坐标如何裁剪？边缘及步长如何计算？扫描线该如何绘制？透视纹理映射具体代码该怎么写？framebuffer zbuffer 到底该怎么用？z-test 到底是该 test z 还是 w 还是 1/z 还是 1/w
+？这些都没讲。</p>
+
+<p>早年培训学生时候，我花两天时间写的一个 DEMO，今天拿出来重新调整注释一下，性能和功能当然比不过高大上的软件渲染器。但一般来讲，工程类项目代码不容易阅读，太多边界情况和太多细节优化容易让初学者迷失，这个 mini3d 的项目不做任何优化，主要目的就是为了突出主干：</p>
+
+<p>源代码：<a href="https://github.com/skywind3000/mini3d">skywind3000/mini3d · GitHub</a><br />
+可执行：<a href="https://github.com/skywind3000/mini3d/releases/download/v1.2/mini3d-src-binary.zip">mini3d-src-binary</a></p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1498/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1480/" title="如何设计一个内存分配器？" >如何设计一个内存分配器？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年7月27日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>通常工程里不推荐自己写内存分配器，因为你费力写一个出来99%可能性没有内置的好，且内存出bug难调试<br />
+不过看书之余，你也可以动手自己试试，当个玩具写写玩玩：</p>
+
+<p><strong>1. 实现教科书上的内存分配器：</strong></p>
+
+<p>做一个链表指向空闲内存，分配就是取出一块来，改写链表，返回，释放就是放回到链表里面，并做好归并。注意做好标记和保护，避免二次释放，还可以花点力气在如何查找最适合大小的内存快的搜索上，减少内存碎片，有空你了还可以把链表换成伙伴算法，写着玩嘛。</p>
+
+<p><strong>2. 实现固定内存分配器：</strong></p>
+
+<p>即实现一个 FreeList，每个 FreeList 用于分配固定大小的内存块，比如用于分配 32字节对象的固定内存分配器，之类的。每个固定内存分配器里面有两个链表，OpenList 用于存储未分配的空闲对象，CloseList用于存储已分配的内存对象，那么所谓的分配就是从 OpenList 中取出一个对象放到 CloseList 里并且返回给用户，释放又是从 CloseList 移回到
+OpenList。分配时如果不够，那么就需要增长 OpenList：申请一个大一点的内存块，切割成比如 64 个相同大小的对象添加到 OpenList中。这个固定内存分配器回收的时候，统一把先前向系统申请的内存块全部还给系统。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1480/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1469/" title="FlashDevelop 好用" >FlashDevelop 好用</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年7月27日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>好几年没碰过 Flash 了，最近需要给 ActionScript 导出一些 C 接口，又抽空捡起来。项目大了以后 Flash Builder 卡的要死，经常是一个构建你就可以休息了，按一下 “.“ 它就开始搜索补全提示，你的符号多了以后，有时候 Flash Builder 近乎假死了。实在难以忍受，咨询了一些正在做页游的朋友，是否还在用 Flash Builder 。得到答案是：早就投奔
+Flash Develop 了。</p>
+
+<p>试了一下 FlashDevelop 果然腰也不酸了，腿也不疼了，十分流畅，界面类似 Visual Studio，同时还是免费的，可以彻底和笨重的 Flash Builder 说再见了。再次感叹 AS3 写起来真爽之余，记录一下安装配置过程：</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/07/image_thumb8.png" alt="image" /></p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1469/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1460/" title="网络程序计时器通常用啥实现？" >网络程序计时器通常用啥实现？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年7月26日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>通常来讲，就是利用 select 的空余时间，来进行时钟检查，不管是 select / poll / epoll/ kevent，以下统称 select，它有一个等待时间作为参数，即没有事件时，最多 wait 多少时间，我们把这个作为网络库的基准频率，比如 10MS，或者 20MS, 25MS, 50MS，都是常用的几个值。</p>
+
+<p>就是说网络库调用 select 等待事件时如果没有事件，那么最长等待 10MS 就返回了，这时再处理完所有网络事件后，就可以来处理时钟数据了。事件处理函数就是这样：</p>
+
+<pre><code class="language-python">def update_events(milisec = 10):  
+	result = selector.select(milisec)  
+	for fd, event in result:  
+		do something with socket event  
+	current = time.time()  
+	update_timer(current)
+
+while 1:  
+	WAIT_MILLISEC = 10  
+	update_events(WAIT_MILLISEC)
+</code></pre>
+
+<p>关键就是这个两次 select 中间 update_timer 的任务：集合中检查需要唤醒的时钟，并且调用它们的回调函数，来驱动整个服务器的时钟运行，以最简单的扫描法为例：</p>
+
+<pre><code class="language-python">def update_timer (current):  
+	for timer in available_timers:  
+	while current &gt;= timer.expires:  
+		timer.callback(current)  
+		timer.expires += timer.period
+</code></pre>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1460/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1458/" title="如何提高编程的手速" >如何提高编程的手速</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年7月22日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                可以使用经典的 TT 来测试你的打字速度，注意是包含数字和符号的文章（Menu-&gt;Test-&gt;All key）
+软件很简单，按照箭头指着的位置，快速输入上面的单词即可，输入完会有评分的。
+TT是比较好的打字练习程序，直到今天，公司内都用作给新人练习打字速度用。不当能测试，还有比较详细的课程，教你从纯单词打起，逐步到数字，标点符号等。
+我做过一个 DOSBOX版本的 TT （tt.exe 是 DOS下的程序），双击 TT.BAT 即可在 Win7/8 启动
+http://www.skywind.me/mw/images/e/eb/TT-Dosbox.7z
+我当时用 TT 测试 All Key 的时候，已经写过好多年程序了，自己觉得自己打字不慢，英文可以流利盲打，数字和符号需要看一下，结果 TT 测试下来，打字速度只有 31 WPM ，属于垫底的角色，丢死人了。
+于是开始用 TT的课程进行练习，每天练习的不多，每天两次，每次15分钟，主要是先打10分钟的课程，然后做5分钟的测验，不能练多，练多了手麻，但是要坚持每天都练习两次左右。一开始纯英文的指法挺简单乏味，觉得没意思，因为我本身可以流利的盲打英文，觉得自己主要是被数字和符号拖累了。但是坚持了一段时间练习纯英文速度后，我发现纯英文速度从 42WPM提高到 55WPM。
+后来开始继续练习数字和符号，这就比较痛苦了，就是单调乏味的重复练习，这部分手指动作跨度大，即便记得住在哪里，经常手指过去就按错了，但是一旦数字和符号分实现了盲打，整体 WPM的提高是非常大的。
+TT 有专门练习数字和符号的的课程：
+几个星期后，All Key的打字速度 WPM 终于从31 提高到 45 了，通过了打字测验。这时候我回来输入程序，我发现对自己编程帮助确实比较大。以前碰到数字和符号经常要低下头去看在哪里，指法也不标准，比如按shift组合键的时候是比较山寨的打发，现在纠正了一下实现全键盘盲打了，感觉写程序顺畅了很多。
+很多人觉得程序主要是思考，你思路对了，打字只是小事，经常听到说某某高手打字是二指禅。以前我也这么认为，但是专门抽时间练习了以后，发现真正打字流畅的人，打字的 cpu占用很低，不会因为打错字而影响思考，更不会因为要低下头去看数字符号打断你的思路。
+到了 45的 WPM 以后，再往下提高就比较难了，经常一个多星期没啥提高，我后来发现我的指速不够，就是即便全部盲打，手指不够熟练，灵巧度不高，再怎么盲打也是白打。因此买了一个机械键盘来专门练习指速。
+先单纯练习从 A打到 Z，最开始是15秒，慢慢熟练到10秒，最后到5秒。又从最基本的单词开始，不断的重复同一节 TT的课程，同一个动作重复 300次，肌肉就会有记忆，而同一个动作重复600次，脊柱就会有记忆。别人打字要经过大脑，大脑一个字母一个字母，一根手指一根手指的指挥，是比较费脑的，而你打字如果真正进入了脊柱反应的条件反射时代，那么看到一个单词或者一串数字，大脑只需要下一个指令，脊柱这个协处理器就自动完成了，根本不需要过大脑。
+所以实现全盲打后，又经过一段时间的指速练习，从 45 WPM 不断的提高到 50 WPM，55 WPM，60 WPM 最后到 65WPM （TT的 All Key模式），单纯打英文的速度也从原来的 35 WPM提高到 71 WPM，整整翻了一倍：
+虽然 TT 是 DOS 时代的软件了，现在市面上出过很多打字练习软件，但是说道科学性和系统性，还是没有超过 TT的。现在偶尔抽空还是会拿出 tt 来练习一下，就当打游戏。但是自己手指的灵巧度感觉还是不够，可能这是先天的，因为即便我达到了 65 WPM，公司内还是有很多70，75以上的同事打的比我快多了。
+现在再看到那些诸如某大牛只用二指禅来敲代码的言论，我都会嗤之以鼻了，字都打不好还写啥程序呀？不管有多牛，即便写代码的思路再好，但是手速跟不上，打字还要费大脑的话，还是有所局限的。
+只有很流畅的打字了，让打字变为一种不经大脑的条件反射，你的注意力才能完全集中在思考你的程序上。我把自己的打字速度从 30 WPM 提高到 65WPM的过程中，对这一点感触是比较深的。因为先天手指笨拙，我好像要比同事们练习的更多才能有他们同样的提高，但是我还是能够感受到提高手速对编程的改变，所以有空我都还是会拿出 TT 来练习一下，全当打游戏了，希望有一天 All Key 的 WPM能上 70。
+-&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+PS: TT 下载地址（DosBox版本）http://www.skywind.me/mw/images/e/eb/TT-Dosbox.7z
+整合了 DOSBOX + TT，运行 “TT.BAT&rdquo; 就可以在 Win7/Win8下启动，运行&rdquo;TT放大版.BAT&rdquo;，就可以设置 DOSBOX放大两倍显示（如今高分屏看起以前低分辨率的文字有点累，放大两倍后效果比较好）。
+Ubuntu / OS X下，先安装 DOSBOX，把上面的 tt 下载下来，再用 ubuntu的 dosbox 启动 tt.exe 即可。
+-&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+不要用《金山打字通》：
+金山打字通测试文章中，符号和数字偏弱，标点就是逗号和句号，比起TT的 All Key （每篇文章至少包含一定数量的电话号码，门牌号码，各种符号）
+金山打字通测试是：每秒钟敲下多少字母，不是 WPM（每分钟敲下多少个单词），比字母的话，我最快5秒钟可以从 A-&gt;Z，应该是 312字母/分，没啥意义呀。
+编辑于 2015-07-03……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1458/">阅读全文</a></p>
+                        </article>
+                    
+
+                    
+
+
+<ol class="page-navigator">
+    
+    <li class="prev">
+        <a href="https://skywind3000.com/page/4/">上一页</a>
+    </li>
+    
+
+    
+    <li >
+        <a href="https://skywind3000.com/">1</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/2/">2</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/3/">3</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/4/">4</a>
+    </li>
+    
+    <li  class="current">
+        <a href="https://skywind3000.com/page/5/">5</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/6/">6</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/7/">7</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/8/">8</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/9/">9</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/10/">10</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/11/">11</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/12/">12</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/13/">13</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/14/">14</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="https://skywind3000.com/page/6/">下一页</a>
+    </li>
+    
+</ol>
+
+
+
+                </div>
+            </div>
+
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+
+</body>
+</html>

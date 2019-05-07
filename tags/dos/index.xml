@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dos on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/dos/</link>
+    <description>Recent content in Dos on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 14 Apr 2005 07:25:55 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/dos/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MINI-FOOLTRIS 游戏代码</title>
+      <link>https://skywind3000.com/blog/archives/88/</link>
+      <pubDate>Thu, 14 Apr 2005 07:25:55 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/88/</guid>
+      <description>&lt;p&gt;不到两百行的俄罗斯方块游戏，教学用：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MINI-FOOLFLY 游戏代码</title>
+      <link>https://skywind3000.com/blog/archives/83/</link>
+      <pubDate>Tue, 12 Apr 2005 13:06:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/83/</guid>
+      <description>&lt;p&gt;此程序仅向人说明编写游戏程序的若干功能实现和常用处理方法，编译版本下载：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/resource/oldworks/foolfly.zip&#34;&gt;http://www.skywind.me/resource/oldworks/foolfly.zip&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>艺术化的程序设计</title>
+      <link>https://skywind3000.com/blog/archives/66/</link>
+      <pubDate>Tue, 21 Sep 2004 13:59:58 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/66/</guid>
+      <description>&lt;p&gt;计算机的硬件也有限，而人的创造也无限，程序设计美于思维和行为，记得1997年一个叫做 &amp;ldquo;OMNISCENT&amp;rdquo;的DEMO使人感慨万分，
+作者就像一名艺术家在一粒小小的米粒上雕刻着自己的作品一般。能力虽有不及，仍不妨我校仿，以此挖掘计算机最原始的艺术表现形式：&lt;/p&gt;
+
+&lt;p&gt;（此为自去年九月到现在三次发布中的最终版本: EXFORCE）&lt;/p&gt;
+
+&lt;p&gt;在DOS窗口中运行DEBUG，然后把横线下的内容复制、粘贴到DEBUG窗口中，回车就可以见到了。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

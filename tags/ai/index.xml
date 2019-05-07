@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ai on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/ai/</link>
+    <description>Recent content in Ai on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 08 Apr 2019 06:50:39 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/ai/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何实现和优化 SVM（支持向量机）？</title>
+      <link>https://skywind3000.com/blog/archives/2250/</link>
+      <pubDate>Mon, 08 Apr 2019 06:50:39 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2250/</guid>
+      <description>&lt;p&gt;学习 SVM 的最好方法是实现一个 SVM，可讲理论的很多，讲实现的太少了。&lt;/p&gt;
+
+&lt;p&gt;假设你已经读懂了 SVM 的原理，并了解公式怎么推导出来的，比如到这里：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/svm1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;SVM 的问题就变成：求解一系列满足约束的 alpha 值，使得上面那个函数可以取到最小值。然后记录下这些非零的 alpha 值和对应样本中的 x 值和 y 值，就完成学习了，然后预测的时候用：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/svm2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上面的公式计算出 f(x) ，如果返回值 &amp;gt; 0 那么是 +1 类别，否则是 -1 类别，先把这一步怎么来的，为什么这么来找篇文章读懂，不然你会做的一头雾水。&lt;/p&gt;
+
+&lt;p&gt;那么剩下的 SVM 实现问题就是如何求解这个函数的极值。方法有很多，我们先找个起点，比如 Platt 的 SMO 算法，它后面有伪代码描述怎么快速求解 SVM 的各个系数。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;第一步：实现传统的 SMO 算法&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;现在大部分的 SVM 开源实现，源头都是 platt 的 smo 算法，读完他的文章和推导，然后照着伪代码写就行了，核心代码没几行：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>行为树的疑问</title>
+      <link>https://skywind3000.com/blog/archives/1527/</link>
+      <pubDate>Sun, 12 Apr 2015 16:37:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1527/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;关于行为树的实现，我在网上看到几个实现版本都对节点规划了running状态，表示节点的动作未执行完毕，每次执行时从上次未执行完毕的节点开始执行而跳过之前已经执行完毕的节点。&lt;/p&gt;
+
+&lt;p&gt;问题在于，处于同一selector节点下的子节点，位置越靠前的节点优先级是越高的，如果因为running恢复机制而跳过了已经执行完毕的节点，岂不是无法实现“打断”现有逻辑的需求？&lt;/p&gt;
+
+&lt;p&gt;我想问，节点running状态的引入是为了解决什么问题？为什么不每次都top-down执行所有节点？&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>游戏中AI常用工具分析</title>
+      <link>https://skywind3000.com/blog/archives/1241/</link>
+      <pubDate>Thu, 09 Apr 2015 13:08:51 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1241/</guid>
+      <description>&lt;p&gt;BehaviorTree：国内很多正式商用项目确实用了，不管RTS，还是RPG，而且用的还行，毕竟写AI一大半时间在调试上，有图形化的界面，调试起来更方便点，有的项目策划可以直接来写AI。值得花时间封装的东西，你做出一套来，以后其他项目都可以用，但是两个人一个多月的时间是最起码的。&lt;/p&gt;
+
+&lt;p&gt;一个人写一个GUI编辑器，另一个人写 BehaviorTree的运行时，用你们熟悉的语言来写。包括若干基类，运行跟踪，状态单步，以及可以脱离游戏环境的调试方式。如果找到称手的AI框架，拿过来， 比如你可以评估下 U3D的 BehaviorTree的库和编辑器是否可以，能否集成到你的项目？我自己没有用过，我们用自己之前的一个实现。&lt;/p&gt;
+
+&lt;p&gt;NaviMesh：大部分情况最好不用，现在国内大部分游戏都是显示3D，但是内部数据还是2D的，比如地图，还是用的格子，在这种情况下，引入NaviMesh会逼迫你客户端使用全3D数据结构，并且逼迫你服务端从2D计算升级到3D计算，主要是 NaviMesh实现起来起码也要一个多月，然后要调试很久。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>TINY-GOBANG 最精简的五子棋人机对战</title>
+      <link>https://skywind3000.com/blog/archives/1029/</link>
+      <pubDate>Thu, 08 Nov 2012 10:57:18 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1029/</guid>
+      <description>&lt;p&gt;国庆没事，想看看最少多少行可以写一个人机对战棋类游戏，于是有了这个Python版五子棋人机对战，仅仅几百行。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/gobang1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;再命令行输入横竖坐标就可以和机器人对弈了，多种难度选择。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/skywind3000/gobang&#34;&gt;https://github.com/skywind3000/gobang&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;下面是代码（点击More展开）&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>体育竞技游戏的团队AI</title>
+      <link>https://skywind3000.com/blog/archives/1216/</link>
+      <pubDate>Fri, 05 Aug 2011 07:32:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1216/</guid>
+      <description>&lt;p&gt;很多人问游戏AI该怎么做？随着游戏类型的多元化，非 MMO或者卡牌的游戏越来越多，对AI的需求也越来越强了。而市面上关于 AI的书，网上找得到的文章，也都流于一些只言片语的认识，理论化的套路，和一些简单的 DEMO，离真正的项目差距甚远，无法前后衔接成一条线，更无法真正落地到编码。&lt;/p&gt;
+
+&lt;p&gt;国内真正做过游戏AI的少之又少，东拉西扯的人很多，真正做过项目的人很少，因为国内主要以MMO为主，RTS比较少，体育竞技类游戏更少，而从AI的难度上来看，应该是：MMO &amp;lt; FPS &amp;lt; RTS &amp;lt; 体育竞技。作为实际开发过AI的人，给大家科普一下，什么叫做硬派AI。&lt;/p&gt;
+
+&lt;p&gt;硬派游戏AI，不是虚无缥缈的神经网络，用神经网络其实是一个黑洞，把问题一脚踢给计算机，认为我只要训练它，它就能解决一切问题的懒人想法。更不是遗传算法和模糊逻辑，你想想以前8位机，16位机上就能有比较激烈对抗的足球游戏、篮球游戏，那么差的处理器能做这些计算么？ 硬派游戏AI，就是状态机和行为树。状态机是基本功，行为树可选（早年AI没行为树这东西，大家都是hard code的）。大部分人说到这里也就没了，各位读完还是无法写代码。因为没有把最核心的三个问题讲清楚，即：分层状态机、决策支持系统、以及团队角色分配。下面以我之前做的篮球AI为例，简单叙述一下： &lt;strong&gt;何为分层状态机？&lt;/strong&gt; 每个人物身上，有三层状态机：基础层状态机、行为层状态机、角色层状态机。每一层状态机解决一个层次的复杂度，并对上层提供接口，上层状态机通过设置下层状态机的目标实现更复杂的逻辑。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;基础状态机：直接控制角色动画和绘制、提供基础的动作实现，为上层提供支持。&lt;/li&gt;
+&lt;li&gt;行为状态机：实现分解动作，躲避跑、直线移动、原地站立、要球、传球、射球、追球、打人、跳。&lt;/li&gt;
+&lt;li&gt;角色状态机：实现更复杂的逻辑，比如防射球、篮板等都是由N次直线运动+跳跃或者打人完成。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb8.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[游戏演示] ActionScript 鼠标手势识别</title>
+      <link>https://skywind3000.com/blog/archives/173/</link>
+      <pubDate>Mon, 05 Jan 2009 13:32:11 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/173/</guid>
+      <description>&lt;p&gt;学习ActionScript3，画一星期写了个DEMO：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/finalweapon.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;网页地址：&lt;a href=&#34;http://www.skywind.me/weapon&#34;&gt;http://www.skywind.me/weapon&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于路径搜索算法的实用性优化</title>
+      <link>https://skywind3000.com/blog/archives/60/</link>
+      <pubDate>Mon, 30 Sep 2002 04:53:03 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/60/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;关于路径搜索算法的实用性优化&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;UESTC 20013080 林 伟 2002.9.12&lt;/p&gt;
+
+&lt;p&gt;介绍：本文阐述对著名的路径搜索算法 &lt;code&gt;A*&lt;/code&gt; 算法的重要改进，使之更实用于大规模，高效率，多阻塞，模糊求解的任务中。希望本文起一个抛砖引玉的作用，使读者能举一反三。&lt;/p&gt;
+
+&lt;p&gt;这里所提及的 &lt;code&gt;A*&lt;/code&gt; 算法在许多领域内得到广泛的应用，比如我们熟悉的即时战略游戏正是利用这个算法来实现路径搜索的。 但是人工智能的书上只是说，却很少有实现的例子，理论与实际差距太大，一些专业人士也曾经书写过代码，但代码的优点在于说明算法，而在效率与实用性方面就有些欠缺。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;A*&lt;/code&gt; 是启发试搜索加动态规划。具体实现依靠两个队列Open队列和Close队列。从一点开始探走几个相邻的格子如果可以移动且当前移动为起点到哪个格子的历 史最佳方法则把那个格子按照估价值从小到大插入Open队列里面，几个方向试探结素后取出估价值最小的节点放入Close再从这里开始试探几个相邻的方向 同样放入Open队列里面，放入Open的条件是1.这步在地图上面是可以移动的，2.这步所在节点在Open里面并不存在，3.从起点到这步的实际距离 比这点的历史最小距离还短满足这三个条件就把节点放入Open队列。具体的算法网友们已经描述的再清楚不过了大致算法如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;WHILE TRUE BEGIN
+  1. 把S点加入OPEN队列（按该点到E点的距离排序+走过的步数从小到大排序） 
+  2. 排序队列OPEN队列中距离最小的第一个点出列，并保存入CLOSE队列中 
+  3. 从出列的点出发，分别向4个（或8个）方向中的一个各走出一步 
+  4. 估算第3步所走到位置到目标点的距离，并把该位置按估价距离从小到大排序后并放入OPEN中 
+  5. 如果该点从四个方向上都不能移动，则把该点从CLOSE队列中删除 
+  6. 从目标点回溯树，直到树根则可以找到最佳路径，并保存在PATH中 
+END
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;图表1：&lt;code&gt;A*&lt;/code&gt;路径搜索算法流程&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

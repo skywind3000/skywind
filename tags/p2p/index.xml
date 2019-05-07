@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>P2p on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/p2p/</link>
+    <description>Recent content in P2p on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 10 Dec 2010 08:22:29 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/p2p/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[业余土制] Python P2P模块</title>
+      <link>https://skywind3000.com/blog/archives/163/</link>
+      <pubDate>Fri, 10 Dec 2010 08:22:29 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/163/</guid>
+      <description>&lt;p&gt;项目地址：&lt;a href=&#34;http://code.google.com/p/pyp2p/&#34;&gt;http://code.google.com/p/pyp2p/&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

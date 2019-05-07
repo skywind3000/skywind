@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cygwin on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/cygwin/</link>
+    <description>Recent content in Cygwin on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 12 Aug 2011 14:12:20 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/cygwin/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>CYGWIN 环境搭建记录</title>
+      <link>https://skywind3000.com/blog/archives/979/</link>
+      <pubDate>Fri, 12 Aug 2011 14:12:20 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/979/</guid>
+      <description>&lt;h2 id=&#34;sshd&#34;&gt;[sshd]&lt;/h2&gt;
+
+&lt;p&gt;ssh-host-config /var/empty目录的拥有者必须是sshd进程的拥有者, 而且权限必须是700; 如果sshd进程的拥有者不是SYSTEM, 则只有这个拥有者可以通过ssh登录系统, 因为sshd需要执行seteuid, 非系统账户执行seteuid将自己有效id设为其他用户时会被拒绝。 如果是在
+Win7下面需要建立一个独立的用户，这时CYGWIN终端需要以管理员权限运行，否则用户设置失败，无法安装sshd服务。&lt;/p&gt;
+
+&lt;h2 id=&#34;svnserve&#34;&gt;[svnserve]&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cygrunsrv -I svnserve -d &amp;quot;CYGWIN svnserve&amp;quot; --chdir /data/svnroot --path /usr/bin/svnserve \
+	  --args &amp;quot;--foreground --daemon --root=/data/svnroot --listen-port=3690&amp;quot; \
+	  --neverexits --type auto -o 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果发现svnserve.exe无法监听在相应端口, 需要添加额外参数(&amp;ndash;args中): &amp;ndash;listen-host=0.0.0.0 (或监听在特定的ip或主机名上).&lt;/p&gt;
+
+&lt;h2 id=&#34;passwd&#34;&gt;[passwd]&lt;/h2&gt;
+
+&lt;p&gt;如果在cygwin中发现自己所在的组变成了&amp;rdquo;mkpaswd&amp;rdquo;,
+这说明/etc/passwd或者/etc/group需要重建了, 运行:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkpasswd -l &amp;gt;/etc/passwd; mkgroup -l &amp;gt;/etc/group
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;httpd&#34;&gt;[httpd]&lt;/h2&gt;
+
+&lt;p&gt;启动httpd服务时可能会报告&amp;rdquo;Bad system call&amp;rdquo;错误, 这是由于apache2需要cygserver, 运行: cygserver-config 而且环境变量 &lt;code&gt;$CYGWIN&lt;/code&gt; 中包含server,
+参见 [The CYGWIN environment variable].&lt;/p&gt;
+
+&lt;h2 id=&#34;init&#34;&gt;[init]&lt;/h2&gt;
+
+&lt;p&gt;配置启动 systemv 的 init 服务，管理员启动cygwin，并运行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;init-config 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后查看 /etc/inittab 和 /etc/rc.d/rc 两个文件，根据需要编辑，首先是 /etc/inittab:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# id:runlevels:action:process
+id:3:initdefault:
+rc::bootwait:/etc/rc
+l0:0:wait:/etc/rc.d/rc 0
+l3:3:wait:/etc/rc.d/rc 3
+#S0:2345:respawn:/sbin/agetty -L -T vt100 -n ttyS0 9600 ttyS0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;接下来是 /etc/rc.d/rc：&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

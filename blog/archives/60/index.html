@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>关于路径搜索算法的实用性优化 | Skywind Inside</title>
+    <meta property="og:title" content="关于路径搜索算法的实用性优化 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2002-09-30T04:53:03&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2002-09-30T04:53:03&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="关于路径搜索算法的实用性优化">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/60/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">关于路径搜索算法的实用性优化</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2002年9月30日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD">人工智能</a></span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a></span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p><strong>关于路径搜索算法的实用性优化</strong></p>
+
+<p>UESTC 20013080 林 伟 2002.9.12</p>
+
+<p>介绍：本文阐述对著名的路径搜索算法 <code>A*</code> 算法的重要改进，使之更实用于大规模，高效率，多阻塞，模糊求解的任务中。希望本文起一个抛砖引玉的作用，使读者能举一反三。</p>
+
+<p>这里所提及的 <code>A*</code> 算法在许多领域内得到广泛的应用，比如我们熟悉的即时战略游戏正是利用这个算法来实现路径搜索的。 但是人工智能的书上只是说，却很少有实现的例子，理论与实际差距太大，一些专业人士也曾经书写过代码，但代码的优点在于说明算法，而在效率与实用性方面就有些欠缺。</p>
+
+<p><code>A*</code> 是启发试搜索加动态规划。具体实现依靠两个队列Open队列和Close队列。从一点开始探走几个相邻的格子如果可以移动且当前移动为起点到哪个格子的历 史最佳方法则把那个格子按照估价值从小到大插入Open队列里面，几个方向试探结素后取出估价值最小的节点放入Close再从这里开始试探几个相邻的方向 同样放入Open队列里面，放入Open的条件是1.这步在地图上面是可以移动的，2.这步所在节点在Open里面并不存在，3.从起点到这步的实际距离 比这点的历史最小距离还短满足这三个条件就把节点放入Open队列。具体的算法网友们已经描述的再清楚不过了大致算法如下:</p>
+
+<pre><code>WHILE TRUE BEGIN
+  1. 把S点加入OPEN队列（按该点到E点的距离排序+走过的步数从小到大排序） 
+  2. 排序队列OPEN队列中距离最小的第一个点出列，并保存入CLOSE队列中 
+  3. 从出列的点出发，分别向4个（或8个）方向中的一个各走出一步 
+  4. 估算第3步所走到位置到目标点的距离，并把该位置按估价距离从小到大排序后并放入OPEN中 
+  5. 如果该点从四个方向上都不能移动，则把该点从CLOSE队列中删除 
+  6. 从目标点回溯树，直到树根则可以找到最佳路径，并保存在PATH中 
+END
+</code></pre>
+
+<p>图表1：<code>A*</code>路径搜索算法流程</p>
+
+<p>具体实现和详细算法可以看代码 <a href="http://www.skywind.me/maker/qfind_c.htm">http://www.skywind.me/maker/qfind_c.htm</a> (其中sort_queue和store_queue是open和close队列)</p>
+
+<p>我觉得要使它可以胜任即时战略游戏第一点要改的就是规定搜寻的规模，即限制close_queue的大小，一旦超过大小而并没有到达终点，则取一个搜寻过的最接近终点的点(从它到终点的估价距离最短)作为搜索的终点。二一旦Open队列空了无法取出节点时搜索结束没有找到终点，此时还是按照上面的方法找一个最接近终点的点代替终点。</p>
+
+<p>这样搜索就不会漫无边际地进行下去了。上面的程序大家稍微观察就会发现几处影响速度的致命地方，启发试搜索是不变的，而看程序每次加入取出两个队列时都要进行繁琐的内存分配，这是项耗费时间的工作，其次需要检查是否在队列中，这点也是很慢的，最后就是保存动态规划数据(历史最短距离)的数组进行还原，并且每次寻路都要还原若大的数组，这是无法接受的。</p>
+
+<p>我所说的优化是从数据结构入手解决上面的问题让 Open/Close 两队列处理时不再涉及内存分配问题，首先建立一个与地图上面每个节点一一对应的节点数组 <code>Node[maph][mapw];</code> Node 里面有一个指针 Next 和 Father，Next指相所在队列的下一个节点，Father指向它的父节点。</p>
+
+<p>由于Open/Close两队列不可能出现一个节点在某个队列同时出现两次的情况因此Open队列描述时只要让它指向一个节点地址 <code>&amp;Node[y][x]</code> 然后让 <code>Node[y][x]</code> 的 Next指向队列下一个 节点，如果没有节点则这点的 Next为 NULL，同样的道理Close也是这样描述的如此来看每次搜寻的时候就不必内存分配了，插入节点(x,y)时只要改动 <code>Node[maph][mapw]</code> 上面的数据和 Open/Close两个指针就轻松搞定了见程序的 <code>AddToOpenQueue</code> 等几个函数。</p>
+
+<p>在初始化的时候一次性分配 Node 为 <code>Node[maph][mapw]</code> (TAstarNode的定义如下表) Open/Close为两个 TAstarNode 指针以后就不再分配内存了，初始化让Open/Close都等于NULL在Open中加入节点 (x,y) 就按照普通连表的方法插 入 <code>&amp;Node[y][x]</code> 换而言之，就是让Open/Close指向 <code>Node[maph][mapw]</code> 中的某个元素，然后这个元素又指向下一个元 素形成链表，由于算法中每次加入 Open/Close的节点前检查如果存在了就不再加入因此 Open/Close不会有重复的元素。</p>
+
+<pre><code class="language-cpp">struct TAstarNode
+{
+	DWORD Pos;　　　　　     // ((y&lt;&lt;16)|x)初始化时设定以后不变
+	short ActualCost;　　    // 保存从起点到该节点的实际开销
+	short EstimateCost;　    // 保存此点的估价开销由JudgeCost函数提供初始化为MAX
+	short SumCost;           // 前面两者的和，用于插入排序
+	TAstarNode *Father;　    // 此点的父节点
+	TAstarNode *Prev;　　    // 在Open或者Next链表的上一个节点用来方便从两队列中删除
+	TAstarNode *Next;　　    // 在Open或者Next链表中的下一个节点
+	char Modified;　　　     // 1位该节点是否被修改过，2/3位代表是否于Open/Close表
+} **Node,*Open,*Close;       // Node[maph][mapw]和Open/Close队列
+</code></pre>
+
+<p>图表2：算法接点数据结构</p>
+
+<p>请看下边的搜索试列图</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/03/astar0.gif" alt="astar progress" /></p>
+
+<p>图表3: 算法搜索过程的图形解释</p>
+
+<p>上图为Node[h] [w]和Open表的示范，初始化Node时设置EstimateCost为MAX另外需要一个变量描述改动状态(Modified)，如果改动过最佳记 录则状态第0位为1，如果在Open队列中则地1位为1，如果在Close中则第2位为1那么只要通过位运算就可以知道节点和队列的关系了，另外用一个数组来记录修改过最佳距离的节点位置，并且依据前面的状态变量来判断如果以前已经记录过就不再记录了，当路径搜索完以后就根据这个数组来还原数据了。</p>
+
+<p>请看上边的搜索试列图，可以简单看出OPEN队列在插入/删除时并不需要内存分配而只要改变其指针和Node[h][w]中节点的Next指针就行了，这是激动人心的提高。</p>
+
+<p>我们首先加入了搜索限制其次除去了内存分配，再者把每次查找一个节点是否在 Open/Close 链表中从搜索链表化简成检查标志，路径算法已经省去了许多不必要的工序了，再看下实用性方面，首先判断地图是否可以移动不要在算法中直接判断而最好设置一个虚函数 MoveAble(x,y) 来实现(程序中我用函数指针代替)，因为在游戏中某块地图对于地面单位和空中单位还有水下单位可以移动的情况都不同因此直接操作地图元素并不是明智的选择，再者估价函数JudgeCost(x,y)也应该设置成虚函数或者函数指针来实现，毕竟求估价值的方法很灵活，这里不能限制死了。</p>
+
+<p>还有每次寻路搜索哪些方向呢？用DirMask 来描述0-7位代表从上开始顺时针一圈的八个方向情况，0代表不搜索，1代表搜索，那么四个方向搜索可以用0x55(1010101b)来代替，八个方向可以用0xff来设定，如此一来你可以设定只进行搜索3个方向的寻路，这样可以满足一些简单的寻路任务了，比如RPG中NPC敌人的移动就可以这样来设 定。最后就是范围问题的设定了，Open表的最大大小可以设置为100-200(四个方向)或200-300(八个方向)而Close表的大小即处理节点的最多数目可以设置成 <code>(MapH*MapW)/16</code> 这样的设定在士兵走入一个桶形地形时并不会花费很大的开销去寻找通路，而是走到桶形地形的尖端。其具体 值可以适当调整，当然数值越大搜索就越广，开销也就越大 <code>(MapH*Map)/16</code> 这个数值我自己感觉比较接近星际的寻路特点。</p>
+
+<p>其它优化，由于Open队列中的数据全部是连表插入排序的，当数据多时效率并不会见得高。这时如果还要继续优化手段也很多，比如建立 Hash散列表，或者用二叉树来代替连表排序，大家可以参考前导公司的写的<code>A*</code>代码</p>
+
+<p>(<a href="../../maker/path.zip">http://www.skywind.me/maker/path.zip</a>)</p>
+
+<p>里面就用了散列表这点很优秀，但它任然摆脱不了大量的内存分配/释放。因此此处我觉得不怎么高明。</p>
+
+<p>到是估价值的计算方法很多，但是写的好坏也关系到搜索的规模：坐标差之绝对值乘加权值求和，平方和开方还有些怪的呢，可以看看前导的代码估价函数是怎么写的。我看到网上有文章说当前节点到终点的估计距离不能比实际距离大，说什么才能叫做<code>A*</code> 算法，否则只能叫A算法(人工智能书上说的)，因为不一定是最短路径，呵呵但是如果只是满足估价值小于真实值也不一定就可以找到最短路径故暂且不论，先看 JudgeCost的意义
+&ndash;使搜索更靠近终点，势必减小JudgeCost将会增加搜索的宽度及规模，增加JudgeCost则使搜索跟快地向终点靠 拢。下面是使用不同估价函数的对比：</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/03/astar1.gif" alt="astar result 1" /></p>
+
+<p>图表4:搜索代价之JudgeCost=abs(dx)+abs(dy)</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/03/astar2.gif" alt="astar result 2" /></p>
+
+<p>图表5:搜索代价之JudgeCost=abs(dx),abs(dy)加权求和</p>
+
+<p>上图两种估价函数的求法，星号是路径点是搜索过的节点，当JudgeCost 大于真实值时从一个节点出发算法更愿意搜索一个靠终点近的点，换言之JudgeCost越大算法就越买力向终点靠拢，从左右两副图可以清楚看到(点击放 大)。所以我们使用坐标差加权求和来处理或者直接求和乘与一个数字(比如8)在地形复杂的时候就更加显出这种方法的实用性了，良种式子的规模差距还要比上
+图严重的多。所以通用地用加权求和dx=abs(x-endx),dy=abs(y-endy);if (dx&gt;dy) result =10*dx+6*dy; else result=10*dy+6*dx;就是这个意思，所用的乘10和乘6是试验证明比较好用的数字了，如此一来搜索的规模就被控制得又减小了，是不可忽视的。</p>
+
+<p>这里有例子程序(<a href="../../maker/PathFind.zip">http://www.skywind.me/maker/PathFind.zip</a>)，可以测试搜索规模等。</p>
+
+<p>如果我们把它应用到即时战略类游戏中，还有几点要注意的，集体寻路要采用跟随政策，共用一条路径，中途遇到移动物分三步走：尝试加入一个斜方的路径节点看是否可以饶过;
+不能就等待移动物体自己走开;到了时间不走再另外搜寻路径，大场景要预先设定一些路径节点中转站再进行远距离搜索时可以大大提高效率，用方向保存路径比用 坐标保存节省至少1/4的空间。。。。碰到敌人部队就开枪，自己部队则可以不走了，或者发送两条指令给挡住路的士兵的指令队列 1.移开当前位置并等 待; 2.回到当前位置，这样可以产生一个一个顺序让路的精彩效果，红警里面早已有实现:-)</p>
+
+<p>讲远了，那是行军问题了，一年前我开始研究此算法，曾写了一段三百多行的程序以及配合的说明文，如今拿出来增改一番。</p>
+
+<p>一家之言，欢迎来信讨论: skywindt@yeah.net</p>
+
+<p>电子科技大学通讯工程学院20013080班 林伟</p>
+
+<p>2002年9月27日星期五</p>
+
+<p>参考文献：</p>
+
+<ol>
+<li>《人工智能技术导论》西安电子科大 ISBN7-5606-0811-6/TP.0417</li>
+<li>《精简的<code>A*</code>算法》 <a href="../../maker/qfind_c.htm">http://www.skywind.me/maker/qfind_c.htm</a></li>
+<li>《人性化的寻路技术》<a href="http://mays.soage.com/develop/ai/200204/RealPath.htm">http://mays.soage.com/develop/ai/200204/RealPath.htm</a></li>
+<li>“Amit’s <code>A*</code> Pages”<a href="http://theory.stanford.edu/%7Eamitp/GameProgramming/">http://theory.stanford.edu/~amitp/GameProgramming/</a></li>
+<li>“Intelligent PF” <a href="http://www.gamasutra.com/features/19970801/pathfinding.htm">http://www.gamasutra.com/features/19970801/pathfinding.htm</a></li>
+<li>“The Game AI Page” <a href="http://www.gameai.com/">http://www.gameai.com/</a> 本文电子版和源程序：<a href="../../maker/astar.htm">http://www.skywind.me/maker/astar.htm</a></li>
+</ol>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/91/">虚拟机及VmBasic编译引擎说明</a></li>
+        
+        <li><a href="/blog/archives/71/">PL0 编译程序Turbo Pascal代码</a></li>
+        
+        <li><a href="/archives/">历史归档</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/ai">AI</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

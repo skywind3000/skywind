@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/linux/</link>
+    <description>Recent content in Linux on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 08 Feb 2019 15:39:46 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>别让 cd 浪费你的时间</title>
+      <link>https://skywind3000.com/blog/archives/2229/</link>
+      <pubDate>Fri, 08 Feb 2019 15:39:46 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2229/</guid>
+      <description>&lt;p&gt;终端下工作最烦躁的就是路径切换，没有自动路径切换的帮助，就像在泥里走路，于是大家发明了各种 autojump / z / fasd 等工具来提升路径切换的效率，今天向大家介绍一个更好用的工具：&lt;a href=&#34;https://github.com/skywind3000/z.lua&#34;&gt;z.lua&lt;/a&gt;，用熟练了以后就像终端里溜冰，路劲切换从此指哪打哪。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/skywind3000/z.lua&#34;&gt;z.lua&lt;/a&gt; 是一个会学习你使用习惯的 &lt;code&gt;cd&lt;/code&gt; 命令，它会跟踪你在 shell 下访问过的路径，通过一套称为 Frecent 的机制（源自 Mozilla），经过一段简短的学习之后，&lt;code&gt;z.lua&lt;/code&gt; 会帮你跳转到所有匹配正则关键字的路径里 Frecent 值最高的那条路径去。&lt;/p&gt;
+
+&lt;p&gt;正则将按顺序进行匹配，&amp;rdquo;z foo bar&amp;rdquo; 可以匹配到 /foo/bar ，但是不能匹配 /bar/foo。&lt;/p&gt;
+
+&lt;h3 id=&#34;特性说明&#34;&gt;特性说明：&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;性能比 &lt;strong&gt;z.sh&lt;/strong&gt; 快三倍，比 &lt;strong&gt;fasd&lt;/strong&gt; / &lt;strong&gt;autojump&lt;/strong&gt; 快十倍以上。&lt;/li&gt;
+&lt;li&gt;支持 Posix Shell：bash, zsh, dash, sh, ash, busybox 等等。&lt;/li&gt;
+&lt;li&gt;支持 Fish Shell，Power Shell 和 Windows cmd。&lt;/li&gt;
+&lt;li&gt;使用增强匹配算法，更准确的带你去到你想去的地方。&lt;/li&gt;
+&lt;li&gt;低占用，能够仅在当前路径改变时才更新数据库（将 &lt;code&gt;$_ZL_ADD_ONCE&lt;/code&gt; 设成 1）。&lt;/li&gt;
+&lt;li&gt;交互选择模式，如果有多个匹配结果的话，跳转前允许你进行选择。&lt;/li&gt;
+&lt;li&gt;交互选择模式，支持使用 fzf 进行可视化结果筛选（可选）。&lt;/li&gt;
+&lt;li&gt;快速跳转到父目录，或者项目根目录，代替反复 “cd ../../..&amp;rdquo; 。&lt;/li&gt;
+&lt;li&gt;为不同的操作系统，不同的 Shell 程序提供统一的使用体验。&lt;/li&gt;
+&lt;li&gt;兼容 lua 5.1, 5.2 和 5.3 以上版本。&lt;/li&gt;
+&lt;li&gt;自包含且无额外依赖，单个 &lt;code&gt;z.lua&lt;/code&gt; 文件完成所有工作。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;软件安装&#34;&gt;软件安装：&lt;/h3&gt;
+
+&lt;p&gt;将下面对应语句添加到你的 &lt;code&gt;.bashrc&lt;/code&gt; / &lt;code&gt;.zshrc&lt;/code&gt; / &lt;code&gt;.profile&lt;/code&gt; 或者对应 shell 的初始化脚本末尾：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;eval &amp;quot;$(lua /path/to/z.lua --init bash enhanced once echo)&amp;quot;    # BASH 初始化
+eval &amp;quot;$(lua /path/to/z.lua --init zsh enhanced once echo)&amp;quot;     # ZSH 初始化
+eval &amp;quot;$(lua /path/to/z.lua --init posix enhanced once echo)&amp;quot;   # 其他 Posix Shell 初始化
+source (lua /path/to/z.lua --init fish enhanced once echo | psub)  # Fish Shell 初始化
+iex ($(lua /path/to/z.lua --init powershell enhanced once echo) -join &amp;quot;`n&amp;quot;) # Power Shell 初始化
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后重新登陆，即可使用。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Bash 中文速查表/Cheatsheet （全网最全）</title>
+      <link>https://skywind3000.com/blog/archives/2071/</link>
+      <pubDate>Wed, 07 Mar 2018 03:59:26 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2071/</guid>
+      <description>&lt;p&gt;Bash 的知识点向来比较凌乱，有时候写点小脚本，你忘记了条件判断怎么写了，就打开网页搜索一半天；忘记怎么分割字符串，又搜索一半天；忘了怎么解压缩某后缀名，又打开网页搜一半天。&lt;/p&gt;
+
+&lt;p&gt;关键大部分搜出来的东西都十分琐碎，东一处，西一处，质量又参差不齐，而且看到一处有些细节有疑问，你还得接着搜索。&lt;/p&gt;
+
+&lt;p&gt;连记点笔记也是这一篇那一篇的，用起来找来找去的十分不爽，所以我一怒之下春节期间整理了一份 bash 的 cheatsheet，以图以后有关于 bash 的事情就查看这个文件就够了：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/skywind3000/awesome-cheatsheets/blob/master/languages/bash.sh&#34;&gt;https://github.com/skywind3000/awesome-cheatsheets/blob/master/languages/bash.sh&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;对于一些工具性的东西，有时候一份速查表比你翻书查网页都高效数倍。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>为什么说 zsh 是 shell 中的极品？</title>
+      <link>https://skywind3000.com/blog/archives/2060/</link>
+      <pubDate>Wed, 07 Mar 2018 03:42:29 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2060/</guid>
+      <description>&lt;p&gt;（这是之前我在知乎上回答的一个可能对大家有点用处的答案，关于 zsh 的一些演示）&lt;/p&gt;
+
+&lt;h3 id=&#34;色彩高亮&#34;&gt;色彩高亮&lt;/h3&gt;
+
+&lt;p&gt;并不是传统基于正则表达式的色彩高亮，而是真的会判断你输入的是啥的色彩高亮：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/zsh-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;白色代表普通命令或者程序，红色代表错误命令，这个很管用，你再一个个字母的敲命令，前面都是红色的，如果敲对了最后一个字母的话，你会看到整条命令连着前面的都变成了白色，代表你敲对了。以前无高亮的时候敲错了都不知道，还要往上翻着左右检查。下面青色的代表内建命令或者 alias （echo 和 ls ），这些都不是正则判断出来的，是真的去检查的。&lt;/p&gt;
+
+&lt;p&gt;细心的人会发现非零的错误码，也会高亮显示在最右边（上一条 data命令错误，返回127）。&lt;/p&gt;
+
+&lt;h3 id=&#34;命令提示&#34;&gt;命令提示&lt;/h3&gt;
+
+&lt;p&gt;注意，命令提示和补全是两个完全不同的系统，很多时候提示比补全更有用：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/zsh-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;你才输入完 “tar”命令，后面就用灰色给你提示 tar 命令的参数，而且是随着你动态输入完每一个字母不断修正变化：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/zsh-3.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;比如你输入到 - 后，没有跟着它上面的提示，而是输入了一个c字母，它马上明白你是要压缩，不是解压，然后随即给出你压缩对应的命令提示。&lt;/p&gt;
+
+&lt;p&gt;这个命令提示是基于你的历史命令数据库进行分析的，随着你输入的命令越来越多，提示将会越来越准确和顺手，某些不常输入的命令特别管用，比如偶尔查看下网卡配置：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/zsh-4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;刚输入完：cat /etc/n 它后面已经猜出你可能要查看网卡配置了，然后马上给出你提示，用不着你 tab 补全半天，你才敲 gc ，它就猜测出你可能想运行 gcc，然后马上给出完整建议：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/zsh-5.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如果你觉得它提示的正确，你可以 CTRL+F 表示采纳，后面就会自动帮你一次性全部输入完了，不用一个字一个字的照着敲。前面的高亮就不说了，用惯这套提示系统，你就再也难以回到光秃秃的 bash 时代了。&lt;/p&gt;
+
+&lt;h3 id=&#34;智能补全&#34;&gt;智能补全&lt;/h3&gt;
+
+&lt;p&gt;传统 shell 的补全在 zsh 面前基本都可以下班了：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>GDB 从裸奔到穿戴整齐</title>
+      <link>https://skywind3000.com/blog/archives/2036/</link>
+      <pubDate>Wed, 28 Feb 2018 08:56:56 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2036/</guid>
+      <description>&lt;p&gt;无数次被问道：你在终端下怎么调试更高效？或者怎么在 Vim 里调试？好吧，今天统一回答下，我从来不在 vim 里调试，因为它还不成熟。那除了命令行 GDB 裸奔以外，终端下还有没有更高效的方法？能够让我事半功倍？&lt;/p&gt;
+
+&lt;p&gt;当然有，选择恰当的工具和方法，让 GDB 调试效率成倍的提升并没有任何问题。当然，前提条件是你至少会在使用最原始的 GDB。&lt;/p&gt;
+
+&lt;h3 id=&#34;裸奔状态-原始的-gdb-命令行&#34;&gt;裸奔状态：原始的 GDB 命令行&lt;/h3&gt;
+
+&lt;p&gt;穿上各种衣服前，至少得先学会裸奔，找份简单的 GDB cheat sheet 对照一下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/gdb-1.PNG&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;生产环境中出现崩溃时，因线上服务器一般没有开发环境，也无配套源代码，所以程序崩溃后，如果你懒得把 core 文件拖回到开发机检查，可以先在线上服务器先简单gdb看一下。&lt;/p&gt;
+
+&lt;p&gt;GDB命令密密麻麻，常用的也就表格上那几条，比如进去以后第一步先用 bt 查看一下调用栈，info local查看一下本地变量，再配合 up/down 在整个调用栈的不同层次之间上下移动一下，检查各处局部变量的值，print 一下某个表达式，即便没代码，看下符号和反汇编，一般也能调试个七七八八。&lt;/p&gt;
+
+&lt;p&gt;碰到复杂点的 BUG，必须配合源代码了，那你得把 core 文件拉到开发环境中，再用 gdb 对照源代码调试，配合 list [行号] 指令查看当前运行的源代码，再配合其他方法进行调试。&lt;/p&gt;
+
+&lt;p&gt;那么这时候，如果调试复杂度继续上升，你需要不断的断点，每次 next / step 单步完后你都需要 list 一下前后源代码，或者用 disassemble [函数名/地址] 查看一下指令的话，不少人会感觉到抓狂，这时我们需要给裸奔的 GDB 穿条内裤了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Aix 折腾手记</title>
+      <link>https://skywind3000.com/blog/archives/1924/</link>
+      <pubDate>Wed, 07 Dec 2016 17:51:09 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1924/</guid>
+      <description>&lt;p&gt;早年开发工作主要在 FreeBSD进行，2006年后来切换到 Linux下，期间穿插使用了一下 Solaris，所以我的网络库一直都是只支持这三个系统。为了让网络库支持更多平台，网上购置了一台 IBM AIX 小型机，因为其他大部分非 Linux系统，今天基本都可以在虚拟机里面安装了，而 AIX系统，你真的没法虚拟。&lt;/p&gt;
+
+&lt;p&gt;弄了几天以后，发现真他妈的麻烦，强大是强大，但是真的太琐碎了，相比之下，Linux/FreeBSD之流基本是傻瓜了。不看说明直接操作 AIX的话，可能连开机都麻烦，或者关机没关对，下次直接启动不了。&lt;/p&gt;
+
+&lt;p&gt;文字终端就没什么好拍的了，先上一张图形桌面的靓照吧：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux_aix_1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;是的你没看错，这就是 AIX 7，2012年的操作系统，就是那么的霸道，四处透着古典 Unix的味道。这样的机器今天还跑在各大银行的机房里，AIX系统管理员也拿着比 Linux系统管理员多几倍的工资，虽然工作岗位比较稀少。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Linux 网桥设置</title>
+      <link>https://skywind3000.com/blog/archives/1909/</link>
+      <pubDate>Wed, 07 Dec 2016 17:27:24 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1909/</guid>
+      <description>&lt;p&gt;在公司机房的物理机上架设 KVM虚拟化的时候，经常需要配置网桥，先要安装网桥工具：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-VimL&#34;&gt;apt-get install bridge-utils   
+apt-get install uml-utilities
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑 /etc/network/interfaces，参考下面配置加入网桥配置信息：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Linux 硬件时区折腾备忘</title>
+      <link>https://skywind3000.com/blog/archives/1904/</link>
+      <pubDate>Wed, 07 Dec 2016 17:21:21 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1904/</guid>
+      <description>&lt;p&gt;前段时间折腾家中 Nas的虚拟化服务，有时候虚拟机系统时间总是快8个小时。Guest这边设好了，到了 物理机就会慢8个小时。网上说只要修改/etc/default/rcS中的 UTC=no就行了，但还是没反映，没办法，一步步找问题。发现在/etc/rcS.d/S05hwclock.sh有这样一段话：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 2012-02-16 Roger Leigh rleigh@debian.org
+# - Use the UTC/LOCAL setting in /etc/adjtime rather than
+# the UTC setting in /etc/default/rcS. Additionally
+# source /etc/default/hwclock to permit configuration.
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Linux 线上系统调优备忘</title>
+      <link>https://skywind3000.com/blog/archives/1893/</link>
+      <pubDate>Wed, 07 Dec 2016 17:09:39 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1893/</guid>
+      <description>&lt;p&gt;大公司呆久了，都会对 SA的依赖十分强烈，很多事情 SA都帮我们搞定了。如今控制成本，没有招聘 SA，又没有购买 VPS，从买物理机开始到 IDC部署，服务器调优，虚拟机管理，全部都是自己来，才发现，安装一台 Linux机器自己玩很简单，但是要达到线上服务器的标准，还有若干调优工作需要做，有 SA的日志是多幸福的事情啊。&lt;/p&gt;
+
+&lt;h2 id=&#34;物理机设备驱动&#34;&gt;物理机设备驱动&lt;/h2&gt;
+
+&lt;p&gt;Dell服务器默认安装系统后会报找不到驱动:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;W: Possible missing firmware /lib/firmware/tigon/tg3_tso5.bin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因为 Debian/Ubuntu 的包都是开源的，默认开源驱动性能不行，于是需要添加 non-free源：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;deb http://ftp.de.debian.org/debian main contrib non-free
+deb-src http://ftp.de.debian.org/debian main contrib non-free
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;apt-get update
+apt-get install firmware-linux-free firmware-linux-nonfree
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;解决 Dell驱动报错问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Linux 下配置 Iptables 端口转发</title>
+      <link>https://skywind3000.com/blog/archives/1880/</link>
+      <pubDate>Wed, 07 Dec 2016 16:02:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1880/</guid>
+      <description>&lt;p&gt;经常需要对服务端的端口进行转发映射，让链接A服务器（202.181.55.93：8080）端口的所有tcp数据，forward到B服务器（106.185.43.22:80）端口，比如国内联通出国访问比较快，而电信比较坑爹，如果你家是电信网络，你却想畅快的访问境外的
+vps，那么可以在你联通网络的境内服务器上进行这样一个端口映射，你链接境内服务器（201.181.55.93:8080）端口相当于链接境外服务器的（106.185.43.22:80）端口。&lt;/p&gt;
+
+&lt;p&gt;Linux内核的 Iptables很强大，它维护一组内核变量，使用 /sbin/iptables命令进行直接规则设置，且通过配置新规则，可以直接支持端口转发，简单在 A服务器上使用下面这个 shell脚本即可：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#! /bin/sh
+# create forward rule by source interface
+# http://serverfault.com/questions/532569/how-to-do-port-forwarding-redirecting-on-debian
+PortForward1() {
+	local IN_IF=$1
+	local IN_PORT=$2
+	local OUT_IP=$3
+	local OUT_PORT=$4
+	local IPTBL=&amp;quot;/sbin/iptables&amp;quot;
+	echo &amp;quot;1&amp;quot; &amp;gt; /proc/sys/net/ipv4/ip_forward
+	$IPTBL -A PREROUTING -t nat -i $IN_IF -p tcp --dport $IN_PORT -j DNAT --to-destination ${OUT_IP}:${OUT_PORT}
+	$IPTBL -A FORWARD -p tcp -d $OUT_IP --dport $OUT_PORT -j ACCEPT
+	$IPTBL -A POSTROUTING -t nat -j MASQUERADE
+}
+# create forward rule by source ip
+# http://blog.csdn.net/zzhongcy/article/details/42738285
+ForwardPort2() {
+	local IN_IP=$1
+	local IN_PORT=$2
+	local OUT_IP=$3
+	local OUT_PORT=$4
+	local IPTBL=&amp;quot;/sbin/iptables&amp;quot;
+	echo &amp;quot;1&amp;quot; &amp;gt; /proc/sys/net/ipv4/ip_forward
+	$IPTBL -t nat -A PREROUTING --dst $IN_IP -p tcp --dport $IN_PORT -j DNAT --to-destination ${OUT_IP}:${OUT_PORT}
+	$IPTBL -t nat -A POSTROUTING --dst $OUT_IP -p tcp --dport $OUT_PORT -j SNAT --to-source $IN_IP
+}
+PortForward1 eth3 8080 106.185.43.22 80
+# put this file on /etc/network/if-up.d
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上面两个函数，一个是针对网卡，一个是针对本地IP设置转发，记得把这个脚本放到 &lt;code&gt;/etc/network/if-up.d&lt;/code&gt; 下面并设置可执行权限（Debian/Ubuntu），每次开机重启时保证可以运行，即可。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

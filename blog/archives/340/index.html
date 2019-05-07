@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>PowerPC 汇编入门与优化 | Skywind Inside</title>
+    <meta property="og:title" content="PowerPC 汇编入门与优化 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2008-04-15T08:05:36&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2008-04-15T08:05:36&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="PowerPC 汇编入门与优化">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/340/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">PowerPC 汇编入门与优化</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2008年4月15日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>PowerPC于1991年IBM/MOTO/APPLE研制，大量应用于服务器（AIX / AS400系列及苹果系列服务器），家用游戏机（PS3, Wii, XBOX, GameCube），以及嵌入式（仅次于Arm/x86排第三）。PowerPC核心在于开放系统软件标准，其应用范围仅次于x86，是除去x86外最值得开发者了解的体系。</p>
+
+<p>不需要写出非常高效的代码，但要了解基本效率原则；不需要大规模开发PPC程序，但需要时能写几段、调试时能看懂哪里错了。本文将从对比x86入手，引入RISC及PowerPC体系概念，向读者介绍该体系指令集，常用优化方法和交叉编译环境及模拟器的搭建等内容。</p>
+
+<p>下载阅读：<a href="https://skywind3000.github.io/images/blog/wp-content/2011/04/powerpc_figure_0408.pdf">powerpc_figure_0408</a></p>
+
+<h2 id="powerpc-figure-ppc入门与优化">PowerPC Figure – PPC入门与优化</h2>
+
+<p>By Skywind（2007）<br />
+<a href="http://www.skywind.me/blog/">http://www.skywind.me/blog/</a></p>
+
+<p><strong>背景介绍</strong></p>
+
+<p>PowerPC于1991年IBM/MOTO/APPLE研制，大量应用于服务器（AIX / AS400系列及苹果系列服务器），家用游戏机（PS3, Wii, XBOX, GameCube），以及嵌入式（仅次于Arm/x86排第三）。PowerPC核心在于开放系统软件标准，其应用范围仅次于x86，是除去x86外最值得开发者了解的体系。</p>
+
+<p>不需要写出非常高效的代码，但要了解基本效率原则；不需要大规模开发PPC程序，但需要时能写几段、调试时能看懂哪里错了。本文将从对比x86入手，引入RISC及PowerPC体系概念，向读者介绍该体系指令集，常用优化方法和交叉编译环境及模拟器的搭建等内容。</p>
+
+<h2 id="powerpc基础知识">PowerPC基础知识</h2>
+
+<blockquote>
+<p>1990_ 年 IBM 时任总裁 Kuehler 说服了摩托罗拉公司和苹果公司与 IBM 公司共同参与制订 PowerPC 体系结构。为了让 AS/400 也成为其中一员，1991 / 1992 年罗彻斯特实验室开始为 AS/400 扩充并制订 PowerPC 的 64 位结构。<br />
+ -&mdash; 《罗彻斯特城堡》</p>
+</blockquote>
+
+<p>大部分CPU指令集都可以分为：数据读写、数值计算、流程控制与设备管理四个部分，其中设备管理不属于介绍范围。开放系统软件标准在于硬件/软件只要符合该标准都能在 PowerPC下运行，也就是说先今有大量CPU虽然实现不一，但是他们在标准上都支持了 PowerPC体系，使得开发与接口更为方便。</p>
+
+<p>PPC使用RISC（精简指令集），指令字长都是32bit，一条Intel指令往往可以由多条 PPC指令组合表示。Endian一般都是可调的，默认使用BE（Big Endian），同时PPC没有栈，也就是说应用程序需要自己实现相关操作。</p>
+
+<p><strong>常用术语介绍</strong></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb9_thumb.png" alt="image_thumb\[9\]" /></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb11_thumb.png" alt="image_thumb\[11\]" /></p>
+
+<h3 id="常用寄存器">常用寄存器</h3>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb15_thumb.png" alt="image_thumb\[15\]" /></p>
+
+<p><strong>问题1</strong><strong>：如何加载32</strong><strong>位立即数？</strong></p>
+
+<p>在PPC下如何加载32位的立即数呢？RISC下PPC的每条指令都是4个字节定长。除去指令与寄存器参数编码，只有剩下16bit的长度用来描述立即数，比如立即数加载指令 LI：</p>
+
+<p><strong>LI rD, SIMM</strong></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb3_thumb.jpg" alt="clip_image002_thumb\[3\]" /></p>
+
+<p>立即数SIMM字段仅16位，如何表示32位？</p>
+
+<p>答案：只有分两次载如，使用LIS（立即数载入并左移）和ADDI（立即数加法）分两次加载。因此32bit的立即数加载需要分两次完成：</p>
+
+<pre><code class="language-text">LIS R3, 0x1122 加载并左移16位  
+ADDI R3, R3, 0x3344 再加上低16位
+</code></pre>
+
+<p>两条指令后，R3完成对 0x11223344的加载</p>
+
+<p><strong>特性：不一样的子程序调用</strong></p>
+
+<pre><code class="language-text">f1: 子程序入口  
+  blr 返回（跳转到LR地址）  
+start:  
+  bl f1 调用f1（跳转并保存地址到LR）  
+  li r1, 1 设置r1 = 1  
+  li r3, 1 设置r3 = 1  
+sc 系统调用：结束程序
+</code></pre>
+
+<p>PPC使用了LR寄存器（Link Register）来完成：在bl指令跳转前，下条指令（li r1,1）的地址会被保存到LR而执行到f1中的blr时，系统会跳转到LR所表示的地址，完成返回。</p>
+
+<p><strong>数据读写指令</strong></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb18_thumb.png" alt="image_thumb\[18\]" /></p>
+
+<p>注意：LBZ R3, 0(R2)与LHZ R3,10(R2)并不全等同于MOV AL,[EBX]和MOV AX,[EBX+10]。前者将字节和半字加载到R3时顺便清空了高位，而后两条指令加载数据到EAX并不会清空高位。</p>
+
+<p><strong>第一个程序：Hello World !!</strong></p>
+
+<p>把下面的程序保存成 hello.s，并交叉编译：</p>
+
+<pre><code class="language-text"># powerpc-eabi-as -gstabs hello.s -o hello.o  
+# powerpc-eabi-ld hello.o -o hello
+</code></pre>
+
+<p>代码如下：</p>
+
+<pre><code class="language-asm">•    .global _start                       /* 请将本程序保存成 hello.s */ 
+•    .data                                /* 后面将讲解如何在虚拟机中调试 */ 
+•    msg: .asciz &quot;Hello, PowerPC World !!\n&quot; 
+•    len = . – msg 
+•    .text                                /* 代码部分开始 */ 
+•    _start: 
+•        li %r0, 4                        /* r0 = 4   */ 
+•        li %r3, 1                        /* r3 = 1   */ 
+•        lis %r4, msg@ha                  /* r4 = msg(high) &lt;&lt; 16 */ 
+•        addi %r4, %r4, msg@l             /* r4 = r4 + msg(low)     */ 
+•        li %r5, len                      /* r5 = len */ 
+•        sc                               /* system call (print) */ 
+•        li %r0, 1                        /* r0 = 1 */ 
+•        li %r3, 1                        /* r3 = 1 */ 
+•        sc                               /* system call (exit) */ 
+</code></pre>
+
+<p>完成交叉编译后用 qemu模拟器执行：</p>
+
+<pre><code class="language-bash"># qemu-ppc hello  
+</code></pre>
+
+<pre><code>Hello, PowerPC World !!
+</code></pre>
+
+<p>关于如何在x86环境下交叉编译与调试，详细见第三部分的的“PowerPC编译调试”。</p>
+
+<p><strong>特殊寄存器操作</strong></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb23_thumb.png" alt="image_thumb\[23\]" /></p>
+
+<p><strong>问题2</strong><strong>：没有栈仅靠LR</strong><strong>如何递归？</strong></p>
+
+<pre><code class="language-bash">•    f1:                
+•       mflr r2                 保存LR中记录的地址到r2 
+•       stw r2, -8(r1)          记录r2的数值到MEM[r1-8]处 
+•       addi r1, r1, -60        r1后移60个字节，完成进栈操作 
+•       …. 
+•       addi r1, r1, 60         r1前移60个字节，准备出栈 
+•       lwz r2, -8(r1)          读出老的LR值到r2 
+•       mtfr r2                 将r2的内容复制到LR 
+•       blr                     返回（跳转到LR地址） 
+•    start: 
+•       ….
+</code></pre>
+
+<p>虽然PPC没有直接提供栈相关指令（PUSH/POP/CALL/RET），应用程序却常用R1来模拟栈指针，实现多层调用时对LR的记录与恢复。</p>
+
+<p><strong>数值计算指令</strong></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb26_thumb.png" alt="image_thumb\[26\]" /></p>
+
+<p><strong>特性：RISC</strong><strong>的“</strong><strong>加载/</strong><strong>存储”</strong><strong>体系</strong></p>
+
+<p>RISC决定了PowerPC使用加载/存储体系，即所有计算都是在寄存器中完成，而不是在主存中。除去加载/存储指令，所有操作都是针对寄存器的（少部分立即数），执行消耗周期相同且无须访问主存。</p>
+
+<p>CISC体系（如x86）几乎所有操作都可对内存、寄存器或两者同时进行操作。传统上，处理器被设计成适应更加复杂的指令。</p>
+
+<p>RISC是基于 “最简单的计算机指令是最经常被执行的” 这一研究基础。用简单指令的组合来执行复杂的指令。这样处理器的时间安排能以较简单和快速运算为基础，能在给定时钟速度下执行较多指令。</p>
+
+<p>现代的CISC处理器将自己的指令转换成了内部使用RISC格式，以实现更高的效率。</p>
+
+<h3 id="powerpc-流程控制">PowerPC 流程控制</h3>
+
+<p>_IBM<strong>公司70</strong>年代首次开发RISC<strong>，但知道多年以后才应用到IBM</strong>公司的系统中。尽管第一款IBM RISC<strong>处理器早在1986</strong>年就被应用到 IBM PC-RT<strong>中，但直道 IBM 1990</strong>年推出RS/6000__服务器时，该技术才开始受到重视。<br />
+__-- _<em>《罗彻斯特城堡》</em></p>
+
+<h3 id="条件寄存器">条件寄存器</h3>
+
+<p>CR（Condition Register）一共32位，从低位到高位被分成 CR0-CR7八段，每段四位。每个四位的CRn从低到高分别是：LT（小于标志）、GT（大于）、EQ（等于）和SO（溢出）比较指令或条件跳转指令均可指明具体操作哪个 CRn，由此可以同时判断多个条件。整数计算默认更改CR0，浮点数计算默认更改CR1。</p>
+
+<p><strong>举例：求绝对值</strong></p>
+
+<pre><code class="language-asm">•    _ABS: 
+•       cmpwi %r3, 0           /* 参数R3与0比较     */ 
+•       bgt greater_than       /* 如大于就跳转     */ 
+•       neg %r3, %r3           /* 取负值： R3 = Not(R3) + 1 */ 
+•    greater_than: 
+•       blr                    /* 返回 （从LR取出地址并跳转）    */ 
+•    _start: 
+•       li %r3, 123            /* 加载立即数 123 */ 
+•       bl _ABS                /* 调用 _ABS （跳转前记录地址到LR）*/ 
+•       li %r0, 1                      
+•       li %r3, 1 
+•       sc                     /* 系统调用：结束程序 */ 
+</code></pre>
+
+<p>比较：cmpw rA, rB （比较有符号），cmpwi rA, IMM（立即数比较），cmpwl rA, rB（无符号）。跳转：blt addr （小于跳转），bgt addr（大于跳转），beq addr（等于跳转）<br />
+类似：bne（不等），ble（小于等于），bge（大于等于）</p>
+
+<p><strong>数据比较指令</strong></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb29_thumb.png" alt="image_thumb\[29\]" /></p>
+
+<p><strong>特性：多条件寄存器</strong></p>
+
+<p>判断相同 - 老代码：</p>
+
+<pre><code class="language-text">cmpw r3, r4  
+beq _branch_1
+</code></pre>
+
+<p>判断相同 - 新代码：</p>
+
+<pre><code class="language-text">cmpw cr4, r3, r4  
+beq cr4, _branch_1
+</code></pre>
+
+<p>可以在比较和跳转命令第一个参数指明所使用的条件寄存器，如果不写的话，默认 CR0。由此我们可以用更多条件寄存器同时判断若干条件，再用cand/ cor/ cxor复合运算。</p>
+
+<h3 id="数值比较-有符号">数值比较 - 有符号</h3>
+
+<pre><code class="language-text">CMP crfD, L, rA, rB   
+  a &lt;- EXTS(rA) 扩展符号到a (如果无符号比较 cmpl 则直接 a = rA)   
+  b &lt;- EXTS(rB) 扩展符号到b (如果无符号比较 cmpl 则直接 b = rB)  
+  If a &lt; b then c = 0b100 设置小于标志  
+  else if a &gt; b then c = 0b010 设置大于标志  
+  else c = 0b001 设置等于标志  
+  CR[4 * crfD – 4 * crfD + 3] &lt;- c || XER[SO] 记录4位状态  
+</code></pre>
+
+<p>举例说明：</p>
+
+<pre><code class="language-text">cmpw rA, rB 比较 rA, rB的低32位结果存cr0 (同 cmp 0, 0, rA, rB)  
+cmpd rA, rB 比较 rA, rB的全64位结果存cr0 (同 cmp 0, 1, rA, rB)  
+cmpwc r3, rA, rB 比较 rA, rB的低32位结果存cr3 (同 cmp 3, 0, rA, rB)
+</code></pre>
+
+<h3 id="转移指令">转移指令</h3>
+
+<p>指令B（branch）是绝对地址无条件跳转，BA是相对地址无条件跳转，BL是跳转前将下一条指令的地址记录到LR（可以用blr跳转到LR所指地址），BLA是相对地址跳转，并将下条指令地址记录地址到LR。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb32_thumb.png" alt="image_thumb\[32\]" /></p>
+
+<p>条件跳转中 BI用来表示具体需要测试的条件寄存器CR的位，BO用来表示测试方式，比如是测试大于/小于/等于还是测试计数器CTR的值，故此blr等同 bclr 0b10100, 0。</p>
+
+<p><strong>特性：指令的别名</strong></p>
+
+<p>PowerPC指令助记符有大量别名：<br />
+比如 CMPW rA, rB 其实是 CMP 0, 0, rA, rB<br />
+比如 BEQ addr 其实是 BC 0xC, 2, addr<br />
+比如 BLR 其实是 BCLR 0x14, 0</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb36_thumb.png" alt="image_thumb\[36\]" /><br />
+转移指令如果没有指明条件寄存器，则默认使用CR0（CR的0-3位）；bca相对于bc或者ba相对于b，他们的指令码都相同，只是AA位（是否用绝对地址）为1 ；bcl相对于bc或者bl相对于b，他们的指令码亦同，仅LK位（是否记录地址）为1。</p>
+
+<p><strong>问题3</strong><strong>：如何跳转到R3</strong><strong>所记录地址</strong></p>
+
+<p>BC, B 等都是用相对地址跳转的。如何实现类似C里面的函数指针调用？</p>
+
+<p>答案：需要用到LR寄存器：<br />
+mtlr r3 将R3的值保存到LR<br />
+blr 跳转到LR所指位置</p>
+
+<h3 id="条件转移原理-了解">条件转移原理（了解）</h3>
+
+<pre><code class="language-text">BC BO, BI, target_addr (AA=0, LK=0)   
+  m &lt;- 32   
+  If BO[2]=0 then CTR &lt;- CTR – 1 如果BO[2]==0则计数器自减  
+  ctr_ok &lt;- BO[2] | BO[3] 判断计数器条件  
+  cond_ok &lt;- BO[0] | (CR[BI] == BO[1]) 判断条件寄存器某位是否符合需求  
+  If ctr_ok &amp; cond_ok then 如果两个条件同时成立则执行跳转  
+    if AA then NIA &lt;- iea EXTS(BD || 0b00) 如果使用绝对地址  
+    else NIA &lt;- iea CIA + EXTS(BD || 0b00) 如果使用相对地址  
+    if LK then LR &lt;- iea CIA + 4 判断是否记录指令地址到LR
+</code></pre>
+
+<p>注：NIA - 新指令地址；CIA - 当前指令地址；EXTS - 扩展正负符号；AA - 是否使用绝对跳转的标志；LK - 是否用LR保存下条指令地址（CIA + 4）。</p>
+
+<p>BO字段常用操作码：<br />
+BO=00100 如果条件成立（CR[BI]==0）则发生跳转<br />
+BO=01100 如果条件不成立（CR[BI]==1）则发生跳转<br />
+BO=10100 直接跳转</p>
+
+<p><strong>问题4：求绝对值指令原理</strong></p>
+
+<p>下面代码请直接用CMP/ BC两条指令实现（提示：参考前面关于BC/CMP两条指令原理）</p>
+
+<p>cmpw r3, r4<br />
+beq _branch_1</p>
+
+<p>答案（了解即可）：<br />
+cmp 0, 0, r3, r4<br />
+bc 0b01100, 2, _branch_1</p>
+
+<p>其实在实际开发中都是直接书写替代的别名</p>
+
+<p><strong>问题5：PowerPC 与 x86 的编码区别</strong></p>
+
+<p>PPC指令系统比x86/arm晦涩，同时RISC载入常数等指令等要分两次；PPC大部分指令都是三操作数，而x86几乎都是双操作数；PPC指令比x86更细致精准，同样程序PPC代码要比x86短。</p>
+
+<p>示例：演示递归 – 求阶乘</p>
+
+<p>接下来的程序将通过求阶乘演示递归。之前曾经说过：PPC没有栈，故而实际递归时需要保存现场与返回地址的工作交给了应用程序，我们一般使用R1来模拟栈指针：</p>
+
+<pre><code class="language-asm">• _factoria:                         /* 求阶乘，输入R3，返回R3 */ 
+•     mflr %r2 
+•     stw %r2, -8(%r1) 
+•     addi %r1, %r1, –60 
+• _factoria.start: 
+•     cmpwi %cr0, %r3, 1 
+•     bgt _factoria.n1              /* branch to n1 if r3 &gt; 1 */ 
+•     li %r3, 1                     /* return 1 (if r3 &lt;= 1) */ 
+•     b _factoria.exit 
+• _factoria.n1: 
+•     stw %r3, 8(%r1)               /* save r3 to stack */ 
+•     addi %r3, %r3, –1             /* r3 = r3 – 1 */ 
+•     bl _factoria                  /* call _factoria */ 
+•     lwz %r11, 8(%r1)              /* r11 = [r1 + 8] (old r3) */ 
+•     mullw %r3, %r3, %r11          /* r3 = r3 * r11 */ 
+• _factoria.exit: 
+•     addi %r1, %r1, 60             /* restore stack point */ 
+•     lwz %r2, -8(%r1)              /* resotre LR */ 
+•     mtlr %r2 
+•     blr
+</code></pre>
+
+<p>根据操作系统的不同，规定了不同的ABI（应用程序二进制接口），详细定义了栈如何操作，参数如何传递等关键接口规范，开发时需注意查看。</p>
+
+<p><strong>PowerPC 编译调试</strong></p>
+
+<p>交叉编译（在一个平台下编译另一个平台运行的程序）需要一台Unix机器或者Cygwin，下载并重新编译binutils即可：</p>
+
+<pre><code class="language-bash"># wget http://ftp.gnu.org/gnu/binutils/binutils-2.18.tar.bz2
+# tar -jvxf binutils-2.18.tar.bz2  
+# cd binutils-2.18  
+# ./configure --target=powerpc-linux-eabi  
+# make all install
+</code></pre>
+
+<p>模拟器QEMU最好在Linux环境中使用（才能支持用户模式模拟）</p>
+
+<pre><code class="language-bash"># apt-get install qemu （debian直接安装）
+</code></pre>
+
+<p>其他平台需要手工编译。所谓用户模式在于不需要模拟整个PPC操作系统，而是模拟执行PPC-Linux下二进制可执行文件，PPC程序的系统调用将会转化为本机 Linux的系统调用。所以我们不需要再在QEMU下重新安装一个 Mac OS X之类的系统：</p>
+
+<pre><code class="language-bash"># powerpc-linux-eabi-as -gstabs hello.s -o hello.o  
+# powerpc-linux-eabi-ld hello.o -o hello  
+# qemu-ppc ./hello  
+
+</code></pre>
+
+<p>输出：
+    Hello, PowerPC World !!</p>
+
+<p>上面是使用第一章中的 hello.s进行编译，并在虚拟机中运行以后的效果。</p>
+
+<h2 id="powerpc-指令优化">PowerPC 指令优化</h2>
+
+<p>首先需要认识到PPC体系下的CPU种类繁多，对具体需要优化的环境需要详细了解。例如流水线的类型如何？以往习惯了x86的思维后，我们都以为主频越高越好，流水线越长越好。其实不然。越长的流水线，分支预测失误代价越大，单条指令通过的时间越长。因此如果单算执行一条指令的速度，流水线长20的P4 2.0GHz 速度还没有流水线长 10的赛扬
+1.2GHz快，而且Intel仅仅为了增加并行处理部分指令的机会而增加流水线长度，同时又要保持无法并行时的处理速度，为此只有增加主频，带来功耗的上升，以及分支预测失误的昂贵代价。</p>
+
+<p>CPU需要根据科学型还是商务型及多媒体型来采取不同的设计优化策略：比如科学型计算机多用小而密集的循环计算，因此普通的分支预测命中率高（90%以上），因为大部分跳转都是向上跳转的循环，而商务型却只有50%的命中（大部分无规律的逻辑），多媒体型不但计算密集，而且内存吞吐量大。不同应用的CPU设计有所不同，优化也不同。</p>
+
+<p>PowerPC以AS/400为例，多为短流水线体系，分支预测失误的代价更少，且主频更低（功耗更小），采用更“聪明”的预测机制，大部分主频很低，但速度惊人。以上流水线设计的两派技术体系争斗了十多年，各有千秋，很多主频比Intel低很多的PowerPC的芯片，却表现出了更优越的性能，而市场上大部分人只喜欢盲目追求主频，这是一个误区。</p>
+
+<p><strong>1．指令结对原则</strong></p>
+
+<p>在类PPC405/440的系统中，指令被分为下面三类的其中之一，类405/440系统能够在单一周期同时执行两条不属于同一种类的指令：</p>
+
+<p>（1） 数据的加载与存储<br />
+（2） 任意义下处理：设置CR寄存器进行比较，分支，乘除SPR寄存器更新<br />
+（3） 其他种类操作：非SPR/CR寄存器更改，算术与逻辑</p>
+
+<p>如果两条邻接的指令属于同一类别，那么第二条必须等待第一条处理完以后才能被调度，这样做就浪费了时钟周期；而如果邻接的两条指令属于上述不同类别且无结果依赖，那么两条指令能够被同时调度，这样做就能获得比较高的效率。</p>
+
+<p>这与我们x86下优化的经验并部相同，在x86的流水线中只要无倚赖的代码基本都可以并行运行，比如我们可以并行处理若干无相关的加载或计算，从而在x86下达到较高的效率：</p>
+
+<p>mov eax, [esi + 10] 三条无依赖加载能并行<br />
+mov ebx, [esi + 14]<br />
+mov ecx, [esi + 18]<br />
+add eax, edx 三条无依赖加法能并行<br />
+add ebx, edx<br />
+add ecx, edx</p>
+
+<p>而这样在大多数类405/440的PPC下却是有问题的。整数计算属于同一类别，邻接的无依赖计算指令不能如现代x86体系中得到同时运行；载入指令也相同，而整数计算和加载混合却能很好的并行调度：</p>
+
+<p>lwz r3, 0(r10) 此加载和下一条加法无依赖，且属不同类别<br />
+add r4, r5, r5 加法能和前一条加载并行运行<br />
+lwz r6, 4(r10)<br />
+add r7, r8, r8<br />
+lwz r9, 8(r10)<br />
+add r3, r4, r4</p>
+
+<p>因此如果我们的潜意识里过分熟悉x86优化方式，进而在用C开发的时候也会体现出来的话，可以说，这样的C代码在PPC下很难发挥效果的，即便编译器能优化，也需要给编译器留有优化的余地。</p>
+
+<p><strong>2．加载依赖原则</strong></p>
+
+<p>当数据从缓存被加载到某寄存器的时候，需要数个周期以后数据才能被其他指令所使用，一条使用到刚被加载数据的指令需在数据被加载后第三个周期才能被调度。故在数据被加载与被使用两条指令之间的数个周期内形成了一段非常有效的优化区间，我们用来放置其他一些指令。加载与处理命令之间能放置的指令数决定于这些指令的种类，决定于他们是否能够结对并行处理，最大能有五条指令的优化空间。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb41_thumb.png" alt="image_thumb\[41\]" /></p>
+
+<p>在加载与使用命令之间能够并行插入的指令数取决于这些指令的混合方式，最少我们也可以插入两条指令进行优化。参考下面的指令，stw和lbz两条处于n+1和n+2周期的指令不能被结对并行执行，因为他们属于同一类别的指令。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb44_thumb.png" alt="image_thumb\[44\]" /></p>
+
+<p>虽然大部分加载指令只有一个目标寄存器，但是需要注意一些带“更新”功能的加载指令，诸如lwzu它除了更新目标寄存器外，同时也会更新源寄存器，此时对源寄存器的使用也必须等待该指令被完成执行以后才行。</p>
+
+<p><strong>3．指令依赖原则</strong></p>
+
+<p>同x86类似，有上下文依赖的指令不能同时被调度。在两条指令中，如果第一条指令更新的寄存器会被第二条指令用到，那么这两条指令不能被同时调度，利用这个特性我们将依赖关系的两条指令分开，并且插入至少一条指令完成优化。</p>
+
+<p>比如我们在周期n用add r4,r5,r6更新了R4寄存器，那么就只能到周期n+1才能调度到使用R4寄存器的srawi r7,r4,4指令。在第一条指令的第n周期，没有指令能够与之并行执行而造成了浪费，所有正确的方式是在这两条指令之间加入一条无相关的指令，这样便能和add指令进行结对而得到同时调度，充分利用了时钟周期。</p>
+
+<p><strong>4．缓存优化原则</strong></p>
+
+<p>缓存优化的方法基本和x86相同，这里再对缓存优化的原理做一下说明，即处理器要使用主存某地址的数据时，需要先将他们加载到缓存，然后才能处理，最后更新回主存去。根据前面的加载依赖原理的阐述，我们知道从缓存加载到寄存器需要三个时钟周期后才可以使用该寄存器，然而如果该地址的数据不在缓存中的话，前面就需要加上更多周期的等待周期，让数据先加载到缓存，最终再经过三个周期的等待后才能使用该数据。</p>
+
+<p>为了降低直接从外存到缓存昂贵代价，现代的处理器都增加了一条预取指令，在x86下叫做prefetch而在PowerPC中叫做DCBT（Data Cache Block Touch）：</p>
+
+<pre><code>DCBT rA, rB  - 将(rA+rB)所表示的地址数据预取到缓存
+</code></pre>
+
+<p>该指令将提前告诉CPU将用到哪块内存，CPU提前将该内存读入缓存，几个周期以后等到用时就该指令已经在缓存中了。用dcbt同x86的 prefetch指令，现代CPU的主要瓶颈在主存到缓存之间，高效使用缓存是优化的关键。</p>
+
+<p>下面是一段x86下比memcpy快1.6倍的内存拷贝代码，原因在于对缓存的使用上，先mm0-mm7顺序加载，再顺序写入，读入到mm0与从mm0写入中间间隔7条指令，让CPU有足够的时间加载，同时使用了预取。</p>
+
+<pre><code class="language-asm">loop:  
+	prefetchnta [esi + 256] 预取 esi + 256地址的数据  
+	movq mm0, [esi + 0] 加载 esi + 0 到 mm0  
+	movq mm1, [esi + 8]  
+	…  
+	movq mm7, [esi + 56]  
+	movntq [edi + 0], mm0 写入mm0到 edi + 0  
+	movntq [edi + 8], mm1 使用穿透缓存方式写入  
+	…  
+	movntq [edi + 56], mm7  
+	add esi, 64 指针后移 64字节  
+	add edi, 64 指针后移 64字节  
+	dec ecx  
+	jnz loop 判断计数器并循环跳转
+</code></pre>
+
+<p>而如果在PowerPC下写内存拷贝，我们就不能并列写若干加载指令，因为大部分PPC不能并行处理加载，我们需要将加载与存储交叉写：</p>
+
+<pre><code class="language-asm">loop:  
+	dcbt r12, r11 预先加载 (r12+r11) 处内存到缓存  
+	lwzu r3, 4(r11) 加载内存到r3并且移动指针  
+	lwzu r4, 4(r11)  
+	lwzu r5, 4(r11) 争取加载指令与写入指令并行运行  
+	stwu r3, 4(r10) 写入数据从r3并且移动指针  
+	lwzu r6, 4(r11)  
+	stwu r4, 4(r10)  
+	lwzu r7, 4(r11)  
+	stwu r3, 4(r10) 利用多寄存器的特点写下去  
+	lwzu r8, 4(r11)  
+	….  
+	addi r9, 0, –1 减少计数器  
+	cmpwi cr4, r9, 0  
+	blt loop 计数器未到就跳转
+</code></pre>
+
+<p>该段程序有三处优化，首先是缓存预取，dcbt在每个循环预先取后面的内容，其次是充分利用PPC多寄存器的特点，最后是让加载和保存指令交叉进行充分的发挥并行作用。</p>
+
+<p>如果你所使用的PowerPC没有DCBT指令的支持，那么我们可以用一些小技巧来达到缓存预取的效果，即将DCBT指令替换成一条lwz来加载该地址数据到一个无用的寄存器，这种方法称为“硬预取”，在x86中也能可以使用该方法来起到缓存预取的作用。</p>
+
+<p><strong>5． PPC 的AltiVec ™ 指令优化：</strong></p>
+
+<p>在PowerPC G4后开始支持AltiVec ™ ，这是一套类似x86下MMX+SSE的SIMD指令集，提供128位的矢量并行计算（8bit/16bit/32bit三种计算元）的功能，使多媒体计算平均提高4-5倍，而具体的AltiVec ™ 优化方法，超出本文叙述范围，读者可以自行查找相关资料。</p>
+
+<p><strong>6． 最终优化方法：</strong></p>
+
+<p>开启C编译器的汇编输出，在最大优化模式下思考编译器的优化策略。反复阅读对应 CPU的官方文档，试验、试验、再试验！最终您能写出漂亮高效的PPC代码。</p>
+
+<h3 id="参考资料">参考资料</h3>
+
+<p>《PowerPC860嵌入式系统及应用》，机械工业出版社，陈晓竹，2006<br />
+《Linux PowerPC详解-核心篇》, 机械工业出版社, 王齐, 1997<br />
+《罗彻斯特城堡》，机械工业出版社，IBM，2003<br />
+《基于POWERPC的嵌入式LINUX》, 北京航空航天大学出版社, 漆昭铃, 2004</p>
+
+<p>PowerPC Architecture Book，<br />
+<a href="http://www.ibm.com/developerworks/eserver/library/es-archguide-v2.html">http://www.ibm.com/developerworks/eserver/library/es-archguide-v2.html</a></p>
+
+<p>Software optimization techniques for PowerPC 405 and 440，<br />
+<a href="http://www.ibm.com/developerworks/eserver/library/es-plib1app.html">http://www.ibm.com/developerworks/eserver/library/es-plib1app.html</a></p>
+
+<p>Unrolling AltiVec Part 1 - Introducing PowerPC SIMD Unit<br />
+<a href="http://www.ibm.com/developerworks/library/pa-unrollav1/">http://www.ibm.com/developerworks/library/pa-unrollav1/</a></p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/66/">艺术化的程序设计</a></li>
+        
+        <li><a href="/blog/archives/149/">SlabPlus 内存分配算法</a></li>
+        
+        <li><a href="/blog/archives/626/">[转载] 二十六史 - 毛太祖本纪</a></li>
+        
+        <li><a href="/blog/archives/202/">春运生存手册</a></li>
+        
+        <li><a href="/blog/archives/1145/">影子跟随算法（2007年老文一篇）</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96">汇编</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

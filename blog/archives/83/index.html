@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>MINI-FOOLFLY 游戏代码 | Skywind Inside</title>
+    <meta property="og:title" content="MINI-FOOLFLY 游戏代码 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2005-04-12T13:06:17&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2005-04-12T13:06:17&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="MINI-FOOLFLY 游戏代码">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/83/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">MINI-FOOLFLY 游戏代码</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2005年4月12日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a></span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>此程序仅向人说明编写游戏程序的若干功能实现和常用处理方法，编译版本下载：</p>
+
+<p><a href="http://www.skywind.me/resource/oldworks/foolfly.zip">http://www.skywind.me/resource/oldworks/foolfly.zip</a></p>
+
+<pre><code class="language-cpp">/* Fool fly game v1.0 by skywind
+ * 空战摸拟源程序，林伟 1999年7月30日
+ *
+ * 这是一个空战程序的模式例子，并没有做任何优化与扩充
+ * 仅仅向人说明编写游戏程序的若干功能实现或常用处理方法
+ * 程序是DOS版的，现在写游戏的平台早已变化了许多，但是
+ * 我尽量容入了一些不变理论，希望才入门的游戏设计者能受
+ * 到一些启发，通过它也可以看出当日DOS下设计的困难重重。
+ *
+ * 整个程序不足300行，请用BC31或者TC20的Large模式编译
+ */
+
+#include &lt;stdio.h&gt;
+#include &lt;dos.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;mem.h&gt;
+#include &lt;time.h&gt;
+#include &lt;math.h&gt;
+#include &lt;alloc.h&gt;
+
+#define  MAX_STAR   80                    /* 最多星星数目         */
+#define  MAX_OBJ    30                    /* 最多物体(子弹和敌人) */
+#define  MAXY      169                  /* y坐标的最大值        */
+typedef unsigned long ulong;
+char far *VideoBuf=(char far*)0xa0000000L, *MemBuf;     /* MemBuf 图形二级缓存 */
+char  keys[128];                                        /* keys[0..100] 键盘上各键的状态   */
+const KEY_UP=72,KEY_DOWN=80,KEY_LEFT=75,KEY_RIGHT=77,KEY_ESC=1,KEY_CTRL=29;
+                                                /* 键盘扫描码 */
+void interrupt far (*OldInt9)(void);                            /* 老的键盘中断程序地址 */
+void interrupt NewInt9(void);                                   /* 新的键盘中断服务程序 */
+char GameStart(void);
+struct TStars { int x,y,v; } Stars[MAX_STAR];   /* 星星的描述 */
+struct TObj { int mode,type,index,next,x,y; } Objs[MAX_OBJ]; /* 子弹和敌人的描述 */
+long GameScore=0;                               /* 游戏分数 */
+
+unsigned char fly_pic[260]={      /* 飞机的图形，我是用程序将PCX图形转换过来的 */
+16,0,16,0,0,0,0,29,25,0,0,0,0,25,29,196,0,0,0,0,0,0,0,25,25,0,0,0,0,25,0,196,0,
+0,0,0,112,112,0,25,196,40,40,29,112,112,40,112,0,112,112,112,40,40,112,112,40,40,
+25,25,112,40,40,112,112,112,112,112,112,40,112,25,40,40,112,112,112,40,40,25,
+40,112,112,0,0,112,112,25,40,40,40,112,40,40,40,25,40,112,0,0,0,0,112,25,40,
+112,40,112,112,112,40,25,112,0,0,0,0,0,0,29,112,0,40,0,112,0,112,29,0,0,0,0,
+0,0,0,29,112,0,40,54,112,0,112,29,0,0,0,0,0,0,0,29,0,0,40,54,112,0,0,29,0,0,
+0,0,0,0,0,0,0,40,112,25,112,112,0,0,0,0,0,0,0,0,0,0,0,40,112,25,112,112,0,0,
+0,0,0,0,0,0,0,0,0,40,112,112,112,112,0,0,0,0,0,0,0,0,0,0,0,0,40,112,112,0,0,
+0,0,0,0,0,0,0,0,0,0,0,40,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,112,0,0,0,0,0,0,0,
+0};    /* 数据头四个字节分别由两个16位数据表示图片的长和宽，后面是图片8bit的颜色数据 */
+
+void copyright(void)
+{ printf(&quot;Game Over. your score %ld\n&quot;,GameScore);
+  printf(&quot;Thank you for play it, if you have any question please call me\n&quot;);
+  printf(&quot;(0871)7167710 or lwwind@yeah.net, Lin Wei\n&quot;);
+
+}
+
+int game_init(void);
+int game_restore(void);
+
+void main(void)
+{
+  if (!game_init()) return;                    /* 游戏初始化 */
+  printf(&quot;           - STAR WAR -\r&quot;);         /*  打印标题  */
+  GameStart();                                 /* 游戏主循环 */
+  game_restore();                              /* 还原初始化 */
+  copyright();                                 /* 显示说明文 */
+}
+
+int game_init(void)
+{
+  long i;
+  union REGS regs;
+  MemBuf=(char far*)farmalloc(320L*(MAXY+1));
+  if (!MemBuf) {
+     printf(&quot;not enough memory\n&quot;); return 0;
+  }
+  memset(MemBuf,0,320L*(MAXY+1));
+  randomize();                                          /* 初始化随机函数 */
+  for (i=0;i&lt;128;i++) keys[i]=0;                        /* 键盘码初始化 */
+  for (i=0;i&lt;MAX_STAR;i++) {                            /* 星空初始化   */
+      Stars[i].x=random(320);
+      Stars[i].y=-20+random(250);
+      Stars[i].v=1;
+      if (i&lt;MAX_STAR/3) Stars[i].v++;
+  }
+  for (i=0;i&lt;MAX_OBJ;i++) Objs[i].mode=0;    /* 物体初始化 */
+
+  /* 键盘中断初始化：设置新的中断 */
+  OldInt9=getvect(9);
+  disable();
+  setvect(9,NewInt9);
+  enable();
+
+  /* 设置 320x200x256c图形模式 */
+  regs.x.ax=0x13;
+  int86(0x10,&amp;regs,&amp;regs);
+  return 1;
+}
+
+int game_restore(void)
+{
+  union REGS regs;
+  /* 还原设置：还原老的中断 */
+  disable();
+  setvect(9,OldInt9);
+  enable();
+
+  regs.x.ax=3;
+  int86(0x10,&amp;regs,&amp;regs);
+  farfree(MemBuf);
+  return 0;
+}
+
+/* 键盘服务程序 */
+void interrupt NewInt9(void)
+{
+  unsigned char key;
+  key=inportb(0x60);                                    /* 读键盘扫描码 */
+  if (key&lt;0x80) keys[key]=1;                            /* 如果最高位是0,则为按下 */
+    else keys[key&amp;0x7f]=0;                              /* 如果最高位是1,则为放开 */
+  key=inportb(0x61); key|=0x80; outportb(0x61,key);     /* 告诉键盘已接收 */
+  outportb(0x61,key&amp;0x7f);
+  outportb(0x20,0x20);                                  /* 发送中断结束信号 */
+}
+
+/*---------------------------- 游戏图形引擎 ---------------------------------*/
+void pixel(unsigned x,unsigned y,char c)                /* 画点 */
+{
+  if (x&gt;=320||y&gt;MAXY) return;                           /* 判断范围 */
+  MemBuf[(y&lt;&lt;8)+(y&lt;&lt;6)+x]=c;                            /* MemBuf[y*320+x]=c */
+}
+
+/* 将二级缓存的内容显示出来 */
+void show(void)
+{
+  int offset=(199-MAXY)*160;
+  memcpy(VideoBuf+offset,MemBuf,320L*(MAXY+1));
+}
+
+/* 清屏 */
+void clear(void)
+{
+  memset(MemBuf,0,320L*(MAXY+1));
+}
+
+/* 就是绘制图块，(x,y)是坐标b是内存地址mode表示是否上下颠倒
+ * 敌人和主人是同样的图片做颠倒
+ */
+void putimage(int x,int y,char *b,int mode)
+{
+  int len, wid, i, j;
+  len = b[0] + (int)b[1] * 256;
+  wid = b[2] + (int)b[3] * 256;
+  x-=len/2; y-=wid/2;                                   /* 中心对称 */
+  for (j=0,b=b+4;j&lt;wid;j++) for (i=0;i&lt;len;i++,b++)
+    { if (*b&amp;&amp;!mode) pixel(x+i,y+j,*b);                 /* 是否镜面翻转 */
+      if (*b&amp;&amp;mode)  pixel(x+i,y+wid-j-1,*b);
+    }
+}
+
+void drawfire(int x,int y)                              /* 画出激光 */
+{ int i,j;
+  for (i=-6;i&lt;6;i++) { pixel(x-5,y+i,9); pixel(x+3,y+i,9); }
+}
+/*---------------------------- 游戏控制引擎 ---------------------------------*/
+unsigned long timepass;                    /* 游戏进行的时间 */
+int  GameOver, Sound=0;
+int  fly_x=160,fly_y=MAXY*2/3,fly_flag=1,fire_flag=1;
+void drivers(void);                     /* 控制产生敌人的函数 */
+void control(void);                     /* 对象控制(事件处理) */
+
+int  AllocObj(void)                     /* 分配空余对象 */
+{ int i=0;
+  while (i&lt;MAX_OBJ&amp;&amp;Objs[i].mode) i++;
+  if (i&gt;=MAX_OBJ) i=MAX_OBJ-1;
+  return i;
+}
+
+int  CheckHit(int x1,int y1,int x2,int y2,int r)    /* 检查碰撞 */
+{
+  if (abs(x1-x2)&lt;=r&amp;&amp;abs(y1-y2)&lt;=r) return 1;
+  return 0;
+}
+
+ulong fclock(void)                    /* 读取 1.19MHz的32位系统时钟 */
+{
+  ulong t;
+  disable(); outportb(0x43,0); t=inportb(0x40);
+  t+=(inportb(0x40)&lt;&lt;8); t=0xffff^t; enable();        /* (not t) + (clock()&lt;&lt;16) */
+  return (clock()&lt;&lt;16)+t;
+}
+
+char GameStart(void)
+{
+  ulong start=0;
+  timepass=0;
+  while (!GameOver)
+   {
+     while (fclock()-start&lt;=45000L); start=fclock();     /* 时间控制 */
+     clear();                        /* 1.清屏. 以下5点为游戏的主循环 */
+     timepass++;                     /* 2.时间基数++ */
+     control();                      /* 3.事件处理   */
+     drivers();                      /* 4.事件引擎   */
+     show();                         /* 5.显示       */
+     if (--Sound&lt;=0) nosound();             /* 声音处理 */
+     if ((timepass&amp;3)==0) printf(&quot;%d\r&quot;,GameScore);    /* 到一定的时间更新显示分数 */
+     if (keys[KEY_ESC]) GameOver=1;
+   }
+  sound(105); delay(700); nosound();                    /* Game Over发音 */
+  return 1;
+}
+
+/* 游戏的事件处理主程序分别处理星空和物体还有主角控制
+ * 通过扫描对象数组：Objs[MAX_OBJ]来完成，根据扫描到的对象属性Objs[i].mode来判断
+ * 到底是什么对象：敌机或者子弹。并进入相应的处理程序：分析对象的状态，然后作出
+ * 调整，并重新更改状态，这就是游戏编程同时处理众多物体的核心思想。
+ */
+void control(void)
+{
+  int i,j,x,y, ok;
+
+  /* 星星处理 */
+  for (i=0;i&lt;MAX_STAR;i++) {
+    Stars[i].y+=Stars[i].v;       /* 向下移动 */
+    if (Stars[i].y&gt;MAXY) {        /* 如果移出屏幕就让它重新出现在屏幕上方某位置 */
+    Stars[i].x=random(320);
+    Stars[i].y=-random(60);
+    }
+    if (Stars[i].v==1) pixel(Stars[i].x,Stars[i].y,23);    /* 速度不一样颜色也不一样 */
+      else pixel(Stars[i].x,Stars[i].y,28);
+  }
+
+  /* 对象处理 */
+  for (i=0;i&lt;MAX_OBJ;i++)                /* 扫描对象数组 */
+   { x=Objs[i].x; y=Objs[i].y; ok=1;
+     switch (Objs[i].mode)                /* mode表示敌人，子弹等 */
+      {
+    /* 敌人处理 */
+    case 1: if (Objs[i].index==0) {
+         switch (Objs[i].type)                  /* 检测敌人的三种状态 */
+         { case 0: if (!random(30)) Objs[i].type=1; break; /* 3种动作状态 */
+           case 1: if (x&lt;fly_x) x++; if (x&gt;fly_x) x--;
+               if (!random(40)) Objs[i].type=2; break;
+           case 2:
+           default:if (!random(3)) y+=3;
+               break;
+         }
+         if (CheckHit(x,y,fly_x,fly_y,15)) fly_flag=0;    /* 与主角相撞 */
+         putimage(x,y,fly_pic,0);
+        } else { /* 如果被击中就闪烁地绘制飞机，然后消失 */
+         if ((Objs[i].index&amp;3)==0) putimage(x,y,fly_pic,0);
+         if (++Objs[i].index&gt;50) Objs[i].mode=0;
+        }
+        y++; if (y&gt;MAXY) Objs[i].mode=0;    /* 移出屏幕就清除 */
+        break;
+    /* 激光处理 */
+    case 2: y-=4; if (y&lt;-20) Objs[i].mode=0; drawfire(x,y);
+        for (j=0;j&lt;MAX_OBJ;j++)                 /* 检查与敌机相碰 */
+        if (Objs[j].mode==1&amp;&amp;CheckHit(x,y,Objs[j].x,Objs[j].y,15)&amp;&amp;
+            !Objs[j].index&amp;&amp;ok)            /* 击中敌机 */
+         {
+           Objs[j].index=1; ok=0; Objs[i].mode=0;
+           sound(220); Sound=10; GameScore+=10;
+         }
+        break;
+      }
+     Objs[i].x=x; Objs[i].y=y;                /* 更新坐标 */
+   }
+
+  /* 主角控制 */
+  if (keys[KEY_UP])  if (--fly_y&lt;0) fly_y=0;         /* 如果上键被按下 */
+  if (keys[KEY_DOWN]) if (++fly_y&gt;MAXY) fly_y=MAXY;    /* 如果下键被按下 */
+  if (keys[KEY_LEFT]) if (--fly_x&lt;0) fly_x=0;        /* 如果左键被按下 */
+  if (keys[KEY_RIGHT]) if (++fly_x&gt;319) fly_x=319;    /* 如果右键被按下 */
+  if (keys[KEY_CTRL]&amp;&amp;fire_flag) {             /* 如果按下CTRL */
+     i=AllocObj(); Objs[i].x=fly_x,
+     Objs[i].y=fly_y-10, Objs[i].mode=2; fire_flag=0;
+  }
+  if (!keys[KEY_CTRL]) fire_flag=1;            /* 如果放开CTRL */
+  putimage(fly_x,fly_y,fly_pic,1);            /* 画出主角     */
+  if (!fly_flag) GameOver=1;                /* 判断主角状态 */
+}
+
+/* 控制产生敌人的部分 */
+void drivers(void)
+{
+  if (random(30)==0)
+  { int i=AllocObj(); Objs[i].x=random(320); Objs[i].y=-random(20);
+    Objs[i].mode=1; Objs[i].type=Objs[i].index=0;
+    if (!random(20)) Objs[i].type=2;
+  }
+}
+</code></pre>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/66/">艺术化的程序设计</a></li>
+        
+        <li><a href="/blog/archives/60/">关于路径搜索算法的实用性优化</a></li>
+        
+        <li><a href="/blog/archives/91/">虚拟机及VmBasic编译引擎说明</a></li>
+        
+        <li><a href="/blog/archives/71/">PL0 编译程序Turbo Pascal代码</a></li>
+        
+        <li><a href="/archives/">历史归档</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/dos">Dos</a></li>
+                                
+                                <li><a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F">小游戏</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

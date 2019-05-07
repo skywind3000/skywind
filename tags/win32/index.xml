@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Win32 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/win32/</link>
+    <description>Recent content in Win32 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 19 Apr 2005 07:52:17 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/win32/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>在现MSN魔法表情</title>
+      <link>https://skywind3000.com/blog/archives/102/</link>
+      <pubDate>Tue, 19 Apr 2005 07:52:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/102/</guid>
+      <description>&lt;p&gt;下面是播放时候的效果图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/magicvv1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;MSN的魔法表情实在是COOL，兴趣之下自己也做了一个特效演示 将FLASH拖到窗口上面，然后点“特效”， 如果桌面是32位的效果非常漂亮，可以拖动图形，现在就下载：&lt;/p&gt;
+
+&lt;p&gt;演示程序 演示程序地址二 (98KB)&lt;/p&gt;
+
+&lt;p&gt;最好笑的事情是那天发现有些聊天软件的魔法表情居然是假的，它是把桌面抓下来然后用IE空间来播放flash， 顺便把抓下来的桌面当背景．或者直接用ColorKey -_-&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>语法分析 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/</link>
+    <description>Recent content in 语法分析 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 10 Apr 2015 11:33:09 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>转换 Intel汇编格式到 AT&amp;T 汇编风格</title>
+      <link>https://skywind3000.com/blog/archives/1244/</link>
+      <pubDate>Fri, 10 Apr 2015 11:33:09 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1244/</guid>
+      <description>&lt;p&gt;常用 MSVC写内嵌汇编需要兼容 GCC是一件头疼的事情，不是说你不会写 GCC的 AT&amp;amp;T风格汇编，而是说同一份代码写两遍，还要调试两遍，是一件头疼的事情，特别是汇编写了上百行的时候。于是五年前写过一个小工具，可以方便的进行转换，能把 MSVC/MASM的汇编转成纯 AT&amp;amp;T风格汇编，或者 GCC
+Inline风格汇编，自动识别寄存器和变量，还有跳转地址，并且自动导出。今天把他放上来，或许有用到的人吧。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/skywind3000/Intel2GAS/master/images/intel2gas_1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;项目下载：&lt;a href=&#34;https://github.com/skywind3000/Intel2GAS&#34;&gt;https://github.com/skywind3000/Intel2GAS&lt;/a&gt;。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>虚拟机及VmBasic编译引擎说明</title>
+      <link>https://skywind3000.com/blog/archives/91/</link>
+      <pubDate>Thu, 18 Apr 2002 08:33:16 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/91/</guid>
+      <description>&lt;p&gt;2001-2002期间开发的虚拟机/编译器开源项目代码和资料&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;关于虚拟机及其编译器的说明&lt;/li&gt;
+&lt;li&gt;VmBasic开发/调试环境的介绍及说明&lt;/li&gt;
+&lt;li&gt;关于其他&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;所有资料可以从下面地址下载：
+&lt;a href=&#34;http://www.skywind.me/resource/vmbeta.zip&#34;&gt;下载可执行&lt;/a&gt;
+&lt;a href=&#34;http://www.skywind.me/resource/skywind/vmbsrc.zip&#34;&gt;源程序下载&lt;/a&gt;
+&lt;a href=&#34;http://www.skywind.me/maker/VmBasicDesign.pdf&#34;&gt;设计说明书&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;关于虚拟机及其编译器的说明&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;记得3DS/MAX里面实现了一个类似BASIC的脚本，Animator里面实现了一个类C的脚本语言，Autodesk公司的软件对于脚本支持的很出色，好的脚本引擎在乎平台无关性、高效性和扩充性，一个脚本引擎的需要对一个好程序来说非常迫切，于是半年前我写了一款虚拟机，最近又实现了一个类Basic的脚本编译器，特性说明：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;高效性和独立于平台：由于虚拟机运行是解释二进制的字节码因此速度明显快于每次运行及时解释的脚本语言，比如Perl和PHP，而虚拟机的核心程序代码也经过数个C++编译器和平台的测试，可以毫无修改的编译运行于多个操作系统。&lt;/li&gt;
+&lt;li&gt;充分的开放：通过虚拟机的端口I/O技术，要对它进行扩充变得十分容易，VmBeta指令通过输出/输入的方法向用户自己的程序进行通讯，用户通过处理输出输入消息来达到功能的扩充，使它符合你产品的需要，具体的虚拟机实现和设计说明参考文档 vmbeta.txt&lt;/li&gt;
+&lt;li&gt;可设安全级别：通过可设置安全级别，对程序运行状态进行检控&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;通过半年的修改我自己觉得虚拟机够高效开放，就是vmbasic编译器写的没有多高的水准：完全没有对生成代码做优化，弄出许多繁琐的中间代码，不过还是明显快于及时解释语言，通过测试速度大概是DOS自带的QBASIC程序的三倍左右(可以通过目录下的几个算法程序来实验)。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>PL0 编译程序Turbo Pascal代码</title>
+      <link>https://skywind3000.com/blog/archives/71/</link>
+      <pubDate>Tue, 10 Apr 2001 07:04:52 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/71/</guid>
+      <description>&lt;p&gt;麻雀虽小，五脏具全，对编译原理的代码以TPASCAL格式重新整理和排版，还原最原版的代码。&lt;/p&gt;
+
+&lt;p&gt;使用 Turbo Pascal 编译：&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

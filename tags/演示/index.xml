@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>演示 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/</link>
+    <description>Recent content in 演示 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 21 Apr 2011 03:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[讲稿] CGDC2009 演讲：游戏峡谷地图自动生成</title>
+      <link>https://skywind3000.com/blog/archives/718/</link>
+      <pubDate>Thu, 21 Apr 2011 03:00:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/718/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT1_thumb1.png&#34; alt=&#34;PPT1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;2009年在上海 CGDC的演讲稿《游戏地图自动生成》，该算法主要用来生成山地峡谷地图。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT2_thumb.png&#34; alt=&#34;PPT2&#34; /&gt;&lt;br /&gt;
+&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT3_thumb.png&#34; alt=&#34;PPT3&#34; /&gt;&lt;br /&gt;
+&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT4_thumb.png&#34; alt=&#34;PPT4&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Tiled Map Editor</title>
+      <link>https://skywind3000.com/blog/archives/353/</link>
+      <pubDate>Tue, 12 Apr 2011 20:09:11 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/353/</guid>
+      <description>&lt;p&gt;开源二维图块地图编辑器： 点击more阅读全文：&lt;br /&gt;
+&lt;a href=&#34;http://www.skywind.me/mw/images/8/81/TiledMapEditor.7z&#34;&gt;http://www.skywind.me/mw/images/8/81/TiledMapEditor.7z&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;主页： &lt;a href=&#34;http://www.freewarefiles.com/screenshot.php?programid=64372&#34;&gt;http://www.freewarefiles.com/screenshot.php?programid=64372&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/blog/wp-content/uploads/2011/04/tiledmapeditor.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Pygame 读取器： &lt;a href=&#34;http://www.skywind.me/mw/images/4/4f/Tiledtmxloader.7z&#34;&gt;http://www.skywind.me/mw/images/4/4f/Tiledtmxloader.7z&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;主页： &lt;a href=&#34;http://code.google.com/p/pytmxloader/&#34;&gt;http://code.google.com/p/pytmxloader/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.freewarefiles.com/screenshot.php?programid=64372&#34;&gt;http://www.freewarefiles.com/screenshot.php?programid=64372&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>ASCII Art Algorithm</title>
+      <link>https://skywind3000.com/blog/archives/194/</link>
+      <pubDate>Wed, 19 Sep 2007 22:57:24 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/194/</guid>
+      <description>&lt;p&gt;因为希望将图片转换成字符以后可以方便的帖到论坛或者BBS上，所以画时间写了这个算法。&lt;/p&gt;
+
+&lt;p&gt;现有很多算法都是将一个点匹配成一个字符，这样转换工作只是简单的将点亮度查表后换成ASCII字符而已，但是其实这样做的效果并不十分好，首先80x25的字符屏幕就只能表示80x25个点，无法充分发挥单个字符的字形特点，而且图片很多精度和细节都丢失了。比如下面这个连接：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.sebastian-r.de/asciiart/exe.php?image=http%3A%2F%2Fwww.sebastian-r.de%2Fasciiart%2Fpng%2Fcatherine.png&amp;amp;resolution=3&amp;amp;mode=1&amp;amp;color=%23000000&amp;amp;font-size=11&amp;amp;line-height=9&amp;amp;letter-spacing=0&amp;amp;fixed_char=W&amp;amp;new_window=on&#34;&gt;www.sebastian-r.de&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;所以我的算法主要是匹配周围一部分点到ASCII字符，这样斜线能够顺利匹配成“/”，其他形状的东西也能够顺利按照字形特点进行匹配，因此同样80x25个点，但是后者所能够表达的像素点更多，细节度更加丰富：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/ascii_art_2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/ascii_art_1.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上面的效果是作了误差扩散的，其实转换成ASCII字符时不做也可以，只是说希望转换前的局部/整体亮度等于转换后亮度，能量守恒一些而已。&lt;/p&gt;
+
+&lt;p&gt;其实如果用同 一种颜色的64个常见字符表达精度和细节度很高，对比度不高的图片还是比较困难的，可以进一步优化的方法也有几种，其一是对照片作拉普拉斯变换，将噪声过
+滤掉再取出轮廓，这样转换出来的就是仅仅包含轮廓的对比度很高的图片了。&lt;/p&gt;
+
+&lt;p&gt;或者将图片频谱中能量不高的，比较弱的频率去掉，留下能量高的频率，这样图片看起 来更干净一些，只是后面这两种方法就无法保证实时渲染了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>推荐业余作品 - Hurricane2</title>
+      <link>https://skywind3000.com/blog/archives/613/</link>
+      <pubDate>Wed, 07 Jun 2006 07:27:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/613/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb4.jpg&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Hurricane2&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;给大家介绍这款充满速度感，爽快感，连续性强的动作游戏。游戏里主角需要杀死各类敌人，获得高分，除使用不同招数和连续技外，还能利用各种致命武器，屠杀敌人。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;基本操作：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;用WSAD移动，双击移动键可以快速闪，鼠标左健搏斗，右键打开瞄准器，这时按下左健就可以射击，必杀技和武器希望您在游戏中探索，不过如果您能杀满350人，基本上就没秘密可言了：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在现MSN魔法表情</title>
+      <link>https://skywind3000.com/blog/archives/102/</link>
+      <pubDate>Tue, 19 Apr 2005 07:52:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/102/</guid>
+      <description>&lt;p&gt;下面是播放时候的效果图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/magicvv1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;MSN的魔法表情实在是COOL，兴趣之下自己也做了一个特效演示 将FLASH拖到窗口上面，然后点“特效”， 如果桌面是32位的效果非常漂亮，可以拖动图形，现在就下载：&lt;/p&gt;
+
+&lt;p&gt;演示程序 演示程序地址二 (98KB)&lt;/p&gt;
+
+&lt;p&gt;最好笑的事情是那天发现有些聊天软件的魔法表情居然是假的，它是把桌面抓下来然后用IE空间来播放flash， 顺便把抓下来的桌面当背景．或者直接用ColorKey -_-&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>艺术化的程序设计</title>
+      <link>https://skywind3000.com/blog/archives/66/</link>
+      <pubDate>Tue, 21 Sep 2004 13:59:58 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/66/</guid>
+      <description>&lt;p&gt;计算机的硬件也有限，而人的创造也无限，程序设计美于思维和行为，记得1997年一个叫做 &amp;ldquo;OMNISCENT&amp;rdquo;的DEMO使人感慨万分，
+作者就像一名艺术家在一粒小小的米粒上雕刻着自己的作品一般。能力虽有不及，仍不妨我校仿，以此挖掘计算机最原始的艺术表现形式：&lt;/p&gt;
+
+&lt;p&gt;（此为自去年九月到现在三次发布中的最终版本: EXFORCE）&lt;/p&gt;
+
+&lt;p&gt;在DOS窗口中运行DEBUG，然后把横线下的内容复制、粘贴到DEBUG窗口中，回车就可以见到了。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

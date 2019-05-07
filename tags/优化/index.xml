@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>优化 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/</link>
+    <description>Recent content in 优化 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 28 Apr 2016 16:00:37 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>超越 SDL/DirectDraw/GDI 性能的位图库</title>
+      <link>https://skywind3000.com/blog/archives/1683/</link>
+      <pubDate>Thu, 28 Apr 2016 16:00:37 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1683/</guid>
+      <description>&lt;p&gt;开源一个高性能位图库，之前对我的二维图形库 &lt;a href=&#34;https://github.com/skywind3000/pixellib&#34;&gt;pixellib&lt;/a&gt; 进行了精简和重写，最终形成一个只包含两个文件（BasicBitmap.h, BasicBitmap.cpp）的图形基础库。 在今天 GPU 绘制横行天下的时候，任然有很多时候需要使用到纯
+CPU实现的图形库，比如图像处理，视频预处理与合成，界面，以及GPU无法使用的情况（比如某个应用把gpu占满了，或者无法通过gpu做一些十分灵活的事情时），纹理处理，简单图片加载保存等。 支持 SSE2/AVX 优化，比 DirectDraw 快 40%（全系统内存绘制），比 SDL 快 10%，比GDI快 38%。如果你需要一个方便的高性能位图库，足够高性能的同时保证足够紧凑。
+如果你有上述需求，那么你和我一样需要用到 BasicBitmap，只需要把 BasicBitmap.h/.cpp 两个文件拷贝到你的代码中即可。我正是为了这个目的编写了这两个文件。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>内存拷贝优化（3）-深入优化</title>
+      <link>https://skywind3000.com/blog/archives/1587/</link>
+      <pubDate>Sun, 20 Dec 2015 10:15:10 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1587/</guid>
+      <description>&lt;p&gt;今天继续在原来内存拷贝代码上优化：&lt;/p&gt;
+
+&lt;p&gt;1. 修改了小内存方案：由原来64字节扩大为128字节，由 int 改为 xmm，小内存性能提升 80%&lt;br /&gt;
+2. 修改了中内存方案：从4个xmm寄存器并行拷贝改为8个并行拷贝+prefetch，提升20%左右&lt;br /&gt;
+3. 去除目标地址头部对齐的分支判断，用一次xmm拷贝完成目标对齐，性能替升10%。&lt;br /&gt;
+4. 增加测试用例：为贴近实际，增加了随机访问，10MB空间内（绝对大于L2尺寸）随机位置和长度的测试&lt;/p&gt;
+
+&lt;p&gt;为避免随机数生成影响结果，提前生成随机数，最终平均性能达到gcc4.9配套标准库的2倍以上：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/skywind3000/FastMemcpy&#34;&gt;https://github.com/skywind3000/FastMemcpy&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;最新代码测试结果（可以对比老的表看新版本性能是否有所提升）：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>内存拷贝优化（2）-全尺寸拷贝优化</title>
+      <link>https://skywind3000.com/blog/archives/1573/</link>
+      <pubDate>Fri, 18 Dec 2015 06:15:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1573/</guid>
+      <description>&lt;p&gt;四年前写过一篇小内存拷贝优化：&lt;a href=&#34;http://www.skywind.me/blog/archives/143&#34;&gt;http://www.skywind.me/blog/archives/143&lt;/a&gt; 纠结了一下还是把全尺寸拷贝优化代码发布出来吧，没啥好保密的， 如今总结一下全尺寸内存拷贝优化的要点：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;策略区别：64字节以内用小内存方案，64K以内用中尺寸方案，大于64K用大内存拷贝方案。&lt;/li&gt;
+&lt;li&gt;查表跳转：拷贝不同小尺寸内存，直接跳转到相应地址解除循环。&lt;/li&gt;
+&lt;li&gt;目标对齐：64字节以上拷贝的先用普通方法拷贝几个字节让目标地址对齐，好做后面的事情。&lt;/li&gt;
+&lt;li&gt;矢量拷贝：并行一次性读入N个矢量到 sse2 寄存器，再并行写出。&lt;/li&gt;
+&lt;li&gt;缓存预取：使用 prefetchnta ，提前预取数据，等到真的要用时数据已经到位。&lt;/li&gt;
+&lt;li&gt;内存直写：使用 movntdq 来直写内存，避免缓存污染。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何设计一个内存分配器？</title>
+      <link>https://skywind3000.com/blog/archives/1480/</link>
+      <pubDate>Mon, 27 Jul 2015 12:26:25 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1480/</guid>
+      <description>&lt;p&gt;通常工程里不推荐自己写内存分配器，因为你费力写一个出来99%可能性没有内置的好，且内存出bug难调试&lt;br /&gt;
+不过看书之余，你也可以动手自己试试，当个玩具写写玩玩：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 实现教科书上的内存分配器：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;做一个链表指向空闲内存，分配就是取出一块来，改写链表，返回，释放就是放回到链表里面，并做好归并。注意做好标记和保护，避免二次释放，还可以花点力气在如何查找最适合大小的内存快的搜索上，减少内存碎片，有空你了还可以把链表换成伙伴算法，写着玩嘛。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. 实现固定内存分配器：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;即实现一个 FreeList，每个 FreeList 用于分配固定大小的内存块，比如用于分配 32字节对象的固定内存分配器，之类的。每个固定内存分配器里面有两个链表，OpenList 用于存储未分配的空闲对象，CloseList用于存储已分配的内存对象，那么所谓的分配就是从 OpenList 中取出一个对象放到 CloseList 里并且返回给用户，释放又是从 CloseList 移回到
+OpenList。分配时如果不够，那么就需要增长 OpenList：申请一个大一点的内存块，切割成比如 64 个相同大小的对象添加到 OpenList中。这个固定内存分配器回收的时候，统一把先前向系统申请的内存块全部还给系统。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>内存拷贝优化（1）-小内存拷贝优化</title>
+      <link>https://skywind3000.com/blog/archives/143/</link>
+      <pubDate>Fri, 04 Mar 2011 19:34:39 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/143/</guid>
+      <description>&lt;p&gt;相信大家代码里有很多地方用到memcpy这个函数，相信这个函数的占用是不小的，有时优化了memcpy，能使整个项目的运行效率提升。通过适当的编码技巧，让我们的内存拷贝速度超过memcpy两倍，是可以实现的。  有人说memcpy还能优化么？不就是rep movsd么？CPU和内存之间的带宽是固定的，怎么可能优化呢？其实是普通的内存拷贝并没有发挥全部的带宽，很多被浪费掉了，比如要等到数据完全读取成功后再去写入，然后要写入成功后再去读取新的。而优化本身就是使这两者尽量的并行，发挥最大的带宽。&lt;/p&gt;
+
+&lt;p&gt;现代的内存拷贝都需要判断内存大小，并按照大小选择不同策略进行拷贝，比如大内存拷贝（超过cache大小），那么最好使用并行若干读取指令和写入指令，然后再并行写入，使得CPU前后结果依赖得以大大降低，并且使用缓冲预取，再CPU处理数据之前，就把数据放到离CPU最近的CACHE。这样已经可以比memcpy快很多了，如果再加上一些新指令的帮助，大内存拷贝会大大提速。&lt;/p&gt;
+
+&lt;p&gt;但是用同样的代码去拷贝小内存，因为额外的开销，难对齐的内存，准备工作一大堆，如果实际要拷贝的内存很小的话，这样的工作开销还比直接按照 dword复制慢很多。在VC10的memcpy实现中将内存按照128个字节大小进行区分，小于该大小的使用普通拷贝，大于该大小的使用普通SSE指令拷贝，而现在我们就要来挑战VC10的memcpy，本篇先叙述小内存拷贝部分。&lt;/p&gt;
+
+&lt;p&gt;适合拷贝64字节以内的数据量。原理很简单，LOOP UNROLL。rep movsb/movsd是靠不住的，小内存拷贝还是得展开循环。&lt;/p&gt;
+
+&lt;p&gt;废话不多说，代码贴上：&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

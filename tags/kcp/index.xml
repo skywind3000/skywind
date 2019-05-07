@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kcp on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/kcp/</link>
+    <description>Recent content in Kcp on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 18 Feb 2016 15:02:12 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/kcp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>KCP同 UDT/ENET的性能比较</title>
+      <link>https://skywind3000.com/blog/archives/1628/</link>
+      <pubDate>Thu, 18 Feb 2016 15:02:12 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1628/</guid>
+      <description>&lt;p&gt;如果不丢包那么 KCP（&lt;a href=&#34;https://github.com/skywind3000/kcp&#34;&gt;https://github.com/skywind3000/kcp&lt;/a&gt;）和
+TCP性能差不多，KCP不会有任何优势，但是网络会卡，造成卡的原因就是丢包和抖动，有同学在内网这样好的环境下没有用任何丢包模拟直接跑，跑出来的数据是差不多的，但是放到公网上，放到3G/4G网络情况下，差距就很明显了，公网在高峰期有平均接近10%的丢包，wifi/3g/4g下更糟糕，这正是造成各种网络卡顿的元凶。&lt;/p&gt;
+
+&lt;p&gt;感谢 &lt;a href=&#34;https://github.com/libinzhangyuan/asio_kcp&#34;&gt;asio-kcp&lt;/a&gt; 的作者 zhangyuan 对 KCP 与 enet, udt做过的一次横向评测，结论如下：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ASIO-KCP has good performace in wifi and phone network(3G, 4G).&lt;/li&gt;
+&lt;li&gt;Extra using 20% ~ 50% network flow for speed improvement.&lt;/li&gt;
+&lt;li&gt;The kcp is the first choice for realtime pvp game.&lt;/li&gt;
+&lt;li&gt;The lag is less than 1 second when network lag happen. 3 times better than enet when lag happen.&lt;/li&gt;
+&lt;li&gt;The enet is a good choice if your game allow 2 second lag.&lt;/li&gt;
+&lt;li&gt;UDT is a bad idea. It always sink into badly situation of more than serval seconds lag. And the recovery is not expected.&lt;/li&gt;
+&lt;li&gt;enet has the problem of lack of doc. And it has lots of functions that you may intrest. kcp&amp;rsquo;s doc is chinese. Good thing is the function detail which is writen in code is english. And you can use asio_kcp which is a good wrap.&lt;/li&gt;
+&lt;li&gt;The kcp is a simple thing. You will write more code if you want more feature.&lt;/li&gt;
+&lt;li&gt;UDT has a perfect doc. UDT may has more bug than others as I feeling.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

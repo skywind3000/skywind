@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Skywind Inside | 写自己的代码，让别人猜去吧！</title>
+    <meta property="og:title" content="Skywind Inside | 写自己的代码，让别人猜去吧！">
+    <meta property="og:type" content="website">
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Putty 本无树，MinGW 亦非台">
+    <meta property="og:url" content="https://skywind3000.com/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml+xml" href="https://skywind3000.com/index.xml" title="Skywind Inside" />
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <h1>
+                        <a id="logo" href="https://skywind3000.com/">
+                            Skywind Inside
+                        </a>
+                    </h1>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1893/" title="Linux 线上系统调优备忘" >Linux 线上系统调优备忘</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年12月7日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>大公司呆久了，都会对 SA的依赖十分强烈，很多事情 SA都帮我们搞定了。如今控制成本，没有招聘 SA，又没有购买 VPS，从买物理机开始到 IDC部署，服务器调优，虚拟机管理，全部都是自己来，才发现，安装一台 Linux机器自己玩很简单，但是要达到线上服务器的标准，还有若干调优工作需要做，有 SA的日志是多幸福的事情啊。</p>
+
+<h2 id="物理机设备驱动">物理机设备驱动</h2>
+
+<p>Dell服务器默认安装系统后会报找不到驱动:</p>
+
+<pre><code>W: Possible missing firmware /lib/firmware/tigon/tg3_tso5.bin
+</code></pre>
+
+<p>因为 Debian/Ubuntu 的包都是开源的，默认开源驱动性能不行，于是需要添加 non-free源：</p>
+
+<pre><code>deb http://ftp.de.debian.org/debian main contrib non-free
+deb-src http://ftp.de.debian.org/debian main contrib non-free
+</code></pre>
+
+<p>然后：</p>
+
+<pre><code class="language-bash">apt-get update
+apt-get install firmware-linux-free firmware-linux-nonfree
+</code></pre>
+
+<p>解决 Dell驱动报错问题。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1893/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1880/" title="Linux 下配置 Iptables 端口转发" >Linux 下配置 Iptables 端口转发</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年12月7日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>经常需要对服务端的端口进行转发映射，让链接A服务器（202.181.55.93：8080）端口的所有tcp数据，forward到B服务器（106.185.43.22:80）端口，比如国内联通出国访问比较快，而电信比较坑爹，如果你家是电信网络，你却想畅快的访问境外的
+vps，那么可以在你联通网络的境内服务器上进行这样一个端口映射，你链接境内服务器（201.181.55.93:8080）端口相当于链接境外服务器的（106.185.43.22:80）端口。</p>
+
+<p>Linux内核的 Iptables很强大，它维护一组内核变量，使用 /sbin/iptables命令进行直接规则设置，且通过配置新规则，可以直接支持端口转发，简单在 A服务器上使用下面这个 shell脚本即可：</p>
+
+<pre><code class="language-bash">#! /bin/sh
+# create forward rule by source interface
+# http://serverfault.com/questions/532569/how-to-do-port-forwarding-redirecting-on-debian
+PortForward1() {
+	local IN_IF=$1
+	local IN_PORT=$2
+	local OUT_IP=$3
+	local OUT_PORT=$4
+	local IPTBL=&quot;/sbin/iptables&quot;
+	echo &quot;1&quot; &gt; /proc/sys/net/ipv4/ip_forward
+	$IPTBL -A PREROUTING -t nat -i $IN_IF -p tcp --dport $IN_PORT -j DNAT --to-destination ${OUT_IP}:${OUT_PORT}
+	$IPTBL -A FORWARD -p tcp -d $OUT_IP --dport $OUT_PORT -j ACCEPT
+	$IPTBL -A POSTROUTING -t nat -j MASQUERADE
+}
+# create forward rule by source ip
+# http://blog.csdn.net/zzhongcy/article/details/42738285
+ForwardPort2() {
+	local IN_IP=$1
+	local IN_PORT=$2
+	local OUT_IP=$3
+	local OUT_PORT=$4
+	local IPTBL=&quot;/sbin/iptables&quot;
+	echo &quot;1&quot; &gt; /proc/sys/net/ipv4/ip_forward
+	$IPTBL -t nat -A PREROUTING --dst $IN_IP -p tcp --dport $IN_PORT -j DNAT --to-destination ${OUT_IP}:${OUT_PORT}
+	$IPTBL -t nat -A POSTROUTING --dst $OUT_IP -p tcp --dport $OUT_PORT -j SNAT --to-source $IN_IP
+}
+PortForward1 eth3 8080 106.185.43.22 80
+# put this file on /etc/network/if-up.d
+</code></pre>
+
+<p>上面两个函数，一个是针对网卡，一个是针对本地IP设置转发，记得把这个脚本放到 <code>/etc/network/if-up.d</code> 下面并设置可执行权限（Debian/Ubuntu），每次开机重启时保证可以运行，即可。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1880/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1857/" title="Vim 里如何映射 CTRL-h 为 left ?" >Vim 里如何映射 CTRL-h 为 left ?</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年11月27日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>很多人习惯在配置文件中映射 CTRL+HJKL 为光标移动，却碰到了一些问题：</p>
+
+<pre><code class="language-VimL">inoremap &lt;c-h&gt; &lt;left&gt;
+inoremap &lt;c-j&gt; &lt;down&gt;
+inoremap &lt;c-k&gt; &lt;up&gt;
+inoremap &lt;c-l&gt; &lt;right&gt;
+</code></pre>
+
+<p>映射后无效或者映射以后按 <code>&lt;BS&gt;</code>键不能删除，这是什么原因呢？</p>
+
+<p>很简单，因为你的终端软件（Xshell, SecureCRT）有些老，默认配置是按下<code>&lt;BS&gt;</code>键以后 发送的是：^H (ASCII 码 0x08），而 ^H在你的 Vim 里被你 inoremap 成  了，所以你按了<code>&lt;BS&gt;</code>会被认为按下了左键。</p>
+
+<p>早在 VT100终端时代，^H（ASCII码 0x08）表示<code>&lt;BS&gt;</code> 而 ^? （ASCII码 0x7f）表示<code>&lt;DEL&gt;</code>。过去 0x7f是留给 DELETE键使用的。而到了 VT220时代，DELETE已经变为 ^[[3~ （ASCII 码 0x1b, 0x5b, 0x33, 0x7e 共4个字节），而 ^? 的 0x7f 换给了我们的<code>&lt;BS&gt;</code>，有些老点版本的终端软件，默认
+<code>&lt;BS&gt;</code>还是使用 VT100的 ^H，比如 Xshell 4 Build 0142以前的版本，默认<code>&lt;BS&gt;</code>是发送^H。SecureCRT直到6.x版本还在默认发送 VT100的 ^H。</p>
+
+<p>你需要做的就是改一下终端默认配置而已，大部分不那么陈旧的终端软件，如今都是默认VT220的标准，比如 Xshell4 Build 0142及以后的 Xshell5，Putty，Mac下面的 Terminal.app, iTerm2，Ubuntu下面的 gnome-terminal，他们都是把 <code>&lt;BS&gt;</code> 发送成 ^?</p>
+
+<p>你可以在你服务端下面查看下默认的键位设置：</p>
+
+<pre><code>$ stty -a
+</code></pre>
+
+<p>现在所有 Linux服务器的 erase （bs）基本都是 ^? 了（如果链接到非 Linux老操作系统 erase不是这个的话，需要改一下，可以在系统层改，也可以vim里面 set t_kb=&hellip;），Vim里面也是认可 ^?的，可老旧的终端软件却默认发送 ^H，不过好在他们都支持修改：</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1857/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1846/" title="Vim 中正确使用 Alt映射" >Vim 中正确使用 Alt映射</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年11月19日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>最简单的做法是：首先将终端软件的 “使用 Alt键作为 Meta键” 的功能打开，其次将 Alt的模式改为 <strong>ESC+字母</strong>，意思是如果你在终端下按下 ALT+X，那么终端软件将会发送 <code>&lt;ESC&gt;x</code> 两个字节过去，字节码为：0x27, 0x78。如果你使用过 NeoVim 或者 Emacs的话，这一步应该早就做过了。</p>
+
+<h2 id="xshell4-终端设置">XShell4 终端设置：</h2>
+
+<p><img src="https://skywind3000.github.io/word/images/vim_altmap_1.png" alt="" /></p>
+
+<h2 id="securecrt-终端设置">SecureCRT：终端设置</h2>
+
+<p><img src="https://skywind3000.github.io/word/images/vim_altmap_2.png" alt="" /></p>
+
+<p>其他终端软件里：</p>
+
+<ul>
+<li>Putty/MinTTY 默认ALT+X 就是发送 <code>&lt;ESC&gt;x</code>过去</li>
+<li>Mac下面的 iTerm2/Terminal.app 需要跟 XShell / SecureCRT一样设置一下</li>
+<li>Ubuntu 下面的 GnomeTerminal 默认也是发送 <code>&lt;ESC&gt;x</code>过去的</li>
+<li>任意平台下面的 xterm 可以配置 <code>~/.Xdefaults</code> 来设置这个行为。</li>
+</ul>
+
+<p>这样的话，不管是 NeoVim 还是 Emacs都识别了，Vim 的话，你可以简单这样：</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1846/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1835/" title="Vim 异步运行 Shell 指令的插件 - AsyncRun" >Vim 异步运行 Shell 指令的插件 - AsyncRun</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年8月24日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>自制另一个新的 Vim 8.0 专用异步插件：<a href="https://github.com/skywind3000/asyncrun.vim">asyncrun.vim</a>，它可以让你在 Vim 里面异步运行各种 Shell 指令并且把结果实时输出到 Quickfix，需要 Vim 7.4.1829 以上版本。</p>
+
+<h2 id="安装方法">安装方法</h2>
+
+<p>到插件首页 <a href="https://github.com/skywind3000/asyncrun.vim">https://github.com/skywind3000/asyncrun.vim</a> 下载项目，并拷贝 <code>asyncrun.vim</code> 到你的 <code>~/.vim/plugin</code>。或者使用 Vundle 指向 <code>skywind3000/asyncrun.vim</code> 来自动更新。</p>
+
+<h2 id="基本教程">基本教程</h2>
+
+<p>使用 gcc 异步编译当前文件：</p>
+
+<pre><code>:AsyncRun gcc % -o %&lt;
+:AsyncRun g++ -O3 % -o %&lt; -lpthread 
+</code></pre>
+
+<p>该命令会在后台运行 gcc 并且把输出实时显示在 Quickfix 窗口，宏 <code>%</code> 代表当前文件名，<code>%&lt;</code> 代表没有扩展名的文件名。</p>
+
+<p>异步运行 make：</p>
+
+<pre><code>:AsyncRun make
+:AsyncRun make -f makefile
+</code></pre>
+
+<p>异步调用 grep:</p>
+
+<pre><code>:AsyncRun! grep -R word . 
+:AsyncRun! grep -R &lt;cword&gt; .
+</code></pre>
+
+<p>默认 :AsyncRun 运行命令后，输出添加到 Quickfix时 Quickfix 会自动滚动到最下面那一行，使用感叹号修饰符以后，可以避免 Quickfix 自动滚动。同时 <code>&lt;cword&gt;</code> 代表当前光标下面的单词。</p>
+
+<p>编译 go项目：</p>
+
+<pre><code>:AsyncRun go build %:p:h
+</code></pre>
+
+<p>宏 <code>%:p:h</code> 代表当前文件的目录</p>
+
+<p>查询 man page，异步 git push ，以及把设置 F7异步编译当前文件：</p>
+
+<pre><code>:AsyncRun! man -S 3:2:1 &lt;cword&gt; 
+:AsyncRun git push origin master
+:noremap &lt;F7&gt; :AsyncRun gcc % -o %&lt; &lt;cr&gt; 
+</code></pre>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1835/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1828/" title="3D 图形光栅化的透视校正问题" >3D 图形光栅化的透视校正问题</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年8月18日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>写了文章《<a href="http://www.skywind.me/blog/archives/1498">如何写一个软件渲染器</a>》以后，不少网友希望进一步解释背后的数学公式，询问以及自己加一个 phong 光照该如何加，本文将对透视纹理映射的插值原理做一个简单的解释，希望能帮助到大家：</p>
+
+<p>透视纹理绘制发生在最后阶段，坐标已经完成projection，剔除，裁剪了，然后顶点/w，开始批量绘制扫描线之前，这时候开始计算纹理的位置。</p>
+
+<p>使用w还是用z，关系不大，早年的3d引擎，直接/z的，只是后面标准化了以后，发现w更好用，可以同时表示透视投影和正交投影。同时顶点经过标准的mvp矩阵运算后，w和z是承线性关系的，方便对z/w做 [0,1] 的cvv裁剪。你可以理解成w就是另外一个z。以前屏幕坐标：</p>
+
+<pre><code>x' = x / z * d + A
+y' = y / z * d + A
+</code></pre>
+
+<p>现在是</p>
+
+<pre><code>x' = x / w * d + A
+y' = y / w * d + A
+</code></pre>
+
+<p>然后绘制纹理前，你需要先证明屏幕上两个点之间，1/w 承线性关系，即屏幕上两个点X1&rsquo;, X2&rsquo;之间任意取一点X3&rsquo;，他们的(1/w)值的变化比例相同，即在 t 取任意值有：</p>
+
+<pre><code>x3' = x1' + (x2' - x1') * t
+(1 / w3) = (1 / w1) + ((1 / w2)  - (1 / w1)) * t
+</code></pre>
+
+<p>再根据他们在同一个平面上，证明屏幕上两个点之间，u/w, v/w 承线性关系，即 t 取任意值有：</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1828/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1799/" title="如何禁止 Win7 强制更新到 Windows 10 ?" >如何禁止 Win7 强制更新到 Windows 10 ?</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年7月4日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>岳父岳母，爹妈的 Windows 7 纷纷被自动升级成 Windows 10 各种问题（一台画面变成非全屏，解析度被莫名奇妙降低，占不满显示器、运行卡，另一台台式机无线网卡不能用，还有一台某炒股软件跑不起来，按win键弹出菜单时会顿一下）。</p>
+
+<p>花费了我两个整天的时间帮他们降级，找了很多方法，网上大部分都不能对新版 Gwx起作用</p>
+
+<p>终于，找到了并且永久性锁定自动升级的最直接方式了：</p>
+
+<pre><code>regedit：
+HKEY_LOCAL_MACHINE 下面
+SOFTWARE\Policies\Microsoft\Windows 下面新建项目（目录）Gwx
+然后在
+SOFTWARE\Policies\Microsoft\Windows\Gwx 下面新建 DWORD 值：
+DisableGwx=1
+</code></pre>
+
+<p>好了，Windows 结扎手术完成，不用当心一不留神弄出个 Windows 10 来给大伙惹麻烦了。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1799/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1774/" title="计算机底层是如何访问显卡的？" >计算机底层是如何访问显卡的？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年6月17日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>以前 DOS下做游戏，操作系统除了磁盘和文件管理外基本不管事情，所有游戏都是直接操作显卡和声卡的，用不了什么驱动。</p>
+
+<p>虽然没有驱动，但是硬件标准还是放在那里，VGA, SVGA, VESA, VESA2.0 之类的硬件标准，最起码，你只做320x200x256c的游戏，或者 ModeX 下 320x240x256c 的游戏的话，需要用到VGA和部分 SVGA标准，而要做真彩高彩，更高分辨率的游戏的话，就必须掌握 VESA的各项规范了。</p>
+
+<p>翻几段以前写的代码演示下：</p>
+
+<h3 id="例子1-初始化-vga-vesa-显示模式">例子1： 初始化 VGA/VESA 显示模式</h3>
+
+<p>基本是参考 VGA的编程手册来做：</p>
+
+<pre><code>INT 10,0 - Set Video Mode
+    AH = 00
+    AL = 00  40x25 B/W text (CGA,EGA,MCGA,VGA)
+       = 01  40x25 16 color text (CGA,EGA,MCGA,VGA)
+       = 02  80x25 16 shades of gray text (CGA,EGA,MCGA,VGA)
+       = 03  80x25 16 color text (CGA,EGA,MCGA,VGA)
+       = 04  320x200 4 color graphics (CGA,EGA,MCGA,VGA)
+       = 05  320x200 4 color graphics (CGA,EGA,MCGA,VGA)
+       = 06  640x200 B/W graphics (CGA,EGA,MCGA,VGA)
+       = 07  80x25 Monochrome text (MDA,HERC,EGA,VGA)
+       = 08  160x200 16 color graphics (PCjr)
+       = 09  320x200 16 color graphics (PCjr)
+       = 0A  640x200 4 color graphics (PCjr)
+       = 0B  Reserved (EGA BIOS function 11)
+       = 0C  Reserved (EGA BIOS function 11)
+       = 0D  320x200 16 color graphics (EGA,VGA)
+       = 0E  640x200 16 color graphics (EGA,VGA)
+       = 0F  640x350 Monochrome graphics (EGA,VGA)
+       = 10  640x350 16 color graphics (EGA or VGA with 128K)
+         640x350 4 color graphics (64K EGA)
+       = 11  640x480 B/W graphics (MCGA,VGA)
+       = 12  640x480 16 color graphics (VGA)
+       = 13  320x200 256 color graphics (MCGA,VGA)
+       = 8x  EGA, MCGA or VGA ignore bit 7, see below
+       = 9x  EGA, MCGA or VGA ignore bit 7, see below
+    - if AL bit 7=1, prevents EGA,MCGA &amp; VGA from clearing display
+    - function updates byte at 40:49;  bit 7 of byte 40:87
+      (EGA/VGA Display Data Area) is set to the value of AL bit 7
+</code></pre>
+
+<p>转换成代码的话，类似这样：</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1774/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1745/" title="如何在不同平台下打开新窗口运行程序？" >如何在不同平台下打开新窗口运行程序？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年5月12日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>如果可以让自己的工作效率提升一点点，那么即便花费几天来开发一些工具也是值得的。在不同操作系统下自动打开终端窗口来运行指定的命令就是这样一件能提高工作效率的事情。</p>
+
+<p>就像 Visual Studio 调试命令行程序的人都对打开一个新窗口运行命令行程序的模式情有独钟。EditPlus 也提供新窗口运行程序（可惜只限windows）。</p>
+
+<p>而如果你在使用 Sublime/Atom/GEdit/GVim
+之类的工具，你就会发现调试程序的时候程序基本上是在下面的面板中运行的，所有输出也是输出到下面的面板中。这时如果程序长时间运行是非常不方便的，又或者程序有交互（需要输入数据），基于GUI面板的运行方式也会显得十分笨重，而Vim/GVim之流更过分，一执行程序整个GUI就定住了，没法一边看代码一边查看一些长时间运行的程序状态，虽然Windows下的GVim可以用!start来解决（见<a href="http://www.skywind.me/blog/archives/1708">Gvim
+!start</a>），但十分遗憾，Linux桌面或者Mac下面的Vim都没有这个 !start功能。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1745/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1738/" title="钉钉真好用" >钉钉真好用</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年5月9日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>自从用了钉钉，腰也不酸了，腿也不疼了：</p>
+
+<ul>
+<li>设置组织架构和通讯录，新同事根据部门自动入企业群。</li>
+<li>除了部门企业群外，跟微信一样随意建立临时会话，员工离职退出所有群。</li>
+<li>每个企业群配套“云盘”，可以把部门相关文档传到群的云空间里，供群成员查看。</li>
+<li>详细查看未读消息，长时间未读的人可以短信提醒。</li>
+<li>企业内部员工免费电话。</li>
+<li>全平台：windows，mac，iphone，android</li>
+<li>配套企业应用：请假，公章申请，报销申请，打卡，工资信息查询</li>
+</ul>
+
+<p>试过：泡泡，RTX，QQ企业，米聊，飞秋 以后最终发现还是钉钉最好用</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1738/">阅读全文</a></p>
+                        </article>
+                    
+
+                    
+
+
+<ol class="page-navigator">
+    
+    <li class="prev">
+        <a href="https://skywind3000.com/page/2/">上一页</a>
+    </li>
+    
+
+    
+    <li >
+        <a href="https://skywind3000.com/">1</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/2/">2</a>
+    </li>
+    
+    <li  class="current">
+        <a href="https://skywind3000.com/page/3/">3</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/4/">4</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/5/">5</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/6/">6</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/7/">7</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/8/">8</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/9/">9</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/10/">10</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/11/">11</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/12/">12</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/13/">13</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/14/">14</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="https://skywind3000.com/page/4/">下一页</a>
+    </li>
+    
+</ol>
+
+
+
+                </div>
+            </div>
+
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+
+</body>
+</html>

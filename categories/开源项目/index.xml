@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>开源项目 on Skywind Inside</title>
+    <link>https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/</link>
+    <description>Recent content in 开源项目 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 11 Dec 2010 20:04:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[业余土制] 简易网络库 easenet</title>
+      <link>https://skywind3000.com/blog/archives/166/</link>
+      <pubDate>Sat, 11 Dec 2010 20:04:07 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/166/</guid>
+      <description>&lt;p&gt;1. 跨平台网络库&lt;/p&gt;
+
+&lt;p&gt;2. 异步事件：kevent, iocp, epoll, poll, select封装&lt;/p&gt;
+
+&lt;p&gt;3. 内存管理：SlabPlus&lt;/p&gt;
+
+&lt;p&gt;4. 可靠协议：类tcp纯协议实现，包括重传机制，窗口管理，流量控制，拥塞处理。&lt;/p&gt;
+
+&lt;p&gt;5. 多种工具：缓存池，环状缓存，高性能hashmap等。&lt;/p&gt;
+
+&lt;p&gt;代码贴上：  项目地址：&lt;a href=&#34;http://code.google.com/p/easenet/&#34;&gt;http://code.google.com/p/easenet/&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[业余土制] Python P2P模块</title>
+      <link>https://skywind3000.com/blog/archives/163/</link>
+      <pubDate>Fri, 10 Dec 2010 08:22:29 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/163/</guid>
+      <description>&lt;p&gt;项目地址：&lt;a href=&#34;http://code.google.com/p/pyp2p/&#34;&gt;http://code.google.com/p/pyp2p/&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[业余土制] Build工具 EasyMake</title>
+      <link>https://skywind3000.com/blog/archives/153/</link>
+      <pubDate>Sat, 24 Jul 2010 01:50:31 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/153/</guid>
+      <description>&lt;p&gt;用最简单的方法描述工程信息，简化gnumake的繁琐操作，让不会用gnumake的同学们彻底解脱：&lt;/p&gt;
+
+&lt;p&gt;项目地址：&lt;a href=&#34;http://code.google.com/p/easymake/&#34;&gt;http://code.google.com/p/easymake/&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[自制开源] 轻量级图形库 PixelLib</title>
+      <link>https://skywind3000.com/blog/archives/137/</link>
+      <pubDate>Sat, 09 Jan 2010 19:24:07 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/137/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;图像：64种不同的像素格式，色彩空间变换，多种图形图像变换。&lt;/li&gt;
+&lt;li&gt;质量：支持3种级别抗锯齿效果，高质量几何图形绘制。&lt;/li&gt;
+&lt;li&gt;实现：轻量级纯软件实现，100% C代码（仅700KB代码）。&lt;/li&gt;
+&lt;li&gt;优化：SSE2/MMX优化 地址：&lt;a href=&#34;https://github.com/skywind3000/pixellib&#34;&gt;https://github.com/skywind3000/pixellib&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 图像变换：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/8/8e/Pixellib_image_transform.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;支持仿射变换和透视变换，提供大量图像变换操作接口。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. 抗锯齿：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/9/9c/Pixellib_anti_aliasing.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;所有图形绘制支持3级不同程度的抗锯齿效果。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. 图像绘制：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/4/41/Pixellib_image_drawing.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;图像任意拉伸，旋转，3D旋转，并且同时进行色彩空间变换。全部采用浮点数坐标，图像移动更为平滑。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4. 几何作图：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/1/1e/Pixellib_geometry.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;全面的抗锯齿几何作图效果。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;5. 图像扭曲：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/c/c9/Pixellib_image_warp.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在源图像上布置若干关键点，然后改变这些关键点在屏幕上的对于位置即可实现图像扭曲。&lt;/p&gt;
+
+&lt;p&gt;**使用 Pixellib 来渲染 iOS 风格的图标 **&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/e/e7/Pixellib_quality.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[业余土制] 实时汇编编译器</title>
+      <link>https://skywind3000.com/blog/archives/154/</link>
+      <pubDate>Sun, 05 Jul 2009 13:32:10 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/154/</guid>
+      <description>&lt;p&gt;实时动态在内存中编译汇编代码，并返回函数调用指针，可用于JIT系统的后端：&lt;/p&gt;
+
+&lt;p&gt;项目地址：&lt;a href=&#34;https://github.com/skywind3000/asmpure&#34;&gt;https://github.com/skywind3000/asmpure&lt;/a&gt; 例子：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;const char *AlphaBlendAsm =
+&amp;quot;PROC C1:DWORD, C2:DWORD, A:DWORD\n&amp;quot;
+&amp;quot;    movd mm0, A\n&amp;quot;
+&amp;quot;    punpcklwd mm0, mm0\n&amp;quot;
+&amp;quot;    punpckldq mm0, mm0\n&amp;quot;
+&amp;quot;    pcmpeqb mm7, mm7\n&amp;quot;
+&amp;quot;    psubw mm7, mm0\n&amp;quot;
+&amp;quot;    \n&amp;quot;
+&amp;quot;    punpcklbw mm1, C1\n&amp;quot;
+&amp;quot;    psrlw mm1, 8\n&amp;quot;
+&amp;quot;    punpcklbw mm2, C2\n&amp;quot;
+&amp;quot;    psrlw mm2, 8\n&amp;quot;
+&amp;quot;    \n&amp;quot;
+&amp;quot;    pmullw mm1, mm7\n&amp;quot;
+&amp;quot;    pmullw mm2, mm0\n&amp;quot;
+&amp;quot;    paddw mm1, mm2\n&amp;quot;
+&amp;quot;    \n&amp;quot;
+&amp;quot;    psrlw mm1, 8\n&amp;quot;
+&amp;quot;    packuswb mm1, mm1\n&amp;quot;
+&amp;quot;    movd eax, mm1\n&amp;quot;
+&amp;quot;    emms\n&amp;quot;
+&amp;quot;    ret\n&amp;quot;
+&amp;quot;ENDP\n&amp;quot;;
+
+void testAlphaBlend(void)
+{
+		CAssembler *casm;
+		int c;
+		int (*AlphaBlendPtr)(int, int, int);
+		// create assembler
+		casm = casm_create();
+		// append assembly source
+		casm_source(casm, AlphaBlendAsm);
+		AlphaBlendPtr = (int (*)(int, int, int))casm_callable(casm, NULL);
+		if (AlphaBlendPtr == NULL) {
+				printf(&amp;quot;error: %s\n&amp;quot;, casm-&amp;gt;error);
+				casm_release(casm);
+				return;
+		}
+		printf(&amp;quot;==================== Alpha Blend ====================\n&amp;quot;);
+		casm_dumpinst(casm, stdout);
+		printf(&amp;quot;\nExecute code (y/n)?\n\n&amp;quot;);
+		do
+		{
+				c = getch();
+		}
+		while(c != &#39;y&#39; &amp;amp;&amp;amp; c != &#39;n&#39;);
+		if(c == &#39;y&#39;)
+		{
+				int x = AlphaBlendPtr(0x00FF00FF, 0xFF00FF00, 128);
+				printf(&amp;quot;output: %.8X\n\n&amp;quot;, x);
+		}
+		free(AlphaBlendPtr);
+		casm_release(casm);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;**output: 7f7f7f7f **&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[游戏演示] ActionScript 鼠标手势识别</title>
+      <link>https://skywind3000.com/blog/archives/173/</link>
+      <pubDate>Mon, 05 Jan 2009 13:32:11 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/173/</guid>
+      <description>&lt;p&gt;学习ActionScript3，画一星期写了个DEMO：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/finalweapon.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;网页地址：&lt;a href=&#34;http://www.skywind.me/weapon&#34;&gt;http://www.skywind.me/weapon&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>SlabPlus 内存分配算法</title>
+      <link>https://skywind3000.com/blog/archives/149/</link>
+      <pubDate>Sat, 08 Mar 2008 02:15:50 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/149/</guid>
+      <description>&lt;h3 id=&#34;原理叙述&#34;&gt;原理叙述：&lt;/h3&gt;
+
+&lt;p&gt;我也来介绍一种内存管理方面的优化算法：怎样才能根除内存碎片？有且只有如下办法：1. 只分配不释放，2. 只分配固定大小内存，3. 不分配内存，虽然，仍不妨碍我们再一次回顾各种常用的分配策略，以发掘一些新的思路：&lt;/p&gt;
+
+&lt;p&gt;前提：下面提及的分配技巧并不能说是“最快的”，也不能说是“最小碎片的”，但是可以保证，不管系统运行多长时间，不管分配多大内存，碎片比例趋于恒定，同时分配时间为常数（unit interval）：&lt;/p&gt;
+
+&lt;p&gt;最后将讨论一些更进一步的优化技巧（如果愿意大量增加代码行数的话），看看在分配内存方面，哪些我们值得努力，哪些不值得我们努力。&lt;/p&gt;
+
+&lt;p&gt;现代的内存分配算法，需要顾及以下几个特性：&lt;/p&gt;
+
+&lt;p&gt;1） 缓存命中：现今的计算机体系，优秀的缓存策略对一个系统而言异常重要，一些写的不太注意的分配器，容易忽略该特性，前分配一块内存，后分配一块内存，大大增加了缓存的失效。&lt;/p&gt;
+
+&lt;p&gt;2） 总线平衡：大部分缓存管理都是提供 2^n字节大小的内存机制，并且所分配地址也是以 2^n字节进行对齐，比如我们有一个 packfile对象有400多个字节，将使用 512字节的缓存分配器，并且按照 512字节进行对齐，但是问题在于，大部分时候我们都在访问该对象的头30个字节，因此在(0-30) mod 512的地方，也就是在以512字节为分割的缓存线周围集中了大量的压力，在现今的大部分普通的缓存芯片上将出现总线失衡bus-overbalance。&lt;/p&gt;
+
+&lt;p&gt;3） 页面归还：何时向系统请求页面，何时归还系统页面，很多分配器只向系统不停的申请页面，却并不考虑提供保证能够正常不断的归还系统页面的机制。&lt;/p&gt;
+
+&lt;p&gt;4） 多核优化：尽管多核技术现在才逐渐在PC上推广，但我们的服务器很早就已经开始使用双核或者四核的架构，分配器如何尽量避免在不同核间产生的等待，是分配器效率优化的一个前提。&lt;/p&gt;
+
+&lt;p&gt;以下几点内容有助于优化我们的分配器：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>虚拟机及VmBasic编译引擎说明</title>
+      <link>https://skywind3000.com/blog/archives/91/</link>
+      <pubDate>Thu, 18 Apr 2002 08:33:16 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/91/</guid>
+      <description>&lt;p&gt;2001-2002期间开发的虚拟机/编译器开源项目代码和资料&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;关于虚拟机及其编译器的说明&lt;/li&gt;
+&lt;li&gt;VmBasic开发/调试环境的介绍及说明&lt;/li&gt;
+&lt;li&gt;关于其他&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;所有资料可以从下面地址下载：
+&lt;a href=&#34;http://www.skywind.me/resource/vmbeta.zip&#34;&gt;下载可执行&lt;/a&gt;
+&lt;a href=&#34;http://www.skywind.me/resource/skywind/vmbsrc.zip&#34;&gt;源程序下载&lt;/a&gt;
+&lt;a href=&#34;http://www.skywind.me/maker/VmBasicDesign.pdf&#34;&gt;设计说明书&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;关于虚拟机及其编译器的说明&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;记得3DS/MAX里面实现了一个类似BASIC的脚本，Animator里面实现了一个类C的脚本语言，Autodesk公司的软件对于脚本支持的很出色，好的脚本引擎在乎平台无关性、高效性和扩充性，一个脚本引擎的需要对一个好程序来说非常迫切，于是半年前我写了一款虚拟机，最近又实现了一个类Basic的脚本编译器，特性说明：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;高效性和独立于平台：由于虚拟机运行是解释二进制的字节码因此速度明显快于每次运行及时解释的脚本语言，比如Perl和PHP，而虚拟机的核心程序代码也经过数个C++编译器和平台的测试，可以毫无修改的编译运行于多个操作系统。&lt;/li&gt;
+&lt;li&gt;充分的开放：通过虚拟机的端口I/O技术，要对它进行扩充变得十分容易，VmBeta指令通过输出/输入的方法向用户自己的程序进行通讯，用户通过处理输出输入消息来达到功能的扩充，使它符合你产品的需要，具体的虚拟机实现和设计说明参考文档 vmbeta.txt&lt;/li&gt;
+&lt;li&gt;可设安全级别：通过可设置安全级别，对程序运行状态进行检控&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;通过半年的修改我自己觉得虚拟机够高效开放，就是vmbasic编译器写的没有多高的水准：完全没有对生成代码做优化，弄出许多繁琐的中间代码，不过还是明显快于及时解释语言，通过测试速度大概是DOS自带的QBASIC程序的三倍左右(可以通过目录下的几个算法程序来实验)。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

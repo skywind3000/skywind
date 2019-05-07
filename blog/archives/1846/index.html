@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Vim 中正确使用 Alt映射 | Skywind Inside</title>
+    <meta property="og:title" content="Vim 中正确使用 Alt映射 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2016-11-19T13:23:55&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2016-11-19T13:23:55&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Vim 中正确使用 Alt映射">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/1846/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">Vim 中正确使用 Alt映射</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2016年11月19日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>最简单的做法是：首先将终端软件的 “使用 Alt键作为 Meta键” 的功能打开，其次将 Alt的模式改为 <strong>ESC+字母</strong>，意思是如果你在终端下按下 ALT+X，那么终端软件将会发送 <code>&lt;ESC&gt;x</code> 两个字节过去，字节码为：0x27, 0x78。如果你使用过 NeoVim 或者 Emacs的话，这一步应该早就做过了。</p>
+
+<h2 id="xshell4-终端设置">XShell4 终端设置：</h2>
+
+<p><img src="https://skywind3000.github.io/word/images/vim_altmap_1.png" alt="" /></p>
+
+<h2 id="securecrt-终端设置">SecureCRT：终端设置</h2>
+
+<p><img src="https://skywind3000.github.io/word/images/vim_altmap_2.png" alt="" /></p>
+
+<p>其他终端软件里：</p>
+
+<ul>
+<li>Putty/MinTTY 默认ALT+X 就是发送 <code>&lt;ESC&gt;x</code>过去</li>
+<li>Mac下面的 iTerm2/Terminal.app 需要跟 XShell / SecureCRT一样设置一下</li>
+<li>Ubuntu 下面的 GnomeTerminal 默认也是发送 <code>&lt;ESC&gt;x</code>过去的</li>
+<li>任意平台下面的 xterm 可以配置 <code>~/.Xdefaults</code> 来设置这个行为。</li>
+</ul>
+
+<p>这样的话，不管是 NeoVim 还是 Emacs都识别了，Vim 的话，你可以简单这样：</p>
+
+<pre><code class="language-VimL">noremap &lt;ESC&gt;x :echo &quot;ALT-X pressed&quot;&lt;cr&gt;
+</code></pre>
+
+<p>注意 ESC后面是小写 x，如果你是大写 X就变成 ALT+SHIFT+X了。于是你在 Vim 中，ALT+X就能看到后面输出的那句话了。看到这里你也许要问：这和我快速按下 ESC再马上按下 x键有什么区别？答案是没有区别，在终端里面这两个操作是一模一样的键盘码传送过去。</p>
+
+<p>就像你不设置 <code>ttimeout</code> 和 <code>ttimeoutlen</code>，然后快速在 VIM 里面按下 <code>&lt;ESC&gt;OP</code>，Vim 会以为你按下了 <code>&lt;F1&gt;</code>一样。因为 F1 的终端下字符串序列就是 <code>&lt;ESC&gt;OP</code> ，而你在 Insert 模式下面马上 <code>&lt;ESC&gt;</code> 退出并按下大写 O ，向上插入一行，Vim 将会等待一秒钟（默认 timeout ），确认后面没有一个
+P，才会进一步确认不是F1，而是向上插行。</p>
+
+<p>所以更好的做法是直接按照 <code>&lt;M-x&gt;</code> 进行映射，并且告诉 vim，<code>&lt;M-x&gt;</code>的键盘序列码是多少，然后再加上 ttimeoutlen超时：</p>
+
+<pre><code class="language-VimL">noremap &lt;M-x&gt; :echo &quot;ALT-X pressed&quot;&lt;cr&gt;
+exec &quot;set &lt;M-x&gt;=\ex&quot;
+set ttimeout ttimeoutlen=100
+</code></pre>
+
+<p>这样做的好处是告诉 Vim, ESC+x是一个完整的按键码，并且需要在 100ms以内进行判断，即，如果收到 ESC，并且100ms以后没有后续的x，则是认为是一个单独的ESC键，退出 INSERT模式，否则认为是按下了 ALT+X，这和 Vim处理方向键，处理 F1, F2等功能键的原则是相同的，具体见 <code>:h set-termcap</code>:</p>
+
+<pre><code>							*:set-termcap* *E522*
+For {option} the form &quot;t_xx&quot; may be used to set a terminal option.  This will
+override the value from the termcap.  You can then use it in a mapping.  If
+the &quot;xx&quot; part contains special characters, use the &lt;t_xx&gt; form: &gt;
+	:set &lt;t_#4&gt;=^[Ot
+This can also be used to translate a special code for a normal key.  For
+example, if Alt-b produces &lt;Esc&gt;b, use this: &gt;
+	:set &lt;M-b&gt;=^[b
+(the ^[ is a real &lt;Esc&gt; here, use CTRL-V &lt;Esc&gt; to enter it)
+The advantage over a mapping is that it works in all situations.
+You can define any key codes, e.g.: &gt;
+	:set t_xy=^[foo;
+There is no warning for using a name that isn't recognized.  You can map these
+codes as you like: &gt;
+	:map &lt;t_xy&gt; something
+</code></pre>
+
+<p>这是最完善的 ALT键解决方案了，网上有个流传很广的方式是 <code>map &lt;ESC&gt;x &lt;M-x&gt;</code> 然后你后面再映射 <code>&lt;M-x&gt;</code> 时就能被触发到，这是错误的方法，不能使用更短的 <code>ttimeoutlen</code>来识别键盘码，而会使用普通组合键的 <code>timeoutlen</code>来判断，后者一般设置为默认 1000毫秒，所以这样把 26个字母映射后，你 ESC退出
+INSERT模式后，一秒内按了任何一个字母就会被当成 ALT+X来处理了，经常误操作。</p>
+
+<p>如此，我们可以在 .vimrc中 for循环将 <code>&lt;M-0&gt;</code> 到 <code>&lt;M-9&gt;</code>，<code>&lt;M-a&gt;</code> 到 <code>&lt;M-z&gt;</code>等全部 set一遍，vim中即可正常使用。</p>
+
+<p>早年的终端，处理ALT组合键时，是将单个字符的最高位设置成 1，这也是 vim的默认处理方式，如今 rxvt终端也支持这种模式（见上图 SecureCRT设置面板）。这种键盘码不是 ESC+x的模式，可以直接识别，不需要计算超时，缺点是支持终端较少，对终端编码格式有依赖。</p>
+
+<p>如今基本上 <code>&lt;ESC&gt;+</code>的模式基本成为大部分终端的默认方式，主流操作了，详细可以看：<code>:h map-alt-keys</code> 以及 <code>:h set-termcap</code> 两个文档有具体说明，关于超时部分可以见（<code>:h esckeys</code> ）</p>
+
+<p>当然，如果你真能在100ms内连续按下 ESC和 X的话，那是另外一回事情了，你可以调短 <code>ttimeoutlen</code>到50ms解决，但是不建议该值低于 25ms，否则在低速网络情况下，你按功能键会被vim错误识别成几个单独的按键序列。这不是 vim 的锅，而是终端标准的锅，ncurses 和 tmux 也都靠超时来检测功能键。</p>
+
+<p>好了，帖一段代码吧：</p>
+
+<pre><code class="language-VimL">function! Terminal_MetaMode(mode)
+	set ttimeout
+	if $TMUX != ''
+		set ttimeoutlen=30
+	elseif &amp;ttimeoutlen &gt; 80 || &amp;ttimeoutlen &lt;= 0
+		set ttimeoutlen=80
+	endif
+	if has('nvim') || has('gui_running')
+		return
+	endif
+	function! s:metacode(mode, key)
+		if a:mode == 0
+			exec &quot;set &lt;M-&quot;.a:key.&quot;&gt;=\e&quot;.a:key
+		else
+			exec &quot;set &lt;M-&quot;.a:key.&quot;&gt;=\e]{0}&quot;.a:key.&quot;~&quot;
+		endif
+	endfunc
+	for i in range(10)
+		call s:metacode(a:mode, nr2char(char2nr('0') + i))
+	endfor
+	for i in range(26)
+		call s:metacode(a:mode, nr2char(char2nr('a') + i))
+		call s:metacode(a:mode, nr2char(char2nr('A') + i))
+	endfor
+	if a:mode != 0
+		for c in [',', '.', '/', ';', '[', ']', '{', '}']
+			call s:metacode(a:mode, c)
+		endfor
+		for c in ['?', ':', '-', '_']
+			call s:metacode(a:mode, c)
+		endfor
+	else
+		for c in [',', '.', '/', ';', '{', '}']
+			call s:metacode(a:mode, c)
+		endfor
+		for c in ['?', ':', '-', '_']
+			call s:metacode(a:mode, c)
+		endfor
+	endif
+endfunc
+command! -nargs=0 -bang VimMetaInit call Terminal_MetaMode(&lt;bang&gt;0)
+</code></pre>
+
+<p>使用：<code>:VimMetaInit</code> 将会把 vim里面的键位码定义为 ESC+ 序列，而使用 <code>:VimMetaInit!</code> 则可以定义为更不容易混淆的：<code>&lt;ESC&gt;]{0}x~</code> 格式（但是需要设置终端软件里每个ALT-x 组合键发送什么），将该代码放入你的 vimrc 文件中即可避免每次都调用。</p>
+
+<h2 id="vim-默认的-alt编码">Vim 默认的 ALT编码</h2>
+
+<p>比较一下 Vim默认的 ALT键识别方式（单字节高位设置1），比如 ALT+a，a的ascii码是 97，加上0x80以后值为 225，即发送一个 <code>\u00e1</code> 的 unicode字符过去，默认的vim就能识别成 ALT+a了，和 GVim的默认方式一样。看到这里你可能会问，为什么不把终端设置成 Vim的默认ALT编码，而是要弄一半天 <code>&lt;ESC&gt;x</code>
+不当终端里面要设置，Vim里面也要重新设置一遍？默认方式 rxvt和 xterm等终端还不需要额外配置呢？这个方案好在哪里呢？</p>
+
+<p>默认 ascii + 0x80的方式貌似省事，其实并不是，比如你想发送 unicode的 <code>\u00e1</code> 告诉 vim你按下了 ALT+a，那么你需要按照终端的字符编码格式来发送这个 unicode字符：比如你终端编码为 latin1的话，你只需要发送 0xe1 一个字节过去；而如果终端字符编码为 UTF-8的时候，你却需要发送 0xc3, 0xa1两个字节；GBK编码的话又要发送 0xa8,
+0xa2两个完全不同的字节。</p>
+
+<p>这就是一个问题，而我们使用 <code>&lt;ESC&gt;</code>的话，不管什么编码 <code>&lt;ESC&gt;</code> 都是 0x1b (27) 一个字节。再有一个问题是 iTerm2 之类的终端可以设置按下某键发送以 <code>&lt;ESC&gt;</code> 开头的字符串，却不能设置让你发送任意二进制，所以我们这个方式基本上是兼容所有终端的方式。</p>
+
+<h2 id="更友好的终端设置">更友好的终端设置</h2>
+
+<p>上面在 SecureCRT / XShell 中设置了将 alt 键作为发送 +ESC x 的 meta 键后，你会发现，终端软件中固有的一些 ALT 组合键全部失效了，比如原来在终端中 ALT_1 到 ALT_9 可以切换终端的 TAB，ALT_B 可以打开链接管理器，这下都全部用不了了，这是件比较坑爹的事情，能不能保留有限的几个 ALT 组合键给终端软件使用，剩下的全部当作 meta
+键呢？答案是可以的，先取消终端里 ALT 当作 meta 键的设置，恢复成默认状态，然后打开终端软件 keymap 设置窗口，将你不需要保留的 ALT 组合键全部设置成发送 +ESC x 字符串。</p>
+
+<p>那么一个个设置可能有些麻烦，对于 SecureCRT 的话，我生成了一个配置文件：</p>
+
+<pre><code>A   VK_A                    &quot;\033a&quot;
+A   VK_D                    &quot;\033d&quot;
+A   VK_E                    &quot;\033e&quot;
+A   VK_G                    &quot;\033g&quot;
+A   VK_H                    &quot;\033h&quot;
+....
+AS  VK_A                    &quot;\033A&quot;
+AS  VK_B                    &quot;\033B&quot;
+AS  VK_C                    &quot;\033C&quot;
+AS  VK_D                    &quot;\033D&quot;
+</code></pre>
+
+<p>可以到 <a href="https://github.com/skywind3000/vim/blob/master/tools/conf/securecrt.key">这里</a> 下载现成的，在 keymap editor 窗口中加载进去即可。</p>
+
+<p>这份keymap配置除了保留了 SecureCRT 常用的 ALT_1 - ALT_9 ，ALT_B, ALT_R 和 ALT_I 外，其他的 alt 组合都设置成了 +ESC x 的 meta 键序列。并且将 ALT_SHIFT_1 到 ALT_SHIFT_9 映射到了终端里的 +ESC 1 到 +ESC 9 ，也就是说你的 ALT+数字 被保留给软件切换TAB用了，而 ALT+SHIFT+数字
+被映射成了终端链接中的 ALT+数字，这样在终端里碰到需要 ALT+数字 的地方，可以用 ALT+SHIFT+数字 来代替。</p>
+
+<p>设置好以后，你可以在终端下使用命令：</p>
+
+<pre><code>showkey -a
+</code></pre>
+
+<p>来查看自己的设置正确不，是不是按下 ALT_a 后正确发送了 0x1b, 0x61 两个字节过去了？</p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/1835/">Vim 异步运行 Shell 指令的插件 - AsyncRun</a></li>
+        
+        <li><a href="/blog/archives/1745/">如何在不同平台下打开新窗口运行程序？</a></li>
+        
+        <li><a href="/blog/archives/1708/">GVim 中更好的运行程序</a></li>
+        
+        <li><a href="/blog/archives/1690/">更好的使用 Vim 标签（Tab）以及 Alt键映射</a></li>
+        
+        <li><a href="/blog/archives/1828/">3D 图形光栅化的透视校正问题</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/vim">Vim</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

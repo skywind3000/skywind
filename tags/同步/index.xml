@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>同步 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/</link>
+    <description>Recent content in 同步 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 09 May 2015 15:28:55 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>再谈网游同步技术</title>
+      <link>https://skywind3000.com/blog/archives/1343/</link>
+      <pubDate>Sat, 09 May 2015 15:28:55 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1343/</guid>
+      <description>&lt;p&gt;实时动作游戏在近年来得到迅猛的发展。而游戏同步问题，成为大家继续解决的核心问题之一。早在 2004年，国内游戏开发还处于慢节奏 RPG满天飞的情况下，我就开始实时动作游戏研究，分别在 2005-2006期间写了一系列相关文章，被好多网站转载：&lt;/p&gt;
+
+&lt;p&gt;帧间同步模式：《帧锁定同步算法》（2007）： &lt;a href=&#34;http://www.skywind.me/blog/archives/131&#34;&gt;http://www.skywind.me/blog/archives/131&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;玩法规避模式：《网络游戏同步法则》（2005）： &lt;a href=&#34;http://www.skywind.me/blog/archives/112&#34;&gt;http://www.skywind.me/blog/archives/112&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;预测插值模式：《影子跟随算法》（2007）： &lt;a href=&#34;http://www.skywind.me/blog/archives/1145&#34;&gt;http://www.skywind.me/blog/archives/1145&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;如今十年过去，网上越来越多的人开始讨论游戏同步技术了，然而很多文章往往只针对某种特定的游戏情况，而观点又经常以偏概全。很多人并没有真正开发过实时动作游戏，更别说了解同步技术的前世今生了。转载别人的观点并加上自己理解的人很多，实际动过手的人很少。避免给更多人造成无谓的误导，我今天基于先前的实践和对欧美动作游戏，战网游戏，主机游戏（PSN，XBox
+Live等）网络技术的了解，来对这个问题做一个简单总结：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>影子跟随算法（2007年老文一篇）</title>
+      <link>https://skywind3000.com/blog/archives/1145/</link>
+      <pubDate>Wed, 12 Dec 2007 14:43:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1145/</guid>
+      <description>&lt;h3 id=&#34;算法简述&#34;&gt;算法简述&lt;/h3&gt;
+
+&lt;p&gt;动作类游戏如何在高延迟下实现同步？不同的客户端网络情况，如何实现延迟补偿？十年前开始关注该问题，转眼十年已过，看到大家还在问这类问题，旧文一篇，略作补充（关于游戏同步相关问题还可以见我写于2005年的另外两篇文章，&lt;a href=&#34;http://www.skywind.me/blog/archives/131&#34;&gt;帧锁定算法&lt;/a&gt; 和
+&lt;a href=&#34;http://www.skywind.me/blog/archives/112&#34;&gt;网游同步法则&lt;/a&gt;）：&lt;/p&gt;
+
+&lt;p&gt;影子跟随算法由普通DR（dead reckoning）算法发展而来，我将其称为“影子跟随”意再表示算法同步策略的主要思想：&lt;/p&gt;
+
+&lt;p&gt;1． 屏幕上现实的实体（entity）只是不停的追逐它的“影子”（shadow）。&lt;/p&gt;
+
+&lt;p&gt;2． 服务器向各客户端发送各个影子的状态改变（坐标，方向，速度，时间）。&lt;/p&gt;
+
+&lt;p&gt;3． 各个客户端收到以后按照当前重新插值修正影子状态。&lt;/p&gt;
+
+&lt;p&gt;4． 影子状态是跳变的，但实体追赶影子是连续的，故整个过程是平滑的。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/04/clip_image002_thumb.jpg&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;图 1 算法演示&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>帧锁定同步算法</title>
+      <link>https://skywind3000.com/blog/archives/131/</link>
+      <pubDate>Sat, 10 Feb 2007 07:47:14 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/131/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;帧锁定算法解决游戏同步&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;早期 RTS，XBOX360 LIVE游戏常用同步策略是什么？格斗游戏多人联机如何保证流畅性和一致性？如何才能像单机游戏一样编写网游？敬请观看《帧锁定同步算法》 《帧锁定同步算法》转载请注明出处：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/blog/archives/131&#34;&gt;http://www.skywind.me/blog/archives/131&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;算法概念&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;该算法普遍要求网速RTT要在100ms以内，一般人数不超过8人，在这样的情况下，可以像单机游戏一样编写网络游戏。所有客户端任意时刻逻辑都是统一的，缺点是一个人卡机，所有人等待。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;客户端定时（比如每五帧）上传控制信息。&lt;/li&gt;
+&lt;li&gt;服务器收到所有控制信息后广播给所有客户。&lt;/li&gt;
+&lt;li&gt;客户端用服务器发来的更新消息中的控制信息进行游戏。&lt;/li&gt;
+&lt;li&gt;如果客户端进行到下一个关键帧（5帧后）时没有收到服务器的更新消息则等待。&lt;/li&gt;
+&lt;li&gt;如果客户端进行到下一个关键帧时已经接收到了服务器的更新消息，则将上面的数据用于游戏，并采集当前鼠标键盘输入发送给服务器，同时继续进行下去。&lt;/li&gt;
+&lt;li&gt;服务端采集到所有数据后再次发送下一个关键帧更新消息。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这个等待关键帧更新数据的过程称为“帧锁定”
+应用案例：大部分RTS游戏，街霸II(xbox360)，Callus模拟器。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>网络游戏同步法则</title>
+      <link>https://skywind3000.com/blog/archives/112/</link>
+      <pubDate>Sat, 11 Jun 2005 01:03:30 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/112/</guid>
+      <description>&lt;p&gt;网路的硬件也有限，而人的创造也无限，在公网平均130ms的Latency下，是不存在“完全的”的同步情况。如何通过消除/隐藏延时，将用户带入快速的交互式实时游戏中，体验完美的互动娱乐呢？&lt;/p&gt;
+
+&lt;p&gt;以下六点，将助你分清楚哪些我们可以努力，哪些我们不值得努力，弄明白实时游戏中同步问题关键之所在，巧妙的化解与规避游戏，最终在适合普遍用户网络环境中(200ms)，实现实时快速互动游戏：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 基本情况：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 网络性能指标一：带宽，限制了实时游戏的人数容量 &lt;br&gt;
+(B) 网络性能指标二：延时，决定了实时游戏的最低反应时间 &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. 两个基本原则：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 让所有的用户屏幕上面表现出完全不同的表象是完全没有问题的。 &lt;br&gt;
+(B) 把这些完全不同表象完全柔和在一个统一的逻辑中也是完全没有问题的。 &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. 同步的十二条应对策略：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 最大可能减少游戏中的数据传输&lt;br&gt;
+(B) 将阻塞通信放到线程池中实现 &lt;br&gt;
+(C) 永远不要为了等待某个数据而不让游戏进行下去 &lt;br&gt;
+(D) 利用预测和插值改进游戏的效果 &lt;br&gt;
+(E) 当使用预测插值的时候传送的数据不仅包括坐标，还需要速度和加速度 &lt;br&gt;
+(F) 将输入数据枷锁或者队列化(例如键盘消息队列)，直到下次发送数据的时刻，传统的方法是在固定的时间(发送数据前)检测键盘，在游戏的原理上隐藏延时 &lt;br&gt;
+(G) 使用事件调度表，将需要在所有用户客户端同时发生的事件，提前广播到所有用户 &lt;br&gt;
+(H) 使用多次攻击来杀死一个精灵，尽量减少一次性的、确定性的、延时敏感的事件 &lt;br&gt;
+(I) 延长子弹或者火箭在空中飞行的时间(在其飞行的同时，在所有客户端进行预测插值) &lt;br&gt;
+(J) 所有物体从一个地方移动到另外一个地方都需要时间，避免诸如“瞬间移动”的设计 &lt;br&gt;
+(K) 尽量使游戏中所有精灵，飞船或者其他物体，都按照可预测的轨迹运行，比如在移动中增加惯性 &lt;br&gt;
+(L) 充分发挥创造力，尽最大可能的合并游戏中前后相关的事件，合并游戏中存在的延时此问题，需要在技术上改进的同时也需要策划有所重视，规避一些影响较大的设计，巧妙的隐藏”延时” &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4. 同步问题现状：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 重视程度不够：很多人尚未意识到此问题的存在，曾有公司花半年时间打算做一款“松鼠大战”的网络版。 &lt;br&gt;
+(B) 技术上无彻底解决方案：对于多数程序员，单机游戏技术善未成熟就匆匆步入网络时代。 &lt;br&gt;
+(C) 研究这个技术需要条件：需要有实力的公司才能提供，无此条件，即便有能力的程序员也无法成功。 &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;5. 目前网游的三大技术难题：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 服务器的响应问题：如何使服务器在支持越来越多的人数的情况下提供最高的响应。 &lt;br&gt;
+(B) 同步问题：如何在有限的网络响应情况下，实现快速实时类游戏，提供最完美的交互。 &lt;br&gt;
+(C) 服务器分布式问题：如何在统一用户数据的情况下，利用分部式将各个分散的“世界”统一到一个“世界”中。 &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;谁能真正解决好以上三个问题，配合策划在设计上的突破，将使其他人在至少两年内无法超越。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;6. 相关补充：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 网格技术现在还是抄作，真正用到游戏中，还有很多技术难点需要突破(比如：目前网格的单位计算时间是以秒计算). &lt;br&gt;
+(B) 其实与很多人想法相反的是现在3D技术早已不是主要的矛盾。而现在国内外对于以上三个问题可以说处于同一个起跑线上，完全有机会取得先机。 &lt;br&gt;
+(C) 现在解决同步问题已经很紧迫，而同时所需要的环境也已经成熟，只要有所关注，半年之内可以得出较成熟的结论 &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;那么具体怎么解决呢？再下一步怎么办？ &lt;br&gt;
+这就得自己去实践了，我只说这么多了，哈哈，不然又教懒了那些成天再网上搜方案的人。&lt;/p&gt;
+
+&lt;p&gt;转载请著名出处：&lt;a href=&#34;http://www.skywind.me/&#34;&gt;http://www.skywind.me/&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

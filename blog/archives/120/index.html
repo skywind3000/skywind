@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Python少打字小技巧 | Skywind Inside</title>
+    <meta property="og:title" content="Python少打字小技巧 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2006-06-07T04:11:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2006-06-07T04:11:13&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Python少打字小技巧">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/120/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">Python少打字小技巧</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2006年6月7日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>说明：增加代码的描述力，可以成倍减少你的LOC，做到简单，并且真切有力
+观点：少打字＝多思考＋少出错，10代码行比50行更能让人明白，以下技巧有助于提高5倍工作效率</p>
+
+<h4 id="1-交换变量值时避免使用临时变量-cookbook1-1">1. 交换变量值时避免使用临时变量：(cookbook1.1)</h4>
+
+<p>老代码：我们经常很熟练于下面的代码</p>
+
+<pre><code>temp = x
+x = y
+y = temp
+</code></pre>
+
+<p>代码一：</p>
+
+<pre><code>u, v, w = w, v, u
+</code></pre>
+
+<p>有人提出可以利用赋值顺序来简化上面的三行代码成一行</p>
+
+<p>代码二：</p>
+
+<pre><code>u, v = v, u
+</code></pre>
+
+<p>其实利用Python元组赋值的概念，可更简明 — 元组初始化 + 元组赋值</p>
+
+<h4 id="2-读字典时避免判断键值是否存在-cookbook1-2">2. 读字典时避免判断键值是否存在：(cookbook1.2)</h4>
+
+<pre><code>d = { 'key': 'value' }
+</code></pre>
+
+<p>老代码：</p>
+
+<pre><code>if 'key' in d: print d['key']
+else: print 'not find'
+</code></pre>
+
+<p>新代码：</p>
+
+<pre><code>print d.get('key', 'not find')
+</code></pre>
+
+<h4 id="3-寻找最小值和位置的代码优化">3. 寻找最小值和位置的代码优化：</h4>
+
+<pre><code>s = [ 4,1,8,3 ]
+</code></pre>
+
+<p>老代码：</p>
+
+<pre><code>mval, mpos = MAX, 0
+for i in xrange(len(s)):
+if s[i] &lt; mval: mval, mpos = s[i], i
+</code></pre>
+
+<p>新代码：</p>
+
+<pre><code>mval, mpos = min([ (s[i], i) for i in xrange(len(s)) ])
+</code></pre>
+
+<p>元组比较的特性，可以方便的写做一行</p>
+
+<p>观点一：用Python编程，需要有“一字千金”的感觉；既然选择了Python，就不要在意单条语句的效率。</p>
+
+<p>上面几点例子很基础，实际中将原始代码压缩1/5并不是不可能，我们之前一个子项目，C++代码270K
+重构后Python代码只有67K，当然使用python的日志模块（logging），读写表格文本（csv）等，也功
+不可末，最终代码变成原来的1/4，我觉得自己的寿命延长了三倍。。。下面优化几个常用代码：</p>
+
+<h4 id="4-文件读取工作的最简单表达">4. 文件读取工作的最简单表达：</h4>
+
+<p>老代码：我们需要将文本文件读入到内存中</p>
+
+<pre><code>line = ''
+fp = open('text.txt', 'r')
+for line in fp: text += line
+</code></pre>
+
+<p>代码一：</p>
+
+<pre><code>text = string.join([ line for line in open('text.txt')], '')
+</code></pre>
+
+<p>代码二：</p>
+
+<pre><code>text = ''.join([ line for line in open(‘text.txt’)])
+</code></pre>
+
+<p>代码三：</p>
+
+<pre><code>text = file('text.txt').read()
+</code></pre>
+
+<p>新版本的Python可以让你写出比1，2漂亮的代码（open是file的别名，这里file更直观）</p>
+
+<h4 id="5-如何在python实现三元式">5. 如何在Python实现三元式：</h4>
+
+<p>老代码：用惯C++,Java,C#不喜欢写下面代码</p>
+
+<pre><code>if n &gt;= 0: print 'positive'
+else: print 'negitive'
+</code></pre>
+
+<p>代码一：该技巧在 Lua里也很常见</p>
+
+<pre><code>print (n &gt;= 0) and 'positive' or 'negitive'
+</code></pre>
+
+<p>说明：这里的’and’和’or’相当于C中的’:’和’?’的作用，道理很简单，因为如果表达式为
+真了那么后面的or被短路，取到’positive’；否则，and被短路，取到’negitive’</p>
+
+<p>代码二：</p>
+
+<pre><code>print (n &gt;= 0 and ['positive'] or ['negitive'])[0]
+</code></pre>
+
+<p>说明：将两个值组装成元组，即使’positive’是None, ”, 0 之类整句话都很安全</p>
+
+<p>代码三：</p>
+
+<pre><code>print ('negitive', 'positive')[n &gt;= 0]
+</code></pre>
+
+<p>说明：(FalseValue, TrueValue)[Condition] 是利用了 元组访问 + True=1 两条原理</p>
+
+<h4 id="6-避免字典成员是复杂对象的初始化-cookbook1-5">6. 避免字典成员是复杂对象的初始化：(cookbook1.5)</h4>
+
+<p>老代码：</p>
+
+<pre><code>if not y in d: d[y] = { }
+d[y][x] = 3
+</code></pre>
+
+<p>新代码：</p>
+
+<pre><code>d.setdefault(y, { })[x] = 3
+</code></pre>
+
+<p>如果成员是列表的话也一样: d.setdefault(key, []).append(val)</p>
+
+<p>上面六点技巧加以发挥，代码已经很紧凑了，但是还没有做到“没有一句废话”可能有人怀疑真的能
+减少1/5的代码么？？我要说的是1/5其实很保守，Thinking in C++的作者后来用了Python以后
+觉得Python甚至提高了10倍的工作效率。下面的例子可以进一步说明：</p>
+
+<h4 id="例子1-把文本的ip地址转化为整数">例子1：把文本的IP地址转化为整数</h4>
+
+<p>说明：需要将类似’192.168.10.214’的IP地址转化为 0x0C0A80AD6，在不用 inet_aton情况下
+当C++/Java程序员正为如何进行文本分析，处理各种错误输入烦恼时，Python程序员已经下班：</p>
+
+<pre><code>f = lambda ip: sum( [ int(k)*v for k, v in zip(ip.split('.'), [1&lt;&lt;24, 65536, 256, 1])] )
+</code></pre>
+
+<p>首先ip.split(‘.’)得到列表[‘192′,’168′,’10’,’214′]，经过zip一组装，就变成</p>
+
+<pre><code>[('192',0x1000000),('168',0x10000),('10',0x100),('214',1)]
+</code></pre>
+
+<p>接着for循环将各个元组的两项做整数乘法，最后将新列表的值用sum求和，得到结果</p>
+
+<p>C++程序员不肖道：“你似乎太相信数据了，根本没有考虑道错误的输入”
+Python程序员回答：“外面的try/except已帮我完成所有异常处理，不必担心越界崩溃而无法捕获”</p>
+
+<p>Java程序员得意的看着自己百行代码：“我想知道你如何让你的同事来理解你的杰作？你有没有考虑过将
+类似gettoken之类的功能独立处理，让类似问题可以复用？我的代码说明了如何充分发挥Reflection和
+interface的优秀特性，在增加重用性的同时，提供清晰可读的代码”
+Python无奈道：“这是‘纯粹的代码’，意思是不可修改，类似正则表达式，只要让人明白他的功能就行了，
+要修改就重写。再我能用三行代码完成以内绝不会有封装的想法，况且熟悉Python者也不觉得难读啊？”</p>
+
+<p>C++程序员抛出杀手简：“如果让你一秒钟处理10w个ip转化的话怎么办？”
+Python程序员觉得想睡觉：“你觉得我会蠢到还用Python做这样的事情么？”</p>
+
+<p>此时C++程序员似乎并没听到，反而开始认真的思考起自己刚才提出问题来，一会只见他轻藐的看了另外两
+人一眼，然后胸有成竹的转到电脑前，开始往屏幕上输入：“template &lt;….”</p>
+
+<p>小笑话：封装的陷阱，让人一边喊着“封装”或“复用”，一边在新项目中，全部打破重写，并解释为–重构
+观点二：简单即是美，把一个东西设计复杂了，本身就是有问题的</p>
+
+<p>思考题：上面的程序，如果反过来，将ip的整数形式转化为字符串，各位该如何设计呢？？</p>
+
+<h4 id="例子2-输出一个对象各个成员的名称和值">例子2：输出一个对象各个成员的名称和值</h4>
+
+<pre><code>g = lambda m: '\n'.join([ '%s=%s'%(k, repr(v)) for k, v in m.__dict__.iteritems() ])
+</code></pre>
+
+<p>用法：print g(x)</p>
+
+<p>延伸：上面两个例子熟悉了lambda以后，建议可以尝试使用下 yield</p>
+
+<h4 id="观点总结">观点总结</h4>
+
+<p>Q:“怎样才算做到注重What you think多于What you are writing”</p>
+
+<p>A:“就是说你手上打着第1页需求的代码，眼睛却在看着第2页需求的内容，心里想着如何应对5-10页的东西”</p>
+
+<p>国外多年前废除PASCAL改用Python做科研教学是有道理的，关于精简代码的例子举不胜举，用它编码时应该有“一字千金”的感觉，否则最终写出来的，还是“伪装成Python的C++程序”。</p>
+
+<p>编程本来就是快乐的，避免过多的体力劳动，赢得更多思考的时间。</p>
+
+<p>思考题：到底是封装呢？还是放弃封装？
+思考题：“more than one way to do it”是不是就是好事？它的反面是什么？</p>
+
+<p>PS: 更多实用方法可以阅读 Daily Python URL 以及《Python Cookbook》</p>
+
+<p>Skywind Inside
+<a href="http://www.skywind.me/blog/">http://www.skywind.me/blog/</a></p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/610/">文莱旅游-SINPLAY</a></li>
+        
+        <li><a href="/blog/archives/458/">游戏高手的境界</a></li>
+        
+        <li><a href="/blog/archives/501/">文莱沙巴旅游照片</a></li>
+        
+        <li><a href="/blog/archives/456/">两次结对开发尝试</a></li>
+        
+        <li><a href="/blog/archives/459/">治安问题闲扯</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/python">Python</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

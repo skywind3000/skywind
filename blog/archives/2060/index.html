@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>为什么说 zsh 是 shell 中的极品？ | Skywind Inside</title>
+    <meta property="og:title" content="为什么说 zsh 是 shell 中的极品？ - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2018-03-07T03:42:29&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2018-03-07T03:42:29&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="为什么说 zsh 是 shell 中的极品？">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/2060/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">为什么说 zsh 是 shell 中的极品？</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2018年3月7日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>（这是之前我在知乎上回答的一个可能对大家有点用处的答案，关于 zsh 的一些演示）</p>
+
+<h3 id="色彩高亮">色彩高亮</h3>
+
+<p>并不是传统基于正则表达式的色彩高亮，而是真的会判断你输入的是啥的色彩高亮：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/zsh-1.png" alt="" /></p>
+
+<p>白色代表普通命令或者程序，红色代表错误命令，这个很管用，你再一个个字母的敲命令，前面都是红色的，如果敲对了最后一个字母的话，你会看到整条命令连着前面的都变成了白色，代表你敲对了。以前无高亮的时候敲错了都不知道，还要往上翻着左右检查。下面青色的代表内建命令或者 alias （echo 和 ls ），这些都不是正则判断出来的，是真的去检查的。</p>
+
+<p>细心的人会发现非零的错误码，也会高亮显示在最右边（上一条 data命令错误，返回127）。</p>
+
+<h3 id="命令提示">命令提示</h3>
+
+<p>注意，命令提示和补全是两个完全不同的系统，很多时候提示比补全更有用：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/zsh-2.png" alt="" /></p>
+
+<p>你才输入完 “tar”命令，后面就用灰色给你提示 tar 命令的参数，而且是随着你动态输入完每一个字母不断修正变化：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/zsh-3.png" alt="" /></p>
+
+<p>比如你输入到 - 后，没有跟着它上面的提示，而是输入了一个c字母，它马上明白你是要压缩，不是解压，然后随即给出你压缩对应的命令提示。</p>
+
+<p>这个命令提示是基于你的历史命令数据库进行分析的，随着你输入的命令越来越多，提示将会越来越准确和顺手，某些不常输入的命令特别管用，比如偶尔查看下网卡配置：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/zsh-4.png" alt="" /></p>
+
+<p>刚输入完：cat /etc/n 它后面已经猜出你可能要查看网卡配置了，然后马上给出你提示，用不着你 tab 补全半天，你才敲 gc ，它就猜测出你可能想运行 gcc，然后马上给出完整建议：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/zsh-5.png" alt="" /></p>
+
+<p>如果你觉得它提示的正确，你可以 CTRL+F 表示采纳，后面就会自动帮你一次性全部输入完了，不用一个字一个字的照着敲。前面的高亮就不说了，用惯这套提示系统，你就再也难以回到光秃秃的 bash 时代了。</p>
+
+<h3 id="智能补全">智能补全</h3>
+
+<p>传统 shell 的补全在 zsh 面前基本都可以下班了：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/c-1.png" alt="" /></p>
+
+<p>即便可以在终端下舒适工作的人，面对有些任务也会觉得烦躁，比如频繁的切换路径，这种缩写路径补全是我用 zsh 的一大痛点之一，特别是路径比较长的时候，比如 OS X 下工具链层层套的那种路径，比如某 java 代码树，有了这种缩写补全，能让你切换路径流畅不少。</p>
+
+<p>当补全内容较多时，不用像 bash 一样持续提示你需要继续输入，也不会像 cmd 永无止境的循环下去，连续敲击两次 TAB 键 zsh 给你一个补全目录，让你上下左右选择：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/c-2.png" alt="" /></p>
+
+<p>这叫选择模式，由两次连续 TAB 进入，进入后，除了 tab/shift+tab 可以前后切换外，你还可以使用光标键上下左右移动，或者使用 emacs 键位：ctrl + f/b/p/n (左右上下：forward, backward, previous, next) 。如果你觉得光标键太远难按，CTRL+f/b/p/n 太伤小拇指，可以跟我一样新定义出一套：ALT+hjkl
+（左下上右）来选择，十分顺手。回车表示确认选择，用 CTRL+G 表示退出。</p>
+
+<p>命令参数补全更不在话下，输入 svn 后面按 TAB：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/c-4.png" alt="" /></p>
+
+<p>就出现了 svn 的参数，这种一级参数补全基本只会对很少用的命令才有效果，svn/git 这种一级参数基本都不需要补全的，我们一般会需要到二级参数补全，比如已经输入了 svn commit，但是有一个 commit 的参数我忘记了，我只记得两个减号开头的，于是：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/c-3.png" alt="" /></p>
+
+<p>这时候两次 TAB 进入选择模式就比较管用了，svn 的二级参数往往很长，选择模式比如信任 server 那个，选择完回车确认，或者 CTRL+G 退出选择模式。</p>
+
+<p>zsh的补全真的太强了，我这里只说了十分之一不到，没法一一展开了，但就上面几个已经让我有充分的理由切换到 zsh 了。</p>
+
+<h3 id="快速跳转">快速跳转</h3>
+
+<p>前面也说过命令行工作中，不同的路径间切来切去是个头疼的问题，除了上面提到的缩写补全外，有无更快的办法让我马上切换到我最近跳转过的某个路径？当然有“cd -”命令：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/cd-1.png" alt="" /></p>
+
+<p>输入 cd 后面加一个减号后，按一次 tab 马上就列出本次登陆后去过的最近几次路径，接着根据下面的提示输入数字按回车就过去了，比如输入：</p>
+
+<pre><code>$ cd -5 &lt;回车&gt;
+</code></pre>
+
+<p>就跳转到 ~/software/libclang-python3 路径下了。当然你还可以不输入数字，而是再按一次 tab 进入选择模式，上下键或者 ctrl+n/p 来选择，回车确认，ctrl+g 返回。</p>
+
+<h3 id="自动跳转">自动跳转</h3>
+
+<p>有了前面的路径缩写展开，和这里的最近访问路径切换，你已经没法再回到过去那种按部就班输入路径外加点弱智补全的方式了，但是可能你还会问，能否更进一步，不限于本次登陆或者最近去过的几级路径，有没有办法让我快速进入自我开始用 zsh 之后进入过的某个路径呢？当然可以，我们用 z 命令，查看历史上进入过的目录：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/z-1.png" alt="" /></p>
+
+<p>敲入 z 命令，列出了自从我开始用zsh进入过的目录和他们的权重，进入次数越多，权重越大，便于演示，我删除了我的历史，随便 cd 了一下，保持列表的简洁。z 后面加一个关键词就能跳转到所有匹配的历史路径中权重最高的那个了：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/z-3.png" alt="" /></p>
+
+<p>比如所有历史路径都包含 o ，那么 z o 就会跳转到权重最高的 ~/software 目录中。使用：“z -l foo&rdquo; 可以列出包含 foo 的所有历史路径：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/linux/z-4.png" alt="" /></p>
+
+<p>比如我们查询包含关键字为 c 的所有历史路径和他们的权重，有时你搞不清楚权重，可能会跳转错了，比如有两个路径：</p>
+
+<pre><code>project1/src
+project2/src
+</code></pre>
+
+<p>那么你 z src 的时候可能并不能如你愿跳转到你想要去的路径，那怎么办呢？第一个办法是实际 cd project1/src 过去，增加它的权重，权重超过 project2/src 那么下次 z src 的时候就会跳转过去，你可以实时用 z -l src 查看包含 src 的所有路径权重。</p>
+
+<p>更加可靠的方法是，增加一个关键字，比如 z 1 src ，空格分隔多个关键字，z会先匹配出第一个来，比如1 ，然后再匹配第二个 src ，马上锁定 project1/src 了。大家实际使用起来，一般是 z + 最后一级目录名，比如：</p>
+
+<pre><code>$ z vim     # -&gt; /home/skywind/software/vim
+$ z tmp     # -&gt; /home/skywind/tmp
+$ z local   # -&gt; /home/skywind/.local
+</code></pre>
+
+<p>99%的时候这样做就足够了，当没有按照你要求跳转的时候，你可以再补充一下再上一级目录的一些信息，比如 z vim/src 或者 z v src 都可以，弄不明白会跳转到哪里，可以随时用：</p>
+
+<pre><code>$ z -l key1 [key2 ... ]
+</code></pre>
+
+<p>查看权重。不过常使用你根本必担心这个问题，基本上常去的地方，z 都是指哪打哪。如果说前面的路径缩写展开和最近访问快速切换是火箭的话，z 就是加速燃料了。</p>
+
+<p>熟练的掌握上面几点内容，可让你体验到在终端里溜冰的感觉，再也没有泥里走路的抓狂。</p>
+
+<h3 id="热键绑定">热键绑定</h3>
+
+<p>zsh 里面使用 bindkey 命令可以设置一系列热键，用来运行某一个 zsh 内部命令或者某个 shell 命令，谁规定终端只能敲字母呢？我们还可以按热键，比如从网上下载了一个 tar 包解开后要稍微浏览一下里面的内容，用的最多的两条命令是啥呢？第一条是 ls 命令，每到一个子目录都要先按一下，还有就是 cd .. 对吧，经过配置：</p>
+
+<pre><code>bindkey -s '\eo'   'cd ..\n'    # 按下ALT+O 就执行 cd .. 命令
+bindkey -s '\e;'   'ls -l\n'    # 按下 ALT+; 就执行 ls -l 命令
+你还可以设置一键打开编辑器，或者一键帮你输入某常用命令的一部分。除了这些命令外，日常命令编写也可以加强一下：
+bindkey '\e[1;3D' backward-word       # ALT+左键：向后跳一个单词
+bindkey '\e[1;3C' forward-word        # ALT+右键：前跳一个单词
+bindkey '\e[1;3A' beginning-of-line   # ALT+上键：跳到行首
+bindkey '\e[1;3B' end-of-line         # ALT+下键：调到行尾
+</code></pre>
+
+<p>敲命令时经常需要对已有命令进行修改，默认一个字符一个字符的跳太慢了，这样设置以后基于单词的跳转快速很多，配合其他一些快捷键，修改命令事半功倍。</p>
+
+<p>终端下从 v220t 到 xterm 规范里，按下 alt+x 会先发送一个8位 ASCII 码 27，即 ESC键的扫描吗，然后跟着 x 这个字符，也等价于快速（比如100毫秒内）前后按下 ESC 和 x。</p>
+
+<p>还不会再自己的终端软件里设置允许 alt 键的同学们可以搜索下相关文章。</p>
+
+<h3 id="如何配置">如何配置？</h3>
+
+<p>zsh 有多强呢？上面说的这些和我平时用的功能可能只发挥了 zsh 10% 不到的能力，我也并不是什么 zsh 专家或者脚本高手，上面所讲的五点内容对于 zsh 的全部功能来讲可能都只用到了 zsh 的九牛一毛，但是以上五点只要有一条，就已经够我放弃其他 shell 来尝试一下了。</p>
+
+<p>那最后上面这些功能怎么配置的？眼熟的人应该发现这不是默认的 oh-my-zsh 框架，这只是我写的一个 100 多行的 .zshrc 小脚本，如果你想体验一下的话，可以先 apt-get 安装一下 zsh，然后打开：</p>
+
+<p><a href="https://github.com/skywind3000/vim/blob/master/etc/zshrc.zsh">https://github.com/skywind3000/vim/blob/master/etc/zshrc.zsh</a></p>
+
+<p>把上面这个配置的内容复制粘贴到你的 ~/.zshrc 文件里，保存，运行 zsh 即可。头一次运行会安装一些依赖包，稍等两分钟，以后再进入就瞬间进入了。</p>
+
+<hr />
+
+<p>PS：想自己配置到话，推荐使 zsh 的包管理器：antigen 来管理所有功能，用它配置起来比原始 oh-my-zsh 自动化多了。</p>
+
+<p>看很多人都比较迷恋 zsh 的 git prompt ，我从来不用这华而不实玩意儿，让我的终端不流畅，每次没内容按下回车都要调用一大堆命令，建议大家关闭。</p>
+
+<hr />
+
+<p>相关阅读：</p>
+
+<p><a href="https://www.zhihu.com/question/59227720/answer/286665684">韦易笑：有哪些命令行的软件堪称神器？</a></p>
+
+<p><a href="http://www.skywind.me/blog/archives/2036">终端调试哪家强？</a></p>
+
+<p><a href="http://www.skywind.me/blog/archives/2071">Bash 中文速查表/Cheatsheet （全网最全）</a></p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/2036/">GDB 从裸奔到穿戴整齐</a></li>
+        
+        <li><a href="/blog/archives/1924/">Aix 折腾手记</a></li>
+        
+        <li><a href="/blog/archives/1909/">Linux 网桥设置</a></li>
+        
+        <li><a href="/blog/archives/1904/">Linux 硬件时区折腾备忘</a></li>
+        
+        <li><a href="/blog/archives/1893/">Linux 线上系统调优备忘</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/linux">Linux</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

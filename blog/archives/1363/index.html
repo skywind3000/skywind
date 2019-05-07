@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>还原被摄像机透视的纹理 | Skywind Inside</title>
+    <meta property="og:title" content="还原被摄像机透视的纹理 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2015-05-20T11:34:40&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2015-05-20T11:34:40&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="还原被摄像机透视的纹理">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/1363/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">还原被摄像机透视的纹理</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2015年5月20日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>有人问如何还原被透视纹理？给你一张照片，还原照片上四个点所组成的平面的纹理该怎么做？我们可以从数学上推导一下，为了和三维图形的透视纹理映射对照，我们称照片上四个点在照片上的位置为“屏幕坐标”，那么可以发现：</p>
+
+<p>空间中，三维坐标（x,y,z）和纹理坐标（u, v）承线性关系。根据该问题描述，可以理解为已知四个点的屏幕投影坐标（xi,yi），和对应纹理坐标（u，v），求整个纹理坐标系到屏幕坐标系的反向映射过程，即根据（u,v）求解（xi，yi）。</p>
+
+<p>1. 按照纹理隐射的原理，同平面纹理坐标与空间坐标存在线性关系，设 a1-a12为常数，有：</p>
+
+<pre><code>a1 * x +  a2 * y +  a3 * z +  a4 = u ... 线性关系
+a5 * x +  a6 * y +  a7 * z +  a8 = v ... 线性关系
+a9 * x + a10 * y + a11 * z + a12 = 0 ... 平面方程
+</code></pre>
+
+<p>2. 求解上面的方程组，可以得到类似下面的关系，其中b1-b9为常数：</p>
+
+<pre><code>x = b1 * u + b2 * v + b3  
+y = b4 * u + b5 * v + b6 
+z = b7 * u + b8 * v + b9 
+</code></pre>
+
+<p>常数 b1-b9如果展开，就是9个关于a1-a12的等式，太长了，这里不展开，有兴趣可以自己求解。</p>
+
+<p>3. 屏幕上投影坐标一般是：</p>
+
+<pre><code>             x
+xi = D1 * --- + C1
+           z
+           x
+yi = D2 * --- + C2
+           z
+</code></pre>
+
+<p>因为同样一个透视投影矩阵下，能隐射成屏幕上同样形状纹理的平面，在空间中存在无穷多个，而且还存在不同透视投影矩阵下，同样屏幕投影的平面存在更多无穷多个。这里我们不用去求解每个平面，直接设置 D1 = D2 = 1 且 C1 = C2 = 0 有：</p>
+
+<pre><code>       x
+xi = ---
+      z
+      x
+yi = ---
+      z
+</code></pre>
+
+<p>4. 展开等式：</p>
+
+<pre><code>        b1 * u + b2 * v + b3
+xi =  ----------------------
+       b7 * u + b8 * v + b9
+       b4 * u + b5 * v + b6
+yi =  ----------------------
+       b7 * u + b8 * v + b9
+</code></pre>
+
+<p>改变一下，用矩阵 M的各个元素 m00 - m22来代替 b1-b9。</p>
+
+<pre><code>       m00 * u + m01 * v + m02
+xi = -------------------------
+      m20 * u + m21 * v + m22
+      m10 * u + m11 * v + m12
+yi = -------------------------
+      m20 * u + m21 * v + m22
+</code></pre>
+
+<p>5. 于是整个问题很简单了，就是求矩阵 M。我们知道存在矩阵 M，使得：</p>
+
+<pre><code>/ m00 m01 m02 \   / u \
+| m10 m11 m12 | . | v | = [ uo, vo, wo ] = [ xi * wo, yi * wo, wo ]
+\ m20 m21 m22 /   \ 1 /
+               m00 * u + m01 * v + m02
+xi = uo / wo = ------------------------  .......(4)
+               m20 * u + m21 * v + m22
+               m10 * u + m11 * v + m12
+yi = uo / wo = ------------------------  .......(5)
+               m20 * u + m21 * v + m22
+</code></pre>
+
+<p>6. 再此基础上，我们已知屏幕上四个端点的位置（x0, y0）-&gt; (x3, y3), 也知道他们对应的纹理坐标，（u0, v0) -&gt; (u3, v3)。继续设 m22 = 1，可以列出一个方程：</p>
+
+<pre><code>/ u0 v0  1  0  0  0 -u0*x0 -v0*x0 \ /m00\ /x0\
+| u1 v1  1  0  0  0 -u1*x1 -v1*x1 | |m01| |x1|
+| u2 v2  1  0  0  0 -u2*x2 -v2*x2 | |m02| |x2|
+| u3 v3  1  0  0  0 -u3*x3 -v3*x3 |.|m10|=|x3|
+|  0  0  0 u0 v0  1 -u0*y0 -v0*y0 | |m11| |y0|
+|  0  0  0 u1 v1  1 -u1*y1 -v1*y1 | |m12| |y1|
+|  0  0  0 u2 v2  1 -u2*y2 -v2*y2 | |m20| |y2|
+\  0  0  0 u3 v3  1 -u3*y3 -v3*y3 / \m21/ \y3/
+</code></pre>
+
+<p>对于这个方程组，四个端点的 x, y是已知的，同时纹理坐标 u, v也是已知的。那么我们解个方程就能求出矩阵 M的各个元素。现在你已经有了 m00 - m22，有了式子4，和式子5：</p>
+
+<pre><code>     / m00 m01 m02 \ 
+M = | m10 m11 m12 |   .....  已知
+     \ m20 m21 m22 / 
+      m00 * u + m01 * v + m02
+xi = -------------------------    ... (4)
+      m20 * u + m21 * v + m22
+      m10 * u + m11 * v + m12
+yi = -------------------------    ... (5)
+      m20 * u + m21 * v + m22
+</code></pre>
+
+<p>7. 在已知 M矩阵的各个元素，已知纹理坐标（u, v），你想求对应的屏幕坐标（x, y），就可以用公式（4）和公式（5）来求解了。假设纹理为 256x256大小，最终求解原纹理图片的代码应该是：</p>
+
+<pre><code>for (int v = 0; v &lt; 256; v++) {
+     for (int u = 0; u &lt; 256; u++) {
+        int x = CalculateX(M, u, v);  // 带入式子（4）
+          int y = CalculateY(M, u, v);  // 带入式子（5）
+          texture[v * 256 + u] = GetPixel(x, y);
+     }
+}
+</code></pre>
+
+<p>8. 优化一下，上面每个点的乘除法太多，我们需要找找关系，设：</p>
+
+<pre><code>A = m00 * u + m01 * v + m02    
+B = m10 * u + m11 * v + m12    
+C = m20 * u + m21 * v + m22   
+</code></pre>
+
+<p>于是有：x = A / C, y = B / C，而随着 u坐标的均匀递增 A, B, C成线性变化，那么我们可以用差值来完成我们的优化：</p>
+
+<pre><code>for (int v = 0; v &lt; 256; v++) {
+    float A1 = m00 *   0 + m01 * v + m02;
+    float A2 = m00 * 256 + m01 * v + m02;
+    float B1 = m10 *   0 + m11 * v + m12;
+    float B2 = m10 * 256 + m11 * v + m12;
+    float C1 = m20 *   0 + m21 * v + m22;
+    float C2 = m20 * 256 + m21 * v + m22;
+    float dA = (A2 - A1) * (1 / 256.0);   // 计算步长
+    float dB = (B2 - B1) * (1 / 256.0);   
+    float dC = (C2 - C1) * (1 / 256.0);  
+    float A = A1 + 0.5;  // 方便取整时四舍五入
+    float B = B1 + 0.5;  
+    float C = C1 + 0.5;
+    uint32_t *pixel = &amp;texture[v * 256];
+    for (int u = 0; u &lt; 256; u++) {
+        float i = 1.0 / C;    // 减少一次除法
+        int x = (int)(A * i);
+        int y = (int)(B * i);
+        pixel[0] = GetPixel(x, y);
+        pixel++;
+        A += dA;
+        B += dB;
+        C += dC;
+    }
+}
+</code></pre>
+
+<p>整个程序基本上就是这个样子了，内循环已经足够紧凑。再次观察等式关系，可以发现其实：dA = m00, dB = m10, dC = m20。还可以继续进一步化解外层循环。是不是和透视纹理绘制方法很像？一个正过程，一个逆过程而已。</p>
+
+<p>注意1：越界处理，简单判断下越界坐标。<br />
+注意2：如果还需要进一步提高性能，可以尝试定点数优化计算过程，尝试继续展开循环。</p>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/1541/">计算机图形算法中的光滑边缘算法经历了那些变迁？</a></li>
+        
+        <li><a href="/blog/archives/1176/">美术资源超级压缩方法</a></li>
+        
+        <li><a href="/blog/archives/137/">[自制开源] 轻量级图形库 PixelLib</a></li>
+        
+        <li><a href="/blog/archives/194/">ASCII Art Algorithm</a></li>
+        
+        <li><a href="/blog/archives/102/">在现MSN魔法表情</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2">图形</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

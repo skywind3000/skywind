@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/python/</link>
+    <description>Recent content in Python on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 13 Oct 2006 04:35:02 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PY2EXE的启动步奏参考－科学的发布</title>
+      <link>https://skywind3000.com/blog/archives/338/</link>
+      <pubDate>Fri, 13 Oct 2006 04:35:02 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/338/</guid>
+      <description>&lt;p&gt;周末读了一下Py2Exe的代码，偶然发现Py2Exe的实现，是一套很成熟的客户端发布方式，不限于只有 Python项目可以参考，Py2exe启动步奏如下： Py2exe启动步奏方式参考：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;主程序启动，尝试在本EXE的资源中找到zip过后的PythonXX.dll的数据&lt;/li&gt;
+&lt;li&gt;如果找到 PythonXX.dll数据则unzip后以memory dll方式加载并导出接口&lt;/li&gt;
+&lt;li&gt;初始化 memoryimporter，给python提供在内存中import一个pyc或者dll的功能&lt;/li&gt;
+&lt;li&gt;利用memoryimporter加载 ctypes.pyd模块&lt;/li&gt;
+&lt;li&gt;利用py2exe_util.c中的方法，加载程序所需要的资源：ICON等&lt;/li&gt;
+&lt;li&gt;在资源中初始化 zlib.pyd等必要模块&lt;/li&gt;
+&lt;li&gt;在资源中找到初始化，以 &lt;code&gt;__main__&lt;/code&gt; 的命名开始转入Python脚本&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Python少打字小技巧</title>
+      <link>https://skywind3000.com/blog/archives/120/</link>
+      <pubDate>Wed, 07 Jun 2006 04:11:13 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/120/</guid>
+      <description>&lt;p&gt;说明：增加代码的描述力，可以成倍减少你的LOC，做到简单，并且真切有力
+观点：少打字＝多思考＋少出错，10代码行比50行更能让人明白，以下技巧有助于提高5倍工作效率&lt;/p&gt;
+
+&lt;h4 id=&#34;1-交换变量值时避免使用临时变量-cookbook1-1&#34;&gt;1. 交换变量值时避免使用临时变量：(cookbook1.1)&lt;/h4&gt;
+
+&lt;p&gt;老代码：我们经常很熟练于下面的代码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;temp = x
+x = y
+y = temp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;代码一：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;u, v, w = w, v, u
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;有人提出可以利用赋值顺序来简化上面的三行代码成一行&lt;/p&gt;
+
+&lt;p&gt;代码二：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;u, v = v, u
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其实利用Python元组赋值的概念，可更简明 — 元组初始化 + 元组赋值&lt;/p&gt;
+
+&lt;h4 id=&#34;2-读字典时避免判断键值是否存在-cookbook1-2&#34;&gt;2. 读字典时避免判断键值是否存在：(cookbook1.2)&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;d = { &#39;key&#39;: &#39;value&#39; }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;老代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if &#39;key&#39; in d: print d[&#39;key&#39;]
+else: print &#39;not find&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;新代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print d.get(&#39;key&#39;, &#39;not find&#39;)
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

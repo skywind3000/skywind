@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>大浪淘沙 on Skywind Inside</title>
+    <link>https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/</link>
+    <description>Recent content in 大浪淘沙 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 18 Apr 2015 04:59:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>你为什么会离开游戏行业？</title>
+      <link>https://skywind3000.com/blog/archives/1259/</link>
+      <pubDate>Sat, 18 Apr 2015 04:59:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1259/</guid>
+      <description>&lt;p&gt;这个题目本来不想讨论，现实生活中我是一个尊重他人的人，而尊重他人最重要的是尊重他人的选择，尊重他人的价值观和梦想。但是身边太多惨痛的教训，让我有种不吐不快的想法，大家偶尔也该停下忙碌的脚步来想想自己要走的路，也是一件很有意义的事情，所以如果言语中我伤害了你的梦想，请你绕道而行：&lt;/p&gt;
+
+&lt;p&gt;下有地雷，玻璃们请小心绕路：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;观点1：开宝箱&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;游戏更像一个项目，不是一个事业，研发个一两年产品上线，是死是活听天由命。游戏产品成功率已经1%了，很多项目是挂了，即便踩中宝箱了，游戏上线，盈利了，根据现在游戏周期，也就能挣一笔。这完全跟开宝箱一样，上线前对结果毫无把握，几年时间投入进去，宝箱一开所有人就阿弥陀佛。&lt;/p&gt;
+
+&lt;p&gt;即便火了，火完以后能保证下一款产品成的概率有多大？以大公司的5%的高成功率来算，一个团队同时成功两款游戏的数学概率是0.25%。即便你团队人员经验丰富，你能把这个概率提到多高？大部分的团队都是在：“加班 - 开宝箱 - 项目重组 - 加班 - 开宝箱” 这样一个死循环中，把自己一年又一年的青春给浪费了，身边太多人，十年前他们在开宝箱，十年后他们还在开宝箱。&lt;/p&gt;
+
+&lt;p&gt;某几个著名页游公司，产品开发一年周期，项目分成10%，听着挺诱人的，但是盈利后首先要偿还研发和推广成本，然后扣完渠道分成后剩下的才是项目组的，所以很多项目组为了控制成本，只会找一两个好的主策主程，主美，下面带着一堆刚入行的小弟，天天加班。时间一道，不能盈利，那么制作人走人，开发团队打散重新分配。&lt;/p&gt;
+
+&lt;p&gt;所以对于大部分普通员工，都是怀揣着一颗暴发户的心，过着猪狗不如的日子，在常年累月的日子里不断的在 加班和项目重组的死循环里折腾。公司呢？公司只要几十个项目成一个就够吃很长时间了。于是常用的管理手段就是造神运动，发车，发现金给老员工，给他们极高的待遇和荣誉，让所有新人都跟打了鸡血一样燃烧着自己的生命向前冲。&lt;/p&gt;
+
+&lt;p&gt;可以参考最近的文章：&lt;a href=&#34;http://youxiputao.com/articles/4716&#34;&gt;【败局】成都：手游第四城的泡沫与坍缩&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;PS，上面所说的概率很多人不相信有那么低，网上的数据到处都是，身边也有例子。比如，渠道每个月要接300+款产品是很正常的，渠道怎么筛选呢？先每个游戏玩五分钟，删除200款，留下100款，然后深度评测一下，再删除50款，剩下50款深度评测一下，给每个员工玩玩，给每个员工的小孩玩玩，如果小孩能玩懂，那证明这游戏还可以推一下，于是留下那么几十款打分ABCD，D基本没机会，C可以试一下，B可以推一推，A的
+话可以多推一下。最后能成的也就那么3-5款，这不是1%么？这不就是开宝箱么？&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>二十年前是怎样开发游戏的？</title>
+      <link>https://skywind3000.com/blog/archives/1250/</link>
+      <pubDate>Fri, 10 Apr 2015 15:50:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1250/</guid>
+      <description>&lt;p&gt;知乎上有人问：“贴吧都是十五六岁就用引擎写游戏的天才，大家怎么看？”，感觉现在做游戏真实一件幸福的事情呀，不尽想起当年开发游戏的各种艰辛。&lt;/p&gt;
+
+&lt;p&gt;现在做游戏很简单，大把代码给你参考，大把框架给你使用，Windows帮你作完了大部分事情。我们那个年纪写游戏时，家里还没有Internet，什么资料都查不到，什么开源引擎都没有，95年左右你要写一个游戏，你起码面临：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;同显卡打交道，显卡著名的 ModeX显示模式，估计现在没几个人听过了吧，直接写显卡端口，N多trick才能初始化成功。&lt;/li&gt;
+&lt;li&gt;直接访问显存，记得当年有个优化是，((char*)0xa0000L)[x + (y &amp;lt;&amp;lt; 8) + (y &amp;lt;&amp;lt; 6)]=c，把y两次左移相加代替y * 320。&lt;/li&gt;
+&lt;li&gt;用调色板绘图，256色的调色板，建立若干索引表，来快速索引两个颜色混色的结果。&lt;/li&gt;
+&lt;li&gt;保护模式编程，自己初始化GDT和LDT，后来找到 dos4gw，牛逼的 watcom c++。&lt;/li&gt;
+&lt;li&gt;自己实现线程，编程8254时钟控制器，给CPU的IRQ0发中断，来调度不同最多32个任务，到时间靠一条IRET指令实现切换。&lt;/li&gt;
+&lt;li&gt;自己控制声卡，通过220端口控制声卡（估计也没几个人用过吧），再用DMA传送音频，实现声音播放。&lt;/li&gt;
+&lt;li&gt;自己实现混音，同时播放多个音源时，需要重采样成声卡格式，并且每次DMA中断时混音后给声卡。&lt;/li&gt;
+&lt;li&gt;自己播放音乐，利用声卡338端口的 FM Synth合成器来播放MIDI音乐里面不同音轨的乐器音符，并用之前实现的线程系统，在后台线程运行。&lt;/li&gt;
+&lt;li&gt;大量汇编代码，图形拷贝，图块缩放，RLE，显卡控制，多边形填充，键盘中断接管。&lt;/li&gt;
+&lt;li&gt;自己绘制字体，HZK16，估计听过的人也没几个了。&lt;/li&gt;
+&lt;li&gt;自己读取图片，GIF，PCX, BMP。&lt;/li&gt;
+&lt;li&gt;自己播放视频，自己实现解码播放 animator, 3ds输出的 FLC视频格式的视频。&lt;/li&gt;
+&lt;li&gt;自己实现脚本，没有LUA，没有PYTHON，但是你需要给你的游戏实现脚本来描述一些简单的剧情，没见过其他游戏是怎么做的，没有任何参考代码的情况下，意识到开发游戏需要靠脚本来提高效率，然后自己实现一套脚本系统。&lt;/li&gt;
+&lt;li&gt;凭空实现游戏，从来没见过任何一款游戏代码的情况下，自己想想状态机应该怎么写，游戏对象应该怎么同时移动，图像前后遮挡该怎么做，游戏各种逻辑该如何写。&lt;/li&gt;
+&lt;li&gt;学习美术设计，虽然没有美术功底，但得熟练应用当时常用的animator，3ds，等软件，自己制作一些简单的界面和角色，自己能对其他图片进行二次加工，画像素图，合并调色板。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>断点-C语言</title>
+      <link>https://skywind3000.com/blog/archives/199/</link>
+      <pubDate>Sat, 09 Apr 2011 21:02:20 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/199/</guid>
+      <description>&lt;p&gt;看着那密密麻麻的反汇编，&lt;/p&gt;
+
+&lt;p&gt;连眼睛红了都没有发现，&lt;/p&gt;
+
+&lt;p&gt;听到你说错误很难重现，&lt;/p&gt;
+
+&lt;p&gt;人数还一点一点再往下减；&lt;/p&gt;
+
+&lt;p&gt;我转过我的脸，&lt;/p&gt;
+
+&lt;p&gt;不和你争辩，&lt;/p&gt;
+
+&lt;p&gt;未检测边界肯定，&lt;/p&gt;
+
+&lt;p&gt;非常的危险；&lt;/p&gt;
+
+&lt;p&gt;发誓从今天，&lt;/p&gt;
+
+&lt;p&gt;不再用 C语言，&lt;/p&gt;
+
+&lt;p&gt;我真想改用脚本重构好几遍！&lt;/p&gt;
+
+&lt;p&gt;我点上一根烟，&lt;/p&gt;
+
+&lt;p&gt;在这个需求善变的年代，&lt;/p&gt;
+
+&lt;p&gt;再好的程序员也不能幸免；&lt;/p&gt;
+
+&lt;p&gt;打开的源文件，&lt;/p&gt;
+
+&lt;p&gt;设满很多断点，&lt;/p&gt;
+
+&lt;p&gt;只想在睡前让程序能够，&lt;/p&gt;
+
+&lt;p&gt;撑到明天。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[讲义] 游戏客户端十二小时入门</title>
+      <link>https://skywind3000.com/blog/archives/176/</link>
+      <pubDate>Sat, 09 Apr 2011 04:32:27 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/176/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT1_thumb.png&#34; alt=&#34;PPT1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这是我2005-2007年在公司培训时候的讲义，当时现场效果相当热烈：&lt;/p&gt;
+
+&lt;p&gt;可以到下面地址下载：&lt;/p&gt;
+
+&lt;p&gt;课程用例下载：&lt;a href=&#34;http://www.skywind.me/blog/archives/83&#34;&gt;http://www.skywind.me/blog/archives/83&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image0021.gif&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image003.gif&#34; alt=&#34;clip_image003&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>春运生存手册</title>
+      <link>https://skywind3000.com/blog/archives/202/</link>
+      <pubDate>Thu, 10 Jan 2008 04:05:01 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/202/</guid>
+      <description>&lt;p&gt;在书写正文之前，笔者将使用推理手法，预测春运的规模、环境和潜在危机，并给出自己的分析结果，在此判断的基础上，以春运的各个阶段为分界线书写手册正文。再次说明笔者并非专业人士，文中的各种结论和推导过程仅供参考。&lt;/p&gt;
+
+&lt;p&gt;必要储备与使用方法&lt;/p&gt;
+
+&lt;p&gt;1. 水
+没有食物，一个人可以生存1-2个月；但是没有水，生命最多只能支撑10天。一个成人在正常情况下日消耗2-3升水，限量供应下一天至少需要500毫升水。（大瓶可乐为1.25升，冰红茶为500毫升，缺乏量具时可代替使用。）水可以在春运开始前，确定等车地点所处环境即将缺水时储存。届时把家中所有可以存水的大型器皿全部盛满水（黑色、很结实的塑料袋也可以存水，注意把袋口封好，避光储存），并采取定量供应，有机会就外出采水。&lt;/p&gt;
+
+&lt;p&gt;2. 食物&lt;/p&gt;
+
+&lt;p&gt;所有食物都应在阴凉、干燥、通风处保存，贴上标签、写明储存日期和保质期，先存的先用，并在春运时实行定量配给，以吃到半饱为准（不会饿死的）。因为笔者无法预测春运会持续多长时间，所以请各位自行决定储备的种类和数量。&lt;/p&gt;
+
+&lt;p&gt;盐：盐份为人体所必需，按年纪、身体状况、气温、和劳动强度不同，一个人平均每天消耗10-15克盐，储备时应选择加碘盐。注意，不能干吞盐粒，那会损伤肾脏，应用开水溶解后饮用或做进菜里（如果那时候你还能弄到新鲜食物）。&lt;/p&gt;
+
+&lt;p&gt;白糖、醋、烧烤用的各种调料粉：
+白糖为身体提供热量，水一冲就能喝，也是不错的调味品；醋可以为储备的干肉之类食物增加味道（吃起来别有风味），也可以用来消毒和预防疾病；烧烤用的调味料中含盐份和各种香料，可以撒在食物上或者做汤，储备它的目的也就是让春运时饭菜的口味看起来并不那么糟糕。&lt;/p&gt;
+
+&lt;p&gt;芥末：芥末有很好的消毒杀菌止泻作用，买牙膏状的芥末需冷藏，推荐芥末粉。&lt;/p&gt;
+
+&lt;p&gt;干肉、鱼干、虾干或虾皮：
+干肉类首推咸牛肉和牛肉干，它们营养丰富、口味一流、保存时间长、可在天冷时提供大量热量；鱼干类首推海鱼干，它们种类繁多、价格便宜、容易保存；虾干或虾皮中含有丰富的营养及矿物质，可在做汤时加入。&lt;/p&gt;
+
+&lt;p&gt;罐头食品：种类繁多，口味不错，保存时间非常长，但是价格昂贵。如有多余的钱，那可以储备一些。&lt;/p&gt;
+
+&lt;p&gt;维生素片：犹豫了很久，还是把维生素片列为食物一类，因为在春运时很难弄到新鲜食物，而人体在紧张状态下维生素消耗得非常快，因此要把它当作食物那样储存它。不悔推荐的是21金维他（安利的太贵了），80多元6瓶，每瓶可以供一个成人一月的消耗量，细算下来还是比较便宜的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>比尔·云风传奇</title>
+      <link>https://skywind3000.com/blog/archives/204/</link>
+      <pubDate>Tue, 11 Sep 2007 21:06:09 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/204/</guid>
+      <description>&lt;p&gt;1. 比尔·云风刚出生便会说话，邻居描述，刚落地时他就向东南方向走了七步，每走一步地上就出现一个“@”符号，只见他七步之后，伸左手指天，伸右手指地，开口说道：“2D/3D唯我独尊”。。。。&lt;/p&gt;
+
+&lt;p&gt;2. 《徐庶走马荐比尔，刘玄德三顾茅庐》：徐庶：“主公不必难过，五步之内必有芳草，远来的和尚，未必念得了真经，蜀国如要上市，庶愿保举一人”，刘备：“知道是你好朋友诸葛孔明，这人人品不行，我面试过。他要我联伊
+抗美，与基地组织共出奇兵占领NASDAQ机房，奉股市而令不臣，控制所有上市公司。靠！备乃仁义之团队，向来讲求信誉，强调共赢，怎忍心做此等伤天害理之事”，徐庶：“是是是，主公是讲求信誉，力主双赢的仁义团队，但是我要推荐的另有其人”， “哦，应届生？现在何处？开口多少？”，“这人复姓比尔，双名云风，家住荆州长沙郡，现在幽州雪碧九游戏当差。”，备：“哦，没听过”，庶：“这位好汉十八般语言门门精通，上能构
+架操作系统；下能设计嵌入芯片！”，备：“有这种怪人？”，庶：“不当如此，比尔·云风左手提一百二十斤混铁鼠标，右手抱三百五十斤工学键盘，竞争对手虽有千军万马，近不得他办公桌前一步！三十六小时持续编码依旧气定神闲，体力耐力无人能及。”，刘备：“赞！是块加班的好料，想起来了，水镜先生也向我推荐过，说他‘手握设计无数种，胸中代码千万行’，备若得此一人，何患《汉室》30万在线！他在雪碧九拿多少？”徐庶：“X
+XX”，刘备：“大伯如何？”徐庶：“至少再多500元”，刘备：“恩，只要他证明他的能力，再多600都不在乎，我们向来尊重人才，QQ，MSN，MAIL统统给我”，徐庶：“听说他最近ADSL欠费，手机停机，就连email都发不出去，主公要见，恐怕只有亲自前往”，刘备：“如此说来，备当前往看看”。。。。 （未完，待续）&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[翻译] MUD玩家分类理论</title>
+      <link>https://skywind3000.com/blog/archives/171/</link>
+      <pubDate>Tue, 01 May 2007 20:18:38 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/171/</guid>
+      <description>&lt;p&gt;游戏设计需要基础性理论，Richard A. Bartle，第一款MUD（被称为MUD1）的开发者，该文章起于1990年，经作者多次整理而成。在游戏设计“难有统一理论”的情况下，该文论点受到了决大多数开发者的一致接受和好评。可见基础性理论不但有利于我们的分析与设计，更重要的是大家能在同一层面上用同样的术语进行更有效的沟通：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/resource/hcdsc.htm&#34;&gt;http://www.skywind.me/resource/hcdsc.htm&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;最近在阅读 XBOX360 Live方面的文档，作为其中提及的一个重要概念“Bartle&amp;rsquo;s player type”的论文，似乎影响了整个第四代Live的设计，恰巧最近我也在整理一些Live相关资料，就顺带将这个基础理论进行了翻译。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[翻译] 成就系统最佳实践</title>
+      <link>https://skywind3000.com/blog/archives/346/</link>
+      <pubDate>Fri, 27 Apr 2007 20:44:20 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/346/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Achievements and Gamerscore: Best Practices&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;-&amp;mdash; By Jeff Sullivan, Developer Relations Manager, Microsoft Game Technology Group&lt;/p&gt;
+
+&lt;p&gt;-- 翻译（参与先后）：skywind,cjx,ltt,fanlix,jericho&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/blog/archives/346&#34;&gt;http://www.skywind.me/blog/archives/346&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;成就为谁提供&lt;/li&gt;
+&lt;li&gt;何时授予成就&lt;/li&gt;
+&lt;li&gt;拓展玩家实践&lt;/li&gt;
+&lt;li&gt;成就演示&lt;/li&gt;
+&lt;li&gt;游戏演示&lt;/li&gt;
+&lt;li&gt;内容回顾&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Xbox 360的&lt;strong&gt;“玩家成就（achievements）”&lt;/strong&gt;和&lt;strong&gt;“成就积分（gamerscore）”&lt;/strong&gt;重新激起了玩家的游戏兴趣，玩家将更多的时间和精力投入到游戏中，不断尝试更高的难度设置。整个游戏行业，一夜之间涌现出各种业余的、专业的积分站点，开始讨论游戏成就，以及怎么获得更多的成就分。游戏设计者们也从中受益匪浅，有史以来第一次，他们可以分析玩家在多个游戏
+中的表现。成千上万的人都在问这两个问题：“你的成就分是多少？你最喜欢的成就是什么？”&lt;/p&gt;
+
+&lt;p&gt;成就系统的价值和吸引力是无可否认的，关键是怎么充分利用它们来提高你的游戏品质。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>两次结对开发尝试</title>
+      <link>https://skywind3000.com/blog/archives/456/</link>
+      <pubDate>Fri, 20 Jan 2006 07:46:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/456/</guid>
+      <description>&lt;p&gt;前段时间，项目三个开发者主要忙于确定一些具体技术，工作效率很低，两个同事一个负责服务器进程间通信模块的制作，一个负责数据库的线程池访问。这些知识他们都有，只是不够熟练，这些地方都是很容易耽误时间的，一位同事调整一个线程池，三天一下就投进去了，有时就是漫无目的的查资料，我当时看着干着急。&lt;/p&gt;
+
+&lt;p&gt;那天晚上回家，突然想起来，唉，干脆试试结对开发怎么样，连夜总结了一下问题和要点，于是连续几天的XP就开始了，起得了一些好的效果。回顾一下自己一直以来认同XP却异或结对开发，主要有几个阶段：&lt;/p&gt;
+
+&lt;p&gt;好奇阶段：早在一年前的事情了，一样和大家好奇的查阅资料，抽时间的认真尝试了几回，自己就先疑惑起来，同时通过查阅资料我也找到了很多负面报道，比如国外已经跳出人来说结对开发有问题，又比如中科院有家研究所，花了半年测试XP，得出结对开发不行的结论，七八条专家理由，自已也怀疑了。&lt;/p&gt;
+
+&lt;p&gt;排斥阶段：觉得结对开发有打压开发者的效果，首先是一个人写一个人看，写的那个人再高明难免犯错看的人抓住口实后和你争论，你一边写代码一边想问题，自然言语落下风，轻者散失声誉，重者没了自信。“平等、妥协”难以单方面强求，所以当时认为开发者应该适当保持距离的同时做一定的重复劳动满足自我价值实现。觉得挨得那么近结对开发，似乎对个人成就感是种磨灭，因为剥夺了代码的个人所有权，大家觉得价值得不到体现了，所以当时
+的心态比较极端。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>未来三五年游戏研发问题预测</title>
+      <link>https://skywind3000.com/blog/archives/117/</link>
+      <pubDate>Sun, 25 Dec 2005 13:32:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/117/</guid>
+      <description>&lt;p&gt;下面根据以往经验对未来三五年游戏开发问题做一个预测，所论述问题，缺乏严格证明。大家全当看故事，茶余饭后消遣娱乐一下：&lt;/p&gt;
+
+&lt;p&gt;1. 研发瓶颈从技巧演变成为规模，解决复杂度问题将成为国内一流开发者的主要矛盾，而未能进军一流水平的二流开发者将会进一步沦落成软件工厂和外包工作室。&lt;/p&gt;
+
+&lt;p&gt;2. 对于开发游戏，多人视频，新的输入设备，可看不可玩，三年内国内由于该方向知识薄弱，即便国外有大的成就，国内一时也难以效仿。&lt;/p&gt;
+
+&lt;p&gt;3. 日下国内过于注重技巧的世风，在面对突入其来的规模问题，以及国外先进开发工具的双重夹击，会导致诸多游戏项目连续不断的失败，国内将再一次引发游戏开发方法的大讨论，各种为游戏行业量身订制的软件工程及开发理念纷纷出现，目不暇接。&lt;/p&gt;
+
+&lt;p&gt;4. 微软两年内会推出崭新开发平台，为改良DirectX和传统VisualIDE逐渐力不从心的被动，新平台将结合Vista系统优势，也是对1990年MS平台开发战略的再
+一次体现，当时英国记者评论“只有不断降低开发门槛，使未来全世界的开发者都习惯傻瓜编程了，才能有力的压制一切可能形成威胁的力量”这次统一Win/XBOX的编程接口自然不在话下，结合长期捆绑和专利等方面的蚕食，对OpenSource和其他轻量级开发工具实施致命打击。&lt;/p&gt;
+
+&lt;p&gt;5. 数月前微软宣布放弃几年前启动的GAPI的发布转而变出DX10，紧接着又宣布 VS.Net2005 Express的永久免费，现在已暴露出自己越来越大的野心了。三年后，高校合作工程开花结果，等第二，三批微软专家们成为国内研发主力的同时，结合Vista的下一代游戏开发工具的主流化，国内使用DX11/12的从业者必将遭遇类似DOS &amp;gt;Win的门槛面临失业和转变的选择，MS教徒们在2008年末必定会乘虚而入，钻入行业主力研发队伍。&lt;/p&gt;
+
+&lt;p&gt;6. Shockwave等等其他游戏开发工具由于迫于主流平台压力，会进一步在WEB方面发挥自己的优势，WEB平台游戏开发将会再次引起人们重视。&lt;/p&gt;
+
+&lt;p&gt;7. 第一二批开发者离开一线开发阵营，开始反思，一批优秀文化作品将会面世，各种关于游戏开发的故事，程序员文化引发二次回归，成为游戏文化的一个主流。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[ZZ] 我向你们的良知呼唤――何新在北京大学对1990届毕业生的演讲</title>
+      <link>https://skywind3000.com/blog/archives/460/</link>
+      <pubDate>Thu, 24 Nov 2005 08:57:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/460/</guid>
+      <description>&lt;p&gt;[ZZ] 我向你们的良知呼唤――何新在北京大学对1990届毕业生的演讲&lt;/p&gt;
+
+&lt;p&gt;说明：1990年6月，应北京大学党委及学生工作部邀请， 何新对1990年应届毕业生做了一次毕业前政治演讲。当时学生仍处在较严重的对立情绪中（6月4日曾发生事件）。何新事后说，那次演讲是他生平所经历最惊心动魄，也最艰难的场面之一。&lt;/p&gt;
+
+&lt;p&gt;时间：1990年6月24日上午9－12时&lt;/p&gt;
+
+&lt;p&gt;地点：北大礼堂&lt;/p&gt;
+
+&lt;p&gt;一、开场白&lt;/p&gt;
+
+&lt;p&gt;（何新入场登讲台。满场哄闹。有人故意敲椅子，有嘲骂声，大声嘘和吹口哨）&lt;/p&gt;
+
+&lt;p&gt;看来大家很不欢迎我。&lt;/p&gt;
+
+&lt;p&gt;（学生笑，起哄。有人喊：“那你还来？”）&lt;/p&gt;
+
+&lt;p&gt;我没上过大学，可是跟北大好像还真有点缘分，自1985年以来，每年总有机会来此讲一次。&lt;/p&gt;
+
+&lt;p&gt;（学生哄笑，嘘。口哨。有人喊：“话筒靠近点，后面听不见”）&lt;/p&gt;
+
+&lt;p&gt;（靠近话筒）上一次来，我记得是去年四月份，在那个电教报告厅。从那次到现在，过了一年多。这一年当中，北大、中国、世界都发生了很多事情。今天重来此地，感慨良多。什么感慨呢？我知道，我此时到此地来，不合时宜……（有学生喊：“对！”“你还有自知之明！”鼓掌，笑声、嘘声）&lt;/p&gt;
+
+&lt;p&gt;但我今天既然来，就是准备上这个炉子烤。正如《三国演义》里说的……&lt;/p&gt;
+
+&lt;p&gt;（嘘声。有人喊：“你想舌战群儒吗？——“他是来单刀赴会！”）&lt;/p&gt;
+
+&lt;p&gt;我来之前，曾经有朋友劝我……&lt;/p&gt;
+
+&lt;p&gt;（有学生大声喊：“我们也劝你别来！”笑声，哄闹，鼓倒掌）&lt;/p&gt;
+
+&lt;p&gt;劝我的人说，你现在到北大干嘛去呀！“六·四”那天刚出了事情。老实讲，临来前，我也忧心忡仲。现在坐在这看着大家。……我心情很沉重。&lt;/p&gt;
+
+&lt;p&gt;（学生哄笑，喊：“你沉重什么呀？”）&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

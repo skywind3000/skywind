@@ -1,0 +1,1425 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>随笔 on Skywind Inside</title>
+    <link>https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/</link>
+    <description>Recent content in 随笔 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 09 Apr 2019 12:23:23 +0800</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About</title>
+      <link>https://skywind3000.com/about/</link>
+      <pubDate>Tue, 09 Apr 2019 12:23:23 +0800</pubDate>
+      
+      <guid>https://skywind3000.com/about/</guid>
+      <description>这里是关于</description>
+    </item>
+    
+    <item>
+      <title>个人主页搬迁到新系统</title>
+      <link>https://skywind3000.com/posts/intro/</link>
+      <pubDate>Mon, 08 Apr 2019 19:23:23 +0800</pubDate>
+      
+      <guid>https://skywind3000.com/posts/intro/</guid>
+      <description>&lt;p&gt;准备搬家 Hugo + github pages，WordPress 用的太蛋疼了，换成 Hugo 后，格式就清爽很多，比如内嵌代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;stdlib.h&amp;gt;
+
+int main(void)
+{
+    printf(&amp;quot;Hello, World !!\n&amp;quot;);
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;比如引用：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;世界上一成不变的东西，只有“任何事物都是在不断变化的”这条真理。
+    —— 斯里兰卡
+土地是以它的肥沃和收获而被估价的；才能也是土地，不过它生产的不是粮食，而是真理。如果只能滋生瞑想和幻想的话，即使再大的才能也只是砂地或盐池，那上面连小草也长不出来的。
+    —— 别林斯基&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>别让 cd 浪费你的时间</title>
+      <link>https://skywind3000.com/blog/archives/2229/</link>
+      <pubDate>Fri, 08 Feb 2019 15:39:46 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2229/</guid>
+      <description>&lt;p&gt;终端下工作最烦躁的就是路径切换，没有自动路径切换的帮助，就像在泥里走路，于是大家发明了各种 autojump / z / fasd 等工具来提升路径切换的效率，今天向大家介绍一个更好用的工具：&lt;a href=&#34;https://github.com/skywind3000/z.lua&#34;&gt;z.lua&lt;/a&gt;，用熟练了以后就像终端里溜冰，路劲切换从此指哪打哪。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/skywind3000/z.lua&#34;&gt;z.lua&lt;/a&gt; 是一个会学习你使用习惯的 &lt;code&gt;cd&lt;/code&gt; 命令，它会跟踪你在 shell 下访问过的路径，通过一套称为 Frecent 的机制（源自 Mozilla），经过一段简短的学习之后，&lt;code&gt;z.lua&lt;/code&gt; 会帮你跳转到所有匹配正则关键字的路径里 Frecent 值最高的那条路径去。&lt;/p&gt;
+
+&lt;p&gt;正则将按顺序进行匹配，&amp;rdquo;z foo bar&amp;rdquo; 可以匹配到 /foo/bar ，但是不能匹配 /bar/foo。&lt;/p&gt;
+
+&lt;h3 id=&#34;特性说明&#34;&gt;特性说明：&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;性能比 &lt;strong&gt;z.sh&lt;/strong&gt; 快三倍，比 &lt;strong&gt;fasd&lt;/strong&gt; / &lt;strong&gt;autojump&lt;/strong&gt; 快十倍以上。&lt;/li&gt;
+&lt;li&gt;支持 Posix Shell：bash, zsh, dash, sh, ash, busybox 等等。&lt;/li&gt;
+&lt;li&gt;支持 Fish Shell，Power Shell 和 Windows cmd。&lt;/li&gt;
+&lt;li&gt;使用增强匹配算法，更准确的带你去到你想去的地方。&lt;/li&gt;
+&lt;li&gt;低占用，能够仅在当前路径改变时才更新数据库（将 &lt;code&gt;$_ZL_ADD_ONCE&lt;/code&gt; 设成 1）。&lt;/li&gt;
+&lt;li&gt;交互选择模式，如果有多个匹配结果的话，跳转前允许你进行选择。&lt;/li&gt;
+&lt;li&gt;交互选择模式，支持使用 fzf 进行可视化结果筛选（可选）。&lt;/li&gt;
+&lt;li&gt;快速跳转到父目录，或者项目根目录，代替反复 “cd ../../..&amp;rdquo; 。&lt;/li&gt;
+&lt;li&gt;为不同的操作系统，不同的 Shell 程序提供统一的使用体验。&lt;/li&gt;
+&lt;li&gt;兼容 lua 5.1, 5.2 和 5.3 以上版本。&lt;/li&gt;
+&lt;li&gt;自包含且无额外依赖，单个 &lt;code&gt;z.lua&lt;/code&gt; 文件完成所有工作。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;软件安装&#34;&gt;软件安装：&lt;/h3&gt;
+
+&lt;p&gt;将下面对应语句添加到你的 &lt;code&gt;.bashrc&lt;/code&gt; / &lt;code&gt;.zshrc&lt;/code&gt; / &lt;code&gt;.profile&lt;/code&gt; 或者对应 shell 的初始化脚本末尾：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;eval &amp;quot;$(lua /path/to/z.lua --init bash enhanced once echo)&amp;quot;    # BASH 初始化
+eval &amp;quot;$(lua /path/to/z.lua --init zsh enhanced once echo)&amp;quot;     # ZSH 初始化
+eval &amp;quot;$(lua /path/to/z.lua --init posix enhanced once echo)&amp;quot;   # 其他 Posix Shell 初始化
+source (lua /path/to/z.lua --init fish enhanced once echo | psub)  # Fish Shell 初始化
+iex ($(lua /path/to/z.lua --init powershell enhanced once echo) -join &amp;quot;`n&amp;quot;) # Power Shell 初始化
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后重新登陆，即可使用。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>VimScript 五分钟入门（翻译）</title>
+      <link>https://skywind3000.com/blog/archives/2193/</link>
+      <pubDate>Sat, 26 May 2018 09:24:13 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2193/</guid>
+      <description>&lt;p&gt;译注：折腾 Vim 当然要能看懂和改写相关脚本，而中文资料匮乏，缺一个提纲挈领的教程。本文翻译自 Andrew Scala 的 《&lt;a href=&#34;http://andrewscala.com/vimscript/&#34;&gt;Five Minute Vimscript&lt;/a&gt;》，立足于让你用最短的时间掌握 VimScript 的基础和要点，你可以把它看成一份语言速查表。&lt;/p&gt;
+
+&lt;p&gt;Vim有着丰富的内建文档系统，使用 &lt;code&gt;:h &amp;lt;关键词&amp;gt;&lt;/code&gt; 就可以阅读，如果你想在方便的尝试各种 vimscript ，你可以通过 NORMAL 模式下使用 &lt;code&gt;gQ&lt;/code&gt; 命令进入 VimScript 的交互式环境调试命令。&lt;/p&gt;
+
+&lt;p&gt;注意：下面的例子中会包含一些形如 &lt;code&gt;&amp;lt;符号&amp;gt;&lt;/code&gt; 的符号，意味着正式使用时应该被完全替换成真实的东西，包括左右两边的尖括号。而单独的 &lt;code&gt;&amp;lt;&lt;/code&gt; 和 &lt;code&gt;&amp;gt;&lt;/code&gt; 在 VimScript 中被用作比较符号。&lt;/p&gt;
+
+&lt;h4 id=&#34;变量&#34;&gt;变量&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;let&lt;/code&gt; 命令用来对变量进行初始化或者赋值。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;unlet&lt;/code&gt; 命令用来删除一个变量。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;unlet!&lt;/code&gt; 命令同样可以用来删除变量，但是会忽略诸如变量不存在的错误提示。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Windows 10 - 1803 更新又给我出幺蛾子</title>
+      <link>https://skywind3000.com/blog/archives/2173/</link>
+      <pubDate>Wed, 02 May 2018 04:16:53 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2173/</guid>
+      <description>Windows 10 的 1803 版本更新后，Cygwin 的 Open SSH 服务无法始用，调查半天，Windows 10 新建了个 sshd 的服务，原来的 Cygwin Open SSH 服务被删除了，也安装不上去，解决方法是 ssh-host-config 后面加个参数 \--name sshd2 换个新名字重新安装服务。</description>
+    </item>
+    
+    <item>
+      <title>Vim 8 下 C/C&#43;&#43; 开发环境搭建</title>
+      <link>https://skywind3000.com/blog/archives/2084/</link>
+      <pubDate>Sat, 21 Apr 2018 22:38:07 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2084/</guid>
+      <description>&lt;p&gt;挺多人问怎么在 Vim 中搭建 C/C++ 开发环境，我本来想找篇文章发给人家，结果网上看了一圈，要不就是内容太过陈旧，要不就是太过零碎，不成体系。2018 年了，Vim 8 发布已经一年半，各大 Linux 发行版和 Mac OS X自带的 Vim 都已经跟进到 8了，不少文章还在介绍一些十年前的老方法。于是有了这篇文章。&lt;/p&gt;
+
+&lt;p&gt;那如何高效的再 Vim 8 中开发 C/C++ 项目呢？假设你已经有一定 Vim 使用经验，并且折腾过 Vim 配置，能够相对舒适的在 Vim 中编写其他代码的时候，准备在 Vim 开始 C/C++ 项目开发，或者你已经用 Vim 编写了几年 C/C++ 代码，想要更进一步，让自己的工作更加顺畅的话，本文就是为你准备的：&lt;/p&gt;
+
+&lt;h3 id=&#34;插件管理&#34;&gt;插件管理&lt;/h3&gt;
+
+&lt;p&gt;为什么把插件管理放在第一个来讲呢？这是比较基本的一个东西，如今 Vim 下熟练开发的人，基本上手都有 20-50 个插件，遥想十年前，Vim里常用的插件一只手都数得过来。过去我一直使用老牌的 &lt;a href=&#34;https://github.com/VundleVim/Vundle.vim&#34;&gt;Vundle&lt;/a&gt; 来管理插件，但是随着插件越来越多，更新越来越频繁，Vundle
+这种每次更新就要好几分钟的东西实在是不堪重负了，在我逐步对 Vundle 失去耐心之后，我试用了 &lt;a href=&#34;https://github.com/junegunn/vim-plug&#34;&gt;vim-plug&lt;/a&gt; ，用了两天以后就再也回不去 Vundle了，它支持全异步的插件安装，安装50个插件只需要一分钟不到的时间，这在 Vundle
+下面根本不可想像的事情，插件更新也很快，不像原来每次更新都可以去喝杯茶去，最重要的是它支持插件延迟加载：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-viml&#34;&gt;&amp;quot; 定义插件，默认用法，和 Vundle 的语法差不多
+Plug &#39;junegunn/vim-easy-align&#39;
+Plug &#39;skywind3000/quickmenu.vim&#39;
+&amp;quot; 延迟按需加载，使用到命令的时候再加载或者打开对应文件类型才加载
+Plug &#39;scrooloose/nerdtree&#39;, { &#39;on&#39;:  &#39;NERDTreeToggle&#39; }
+Plug &#39;tpope/vim-fireplace&#39;, { &#39;for&#39;: &#39;clojure&#39; }
+&amp;quot; 确定插件仓库中的分支或者 tag
+Plug &#39;rdnetto/YCM-Generator&#39;, { &#39;branch&#39;: &#39;stable&#39; }
+Plug &#39;nsf/gocode&#39;, { &#39;tag&#39;: &#39;v.20150303&#39;, &#39;rtp&#39;: &#39;vim&#39; }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;定义好插件以后一个：&lt;code&gt;:PlugInstall&lt;/code&gt; 命令就并行安装所有插件了，比 Vundle 快捷不少，关键是 vim-plug 只有单个文件，正好可以放在我 github 上的 vim 配置仓库中，每次需要更新 vim-plug 时只需要 &lt;code&gt;:PlugUpgrade&lt;/code&gt;，即可自我更新。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Bash 中文速查表/Cheatsheet （全网最全）</title>
+      <link>https://skywind3000.com/blog/archives/2071/</link>
+      <pubDate>Wed, 07 Mar 2018 03:59:26 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2071/</guid>
+      <description>&lt;p&gt;Bash 的知识点向来比较凌乱，有时候写点小脚本，你忘记了条件判断怎么写了，就打开网页搜索一半天；忘记怎么分割字符串，又搜索一半天；忘了怎么解压缩某后缀名，又打开网页搜一半天。&lt;/p&gt;
+
+&lt;p&gt;关键大部分搜出来的东西都十分琐碎，东一处，西一处，质量又参差不齐，而且看到一处有些细节有疑问，你还得接着搜索。&lt;/p&gt;
+
+&lt;p&gt;连记点笔记也是这一篇那一篇的，用起来找来找去的十分不爽，所以我一怒之下春节期间整理了一份 bash 的 cheatsheet，以图以后有关于 bash 的事情就查看这个文件就够了：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/skywind3000/awesome-cheatsheets/blob/master/languages/bash.sh&#34;&gt;https://github.com/skywind3000/awesome-cheatsheets/blob/master/languages/bash.sh&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;对于一些工具性的东西，有时候一份速查表比你翻书查网页都高效数倍。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>为什么说 zsh 是 shell 中的极品？</title>
+      <link>https://skywind3000.com/blog/archives/2060/</link>
+      <pubDate>Wed, 07 Mar 2018 03:42:29 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2060/</guid>
+      <description>&lt;p&gt;（这是之前我在知乎上回答的一个可能对大家有点用处的答案，关于 zsh 的一些演示）&lt;/p&gt;
+
+&lt;h3 id=&#34;色彩高亮&#34;&gt;色彩高亮&lt;/h3&gt;
+
+&lt;p&gt;并不是传统基于正则表达式的色彩高亮，而是真的会判断你输入的是啥的色彩高亮：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/zsh-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;白色代表普通命令或者程序，红色代表错误命令，这个很管用，你再一个个字母的敲命令，前面都是红色的，如果敲对了最后一个字母的话，你会看到整条命令连着前面的都变成了白色，代表你敲对了。以前无高亮的时候敲错了都不知道，还要往上翻着左右检查。下面青色的代表内建命令或者 alias （echo 和 ls ），这些都不是正则判断出来的，是真的去检查的。&lt;/p&gt;
+
+&lt;p&gt;细心的人会发现非零的错误码，也会高亮显示在最右边（上一条 data命令错误，返回127）。&lt;/p&gt;
+
+&lt;h3 id=&#34;命令提示&#34;&gt;命令提示&lt;/h3&gt;
+
+&lt;p&gt;注意，命令提示和补全是两个完全不同的系统，很多时候提示比补全更有用：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/zsh-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;你才输入完 “tar”命令，后面就用灰色给你提示 tar 命令的参数，而且是随着你动态输入完每一个字母不断修正变化：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/zsh-3.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;比如你输入到 - 后，没有跟着它上面的提示，而是输入了一个c字母，它马上明白你是要压缩，不是解压，然后随即给出你压缩对应的命令提示。&lt;/p&gt;
+
+&lt;p&gt;这个命令提示是基于你的历史命令数据库进行分析的，随着你输入的命令越来越多，提示将会越来越准确和顺手，某些不常输入的命令特别管用，比如偶尔查看下网卡配置：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/zsh-4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;刚输入完：cat /etc/n 它后面已经猜出你可能要查看网卡配置了，然后马上给出你提示，用不着你 tab 补全半天，你才敲 gc ，它就猜测出你可能想运行 gcc，然后马上给出完整建议：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/zsh-5.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如果你觉得它提示的正确，你可以 CTRL+F 表示采纳，后面就会自动帮你一次性全部输入完了，不用一个字一个字的照着敲。前面的高亮就不说了，用惯这套提示系统，你就再也难以回到光秃秃的 bash 时代了。&lt;/p&gt;
+
+&lt;h3 id=&#34;智能补全&#34;&gt;智能补全&lt;/h3&gt;
+
+&lt;p&gt;传统 shell 的补全在 zsh 面前基本都可以下班了：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vim 中文速查表/Cheatsheet（全网最完善）</title>
+      <link>https://skywind3000.com/blog/archives/2051/</link>
+      <pubDate>Wed, 07 Mar 2018 03:26:13 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2051/</guid>
+      <description>&lt;p&gt;春节期间整理了一份 Vim 中文速查表，免得经常东搜索西搜索的：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/skywind3000/awesome-cheatsheets/blob/master/editors/vim.txt&#34;&gt;https://github.com/skywind3000/awesome-cheatsheets/blob/master/editors/vim.txt&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;看了一下，应该是现在 Vim 所有中英文速查表里最完善的一份，有时候速查表比看书搜网页高效多了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>GDB 从裸奔到穿戴整齐</title>
+      <link>https://skywind3000.com/blog/archives/2036/</link>
+      <pubDate>Wed, 28 Feb 2018 08:56:56 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2036/</guid>
+      <description>&lt;p&gt;无数次被问道：你在终端下怎么调试更高效？或者怎么在 Vim 里调试？好吧，今天统一回答下，我从来不在 vim 里调试，因为它还不成熟。那除了命令行 GDB 裸奔以外，终端下还有没有更高效的方法？能够让我事半功倍？&lt;/p&gt;
+
+&lt;p&gt;当然有，选择恰当的工具和方法，让 GDB 调试效率成倍的提升并没有任何问题。当然，前提条件是你至少会在使用最原始的 GDB。&lt;/p&gt;
+
+&lt;h3 id=&#34;裸奔状态-原始的-gdb-命令行&#34;&gt;裸奔状态：原始的 GDB 命令行&lt;/h3&gt;
+
+&lt;p&gt;穿上各种衣服前，至少得先学会裸奔，找份简单的 GDB cheat sheet 对照一下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux/gdb-1.PNG&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;生产环境中出现崩溃时，因线上服务器一般没有开发环境，也无配套源代码，所以程序崩溃后，如果你懒得把 core 文件拖回到开发机检查，可以先在线上服务器先简单gdb看一下。&lt;/p&gt;
+
+&lt;p&gt;GDB命令密密麻麻，常用的也就表格上那几条，比如进去以后第一步先用 bt 查看一下调用栈，info local查看一下本地变量，再配合 up/down 在整个调用栈的不同层次之间上下移动一下，检查各处局部变量的值，print 一下某个表达式，即便没代码，看下符号和反汇编，一般也能调试个七七八八。&lt;/p&gt;
+
+&lt;p&gt;碰到复杂点的 BUG，必须配合源代码了，那你得把 core 文件拉到开发环境中，再用 gdb 对照源代码调试，配合 list [行号] 指令查看当前运行的源代码，再配合其他方法进行调试。&lt;/p&gt;
+
+&lt;p&gt;那么这时候，如果调试复杂度继续上升，你需要不断的断点，每次 next / step 单步完后你都需要 list 一下前后源代码，或者用 disassemble [函数名/地址] 查看一下指令的话，不少人会感觉到抓狂，这时我们需要给裸奔的 GDB 穿条内裤了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>终端软件里正确设置 ALT 键和 BACKSPACE 键</title>
+      <link>https://skywind3000.com/blog/archives/2021/</link>
+      <pubDate>Fri, 23 Feb 2018 07:42:59 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2021/</guid>
+      <description>&lt;p&gt;不管你在终端下使用 vim/neovim, emacs, nano 或者 zsh，你都会碰到使用 ALT 键的情况（终端下叫做 meta键），而由于历史原因，大部分终端软件的默认设置都无法正确使用 ALT 键。&lt;/p&gt;
+
+&lt;p&gt;要在终端下正确使用 ALT键最简单的做法是：首先将终端软件的 “使用 Alt键作为 Meta键” 的功能打开，意思是如果你在终端下按下 ALT+X，那么终端软件将会发送 &lt;code&gt;&amp;lt;ESC&amp;gt;x&lt;/code&gt; 两个字节过去，字节码为：0x27, 0x78。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何优雅的使用 Vim</title>
+      <link>https://skywind3000.com/blog/archives/1958/</link>
+      <pubDate>Tue, 20 Jun 2017 11:14:54 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1958/</guid>
+      <description>&lt;p&gt;根据 Bram 前后几个关于高效使用 Vim的视频，大家每天需要花很多时间来编辑：代码、文档、邮件、日志 等等，除去这些外，还要分时间参加会议和人沟通，每个人的时间却都是不够的，优雅使用 Vim 无外乎：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;检测不高效的地方：你的整个工作流里，什么地方比较浪费时间？&lt;/li&gt;
+&lt;li&gt;寻找一个更快的方式：官方文档，学习他人经验，自己编写 VimScript&lt;/li&gt;
+&lt;li&gt;使它习惯化：开始使用，并且不断完善&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以上三点反复循环，能让你的 Vim 越来越顺手。所以重点是根据自己的工作流不断迭代。而不是象大部分教程那样教你安装一大堆插件。插件都是别人写的为了解决通用需求而提炼的东西，和每个人的具体需求都有差别。上面这三点我屡试不爽，随着时间增长，有种越来越顺手的感觉，举几个我具体碰到的例子：&lt;/p&gt;
+
+&lt;h4 id=&#34;问题1-边开发边参考网上解决方案的问题&#34;&gt;问题1：边开发边参考网上解决方案的问题&lt;/h4&gt;
+
+&lt;p&gt;比如碰到问题搜到一段代码，需要试一下，一会又看会 Chrome ，一会又切回 GVim 里去写代码，反复 ALT_TAB，有时候中间使用了一下资源管理器或者其他程序，ALT_TAB 的顺序就会被打乱，你一切换就切跑了，十分低效。&lt;/p&gt;
+
+&lt;p&gt;于是我用 VimScript + 内嵌 Python 写了一个功能，按快捷键可以让 GVim 在透明/不透明两种状态间自由切换：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/vim-demo-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;就是 VimScript 简单封装一个函数，里面用内嵌 Python 找到 GVim 的顶层 HWND，并设置透明度。平时默认不透明，需要参考其他资料时切换成透明，参考完了又快捷键切换回来，感觉比缘来切来切去顺畅很多。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Emacs/Vim 深度比较</title>
+      <link>https://skywind3000.com/blog/archives/1951/</link>
+      <pubDate>Sat, 24 Dec 2016 17:48:49 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1951/</guid>
+      <description>&lt;p&gt;生命在于折腾，折腾完了 Atom Editor，开始跟着陈斌大婶和 purcell的配置折腾 Emacs，比较下。很多人都在比较键位，比较插件，这是十分肤浅的，我们比较点深入的东西：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;代码结构&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Emacs 源代码：eLisp 79%, C 21%&lt;/li&gt;
+&lt;li&gt;Vim 源代码：C 52%, VimScript 48%&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;从代码结构上来讲，Emacs的代码最多的是 elisp，C代码只是一个微内核，Vim 里C代码还是大头。当然不排除 24.X, 25.X以后 Emacs源代码里带了好几个重量级的包，而 Vim向来比较精简一些，官方没带啥大点的插件有关。去除自带插件后，Emacs的 elisp代码比例应该会下降很多，不过总体来说，Emacs有更多组件使用 elisp开发而成，也就是说可以被用户修改或者替换的地方比
+Vim要多，当然速度也会相应慢一点（比如 Emacs新打开上万行的文件连续按住PageDown时cpu 100%占满），不过比较大 JB，Atom Editor来说，还是快不少。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;系统接口&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;大框架基本类似：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Vim 可以操作： buffer, window, tabpage, 光标，marker, region 跳转表等等。&lt;/li&gt;
+&lt;li&gt;Emacs 可以操作：buffer, window, frame, 光标，marker，region 异步进程 等等。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Vim 有 local，Emacs有 mode，Vim有事件触发，Emacs有各种钩子，基本大框架类似的。&lt;/p&gt;
+
+&lt;p&gt;键位设置也都很灵活，会配置的话，可以把 Emacs键位全部弄成 Vim的，比如 Evil，或者Vim里面也可以配制成进去就自动进入插入模式，全部用 Emacs键位。&lt;/p&gt;
+
+&lt;p&gt;具体到比如 buffer 或者窗口里面，Emacs的窗口或者 buffer /window 属性更多一些，Vim也有一些 Emacs没有的基础设施，比如 jumplist, quickfix之类的，不过 Emacs也可以用插件实现，实现 jumplist没问题，比较独立，但每个插件实现一个类似的 quickfix的东西，实在是比较蛋疼。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Aix 折腾手记</title>
+      <link>https://skywind3000.com/blog/archives/1924/</link>
+      <pubDate>Wed, 07 Dec 2016 17:51:09 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1924/</guid>
+      <description>&lt;p&gt;早年开发工作主要在 FreeBSD进行，2006年后来切换到 Linux下，期间穿插使用了一下 Solaris，所以我的网络库一直都是只支持这三个系统。为了让网络库支持更多平台，网上购置了一台 IBM AIX 小型机，因为其他大部分非 Linux系统，今天基本都可以在虚拟机里面安装了，而 AIX系统，你真的没法虚拟。&lt;/p&gt;
+
+&lt;p&gt;弄了几天以后，发现真他妈的麻烦，强大是强大，但是真的太琐碎了，相比之下，Linux/FreeBSD之流基本是傻瓜了。不看说明直接操作 AIX的话，可能连开机都麻烦，或者关机没关对，下次直接启动不了。&lt;/p&gt;
+
+&lt;p&gt;文字终端就没什么好拍的了，先上一张图形桌面的靓照吧：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/linux_aix_1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;是的你没看错，这就是 AIX 7，2012年的操作系统，就是那么的霸道，四处透着古典 Unix的味道。这样的机器今天还跑在各大银行的机房里，AIX系统管理员也拿着比 Linux系统管理员多几倍的工资，虽然工作岗位比较稀少。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Linux 网桥设置</title>
+      <link>https://skywind3000.com/blog/archives/1909/</link>
+      <pubDate>Wed, 07 Dec 2016 17:27:24 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1909/</guid>
+      <description>&lt;p&gt;在公司机房的物理机上架设 KVM虚拟化的时候，经常需要配置网桥，先要安装网桥工具：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-VimL&#34;&gt;apt-get install bridge-utils   
+apt-get install uml-utilities
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑 /etc/network/interfaces，参考下面配置加入网桥配置信息：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Linux 硬件时区折腾备忘</title>
+      <link>https://skywind3000.com/blog/archives/1904/</link>
+      <pubDate>Wed, 07 Dec 2016 17:21:21 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1904/</guid>
+      <description>&lt;p&gt;前段时间折腾家中 Nas的虚拟化服务，有时候虚拟机系统时间总是快8个小时。Guest这边设好了，到了 物理机就会慢8个小时。网上说只要修改/etc/default/rcS中的 UTC=no就行了，但还是没反映，没办法，一步步找问题。发现在/etc/rcS.d/S05hwclock.sh有这样一段话：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 2012-02-16 Roger Leigh rleigh@debian.org
+# - Use the UTC/LOCAL setting in /etc/adjtime rather than
+# the UTC setting in /etc/default/rcS. Additionally
+# source /etc/default/hwclock to permit configuration.
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Linux 线上系统调优备忘</title>
+      <link>https://skywind3000.com/blog/archives/1893/</link>
+      <pubDate>Wed, 07 Dec 2016 17:09:39 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1893/</guid>
+      <description>&lt;p&gt;大公司呆久了，都会对 SA的依赖十分强烈，很多事情 SA都帮我们搞定了。如今控制成本，没有招聘 SA，又没有购买 VPS，从买物理机开始到 IDC部署，服务器调优，虚拟机管理，全部都是自己来，才发现，安装一台 Linux机器自己玩很简单，但是要达到线上服务器的标准，还有若干调优工作需要做，有 SA的日志是多幸福的事情啊。&lt;/p&gt;
+
+&lt;h2 id=&#34;物理机设备驱动&#34;&gt;物理机设备驱动&lt;/h2&gt;
+
+&lt;p&gt;Dell服务器默认安装系统后会报找不到驱动:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;W: Possible missing firmware /lib/firmware/tigon/tg3_tso5.bin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因为 Debian/Ubuntu 的包都是开源的，默认开源驱动性能不行，于是需要添加 non-free源：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;deb http://ftp.de.debian.org/debian main contrib non-free
+deb-src http://ftp.de.debian.org/debian main contrib non-free
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;apt-get update
+apt-get install firmware-linux-free firmware-linux-nonfree
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;解决 Dell驱动报错问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Linux 下配置 Iptables 端口转发</title>
+      <link>https://skywind3000.com/blog/archives/1880/</link>
+      <pubDate>Wed, 07 Dec 2016 16:02:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1880/</guid>
+      <description>&lt;p&gt;经常需要对服务端的端口进行转发映射，让链接A服务器（202.181.55.93：8080）端口的所有tcp数据，forward到B服务器（106.185.43.22:80）端口，比如国内联通出国访问比较快，而电信比较坑爹，如果你家是电信网络，你却想畅快的访问境外的
+vps，那么可以在你联通网络的境内服务器上进行这样一个端口映射，你链接境内服务器（201.181.55.93:8080）端口相当于链接境外服务器的（106.185.43.22:80）端口。&lt;/p&gt;
+
+&lt;p&gt;Linux内核的 Iptables很强大，它维护一组内核变量，使用 /sbin/iptables命令进行直接规则设置，且通过配置新规则，可以直接支持端口转发，简单在 A服务器上使用下面这个 shell脚本即可：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#! /bin/sh
+# create forward rule by source interface
+# http://serverfault.com/questions/532569/how-to-do-port-forwarding-redirecting-on-debian
+PortForward1() {
+	local IN_IF=$1
+	local IN_PORT=$2
+	local OUT_IP=$3
+	local OUT_PORT=$4
+	local IPTBL=&amp;quot;/sbin/iptables&amp;quot;
+	echo &amp;quot;1&amp;quot; &amp;gt; /proc/sys/net/ipv4/ip_forward
+	$IPTBL -A PREROUTING -t nat -i $IN_IF -p tcp --dport $IN_PORT -j DNAT --to-destination ${OUT_IP}:${OUT_PORT}
+	$IPTBL -A FORWARD -p tcp -d $OUT_IP --dport $OUT_PORT -j ACCEPT
+	$IPTBL -A POSTROUTING -t nat -j MASQUERADE
+}
+# create forward rule by source ip
+# http://blog.csdn.net/zzhongcy/article/details/42738285
+ForwardPort2() {
+	local IN_IP=$1
+	local IN_PORT=$2
+	local OUT_IP=$3
+	local OUT_PORT=$4
+	local IPTBL=&amp;quot;/sbin/iptables&amp;quot;
+	echo &amp;quot;1&amp;quot; &amp;gt; /proc/sys/net/ipv4/ip_forward
+	$IPTBL -t nat -A PREROUTING --dst $IN_IP -p tcp --dport $IN_PORT -j DNAT --to-destination ${OUT_IP}:${OUT_PORT}
+	$IPTBL -t nat -A POSTROUTING --dst $OUT_IP -p tcp --dport $OUT_PORT -j SNAT --to-source $IN_IP
+}
+PortForward1 eth3 8080 106.185.43.22 80
+# put this file on /etc/network/if-up.d
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上面两个函数，一个是针对网卡，一个是针对本地IP设置转发，记得把这个脚本放到 &lt;code&gt;/etc/network/if-up.d&lt;/code&gt; 下面并设置可执行权限（Debian/Ubuntu），每次开机重启时保证可以运行，即可。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vim 里如何映射 CTRL-h 为 left ?</title>
+      <link>https://skywind3000.com/blog/archives/1857/</link>
+      <pubDate>Sun, 27 Nov 2016 19:14:45 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1857/</guid>
+      <description>&lt;p&gt;很多人习惯在配置文件中映射 CTRL+HJKL 为光标移动，却碰到了一些问题：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-VimL&#34;&gt;inoremap &amp;lt;c-h&amp;gt; &amp;lt;left&amp;gt;
+inoremap &amp;lt;c-j&amp;gt; &amp;lt;down&amp;gt;
+inoremap &amp;lt;c-k&amp;gt; &amp;lt;up&amp;gt;
+inoremap &amp;lt;c-l&amp;gt; &amp;lt;right&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;映射后无效或者映射以后按 &lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;键不能删除，这是什么原因呢？&lt;/p&gt;
+
+&lt;p&gt;很简单，因为你的终端软件（Xshell, SecureCRT）有些老，默认配置是按下&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;键以后 发送的是：^H (ASCII 码 0x08），而 ^H在你的 Vim 里被你 inoremap 成  了，所以你按了&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;会被认为按下了左键。&lt;/p&gt;
+
+&lt;p&gt;早在 VT100终端时代，^H（ASCII码 0x08）表示&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt; 而 ^? （ASCII码 0x7f）表示&lt;code&gt;&amp;lt;DEL&amp;gt;&lt;/code&gt;。过去 0x7f是留给 DELETE键使用的。而到了 VT220时代，DELETE已经变为 ^[[3~ （ASCII 码 0x1b, 0x5b, 0x33, 0x7e 共4个字节），而 ^? 的 0x7f 换给了我们的&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;，有些老点版本的终端软件，默认
+&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;还是使用 VT100的 ^H，比如 Xshell 4 Build 0142以前的版本，默认&lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt;是发送^H。SecureCRT直到6.x版本还在默认发送 VT100的 ^H。&lt;/p&gt;
+
+&lt;p&gt;你需要做的就是改一下终端默认配置而已，大部分不那么陈旧的终端软件，如今都是默认VT220的标准，比如 Xshell4 Build 0142及以后的 Xshell5，Putty，Mac下面的 Terminal.app, iTerm2，Ubuntu下面的 gnome-terminal，他们都是把 &lt;code&gt;&amp;lt;BS&amp;gt;&lt;/code&gt; 发送成 ^?&lt;/p&gt;
+
+&lt;p&gt;你可以在你服务端下面查看下默认的键位设置：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ stty -a
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在所有 Linux服务器的 erase （bs）基本都是 ^? 了（如果链接到非 Linux老操作系统 erase不是这个的话，需要改一下，可以在系统层改，也可以vim里面 set t_kb=&amp;hellip;），Vim里面也是认可 ^?的，可老旧的终端软件却默认发送 ^H，不过好在他们都支持修改：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vim 中正确使用 Alt映射</title>
+      <link>https://skywind3000.com/blog/archives/1846/</link>
+      <pubDate>Sat, 19 Nov 2016 13:23:55 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1846/</guid>
+      <description>&lt;p&gt;最简单的做法是：首先将终端软件的 “使用 Alt键作为 Meta键” 的功能打开，其次将 Alt的模式改为 &lt;strong&gt;ESC+字母&lt;/strong&gt;，意思是如果你在终端下按下 ALT+X，那么终端软件将会发送 &lt;code&gt;&amp;lt;ESC&amp;gt;x&lt;/code&gt; 两个字节过去，字节码为：0x27, 0x78。如果你使用过 NeoVim 或者 Emacs的话，这一步应该早就做过了。&lt;/p&gt;
+
+&lt;h2 id=&#34;xshell4-终端设置&#34;&gt;XShell4 终端设置：&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/vim_altmap_1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;securecrt-终端设置&#34;&gt;SecureCRT：终端设置&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/vim_altmap_2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;其他终端软件里：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Putty/MinTTY 默认ALT+X 就是发送 &lt;code&gt;&amp;lt;ESC&amp;gt;x&lt;/code&gt;过去&lt;/li&gt;
+&lt;li&gt;Mac下面的 iTerm2/Terminal.app 需要跟 XShell / SecureCRT一样设置一下&lt;/li&gt;
+&lt;li&gt;Ubuntu 下面的 GnomeTerminal 默认也是发送 &lt;code&gt;&amp;lt;ESC&amp;gt;x&lt;/code&gt;过去的&lt;/li&gt;
+&lt;li&gt;任意平台下面的 xterm 可以配置 &lt;code&gt;~/.Xdefaults&lt;/code&gt; 来设置这个行为。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这样的话，不管是 NeoVim 还是 Emacs都识别了，Vim 的话，你可以简单这样：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vim 异步运行 Shell 指令的插件 - AsyncRun</title>
+      <link>https://skywind3000.com/blog/archives/1835/</link>
+      <pubDate>Wed, 24 Aug 2016 09:09:15 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1835/</guid>
+      <description>&lt;p&gt;自制另一个新的 Vim 8.0 专用异步插件：&lt;a href=&#34;https://github.com/skywind3000/asyncrun.vim&#34;&gt;asyncrun.vim&lt;/a&gt;，它可以让你在 Vim 里面异步运行各种 Shell 指令并且把结果实时输出到 Quickfix，需要 Vim 7.4.1829 以上版本。&lt;/p&gt;
+
+&lt;h2 id=&#34;安装方法&#34;&gt;安装方法&lt;/h2&gt;
+
+&lt;p&gt;到插件首页 &lt;a href=&#34;https://github.com/skywind3000/asyncrun.vim&#34;&gt;https://github.com/skywind3000/asyncrun.vim&lt;/a&gt; 下载项目，并拷贝 &lt;code&gt;asyncrun.vim&lt;/code&gt; 到你的 &lt;code&gt;~/.vim/plugin&lt;/code&gt;。或者使用 Vundle 指向 &lt;code&gt;skywind3000/asyncrun.vim&lt;/code&gt; 来自动更新。&lt;/p&gt;
+
+&lt;h2 id=&#34;基本教程&#34;&gt;基本教程&lt;/h2&gt;
+
+&lt;p&gt;使用 gcc 异步编译当前文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:AsyncRun gcc % -o %&amp;lt;
+:AsyncRun g++ -O3 % -o %&amp;lt; -lpthread 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;该命令会在后台运行 gcc 并且把输出实时显示在 Quickfix 窗口，宏 &lt;code&gt;%&lt;/code&gt; 代表当前文件名，&lt;code&gt;%&amp;lt;&lt;/code&gt; 代表没有扩展名的文件名。&lt;/p&gt;
+
+&lt;p&gt;异步运行 make：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:AsyncRun make
+:AsyncRun make -f makefile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;异步调用 grep:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:AsyncRun! grep -R word . 
+:AsyncRun! grep -R &amp;lt;cword&amp;gt; .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;默认 :AsyncRun 运行命令后，输出添加到 Quickfix时 Quickfix 会自动滚动到最下面那一行，使用感叹号修饰符以后，可以避免 Quickfix 自动滚动。同时 &lt;code&gt;&amp;lt;cword&amp;gt;&lt;/code&gt; 代表当前光标下面的单词。&lt;/p&gt;
+
+&lt;p&gt;编译 go项目：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:AsyncRun go build %:p:h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;宏 &lt;code&gt;%:p:h&lt;/code&gt; 代表当前文件的目录&lt;/p&gt;
+
+&lt;p&gt;查询 man page，异步 git push ，以及把设置 F7异步编译当前文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:AsyncRun! man -S 3:2:1 &amp;lt;cword&amp;gt; 
+:AsyncRun git push origin master
+:noremap &amp;lt;F7&amp;gt; :AsyncRun gcc % -o %&amp;lt; &amp;lt;cr&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何禁止 Win7 强制更新到 Windows 10 ?</title>
+      <link>https://skywind3000.com/blog/archives/1799/</link>
+      <pubDate>Mon, 04 Jul 2016 08:03:05 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1799/</guid>
+      <description>&lt;p&gt;岳父岳母，爹妈的 Windows 7 纷纷被自动升级成 Windows 10 各种问题（一台画面变成非全屏，解析度被莫名奇妙降低，占不满显示器、运行卡，另一台台式机无线网卡不能用，还有一台某炒股软件跑不起来，按win键弹出菜单时会顿一下）。&lt;/p&gt;
+
+&lt;p&gt;花费了我两个整天的时间帮他们降级，找了很多方法，网上大部分都不能对新版 Gwx起作用&lt;/p&gt;
+
+&lt;p&gt;终于，找到了并且永久性锁定自动升级的最直接方式了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;regedit：
+HKEY_LOCAL_MACHINE 下面
+SOFTWARE\Policies\Microsoft\Windows 下面新建项目（目录）Gwx
+然后在
+SOFTWARE\Policies\Microsoft\Windows\Gwx 下面新建 DWORD 值：
+DisableGwx=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;好了，Windows 结扎手术完成，不用当心一不留神弄出个 Windows 10 来给大伙惹麻烦了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何在不同平台下打开新窗口运行程序？</title>
+      <link>https://skywind3000.com/blog/archives/1745/</link>
+      <pubDate>Thu, 12 May 2016 12:49:08 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1745/</guid>
+      <description>&lt;p&gt;如果可以让自己的工作效率提升一点点，那么即便花费几天来开发一些工具也是值得的。在不同操作系统下自动打开终端窗口来运行指定的命令就是这样一件能提高工作效率的事情。&lt;/p&gt;
+
+&lt;p&gt;就像 Visual Studio 调试命令行程序的人都对打开一个新窗口运行命令行程序的模式情有独钟。EditPlus 也提供新窗口运行程序（可惜只限windows）。&lt;/p&gt;
+
+&lt;p&gt;而如果你在使用 Sublime/Atom/GEdit/GVim
+之类的工具，你就会发现调试程序的时候程序基本上是在下面的面板中运行的，所有输出也是输出到下面的面板中。这时如果程序长时间运行是非常不方便的，又或者程序有交互（需要输入数据），基于GUI面板的运行方式也会显得十分笨重，而Vim/GVim之流更过分，一执行程序整个GUI就定住了，没法一边看代码一边查看一些长时间运行的程序状态，虽然Windows下的GVim可以用!start来解决（见&lt;a href=&#34;http://www.skywind.me/blog/archives/1708&#34;&gt;Gvim
+!start&lt;/a&gt;），但十分遗憾，Linux桌面或者Mac下面的Vim都没有这个 !start功能。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>钉钉真好用</title>
+      <link>https://skywind3000.com/blog/archives/1738/</link>
+      <pubDate>Mon, 09 May 2016 13:18:53 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1738/</guid>
+      <description>&lt;p&gt;自从用了钉钉，腰也不酸了，腿也不疼了：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;设置组织架构和通讯录，新同事根据部门自动入企业群。&lt;/li&gt;
+&lt;li&gt;除了部门企业群外，跟微信一样随意建立临时会话，员工离职退出所有群。&lt;/li&gt;
+&lt;li&gt;每个企业群配套“云盘”，可以把部门相关文档传到群的云空间里，供群成员查看。&lt;/li&gt;
+&lt;li&gt;详细查看未读消息，长时间未读的人可以短信提醒。&lt;/li&gt;
+&lt;li&gt;企业内部员工免费电话。&lt;/li&gt;
+&lt;li&gt;全平台：windows，mac，iphone，android&lt;/li&gt;
+&lt;li&gt;配套企业应用：请假，公章申请，报销申请，打卡，工资信息查询&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;试过：泡泡，RTX，QQ企业，米聊，飞秋 以后最终发现还是钉钉最好用&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>GVim 中更好的运行程序</title>
+      <link>https://skywind3000.com/blog/archives/1708/</link>
+      <pubDate>Mon, 09 May 2016 08:24:10 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1708/</guid>
+      <description>&lt;p&gt;GVim（Windows）下面使用!运行程序是非常恶心的事情，比如调用python运行当前脚本：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:!python %
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;你会发现，整个VIM界面被冻结了，然后弹出cmd窗口，退出cmd后，还要返回GVim中按任意键才能编辑状态。&lt;/p&gt;
+
+&lt;p&gt;比如你正在调试一个程序，这个程序运行起来不是一分钟能出结果的时候，你想边对照输出结果，边在 GVim 里面查看和修改你的代码，你就会发现傻逼了。正确的做法是：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:!start python %
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样就不会卡住 Vim了，但是这个做法有个问题，程序结束的时候窗口马上关闭，因此还需要再进化一下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:silent !start cmd /c python % &amp;amp; pause
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这时你会发现优雅的调用了 python 来跑当前程序，并且GVIM不会被挂起，照样可以编辑，当程序结束的时候，CMD窗口还会pause等待你按任意键一下，这就比较清爽了，你可以把这条命令map到你常用的快捷键上，和 EditPlus里面一样一键运行之。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>更好的使用 Vim 标签（Tab）以及 Alt键映射</title>
+      <link>https://skywind3000.com/blog/archives/1690/</link>
+      <pubDate>Mon, 02 May 2016 15:19:01 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1690/</guid>
+      <description>&lt;p&gt;更好的使用 Vim7.0以后推出的标签（TAB）功能，同现代编辑器一样用标签（TAB）来管理多文件，代替传统 Buffer List：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2016/05/vim3.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;让 Minibufexplor/tabbar 这些上个世纪的插件都退场吧，直接使用标准的标签功能会更加舒服。 &lt;strong&gt;快捷键切换 TAB&lt;/strong&gt; 第一件事情就是要搞定标签快速切换问题，
+不管是:tabn X还是 Xgt都十分低效，我们需要更快速的在各个文件之间切换。最简单的是设置 0-9 来快速切换tab（默认leader是反斜杠，即先按下\键，再按数字键），不管终端还是GVIM都兼容：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;noremap &amp;lt;silent&amp;gt;&amp;lt;tab&amp;gt;m :tabnew&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;tab&amp;gt;e :tabclose&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;tab&amp;gt;n :tabn&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;tab&amp;gt;p :tabp&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;t :tabnew&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;g :tabclose&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;1 :tabn 1&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;2 :tabn 2&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;3 :tabn 3&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;4 :tabn 4&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;5 :tabn 5&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;6 :tabn 6&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;7 :tabn 7&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;8 :tabn 8&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;9 :tabn 9&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;leader&amp;gt;0 :tabn 10&amp;lt;cr&amp;gt;
+noremap &amp;lt;silent&amp;gt;&amp;lt;s-tab&amp;gt; :tabnext&amp;lt;CR&amp;gt;
+inoremap &amp;lt;silent&amp;gt;&amp;lt;s-tab&amp;gt; &amp;lt;ESC&amp;gt;:tabnext&amp;lt;CR&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其次，GVIM/MacVim 下设置 ALT-0-9 来切换TAB：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>后端工程师招聘启示</title>
+      <link>https://skywind3000.com/blog/archives/1681/</link>
+      <pubDate>Mon, 18 Apr 2016 07:27:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1681/</guid>
+      <description>&lt;p&gt;创业一年多，走过不少弯路，公司最近终于开始有了点收入，说起来有点老泪纵横。虽然没有完全覆盖成本，但证明产品方向没有大问题，运营开展后，后端团队急需进一步扩大，方向是两个： 第一是游戏社交，陪玩竞技的APP，提供游戏用户专有的沟通工具。
+第二是为云技术，为游戏或者其他应用开发商提供更好的即时通讯云技术，这点我在知乎里面阐述过：&lt;a href=&#34;https://www.zhihu.com/question/32228281/answer/55844291&#34;&gt;https://www.zhihu.com/question/32228281/answer/55844291&lt;/a&gt; 公司坐落在广州市科韵路，现在团队规模35人左右，后端主要技术是java/python/c，熟悉任意即可，有需要用别的语言学就是。
+公司是有很强技术基因的公司，后端团队我会亲自带，创造和分享是我们一直以来秉持的理念。希望同更多有识之士共同进步和成长。 具体需求如下：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 Markdown 写 Wordpress</title>
+      <link>https://skywind3000.com/blog/archives/1675/</link>
+      <pubDate>Sat, 02 Apr 2016 20:14:20 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1675/</guid>
+      <description>&lt;p&gt;使用 Markdown 来再命令行写 WordPress 的感觉很不错，我整合了两个 Python 库，一个叫 blogpost， 另外一个叫做 markdown2，前者可以用来命令行发送 WordPress 文章，但是只支持 .html 或者 asciidoc 格式来写 WordPress，因此又引入了 python 的 markdown2，合成项目：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/skywind3000/markpress&#34;&gt;https://github.com/skywind3000/markpress&lt;/a&gt; 但是标准 Markdown转换出来的 html 再 wordpress中高亮不正确，因此费了点时间修改了一版 markdown2 为 markdown3 ，调整了相关的样式，可以很好的在 wordpress 中显示，同时使用了 metadata，再文章中 可以指定标题和类别，使用很简单，首先克隆项目：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; $ git clone https://github.com/skywind3000/markpress.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后创建你的工程目录 myblog（用来保存文章和相关中间数据，推荐提交到版本管理系统上来），目录为：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;myblog +- wordpress.ini  # 站点配置文件，url，用户名，密码
+       +- doc            # 存放 markdown 文章源文件的目录
+       +- data           # 自动生成的 postid/html等，丢失会导致重新发文
+       +- images         # 保存图片的目录，文章中图片都用 &amp;quot;../images/*&amp;quot; 引用
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>ATOM 同 Vim/Emacs/Sublime 的深度比较</title>
+      <link>https://skywind3000.com/blog/archives/1652/</link>
+      <pubDate>Wed, 16 Mar 2016 10:11:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1652/</guid>
+      <description>&lt;p&gt;用过不少编辑器：UltraEdit / EditPlus / (G) Vim / GEdit / NotePad++ / TextMate / ProgrammerPad / Sublime 。确实是工作上用他们写过代码的。而 VSC / Emacs 只是体验了一下基本使用方法，算不上真用。用下来的结论是：Atom 比 Vim 更 Vim，比 Emacs 更 Emacs，同样，比 Sublime
+更 Sublime。&lt;/p&gt;
+
+&lt;p&gt;Atom 唯一的槽点就是“卡”，不过那是去年的情况了，1.0后性能数次大提升，比起sublime/vsc之类虽不算流畅，但同时编辑20个数千行的文件没有压力。如今让人感觉慢的地方主要是启动loading（也大大短于eclipse, idea），使用时并没察觉它比其他编辑器慢再哪。而文本编辑器的快慢，更重要的是“让你工作更快更有效率”。下面说说为何 Atom比其他更有效率：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Atom 编辑器的插件开发</title>
+      <link>https://skywind3000.com/blog/archives/1638/</link>
+      <pubDate>Mon, 14 Mar 2016 12:26:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1638/</guid>
+      <description>&lt;p&gt;老王卖瓜，自卖自夸，Atom 比较方便的地方是可以用 javascript/coffee 给 Atom写插件，并且写起来很简单，我刚按说明给 Atom 写了一个插件： &lt;a href=&#34;https://atom.io/packages/atom-shell-commands&#34;&gt;atom-shell-commands&lt;/a&gt; 用户自定义 Shell 命令，类似 NotePad++ 中的 &amp;ldquo;Run
+Commands”，EditPlus/UltraEdit里面的&amp;rdquo;User Tool&amp;rdquo;，以及 GEdit 中的 &amp;ldquo;External Tool&amp;rdquo; 和 TextMate 里的 “Shell Command”。 1. 用户可以自定义工具，并且配置到 Atom 中，比如一键调用编译器，一键运行， 2. 输出结果会显示再底部的 bottom panel 中 3.
+点击错误输出可以跳转到对应有错误的文件上去 4. 自定义正则表达式匹配错误输出中包含的文件名和行号。 5. 全平台支持，再 Mac/Ubuntu/Windows 下充分的测试过。 初始化时，再你的用户配置中（Atom File-&amp;gt;Open Your Config或者 ~/.atom/config.cson），写入类似：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>FlashDevelop 好用</title>
+      <link>https://skywind3000.com/blog/archives/1469/</link>
+      <pubDate>Mon, 27 Jul 2015 03:59:19 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1469/</guid>
+      <description>&lt;p&gt;好几年没碰过 Flash 了，最近需要给 ActionScript 导出一些 C 接口，又抽空捡起来。项目大了以后 Flash Builder 卡的要死，经常是一个构建你就可以休息了，按一下 “.“ 它就开始搜索补全提示，你的符号多了以后，有时候 Flash Builder 近乎假死了。实在难以忍受，咨询了一些正在做页游的朋友，是否还在用 Flash Builder 。得到答案是：早就投奔
+Flash Develop 了。&lt;/p&gt;
+
+&lt;p&gt;试了一下 FlashDevelop 果然腰也不酸了，腿也不疼了，十分流畅，界面类似 Visual Studio，同时还是免费的，可以彻底和笨重的 Flash Builder 说再见了。再次感叹 AS3 写起来真爽之余，记录一下安装配置过程：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/07/image_thumb8.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何提高编程的手速</title>
+      <link>https://skywind3000.com/blog/archives/1458/</link>
+      <pubDate>Wed, 22 Jul 2015 03:33:53 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1458/</guid>
+      <description>可以使用经典的 TT 来测试你的打字速度，注意是包含数字和符号的文章（Menu-&amp;gt;Test-&amp;gt;All key）
+软件很简单，按照箭头指着的位置，快速输入上面的单词即可，输入完会有评分的。
+TT是比较好的打字练习程序，直到今天，公司内都用作给新人练习打字速度用。不当能测试，还有比较详细的课程，教你从纯单词打起，逐步到数字，标点符号等。
+我做过一个 DOSBOX版本的 TT （tt.exe 是 DOS下的程序），双击 TT.BAT 即可在 Win7/8 启动
+http://www.skywind.me/mw/images/e/eb/TT-Dosbox.7z
+我当时用 TT 测试 All Key 的时候，已经写过好多年程序了，自己觉得自己打字不慢，英文可以流利盲打，数字和符号需要看一下，结果 TT 测试下来，打字速度只有 31 WPM ，属于垫底的角色，丢死人了。
+于是开始用 TT的课程进行练习，每天练习的不多，每天两次，每次15分钟，主要是先打10分钟的课程，然后做5分钟的测验，不能练多，练多了手麻，但是要坚持每天都练习两次左右。一开始纯英文的指法挺简单乏味，觉得没意思，因为我本身可以流利的盲打英文，觉得自己主要是被数字和符号拖累了。但是坚持了一段时间练习纯英文速度后，我发现纯英文速度从 42WPM提高到 55WPM。
+后来开始继续练习数字和符号，这就比较痛苦了，就是单调乏味的重复练习，这部分手指动作跨度大，即便记得住在哪里，经常手指过去就按错了，但是一旦数字和符号分实现了盲打，整体 WPM的提高是非常大的。
+TT 有专门练习数字和符号的的课程：
+几个星期后，All Key的打字速度 WPM 终于从31 提高到 45 了，通过了打字测验。这时候我回来输入程序，我发现对自己编程帮助确实比较大。以前碰到数字和符号经常要低下头去看在哪里，指法也不标准，比如按shift组合键的时候是比较山寨的打发，现在纠正了一下实现全键盘盲打了，感觉写程序顺畅了很多。
+很多人觉得程序主要是思考，你思路对了，打字只是小事，经常听到说某某高手打字是二指禅。以前我也这么认为，但是专门抽时间练习了以后，发现真正打字流畅的人，打字的 cpu占用很低，不会因为打错字而影响思考，更不会因为要低下头去看数字符号打断你的思路。
+到了 45的 WPM 以后，再往下提高就比较难了，经常一个多星期没啥提高，我后来发现我的指速不够，就是即便全部盲打，手指不够熟练，灵巧度不高，再怎么盲打也是白打。因此买了一个机械键盘来专门练习指速。
+先单纯练习从 A打到 Z，最开始是15秒，慢慢熟练到10秒，最后到5秒。又从最基本的单词开始，不断的重复同一节 TT的课程，同一个动作重复 300次，肌肉就会有记忆，而同一个动作重复600次，脊柱就会有记忆。别人打字要经过大脑，大脑一个字母一个字母，一根手指一根手指的指挥，是比较费脑的，而你打字如果真正进入了脊柱反应的条件反射时代，那么看到一个单词或者一串数字，大脑只需要下一个指令，脊柱这个协处理器就自动完成了，根本不需要过大脑。
+所以实现全盲打后，又经过一段时间的指速练习，从 45 WPM 不断的提高到 50 WPM，55 WPM，60 WPM 最后到 65WPM （TT的 All Key模式），单纯打英文的速度也从原来的 35 WPM提高到 71 WPM，整整翻了一倍：
+虽然 TT 是 DOS 时代的软件了，现在市面上出过很多打字练习软件，但是说道科学性和系统性，还是没有超过 TT的。现在偶尔抽空还是会拿出 tt 来练习一下，就当打游戏。但是自己手指的灵巧度感觉还是不够，可能这是先天的，因为即便我达到了 65 WPM，公司内还是有很多70，75以上的同事打的比我快多了。
+现在再看到那些诸如某大牛只用二指禅来敲代码的言论，我都会嗤之以鼻了，字都打不好还写啥程序呀？不管有多牛，即便写代码的思路再好，但是手速跟不上，打字还要费大脑的话，还是有所局限的。
+只有很流畅的打字了，让打字变为一种不经大脑的条件反射，你的注意力才能完全集中在思考你的程序上。我把自己的打字速度从 30 WPM 提高到 65WPM的过程中，对这一点感触是比较深的。因为先天手指笨拙，我好像要比同事们练习的更多才能有他们同样的提高，但是我还是能够感受到提高手速对编程的改变，所以有空我都还是会拿出 TT 来练习一下，全当打游戏了，希望有一天 All Key 的 WPM能上 70。
+-&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+PS: TT 下载地址（DosBox版本）http://www.skywind.me/mw/images/e/eb/TT-Dosbox.7z
+整合了 DOSBOX + TT，运行 “TT.BAT&amp;rdquo; 就可以在 Win7/Win8下启动，运行&amp;rdquo;TT放大版.BAT&amp;rdquo;，就可以设置 DOSBOX放大两倍显示（如今高分屏看起以前低分辨率的文字有点累，放大两倍后效果比较好）。
+Ubuntu / OS X下，先安装 DOSBOX，把上面的 tt 下载下来，再用 ubuntu的 dosbox 启动 tt.exe 即可。
+-&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+不要用《金山打字通》：
+金山打字通测试文章中，符号和数字偏弱，标点就是逗号和句号，比起TT的 All Key （每篇文章至少包含一定数量的电话号码，门牌号码，各种符号）
+金山打字通测试是：每秒钟敲下多少字母，不是 WPM（每分钟敲下多少个单词），比字母的话，我最快5秒钟可以从 A-&amp;gt;Z，应该是 312字母/分，没啥意义呀。
+编辑于 2015-07-03</description>
+    </item>
+    
+    <item>
+      <title>什么时候用C而不用C&#43;&#43;？</title>
+      <link>https://skywind3000.com/blog/archives/1407/</link>
+      <pubDate>Tue, 16 Jun 2015 04:00:18 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1407/</guid>
+      <description>知乎问题《什么时候用C而不用C++？》：
+ 前两天不是有一个问题是“什么时候用C++而不用C”，我一直觉得问错了，难道不是“能用C++就不用C”么？那么当然就要讨论什么时候用C而不用C++啦。
+一直以来都严格遵循OO的原则来进行开发（用的工具是C#和Qt），直到最近，开始接手某同事的代码，整个项目20多个小工程（代码量并不多），除了界面部分用了MFC这种不伦不类的OO以外，所有的代码都是C写的。但是模块化做的非常好。后来跟他讨论为何不用C++，他说其实没有什么特别的，就是习惯和爱好而已，后又补充：
+如果不用多态的话，其实不管怎么写，不管用那种语言写，都算不上真正的OO
+忽然觉得很有道理……
+ 其实这是一个好问题，
+题主开始欣赏到纯 C代码所带来的 “美感” 了，即简单性和可拆分性。代码是自底向上构造，一个模块只做好一个模块的事情，任意拆分组合。对于有参考的 OOP系统建模，自顶向下的构造代码抽象方法是有效率的，是方便的，对于新领域，没有任何参考时，刻意抽象会带来额外负担，并进一步增加系统耦合性，设计调整，往往需要大面积修改代码。
+有兴趣你可以读读《Unix编程艺术》，OOP的思维模式，是大一统的；C的思维模式，是分离的。前者方便但容易造成高耦合，后者灵活但开发开发太累。用 C开发，应该刻意强调 “简单” 和 “可拆分”。一个个象搭积木一样的把基础系统搭建出来，哪个模块出问题，局部替换即可。
+自底向上的开发模式，并不是从不站在大局考虑问题，而是从某个子系统具体实现开始，从局部迭代，逐步反思全局设计，刻意保持低偶合，一个模块一个模块的来，再逐步尝试组合。
+自底向上强调先有实践，再总结理论，理论反过来指导实践，又从实践中迭代修正理论。这和人类认识世界的顺序是一样的，先捕猎筑巢，反思自然是怎么回事，又发现可以生火，又思考自然到底怎么回事情。
+它的反面，是指大一统设计，你一开始用 UML画出整套系统的类结构，然后再开工设计。这种思维习惯，如果是参考已有系统做一个类似的设计，问题不大，全新设计的话，他总有一个前提，就是 “你能完整认识整个大自然”，就像人类一开始就要认识捕猎和筑巢还有取火一样。否则每次对世界有了新认识，OOP的自顶向下设计方法都能给你带来巨大的负担。
+所以有些人才会说：OOP设计习惯会依赖一系列设计灵巧的 BaseObject，然而过段时间后再来看你的项目，当其中某个基础抽象类出现问题是，往往面临大范围的代码调整。这其实就是他们使用自顶向下思维方法，在逐步进入新世界时候，所带来的困惑。
+当然也有人批判这种强调简单性和可拆分性的 Unix思维。认为世界不是总能保持简单和可拆分的，他们之间是有各种千丝万缕联系的，你一味的保持简单性和可拆分性，你会让别人很累。这里给你个药方，底层系统，基础组建，尽量用 C的方法，很好的设计成模块，随着你编程的积累，这些模块象积木一样越来越多，而彼此都无太大关系，甚至不少 .c文件都能独立运行，并没有一个一统天下的 common.h让大家去 include，接口其他语言也方便。
+然后在你做到具体应用时根据不同的需求，用C++或者其他语言，将他们象胶水一样粘合起来。这时候，再把你的 common.h，写到你的 C++或者其他语言里面去。当然，作为胶水的语言不一定非要是 C++了，也可以是其他语言。
+-&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+PS: 这里主要在探讨 OOP存在的问题，并没有讨论嵌入式这种资源限制的情况，以及操作系统和底层等需要精确控制硬件和内存的情况，更没有讨论 C++在语言设计层面的事情。
+-&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+转部分答疑：（点击more展开）
+Q：“实际上是，如果你能清晰的知道你要做什么事情，那C很好。但如果你只能确定流程基本是对的，而很多系列可能在后续维护中不断更改，或者增加更多的支持，那c的overhead就很大了。当工程非常庞大的时候会很难维护。比如开发一个数学算法库，其实跟数学没有关系，就是一个大数（任意精度）的一系列计算程序。这个程序可以是没有GUI的。开始自己设计一个大数的运算内核，然后还有很多更高级的计算算法。将来有一天想 把内核替换成GMP库，或者用户可以动态替换自己的内核”
+A：就以你说的大数计算为例，大数计算底层驱动根据CPU更换函数指针是个不错的选择，见polarssl openssl，我还真建议你用C来写大数的底层，因为你今天要算个求幂取模，明天要算个gcd，后天要生成质数，你无法预测你的大整数里面究竟有多少个接口，这时候用c的分治思想就很合适。大数不是一辆飞机，它会飞，会降落，会拐弯，这都是飞机的主动行为，主动行为是有限的，确定的，适合oo的。而一个数字，它几 乎没有啥主动行为，相反全是无限的，不可控的被动行为，正合适塞到不同的.c文件中。这种时候你想刻意在一个大数类里设置满无限的方法是不合适的，不该oo的。况且你要夸语言，大数基础库用c接口到其他语言方便。所以你会看到openssl polarssl到其他语言的很多绑定，可你从来不会看到crypto++除了c++外被导出到其它任何语言了。在你用C实现了大整数基础功能并导给其它语言接口后，针对c++用户， 专门包个class的壳，选择一些基础方法放进去，给cpp用户提供点方便。下面核心算法变了，比如你实现了一个sse版本的乘法，运行时换函数指针即可，外层完全不可见，多好！polarssl中还用了一些宏来代替为数不多的几处用模版很方便的地方。</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43;的反思</title>
+      <link>https://skywind3000.com/blog/archives/1398/</link>
+      <pubDate>Tue, 16 Jun 2015 03:48:23 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1398/</guid>
+      <description>最近两年 C++又有很多人出来追捧，并且追捧者充满了各种优越感，似乎不写 C++你就一辈子是低端程序员了，面对这种现象，要不要出来适时的黑一下 C++呢？呵呵呵。
+咱们要有点娱乐精神，关于 C++的笑话数都数不清：
+笑话：C++是一门不吉祥的语言，据说波音公司之前用ADA为飞机硬件编程，一直用的好好的，后来招聘了一伙大学生，学生们说我靠还在用这么落后的语言，然后换成C++重构后飞机就坠毁了。
+笑话：什么是C++程序员呢？就是本来10行写得完的程序，他非要用30行来完成，并自称“封装”，但每每到第二个项目的时候却将80％打破重写，并美其名曰 “重构”。
+笑话：C容易擦枪走火打到自己的脚，用C++虽然不容易，但一旦走火，就会把你整条腿给炸飞了。
+笑话：同时学习两年 Java的程序员在一起讨论的是面向对象和设计模式，而同时学习两年 C++的程序员，在一起讨论的是 template和各种语言规范到底怎么回事情。
+笑话：教别人学 C++的人都挣大钱了，而很多真正用 C++的人，都死的很惨。
+笑话：C++有太多地方可以让一个人表现自己“很聪明”，所以使用C++越久的人，约觉得自己“很聪明”结果步入陷阱都不知道，掉坑里了还觉得估计是自己没学好 C++。
+笑话：好多写了十多年 C++程序的人，至今说不清楚 C++到底有多少规范，至今仍然时不时的落入某些坑中。
+笑话：很多认为 C++方便跨平台的人，实际编写跨平台代码时，都会发现自己难找到两个支持相同标准的 C++编译器。
+-&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;
+Q：那 C++为什么还能看到那么多粉丝呢？
+A：其实是因为 Windows，因为 Windows的兴起带动了 C++，C++本来就是一门只适合开发 GUI的语言。
+Q：为何 C++只适合开发 GUI呢？
+A：你看 Unix下没有 GUI，为啥清一色的 C呀？所有的系统级问题都能在 C里找到成熟的解决方案，应用级问题都能用其他高级语言很好地解决，哪里有 C++什么事情呀？
+Q：你强词夺理，Unix下也有 C++的项目呀。
+A：有，没错，你任然可以用任何语言编写任何糟糕的代码。
+Q：别瞎扯了，你都在说些什么？连C++和 Windows 都扯到一起去了。
+A：回想下当年的情景，一个大牛在教一群初学者如何编程。一边开发一边指着屏幕上说，你看，这是一个 Button，我们可以用一个对象来描述它，那是一个 panel我们也可以用一个对象来描述它，并且你们有没有发现，其实 Button和 Panel是有血缘关系的，你们看。。。这样就出来了。。。。下面的学生以前都是学着学校落后的教材，有些甚至还在用 turboc的 bgi库来画一些点和圆。哪里见过这么这么华丽的 Windows 界面呀。大牛说的话，象金科玉律一样的铭刻在自己幼小的心理。一边学着 Windows，一边发现，果然，他们都需要一个基类，果然，他们是兄弟关系，共同包含一些基本属性，可以放到基类去。他们越用越爽，潜意识里觉得因为 C++这么顺利的帮他们解决那么多界面问题，那看来 C++可以帮他们解决一切问题了。于是开发完界面以后，他们继续开发，当他们碰到各种设计问题时，反而认为肯定自己没有用好 C++。于是强迫自己用下去，然后就完蛋了。
+（点击 more展开）
+-&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;
+关于 C++的笑话我有一箩筐，各位 C++粉用不着对号入座。言归正传，为什么要黑 C++呢？谈不上黑不黑，我从94年开始使用 C++（先前是 C 和 Pascal），一路看着 C++成长壮大，用 C++写过的代码，加起来应该超过 10MB了吧，C++的各种宝典我也都读过，一直到 2004年开始切回 C，主要原因是发现很多没法用 C++思路继续解决下去的问题，或者说用 C++思路解决下去会很糟糕的问题。
+那时候（2004-2005）正是 C++满天飞的时候，言必称 C++，用必用模版，我跳出来说你们醒醒吧，别过火了，这个世界并不是都是抽象数据结构和算法就可以描述清楚的。于是很多人激动的跳出来说：“你没领会到 C++精髓，你根本都不会用 C++”。我问他们：“语言是用来解决问题的，如果一个语言学了三四年都会经常掉沟里，算好语言么？如果编写十多年 C++的程序员都很难掌握得了，这算好语言么”。他们又说：“语言是死的，人是活的”。
+我记得当时一位国内 C++大牛，为了纠正我的 “错误观点”，给我看过他写的一套十分强大的库，我打开一看，倒吸了一口冷气，全部是 .h文件。我只能回他三个字：“你牛逼”。当然这是一个极端的例子，那家伙后来终于也开始把 .h里面的东西逐步挪到 .cpp里面了，这是好事。
+当时和云风在一家公司，2004年新人培训时，他给新人布置了一个实现内存分配器的作业，批改作业的时候，他经常边看边问人家，“不够C++呀，你能不能百分之百OOP？”，“1%的 C都不要留”。我当时在公司内部邮件列表里面发过关于 C++的问题，大部分人都表示：“你看没有C++我们怎么写3D引擎呢？”。我跟他们讲：“John Carmack直到 Quake3都还在用着 ANSI C，后来因为不得不支持 D3D，改用 C++了。为啥 C不能写 3D引擎了？”。他们告诉我：“你看，Point，就是个对象，Matrix也是个对象，那么多 Vector的代数计算，用 C++的算术重载是多么美妙的事情，三维世界就是对象的世界。”。
+确实当时客户端 GUI的话，只有 C++，图形引擎也只有 C++，这两个正是C++最强的地方，所以我也没和他们争辩，强迫他们承认 C也可以很漂亮的写图形，而且C写的可以写的很优雅。我又不是闲着没事情，何必去质疑人家的核心价值观呢，呵呵。当年我正在接手一个 C++项目，代码超过 800KB，每次崩溃都需要花费很长时间去定位，项目中大量的前后依赖，改一个地方，前后要看好几处，一处遗漏，整个系统就傻逼了。我开始重构后，画了两个星期，将性能敏感的核心部分剥离出来用 C实现（代码量仅 200KB），然后导出 Python接口，用Python来完成剩下的部分，整个脚本层代码量只有 150KB。整个世界清爽了，整个 C++项目原来的工期为 2个程序员四个月，我一个人重构的时间加起来就 1.5个月，而且代码量比远来少了两倍还多，各种奇特的 BUG也一扫而尽。我看看左边的 800KB一团乱麻的 C++代码，再看看右边整洁的 300多 KB 纯 C + Python，琢磨着，这个项目干嘛不一开始就这么做？
+跨语言接口
+现代项目开发，不但需要更高的性能，而且需要更强大的语言描述能力。而 C++正处在一个尴尬的地方，比底层，它不如 C能够精确的控制内存和硬件，各种隐式构造让你防不胜防；比描述能力，比快速业务开发和错误定位，它又赶不上 Python, Ruby, Lua等动态语言，处于东线和西线同时遭受挤压和蚕食的地步。
+很快，2006-2007年左右，其他项目组各种滥用 C++的问题开始显现出来：当时脚本化已经在工程实践中获得极大的成功，然而某些项目一方面又要追求 100%的 C++，另一方面又需要对脚本导出接口，他们发现问题了，不知道该怎么把大量的 C++基础库和接口导给 Lua。
+C的接口有各种方便的方式导给脚本，然而整个项目由一群从来就不消于使用脚本的cpp大牛开发出来，当他们要吧cpp类导出接口给脚本时，他们设计了一套牛逼的系统，lua自动生成机器码，去调用c++的各种类，没错，就是c++版本的cffi或者ctypes。他为调用vc的类写了一套机器码生产，又为调用gcc的类写了一套代码生成。那位cpp大牛写完后四处炫耀他的成果，后来他离职了，项目上线一而再再而三的出现无 可查证的问题，后来云风去支援那个项目组，这套盘根错节的c++项目，这套盘大的代码自生成系统深深的把他给恶心到了。后来众所周知云风开始反C++，倡导回归C了，不知道是否和这个项目有关系。
+于是发现个有趣的现象，但凡善于使用脚本来提高工程效率的人，基本都是C加动态语言解决大部分问题（除了gui和图形），但凡认为c++统治宇宙的人很多都是从来没使用过脚本或者用了还不知道该怎样去用的人。
+凭借这样的方法，我们的产品同竞争对手比拼时，同样一个功能，同样的人力配置，竞争对手用纯C++要开发三月，我们一个月就弄出来了，同样的时间，对手只能试错一次，我们可以试错三次。后来，据我们招聘过来的同事说，竞争对手也开始逐步降低 C++的比例，增加 java的比例了，这是好事，大家都在进步嘛。
+ABI的尴尬
+ABI级别的 C++接口从来没有标准化过，以类为接口会引入很多隐藏问题，比如内存问题，一个类在一个库里面实例化的，如果再另外一个库里面释放它们就有很多问题，因为两个动态库可能内存管理系统是不一样的。你用这里的 allocator分配一块内存，又用那里的 allocator去释放，不出问题才怪。很多解决方法是加一个 Release 方法（比如 DX），告诉外面的人，用完的时候不要去 delete，而是要调用 Release。
+项目写大了各个模块隔离成动态库是很正常的，而各种第三方库和自己写的库为追求高性能引入特定的内存管理机制也是很正常的。很多人不注意该调用release的地方错写成delete就掉沟里去了。更有胜者跨 ABI定义了很多inline方法的类，结果各种隐式构造和析构其实在这个库里生成，那个库里被析构，乱成一团乱麻。C就清晰很多，构造你就调用fopen，析构你就fclose，没有任何歧义。其实C++的矛盾在于一方面承认作为系统级语言内存管理应该交给用户决定，一方面自己却又定义很多不受用户控制的内存操作行为。所以跨 ABI层的c++标准迟迟无法被定义出来，不是因为多态 abi复杂，而是因为语言逻辑出现了相互矛盾。为了弥补这个矛盾，C++引入了operator new，delete，这new/delete重载是一个补丁并没从逻辑上让语言变得完备，它的出现，进一步将使用者拖入bug的深渊。
+其实今天我们回过头去看这个问题，能发现两个基本原则：跨abi的级别上引入不可控的内存机制从语言上是有问题的，只能要靠开发者约定各种灵巧的基类和约定开发规范来解决，这个问题在语言层是解决不了的；其次你既然定义了各种隐式构造和析构，就该像java或者动态语言一样彻底接管内存，不允许用户再自定义任何内存管理方法，而不是一方面作为系统极语言要给用户控制的自由，一方面自己又要抢着和用户一起控制。
+因此对象层 ABI接口迟迟无法标准化。而纯 C的 ABI不但可以轻松的跨动态库还能轻松的和汇编及各类语言融合，不是因为C设计多好，而是C作为系统层语言没有去管它不该管的东西。当年讨论到这个话题时 C++大牛们又开始重复那几句金科玉律来反驳我：“语言只是招式，你把内功练好，就能做到无招胜有招，拿起草来都可以当剑使，C++虽然有很多坑，你把设计做好不那么用不就行了”。我说：本来应该在语言层解决好的事情 ，由于语言逻辑不完备，将大量问题抛给开发者去解决极大的增加了开发者的思维负担，就像破屋上表浆糊一样。你金庸看多了吧，武术再高，当你拿到一把枪发现子弹不一定往前射，偶尔还会往后射时，请问你是该专心打敌人呢？还是时刻要提防自己的子弹射向自己？
+系统层的挫败
+C++遭受挫败是进军嵌入式和操作系统这样靠近硬件层的东西。大家觉得宇宙级别的编程语言，自然能够胜任一切任务，很快发现几个问题：
+ 无法分配内存：原来用 C可以完全不依赖内存分配，代码写几千行一个 malloc没有都行。嵌入式下处理器加电后，跳到特定地址（比如起始地址0），第一条指令一般用汇编来写，固定在0地址，就是简单初始化一下栈，然后跳转到 C语言的 start函数去，试想此时内存分配机制都还没有建立，你定义了两个类，怎么构造呀？资源有限的微处理器上大部分时候就是使用一块静态内存进行操作。C++写起来写爽了，各种隐式构造一出现，就傻了。 标准库依赖：在语言层面，C语言的所有特性都可以不用依赖任何库就运行，这为编写系统层和跨平台跨语言代码带来了很方便的特性。而C++就不行，我要构造呀，我要异常呀，你为啥不能给我强大的运行时呢？什么你还想用 stl？不看看那套库有多臃肿呀（内存占用，代码尺寸）。 异常处理问题：底层开发需要严格的处理所有错误返回，这一行调用，下一行就判断错误。而异常是一种松散的错误处理方式，应用层这么写没问题，系统层这么写就很狼狈了。每行调用都try一下和 C的调用后if判断结果有什么区别？C++的构造函数是没有返回值的，如果构造内部出错，就必须逼迫你catch构造函数的异常，即便你catch住了，构造异常的时候当然会自动触发相关内部对象的析构，但是有很多并没有析构的资源（比如系统资源，比如C接口的资源，他们都没有一个析构），整个过程是很难控制的，此时这个实例是一个半初始化实例，你该怎么处理它呢？于是有人把初始化代码移除构造函数，构造时只初始化一下变量，新增加一个带返回的init函数，这样的代码写的比C冗余很多。何况硬件中断发生时，在你不知道的情况下，同事调到一些第三方的库，你最外层没有把新的exception给 catch住，这个exception该往哪里抛呀？内存不够的时候你想抛出一个 OutOfMemoryException，可是内存已经不够了，此时完全无能力构造这个异常又该怎么办呢？ 处理器兼容：C++的类依赖基地址+偏移地址的寻址方式，很多非 Intel系列的微处理器上只有简单的给定地址寻址，不支持这样一条语句实现BASE+OFFSET的寻址，很多C++代码编译出来需要更多的指令来运算地址，导致性能下降很多，得不偿失。 隐式操作问题：C的特点是简单直接，每行语句你都能清楚的知道会被翻译成什么样子，系统会严格按照你的代码去执行。而用C++，比如 str1 = str2 + &amp;ldquo;Hello&amp;rdquo; + str3; 这样的语句，没几个人真的说得清楚究竟有多少次构造和拷贝，这样的写法编写底层代码是很不负责任的，底层需要更为精细和严格的控制，用C语言控制力更强。  当然，说道这里很多人又说，“C++本来就是 C的超集，特定的地方你完全可以按照C的写法来做呀。没人强迫你构造类或者使用异常呀”，没错，按 Linus的说法：“想要用 C++写出系统级的优秀的可移植和高效的代码，最终还是会限于使用 C本身提供的功能，而这些功能 C都已经完美提供了，所以系统层使用 C的意义就在于在语言层排除 C++的其他特性的干扰”。</description>
+    </item>
+    
+    <item>
+      <title>二十年前是怎样开发游戏的？</title>
+      <link>https://skywind3000.com/blog/archives/1250/</link>
+      <pubDate>Fri, 10 Apr 2015 15:50:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1250/</guid>
+      <description>&lt;p&gt;知乎上有人问：“贴吧都是十五六岁就用引擎写游戏的天才，大家怎么看？”，感觉现在做游戏真实一件幸福的事情呀，不尽想起当年开发游戏的各种艰辛。&lt;/p&gt;
+
+&lt;p&gt;现在做游戏很简单，大把代码给你参考，大把框架给你使用，Windows帮你作完了大部分事情。我们那个年纪写游戏时，家里还没有Internet，什么资料都查不到，什么开源引擎都没有，95年左右你要写一个游戏，你起码面临：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;同显卡打交道，显卡著名的 ModeX显示模式，估计现在没几个人听过了吧，直接写显卡端口，N多trick才能初始化成功。&lt;/li&gt;
+&lt;li&gt;直接访问显存，记得当年有个优化是，((char*)0xa0000L)[x + (y &amp;lt;&amp;lt; 8) + (y &amp;lt;&amp;lt; 6)]=c，把y两次左移相加代替y * 320。&lt;/li&gt;
+&lt;li&gt;用调色板绘图，256色的调色板，建立若干索引表，来快速索引两个颜色混色的结果。&lt;/li&gt;
+&lt;li&gt;保护模式编程，自己初始化GDT和LDT，后来找到 dos4gw，牛逼的 watcom c++。&lt;/li&gt;
+&lt;li&gt;自己实现线程，编程8254时钟控制器，给CPU的IRQ0发中断，来调度不同最多32个任务，到时间靠一条IRET指令实现切换。&lt;/li&gt;
+&lt;li&gt;自己控制声卡，通过220端口控制声卡（估计也没几个人用过吧），再用DMA传送音频，实现声音播放。&lt;/li&gt;
+&lt;li&gt;自己实现混音，同时播放多个音源时，需要重采样成声卡格式，并且每次DMA中断时混音后给声卡。&lt;/li&gt;
+&lt;li&gt;自己播放音乐，利用声卡338端口的 FM Synth合成器来播放MIDI音乐里面不同音轨的乐器音符，并用之前实现的线程系统，在后台线程运行。&lt;/li&gt;
+&lt;li&gt;大量汇编代码，图形拷贝，图块缩放，RLE，显卡控制，多边形填充，键盘中断接管。&lt;/li&gt;
+&lt;li&gt;自己绘制字体，HZK16，估计听过的人也没几个了。&lt;/li&gt;
+&lt;li&gt;自己读取图片，GIF，PCX, BMP。&lt;/li&gt;
+&lt;li&gt;自己播放视频，自己实现解码播放 animator, 3ds输出的 FLC视频格式的视频。&lt;/li&gt;
+&lt;li&gt;自己实现脚本，没有LUA，没有PYTHON，但是你需要给你的游戏实现脚本来描述一些简单的剧情，没见过其他游戏是怎么做的，没有任何参考代码的情况下，意识到开发游戏需要靠脚本来提高效率，然后自己实现一套脚本系统。&lt;/li&gt;
+&lt;li&gt;凭空实现游戏，从来没见过任何一款游戏代码的情况下，自己想想状态机应该怎么写，游戏对象应该怎么同时移动，图像前后遮挡该怎么做，游戏各种逻辑该如何写。&lt;/li&gt;
+&lt;li&gt;学习美术设计，虽然没有美术功底，但得熟练应用当时常用的animator，3ds，等软件，自己制作一些简单的界面和角色，自己能对其他图片进行二次加工，画像素图，合并调色板。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>程序高手的境界</title>
+      <link>https://skywind3000.com/blog/archives/1188/</link>
+      <pubDate>Mon, 06 Apr 2015 15:08:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1188/</guid>
+      <description>&lt;p&gt;程序员也有三六九等：&lt;/p&gt;
+
+&lt;p&gt;初等程序员靠知识来挣钱，会别人会的东西，喜欢折腾架构和框架，以掌握更多新潮东西而沾沾自喜，以模仿各种奇技淫巧重新实现一遍而四处炫耀，常见台词：“为啥还在用png存图片？为啥不用webp这种高压缩比的格式？”，“我们使用 Erlang的高并发特性来实现同时支持5万人的效果”，“我们使用RTMFP来降低流量成本，又使用H265来给用户提供更高品质的视频画质”，这些人能够迅速的学会各种项目需要的架构套件，以自己的生产力来挣钱。&lt;/p&gt;
+
+&lt;p&gt;高等程序员靠智慧挣钱，会别人不会的东西，上能抉择技术方向，下能解决性能瓶颈；讨论方案时，腾讯怎么做的，阿里怎么做的，我们该怎么做，如数家珍；写完代码后，初读让人赏心悦目，再读让人恍然大悟，三读让人心悦诚服。常见台词：“webp压缩比不高，我改了一版新webp，用H265帧内预测来保存RGB，用lzma2来保存alpha比webp好多了”，“erlang大家不熟悉，我做了一个库，让大家可以象写erl
+ang一样来写C++，照顾大家开发习惯，又可以象erlang一样写多线程”。“Micheal Abrash这几行代码还有很大优化空间，其实性能还可以更好！”她们都是以解决别人不能解决的问题来挣钱。&lt;/p&gt;
+
+&lt;p&gt;上等程序员靠创新来挣钱，能促进行业的发展，在这个充满咨询的年代，学习大家都掌握的东西只是一个基本过程，没什么值得称道的，当你baidu上找不到方案，google里没有参考，国内外没有任何人能给你启示的时候，任然能够充满创造的分析问题，抽象问题，并解决问题。找到别人完全没有走过的路，创造前人从来没有创造过的东西，这是他们的价值所在。他们的常见台词是：“别烦我！”，“忙着呢！”，“谷歌搜呀，这都问我？
+”，上等程序员是国宝，他们的时间不应该浪费在无意义的事情上。&lt;/p&gt;
+
+&lt;p&gt;即便做到上面几点，在神级程序员眼里，也只不过如此罢了。真正的神级程序员，不靠知识和智慧挣钱，更不靠创新来挣钱，而是靠意志来挣钱，十八般语言门门精通，上能架构操作系统，下可开发嵌入芯片；成功项目无数份，胸中代码千万行！不果这些也只是基本功而已，牛逼的神级程序员，左手抱四十八斤人体工学键盘，右手提二百斤纯铁鼠标，竞争对手哪怕有千军万马，也近不得他办公桌前半步！三十六小时连续编码依旧气定神闲，体力耐力无
+人能及。上市公司首席科学家，创新项目的领导者，在他们看来，也只是尘土而已，不出三回合，毕斩其首级于电脑前。他们常见的台词是：“杀！”，“弄死你！”，高手们总是睥睨天下而又冷言少语。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[转载] 《论语》魔兽版</title>
+      <link>https://skywind3000.com/blog/archives/705/</link>
+      <pubDate>Wed, 20 Apr 2011 08:14:44 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/705/</guid>
+      <description>&lt;p&gt;曾子曰：吾日三省吾身。&lt;br /&gt;
+曾子墨说：我一天要检查三次装备、药水和道具&lt;/p&gt;
+
+&lt;p&gt;曾子曰：君子思不出其位。&lt;br /&gt;
+曾子墨说：牧师专心加血，不要乱跑。&lt;/p&gt;
+
+&lt;p&gt;子曰：父母在，不远游。游必有方。&lt;br /&gt;
+孔子说：奶妈奶爸在后面，战士不要跑太远，即使要走也是带着盾牌走。&lt;/p&gt;
+
+&lt;p&gt;子曰：以约失之者，鲜矣。&lt;br /&gt;
+孔子说：因为公会活动而下副本跑掉，听着都新鲜。&lt;/p&gt;
+
+&lt;p&gt;子曰：德不孤，必有邻。&lt;br /&gt;
+孔子说：德鲁依单干不好，必须有同伴。&lt;/p&gt;
+
+&lt;p&gt;子曰：吾未见刚者。&lt;br /&gt;
+孔子说：我连一件甲板都没有。&lt;/p&gt;
+
+&lt;p&gt;子曰：兴于诗，立于礼。成于乐。&lt;br /&gt;
+孔子说：联盟的优点在于有爱唱诗的牧师英雄和彬彬有礼的骑士，大功告成自然众人高兴了。&lt;/p&gt;
+
+&lt;p&gt;子曰：吾自卫反鲁，然后乐正。&lt;br /&gt;
+孔子说：有个德鲁依在野外偷袭我，我快乐的原因是因为我打跑了他。&lt;/p&gt;
+
+&lt;p&gt;子曰：吾未见好德如好色者也。&lt;br /&gt;
+孔子说：我还从来没见过像色狼一样喜欢德鲁伊的人。&lt;/p&gt;
+
+&lt;p&gt;子曰：后生可畏，焉知来者之不如今也？四十、五十而无闻焉，斯亦不足畏也已。&lt;br /&gt;
+子曰：新来的玩家似乎很牛b，你怎么知道他不是用钱买的？有的战士四五十级还不会嘲讽，下副本根本不鸟他。&lt;/p&gt;
+
+&lt;p&gt;子曰：不患人之不己知，患其不能也。&lt;br /&gt;
+孔子说：我不怕你看我的装备，就怕你近不了身。&lt;/p&gt;
+
+&lt;p&gt;子曰：由！知德者鲜矣。&lt;br /&gt;
+孔子说：哟，知道怎么善用德鲁依很少。&lt;/p&gt;
+
+&lt;p&gt;子曰：工欲善其事，必先利其器。&lt;br /&gt;
+孔子说：你想要去燃烧，还不快去找把像样的武器。&lt;/p&gt;
+
+&lt;p&gt;子曰：性相近也，习相远也。&lt;br /&gt;
+孔子说：职业相同，天赋配点会相差很远。&lt;/p&gt;
+
+&lt;p&gt;子曰：唯上知与下愚不移。&lt;br /&gt;
+孔子说：只要超级高手和初级菜鸟，pk的时候才不怎么动。&lt;/p&gt;
+
+&lt;p&gt;子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？”&lt;br /&gt;
+孔子说：玩魔兽要多学习，这还用说么？有部落的朋友来较量武艺，不也是很开心的事么？&lt;/p&gt;
+
+&lt;p&gt;子曰：“吾十有五而志于学，三十而立，四十而不惑，五十而知天命，六十而耳顺，七十而从心所欲不逾矩。”&lt;br /&gt;
+孔子说：我15级了还想着继续学习，30级开始出去闯，40级可还是什么都没捞到，50级才学会复活术，60级等了大半年，70级终于可以随心所欲去燃烧了。&lt;/p&gt;
+
+&lt;p&gt;子曰：“攻乎异端，斯害也已。”&lt;br /&gt;
+孔子说：副本里面乱引怪，这会害了自己的。&lt;/p&gt;
+
+&lt;p&gt;孔子谓季氏，“八佾舞于庭，是可忍，孰不可忍也！”&lt;br /&gt;
+孔子对季氏 “对方八个60级都跑到你们新手区杀人了，这都可以忍受，还有什么不能忍受呢”&lt;/p&gt;
+
+&lt;p&gt;子曰：“苟志于仁矣，无恶也。”&lt;br /&gt;
+孔子说：喜欢外形美观的玩家一般喜欢联盟，不喜欢部落&lt;/p&gt;
+
+&lt;p&gt;子曰：“唯仁者能好人，能恶人。”&lt;br /&gt;
+孔子说：只有追求游戏技术的高手，才既用联盟，又用部落&lt;/p&gt;
+
+&lt;p&gt;子曰：“朝闻道，夕死可矣。”&lt;br /&gt;
+孔子说：“想45分钟dk就要知道路，迟了人质就要死了”&lt;/p&gt;
+
+&lt;p&gt;子曰：“德之不修，学之不讲，闻义不能徙，不善不能改，是吾忧也。”&lt;br /&gt;
+孔子说：德鲁依肉搏不强，魔法一般，看到有好的野兵不能做宠物，玩了这么久又不能换职业，我真郁闷啊&lt;/p&gt;
+
+&lt;p&gt;子曰：“回也非助我者也，于吾言无所不说。”&lt;br /&gt;
+老师说：被别人逼着无敌加回城，其实我一点也不爽。&lt;/p&gt;
+
+&lt;p&gt;季路问事鬼神。子曰：“未能事人，焉能事鬼？”曰：“敢问死。”曰：“未知生，焉知死？”&lt;br /&gt;
+季路来问怎么玩鬼族。老师说：“人族都没玩好玩什么鬼？”季路又问：“怎么打败对方？”老师说：“怎么保命都不知道，学什么打败别人？”&lt;/p&gt;
+
+&lt;p&gt;子曰: 二三子以我为隐乎 吾无隐乎尔&lt;br /&gt;
+孔子说: 你们以为我要隐身么，对付你们两三个菜鸟还用隐身？&lt;/p&gt;
+
+&lt;p&gt;子曰：邦有道，危言危行。&lt;br /&gt;
+孔子说：下副本有规则，不要刷屏，小心行动&lt;/p&gt;
+
+&lt;p&gt;子在川上，曰：“逝者如斯夫！不舍昼夜。&lt;br /&gt;
+孔子边上厕所边说：时间过得好快，排队排了一天一夜还进不去&lt;/p&gt;
+
+&lt;p&gt;子曰：朽木不可雕也。&lt;br /&gt;
+孔子说：拿着这个烂盾牌还想做MT？&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>断点-C语言</title>
+      <link>https://skywind3000.com/blog/archives/199/</link>
+      <pubDate>Sat, 09 Apr 2011 21:02:20 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/199/</guid>
+      <description>&lt;p&gt;看着那密密麻麻的反汇编，&lt;/p&gt;
+
+&lt;p&gt;连眼睛红了都没有发现，&lt;/p&gt;
+
+&lt;p&gt;听到你说错误很难重现，&lt;/p&gt;
+
+&lt;p&gt;人数还一点一点再往下减；&lt;/p&gt;
+
+&lt;p&gt;我转过我的脸，&lt;/p&gt;
+
+&lt;p&gt;不和你争辩，&lt;/p&gt;
+
+&lt;p&gt;未检测边界肯定，&lt;/p&gt;
+
+&lt;p&gt;非常的危险；&lt;/p&gt;
+
+&lt;p&gt;发誓从今天，&lt;/p&gt;
+
+&lt;p&gt;不再用 C语言，&lt;/p&gt;
+
+&lt;p&gt;我真想改用脚本重构好几遍！&lt;/p&gt;
+
+&lt;p&gt;我点上一根烟，&lt;/p&gt;
+
+&lt;p&gt;在这个需求善变的年代，&lt;/p&gt;
+
+&lt;p&gt;再好的程序员也不能幸免；&lt;/p&gt;
+
+&lt;p&gt;打开的源文件，&lt;/p&gt;
+
+&lt;p&gt;设满很多断点，&lt;/p&gt;
+
+&lt;p&gt;只想在睡前让程序能够，&lt;/p&gt;
+
+&lt;p&gt;撑到明天。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>欧洲旅游-2010</title>
+      <link>https://skywind3000.com/blog/archives/699/</link>
+      <pubDate>Fri, 25 Jun 2010 07:30:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/699/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb5.jpg&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;佛罗伦萨&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image004_thumb3.jpg&#34; alt=&#34;clip_image004&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;琉森&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image006_thumb2.jpg&#34; alt=&#34;clip_image006&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;阿尔卑斯山&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image008_thumb2.jpg&#34; alt=&#34;clip_image008&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;梵蒂冈&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image010_thumb2.jpg&#34; alt=&#34;clip_image010&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;威尼斯&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>伟大的埃及</title>
+      <link>https://skywind3000.com/blog/archives/649/</link>
+      <pubDate>Mon, 07 Sep 2009 06:44:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/649/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb20.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;地标&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb21.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;亚历山大&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb22.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;红海酒店&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb23.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;酒店&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb24.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;世界上最大的清真寺&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb25.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;某著名教堂&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>2009 旧金山</title>
+      <link>https://skywind3000.com/blog/archives/672/</link>
+      <pubDate>Fri, 04 Sep 2009 12:57:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/672/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb31.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;地标&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb32.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;街区&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb33.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;地标&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb34.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;街道&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb35.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;街道&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[转载] 二十六史 - 毛太祖本纪</title>
+      <link>https://skywind3000.com/blog/archives/626/</link>
+      <pubDate>Tue, 19 Feb 2008 09:25:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/626/</guid>
+      <description>&lt;p&gt;本朝太祖毛姓讳泽东字润之，湖南湘潭人氏。其寿诞之日为西夷之圣诞日。帝少有大志。未冠之时即作咏蛙诗，以述其志。及少壮，游学长沙，师从杨昌济，后入京，供职于京师太学藏书阁，问学于鸿儒陈仲甫、胡适之、李守常等。适之昔日留学于美夷，恃才傲物，因帝未忝科名，适之甚轻之。适之门生傅斯年、罗家纶之辈亦甚轻帝。后帝一统天下，欲灭群儒，盖因此三人故耳。帝受仲甫命，返湘结党，得仲甫提携，得以拜见于前朝太祖，官侍读学士
+。前朝太祖崩，时，前朝武厉帝为大司马大将军，阴结其党，欲灭帝党人。帝谏以兵击之，仲甫不许，武厉得以蓄积羽翼，民朝十六年武厉于松沪，前朝摄政王汪公于江夏，大杀帝党人。八月帝与诸党人会于汉口议事，帝曰：枪杆子里面出政权！众皆异之，后受命返湘，策反南军卢尔德铭部，九月九日兴兵起事，围长沙，不克，败走江西。军次三弯，帝重编余部，至队官皆有帝之党人监军。帝据井岗，与朱武胜公所部合兵，屡败官军，威名远扬，号朱
+毛军。武厉怒，令江西巡府鲁涤平统兵十万进剿，帝诱敌深入，引兵击之，涤平败，帝擒官军先锋总兵张辉瓒。武厉闻信，令兵部尚书何应钦统兵二十万进剿，帝大败之。武厉益恐，统兵三十万再战，又败于帝。一载余，武厉又率五十万劲旅进剿。时帝因党争，被削兵权，虚职赋闲。官军犯境红朝震恐，朱武公与周文正公掌兵权，问计于帝，帝授奇计再破官军。武厉败绩，再整旗鼓，以西夷部番将参赞军机，以百万之众犯境。时自俄狄归国之儒生博古
+辈摄政，番将李德与周文正公参赞军机，博古一儒生耳，挟俄狄酋斯大林之威，夺帝兵权，唯俄狄之命是从，事无巨细，皆听命于李德。李德辈纸上谈兵，屡战屡败。引兵西走，兵渡湘水，不足三万，众将皆恶李德，兵次遵义，诸将议政，帝之威众人咸服，周文正、朱武胜公皆附之，夺博古、李德兵权，帝得以再统雄兵。帝帅余部，转战滇、黔、川诸省。过雪山，与张国焘部合兵，国焘忌帝之官居其右，欲害帝，大将军叶剑英闻信，间道驰告帝，帝得
+脱。国焘部将陈昌浩欲引兵击帝，大将军徐向前拍案而起，国焘、昌浩乃罢。民朝二十四年入陕，据陕北以抗官军。官军进剿屡败于帝。帝令徐向前率所部西征，败于西北回军，丧师数万，向前等仅以身脱。丙子双十二，帝策反满洲王张公、陕西镇守使杨公兵谏，囚武厉，帝使周文正公谒武厉，晓以大义，武厉罢兵。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>春运生存手册</title>
+      <link>https://skywind3000.com/blog/archives/202/</link>
+      <pubDate>Thu, 10 Jan 2008 04:05:01 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/202/</guid>
+      <description>&lt;p&gt;在书写正文之前，笔者将使用推理手法，预测春运的规模、环境和潜在危机，并给出自己的分析结果，在此判断的基础上，以春运的各个阶段为分界线书写手册正文。再次说明笔者并非专业人士，文中的各种结论和推导过程仅供参考。&lt;/p&gt;
+
+&lt;p&gt;必要储备与使用方法&lt;/p&gt;
+
+&lt;p&gt;1. 水
+没有食物，一个人可以生存1-2个月；但是没有水，生命最多只能支撑10天。一个成人在正常情况下日消耗2-3升水，限量供应下一天至少需要500毫升水。（大瓶可乐为1.25升，冰红茶为500毫升，缺乏量具时可代替使用。）水可以在春运开始前，确定等车地点所处环境即将缺水时储存。届时把家中所有可以存水的大型器皿全部盛满水（黑色、很结实的塑料袋也可以存水，注意把袋口封好，避光储存），并采取定量供应，有机会就外出采水。&lt;/p&gt;
+
+&lt;p&gt;2. 食物&lt;/p&gt;
+
+&lt;p&gt;所有食物都应在阴凉、干燥、通风处保存，贴上标签、写明储存日期和保质期，先存的先用，并在春运时实行定量配给，以吃到半饱为准（不会饿死的）。因为笔者无法预测春运会持续多长时间，所以请各位自行决定储备的种类和数量。&lt;/p&gt;
+
+&lt;p&gt;盐：盐份为人体所必需，按年纪、身体状况、气温、和劳动强度不同，一个人平均每天消耗10-15克盐，储备时应选择加碘盐。注意，不能干吞盐粒，那会损伤肾脏，应用开水溶解后饮用或做进菜里（如果那时候你还能弄到新鲜食物）。&lt;/p&gt;
+
+&lt;p&gt;白糖、醋、烧烤用的各种调料粉：
+白糖为身体提供热量，水一冲就能喝，也是不错的调味品；醋可以为储备的干肉之类食物增加味道（吃起来别有风味），也可以用来消毒和预防疾病；烧烤用的调味料中含盐份和各种香料，可以撒在食物上或者做汤，储备它的目的也就是让春运时饭菜的口味看起来并不那么糟糕。&lt;/p&gt;
+
+&lt;p&gt;芥末：芥末有很好的消毒杀菌止泻作用，买牙膏状的芥末需冷藏，推荐芥末粉。&lt;/p&gt;
+
+&lt;p&gt;干肉、鱼干、虾干或虾皮：
+干肉类首推咸牛肉和牛肉干，它们营养丰富、口味一流、保存时间长、可在天冷时提供大量热量；鱼干类首推海鱼干，它们种类繁多、价格便宜、容易保存；虾干或虾皮中含有丰富的营养及矿物质，可在做汤时加入。&lt;/p&gt;
+
+&lt;p&gt;罐头食品：种类繁多，口味不错，保存时间非常长，但是价格昂贵。如有多余的钱，那可以储备一些。&lt;/p&gt;
+
+&lt;p&gt;维生素片：犹豫了很久，还是把维生素片列为食物一类，因为在春运时很难弄到新鲜食物，而人体在紧张状态下维生素消耗得非常快，因此要把它当作食物那样储存它。不悔推荐的是21金维他（安利的太贵了），80多元6瓶，每瓶可以供一个成人一月的消耗量，细算下来还是比较便宜的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>年度旅游-2007（日本）</title>
+      <link>https://skywind3000.com/blog/archives/450/</link>
+      <pubDate>Tue, 04 Dec 2007 16:21:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/450/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002.jpg&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;天守阁路上&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image004.jpg&#34; alt=&#34;clip_image004&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;天守阁：丰臣秀吉取得天下后的城堡&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image006.jpg&#34; alt=&#34;clip_image006&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;古代日本部队&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image008.jpg&#34; alt=&#34;clip_image008&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;大板商业区&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image010.jpg&#34; alt=&#34;clip_image010&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;大富翁头像&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>比尔·云风传奇</title>
+      <link>https://skywind3000.com/blog/archives/204/</link>
+      <pubDate>Tue, 11 Sep 2007 21:06:09 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/204/</guid>
+      <description>&lt;p&gt;1. 比尔·云风刚出生便会说话，邻居描述，刚落地时他就向东南方向走了七步，每走一步地上就出现一个“@”符号，只见他七步之后，伸左手指天，伸右手指地，开口说道：“2D/3D唯我独尊”。。。。&lt;/p&gt;
+
+&lt;p&gt;2. 《徐庶走马荐比尔，刘玄德三顾茅庐》：徐庶：“主公不必难过，五步之内必有芳草，远来的和尚，未必念得了真经，蜀国如要上市，庶愿保举一人”，刘备：“知道是你好朋友诸葛孔明，这人人品不行，我面试过。他要我联伊
+抗美，与基地组织共出奇兵占领NASDAQ机房，奉股市而令不臣，控制所有上市公司。靠！备乃仁义之团队，向来讲求信誉，强调共赢，怎忍心做此等伤天害理之事”，徐庶：“是是是，主公是讲求信誉，力主双赢的仁义团队，但是我要推荐的另有其人”， “哦，应届生？现在何处？开口多少？”，“这人复姓比尔，双名云风，家住荆州长沙郡，现在幽州雪碧九游戏当差。”，备：“哦，没听过”，庶：“这位好汉十八般语言门门精通，上能构
+架操作系统；下能设计嵌入芯片！”，备：“有这种怪人？”，庶：“不当如此，比尔·云风左手提一百二十斤混铁鼠标，右手抱三百五十斤工学键盘，竞争对手虽有千军万马，近不得他办公桌前一步！三十六小时持续编码依旧气定神闲，体力耐力无人能及。”，刘备：“赞！是块加班的好料，想起来了，水镜先生也向我推荐过，说他‘手握设计无数种，胸中代码千万行’，备若得此一人，何患《汉室》30万在线！他在雪碧九拿多少？”徐庶：“X
+XX”，刘备：“大伯如何？”徐庶：“至少再多500元”，刘备：“恩，只要他证明他的能力，再多600都不在乎，我们向来尊重人才，QQ，MSN，MAIL统统给我”，徐庶：“听说他最近ADSL欠费，手机停机，就连email都发不出去，主公要见，恐怕只有亲自前往”，刘备：“如此说来，备当前往看看”。。。。 （未完，待续）&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[翻译] MUD玩家分类理论</title>
+      <link>https://skywind3000.com/blog/archives/171/</link>
+      <pubDate>Tue, 01 May 2007 20:18:38 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/171/</guid>
+      <description>&lt;p&gt;游戏设计需要基础性理论，Richard A. Bartle，第一款MUD（被称为MUD1）的开发者，该文章起于1990年，经作者多次整理而成。在游戏设计“难有统一理论”的情况下，该文论点受到了决大多数开发者的一致接受和好评。可见基础性理论不但有利于我们的分析与设计，更重要的是大家能在同一层面上用同样的术语进行更有效的沟通：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/resource/hcdsc.htm&#34;&gt;http://www.skywind.me/resource/hcdsc.htm&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;最近在阅读 XBOX360 Live方面的文档，作为其中提及的一个重要概念“Bartle&amp;rsquo;s player type”的论文，似乎影响了整个第四代Live的设计，恰巧最近我也在整理一些Live相关资料，就顺带将这个基础理论进行了翻译。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>现实主义题材需要拯救</title>
+      <link>https://skywind3000.com/blog/archives/457/</link>
+      <pubDate>Fri, 02 Mar 2007 07:34:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/457/</guid>
+      <description>&lt;p&gt;1. 参考游戏 vs 参考生活：&lt;/p&gt;
+
+&lt;p&gt;以前人做游戏，参考的是生活；现在人做游戏，参考的是游戏。前者作出来的游戏属于创新，后者作出来的游戏最多属于“综合+改良”，这还是比较好的了，最差的情况还有抄袭的嫌疑，感觉作者设计出来的内容宏大而没有主题，似乎只是个“游戏大杂烩”是个把自己记忆中好玩的游戏全部杂凑在一起的“六十四合一”。&lt;/p&gt;
+
+&lt;p&gt;艺术的本源来自于生活，不管电影、文学、还是游戏，这点在我玩ndsl游戏时候特别有感触，最近国外出了个很火的游戏InkLink&amp;ndash;画图猜词，就有点象我们年会上的游戏，一个人描述一个人猜成语，只不过该游戏用画画的方式进行，界面就像一个带聊天框的画板，万家轮流在上面用图画描述系统给他的单词，然后所有玩家根据他正在画的内容猜，越快猜出来的得分越高。这个游戏不大，但是的确让人眼前一亮的感觉。&lt;/p&gt;
+
+&lt;p&gt;2. 电影选材 vs 游戏选材：&lt;/p&gt;
+
+&lt;p&gt;前段时间王朔跳出来还说：“只写自己经历过的事情”，刘欢在回答自己为什么很长时间不出专辑以及评价现在流行音乐不成熟的时候说：“成熟的行业，绝不做前人做过的事情”。参考电影和音乐我们可以简单的画出一个发展脉络：&lt;/p&gt;
+
+&lt;p&gt;创新阶段 -&amp;gt; 改良阶段（商业化阶段） -&amp;gt; 抄袭阶段（泛滥阶段） -&amp;gt; 枯竭阶段&lt;/p&gt;
+
+&lt;p&gt;目前游戏选材是第二到第三阶段的过度，而电影选材早在95年就出现了选材枯竭现象，但是经历了10年的沉淀与反思，相信下一个电影创作高峰不会太远，而游戏也会象电影一样，过几年将进入一个题材休眠期。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>文莱旅游-SINPLAY</title>
+      <link>https://skywind3000.com/blog/archives/610/</link>
+      <pubDate>Wed, 15 Mar 2006 07:33:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/610/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image001_thumb2.jpg&#34; alt=&#34;clip_image001&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;我们是红旗下成长的少年&amp;mdash;-愿乘长风，破巨浪，帮助他乡人民早日得解放。。。。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb2.jpg&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;苏丹王宫&amp;ndash;世界上最大的屋子（占地两公顷多的一栋房屋）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image003_thumb2.jpg&#34; alt=&#34;clip_image003&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;王徽&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image004_thumb2.jpg&#34; alt=&#34;clip_image004&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;苏丹纪念官&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>游戏高手的境界</title>
+      <link>https://skywind3000.com/blog/archives/458/</link>
+      <pubDate>Sun, 12 Mar 2006 08:31:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/458/</guid>
+      <description>&lt;p&gt;游戏高手也分三流九等，随着游戏软件已经越来越复杂，而人和人之间的竞技性也越来越白热化。&lt;/p&gt;
+
+&lt;p&gt;我是一个有十七年游戏经验的老玩家了，从世嘉八位机到现在的网游，虽然不敢说有什么高深的见地，但，在大多数游戏中，我所碰到的对手，都经不起我两三个回合的摧残。深刻相信“游戏，是人的本性”的我不太喜欢打一些慢节奏的游戏，觉得只有格斗和即时战略才能体现竞争的残酷，成王败寇的铁则跟现实没什么两样。而我说到我最纯熟的当数格斗和星际，星际成都第二，格斗成都第三的都死在我的键盘之下，这几年打这两个游戏的玩家少了，
+所以我旦逢一遇到对手，听说“某某某格斗打的还可以，谁谁谁星际还挺行”我就会异常激动，不远千里请他过来过一招半式，我要声东击西，指南打北，用变化无穷的战术和他比个高下，但是一次次的我失望了，看着对手低头离去，我仰头看着他的背影，心中一片胜利过后的空虚，一个人提着键盘站在电脑旁，茫然四顾，试问天下之大，尽难逢我的对手。&lt;/p&gt;
+
+&lt;p&gt;星际里我凭借无穷的战术，运筹帷幄决胜千里；格斗中我拳打北山猛虎，脚踢南海威龙。我有座右铭：“凭你先选人物，再凭你让我选”。一般高手的能在一个游戏上出类拔萃，但除此之外都平平无奇；顶极高手在许多游戏中都能至人于死地，虽然，在我看来他们都根本达不到所谓达人的境界。真正的高手，凭借的不是再某款游戏上精湛技巧，而是凭借自己惊人的学习能力和触类旁通的天性。一个游戏，我可以输给你，但是我保证，数盘之后你再没有
+可能赢我。&lt;/p&gt;
+
+&lt;p&gt;星际四川省第一的人曾经说过“打星际最重要的控制节奏”，就是说丝毫不能慌乱，该怎么着就怎么着，我觉得每个游戏都是这个道理。三流高手比技巧，二流高手比反应，一流高手比心性。不管局势如何，哪怕我只剩最后几个兵，只有最后一丝血，心里面一定不能出乱子，一定要沉住性子。首先要顺应自身的规律，其次要顺应游戏的规律，最后做到以自身的规律配合游戏的规律，人的左右手和眼睛随着游戏的变化而变化，但是人的心不能变只有做到
+心如止水，才能以不变应万变。打游戏是这个道理，做人做事同样是这个道理。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>文莱沙巴旅游照片</title>
+      <link>https://skywind3000.com/blog/archives/501/</link>
+      <pubDate>Sun, 12 Mar 2006 07:35:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/501/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image001_thumb1.jpg&#34; alt=&#34;clip_image001&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;项目团队&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb1.jpg&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;系统结构图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image003_thumb1.jpg&#34; alt=&#34;clip_image003&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The Empire Hotel – 1&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image004_thumb1.jpg&#34; alt=&#34;clip_image004&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The Empire Hotel - 2&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image005_thumb1.jpg&#34; alt=&#34;clip_image005&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;文莱25世苏丹修的清真寺&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>两次结对开发尝试</title>
+      <link>https://skywind3000.com/blog/archives/456/</link>
+      <pubDate>Fri, 20 Jan 2006 07:46:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/456/</guid>
+      <description>&lt;p&gt;前段时间，项目三个开发者主要忙于确定一些具体技术，工作效率很低，两个同事一个负责服务器进程间通信模块的制作，一个负责数据库的线程池访问。这些知识他们都有，只是不够熟练，这些地方都是很容易耽误时间的，一位同事调整一个线程池，三天一下就投进去了，有时就是漫无目的的查资料，我当时看着干着急。&lt;/p&gt;
+
+&lt;p&gt;那天晚上回家，突然想起来，唉，干脆试试结对开发怎么样，连夜总结了一下问题和要点，于是连续几天的XP就开始了，起得了一些好的效果。回顾一下自己一直以来认同XP却异或结对开发，主要有几个阶段：&lt;/p&gt;
+
+&lt;p&gt;好奇阶段：早在一年前的事情了，一样和大家好奇的查阅资料，抽时间的认真尝试了几回，自己就先疑惑起来，同时通过查阅资料我也找到了很多负面报道，比如国外已经跳出人来说结对开发有问题，又比如中科院有家研究所，花了半年测试XP，得出结对开发不行的结论，七八条专家理由，自已也怀疑了。&lt;/p&gt;
+
+&lt;p&gt;排斥阶段：觉得结对开发有打压开发者的效果，首先是一个人写一个人看，写的那个人再高明难免犯错看的人抓住口实后和你争论，你一边写代码一边想问题，自然言语落下风，轻者散失声誉，重者没了自信。“平等、妥协”难以单方面强求，所以当时认为开发者应该适当保持距离的同时做一定的重复劳动满足自我价值实现。觉得挨得那么近结对开发，似乎对个人成就感是种磨灭，因为剥夺了代码的个人所有权，大家觉得价值得不到体现了，所以当时
+的心态比较极端。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>治安问题闲扯</title>
+      <link>https://skywind3000.com/blog/archives/459/</link>
+      <pubDate>Thu, 05 Jan 2006 08:56:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/459/</guid>
+      <description>&lt;p&gt;前段时间关于个人所得税改革，升高了低收入的收税起征点，有专家反驳，说：“剥夺了大部分人上税的合法权利” 有人骂专家，说“再收税，恐怕就出陈胜吴广了”，我在广州这点感触深啊，公司东边是飞车党，西边是砍手党，北面是背包党，南面是踩脚党。&lt;/p&gt;
+
+&lt;p&gt;在广州，2/3的上班女性都有被抢的经历：砍手党就是抢你东西，你不给就砍你的手；踩脚党是故意把脚放在你面前，你只要踩了他，他就找茬。治安问题，珠江三角已经提前迈了一步了，从前几年的流动人口为主的乱，发展到现在的地下组织形式为主的乱了。&lt;/p&gt;
+
+&lt;p&gt;何新：“我曾经研究中国秦汉以下两千年的中国历史&amp;hellip;结论是，除了外族入侵，基本上中国发生天下大乱的原因只有一个，就是土地兼并导致大量农民失去土地，无业可就，成为流民，从而揭竿而起。 现在人们似乎忘记了历史。目前中国的社会失业问题严重到已接近可怕的程度。无数青年人失去了机会，铤而走险。&amp;hellip; ”&lt;/p&gt;
+
+&lt;p&gt;前两久听评书，曾国藩处理天津教案，说道黑龙会蛊惑群众烧教堂，太象了，和现在一些形式。&lt;br /&gt;
+参考天津教案的情况，下面是关系图：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;农民失去土地 + 政治问题 -&amp;gt; 无业人口 -(涌入城市)-&amp;gt; 黑社会(黑龙会) -&amp;gt; 团结底层人民  
+无业游民增加 + 知识分子失业 -&amp;gt; 城市边缘人口增加 -&amp;gt; 城市边缘文化成为主流  
+黑龙会 + 官商勾结 -&amp;gt; 产生老百姓自己解决“公正”的“地下公堂” -&amp;gt; 政府信誉下降  
+地下公堂 + 突发事件 -(政府处理不当)-&amp;gt; 法国公使桥头开枪 -&amp;gt; 火烧教堂 -&amp;gt; 乱
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;原来全国地痞流氓都很均匀，但现在他们都来南方混了，虽然说他们目前这样是不会有出息的，后期拥有群众基础和政治组织能力会获胜，虽然这些人多是一群无赖而已，但怕就怕读书人和无赖呆一起。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于“面向显示器编程”</title>
+      <link>https://skywind3000.com/blog/archives/114/</link>
+      <pubDate>Thu, 05 Jan 2006 04:05:03 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/114/</guid>
+      <description>&lt;p&gt;最近吃饭的时候听公司两位同事聊起“面向显示器编程”（screen oriented programming）。sop这个东西我虽偶有所闻，却未有什么了解。这两位同事跟我说AOP其实是退化了的SOP，这个说法让我觉得SOP会有点意思。 个人觉得，OOP完成了对数据的重用，AOP完成了对算发的重用，而SOP则完成了对显示器的重用。&lt;/p&gt;
+
+&lt;p&gt;基于对SOP的应用，我们只需要在电脑前多加一把凳子，就可以通过工作空间上的复用，和项目时间上的压缩，达到了为公司节省资源，提高工作效率的目的。。。。&lt;/p&gt;
+
+&lt;p&gt;Life is :-(&lt;/p&gt;
+
+&lt;p&gt;Life is :-)&lt;/p&gt;
+
+&lt;p&gt;呵呵，哈哈&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>未来三五年游戏研发问题预测</title>
+      <link>https://skywind3000.com/blog/archives/117/</link>
+      <pubDate>Sun, 25 Dec 2005 13:32:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/117/</guid>
+      <description>&lt;p&gt;下面根据以往经验对未来三五年游戏开发问题做一个预测，所论述问题，缺乏严格证明。大家全当看故事，茶余饭后消遣娱乐一下：&lt;/p&gt;
+
+&lt;p&gt;1. 研发瓶颈从技巧演变成为规模，解决复杂度问题将成为国内一流开发者的主要矛盾，而未能进军一流水平的二流开发者将会进一步沦落成软件工厂和外包工作室。&lt;/p&gt;
+
+&lt;p&gt;2. 对于开发游戏，多人视频，新的输入设备，可看不可玩，三年内国内由于该方向知识薄弱，即便国外有大的成就，国内一时也难以效仿。&lt;/p&gt;
+
+&lt;p&gt;3. 日下国内过于注重技巧的世风，在面对突入其来的规模问题，以及国外先进开发工具的双重夹击，会导致诸多游戏项目连续不断的失败，国内将再一次引发游戏开发方法的大讨论，各种为游戏行业量身订制的软件工程及开发理念纷纷出现，目不暇接。&lt;/p&gt;
+
+&lt;p&gt;4. 微软两年内会推出崭新开发平台，为改良DirectX和传统VisualIDE逐渐力不从心的被动，新平台将结合Vista系统优势，也是对1990年MS平台开发战略的再
+一次体现，当时英国记者评论“只有不断降低开发门槛，使未来全世界的开发者都习惯傻瓜编程了，才能有力的压制一切可能形成威胁的力量”这次统一Win/XBOX的编程接口自然不在话下，结合长期捆绑和专利等方面的蚕食，对OpenSource和其他轻量级开发工具实施致命打击。&lt;/p&gt;
+
+&lt;p&gt;5. 数月前微软宣布放弃几年前启动的GAPI的发布转而变出DX10，紧接着又宣布 VS.Net2005 Express的永久免费，现在已暴露出自己越来越大的野心了。三年后，高校合作工程开花结果，等第二，三批微软专家们成为国内研发主力的同时，结合Vista的下一代游戏开发工具的主流化，国内使用DX11/12的从业者必将遭遇类似DOS &amp;gt;Win的门槛面临失业和转变的选择，MS教徒们在2008年末必定会乘虚而入，钻入行业主力研发队伍。&lt;/p&gt;
+
+&lt;p&gt;6. Shockwave等等其他游戏开发工具由于迫于主流平台压力，会进一步在WEB方面发挥自己的优势，WEB平台游戏开发将会再次引起人们重视。&lt;/p&gt;
+
+&lt;p&gt;7. 第一二批开发者离开一线开发阵营，开始反思，一批优秀文化作品将会面世，各种关于游戏开发的故事，程序员文化引发二次回归，成为游戏文化的一个主流。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>庐山旅游</title>
+      <link>https://skywind3000.com/blog/archives/474/</link>
+      <pubDate>Sat, 12 Nov 2005 08:26:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/474/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image001_thumb.jpg&#34; alt=&#34;clip_image001&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;只原生在此山中（庐山小路上）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb.jpg&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;山顶湖&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image003_thumb.jpg&#34; alt=&#34;clip_image003&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;江西&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image004_thumb.jpg&#34; alt=&#34;clip_image004&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;腾王阁&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image005_thumb.jpg&#34; alt=&#34;clip_image005&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;渔舟唱晚，响穷彭蠡之滨（赣江）&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

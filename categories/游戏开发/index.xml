@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>游戏开发 on Skywind Inside</title>
+    <link>https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/</link>
+    <description>Recent content in 游戏开发 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 09 May 2015 15:28:55 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>再谈网游同步技术</title>
+      <link>https://skywind3000.com/blog/archives/1343/</link>
+      <pubDate>Sat, 09 May 2015 15:28:55 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1343/</guid>
+      <description>&lt;p&gt;实时动作游戏在近年来得到迅猛的发展。而游戏同步问题，成为大家继续解决的核心问题之一。早在 2004年，国内游戏开发还处于慢节奏 RPG满天飞的情况下，我就开始实时动作游戏研究，分别在 2005-2006期间写了一系列相关文章，被好多网站转载：&lt;/p&gt;
+
+&lt;p&gt;帧间同步模式：《帧锁定同步算法》（2007）： &lt;a href=&#34;http://www.skywind.me/blog/archives/131&#34;&gt;http://www.skywind.me/blog/archives/131&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;玩法规避模式：《网络游戏同步法则》（2005）： &lt;a href=&#34;http://www.skywind.me/blog/archives/112&#34;&gt;http://www.skywind.me/blog/archives/112&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;预测插值模式：《影子跟随算法》（2007）： &lt;a href=&#34;http://www.skywind.me/blog/archives/1145&#34;&gt;http://www.skywind.me/blog/archives/1145&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;如今十年过去，网上越来越多的人开始讨论游戏同步技术了，然而很多文章往往只针对某种特定的游戏情况，而观点又经常以偏概全。很多人并没有真正开发过实时动作游戏，更别说了解同步技术的前世今生了。转载别人的观点并加上自己理解的人很多，实际动过手的人很少。避免给更多人造成无谓的误导，我今天基于先前的实践和对欧美动作游戏，战网游戏，主机游戏（PSN，XBox
+Live等）网络技术的了解，来对这个问题做一个简单总结：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>游戏服务端架构发展史（下）</title>
+      <link>https://skywind3000.com/blog/archives/1327/</link>
+      <pubDate>Mon, 04 May 2015 01:34:52 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1327/</guid>
+      <description>&lt;p&gt;（占位符）&lt;/p&gt;
+
+&lt;p&gt;《游戏服务端架构发展史》转载请著名出处：&lt;a href=&#34;http://www.skywind.me&#34;&gt;http://www.skywind.me&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/blog/archives/1265&#34;&gt;游戏服务端架构发展史（上）&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/blog/archives/1301&#34;&gt;游戏服务端架构发展史（中）&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/blog/archives/1327&#34;&gt;游戏服务端架构发展史（下）&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>游戏服务端架构发展史（中）</title>
+      <link>https://skywind3000.com/blog/archives/1301/</link>
+      <pubDate>Sun, 26 Apr 2015 08:13:57 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1301/</guid>
+      <description>&lt;p&gt;《游戏服务端发展史》转载请著名出处：&lt;a href=&#34;http://www.skywind.me/blog/archives/1301&#34;&gt;http://www.skywind.me/blog/archives/1301&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;类型4-第三代游戏服务器-2007&#34;&gt;类型4：第三代游戏服务器 2007&lt;/h4&gt;
+
+&lt;p&gt;从魔兽世界开始无缝世界地图已经深入人心，比较以往游戏玩家走个几步还需要切换场景，每次切换就要等待 LOADING个几十秒是一件十分破坏游戏体验的事情。于是对于 2005年以后的大型
+MMORPG来说，无缝地图已成为一个标准配置。比较以往按照地图来切割游戏而言，无缝世界并不存在一块地图上面的人有且只由一台服务器处理了：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb29.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;每台 Node服务器用来管理一块地图区域，由 NodeMaster（NM）来为他们提供总体管理。更高层次的 World则提供大陆级别的管理服务。这里省略若干细节服务器，比如传统数据库前端，登录服务器，日志和监控等，统统用 ADMIN概括。在这样的结构下，玩家从一块区域走向另外一块区域需要简单处理一下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/blog/wp-content/uploads/2015/04/image_thumb30.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>游戏服务端架构发展史（上）</title>
+      <link>https://skywind3000.com/blog/archives/1265/</link>
+      <pubDate>Fri, 24 Apr 2015 12:04:34 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1265/</guid>
+      <description>&lt;p&gt;手游页游和端游，本质上没有区别，区别的是游戏类型：&lt;/p&gt;
+
+&lt;p&gt;《游戏服务端架构发展史》转载请著名出处：&lt;a href=&#34;http://www.skywind.me/blog/archives/1265&#34;&gt;http://www.skywind.me/blog/archives/1265&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;类型1-卡牌-跑酷等弱交互服务端&#34;&gt;类型1：卡牌，跑酷等弱交互服务端&lt;/h4&gt;
+
+&lt;p&gt;卡牌跑酷类因为交互弱，玩家和玩家之间不需要实时面对面PK，打一下对方的离线数据，计算下排行榜，买卖下道具即可，所以实现往往使用简单的 HTTP服务器：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb18.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;登录时可以使用非对称加密（RSA, DH），服务器根据客户端uid，当前时间戳还有服务端私钥，计算哈希得到的加密 key 并发送给客户端。之后双方都用 HTTP通信，并用那个key进行RC4加密。客户端收到key和时间戳后保存在内存，用于之后通信，服务端不需要保存 key，因为每次都可以根据客户端传上来的 uid 和 时间戳 以及服务端自己的私钥计算得到。用模仿 TLS的行为，来保证多次
+HTTP请求间的客户端身份，并通过时间戳保证同一人两次登录密钥不同。&lt;/p&gt;
+
+&lt;p&gt;每局开始时，访问一下，请求一下关卡数据，玩完了又提交一下，验算一下是否合法，获得什么奖励，数据库用单台 MySQL或者 MongoDB即可，后端的 Redis做缓存（可选）。如果要实现通知，那么让客户端定时15秒轮询一下服务器，如果有消息就取下来，如果没消息可以逐步放长轮询时间，比如30秒；如果有消息，就缩短轮询时间到10秒，5秒，即便两人聊天，延迟也能自适应。&lt;/p&gt;
+
+&lt;p&gt;此类服务器用来实现一款三国类策略或者卡牌及酷跑的游戏已经绰绰有余，这类游戏因为逻辑简单，玩家之间交互不强，使用 HTTP来开发的话，开发速度快，调试只需要一个浏览器就可以把逻辑调试清楚了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>你为什么会离开游戏行业？</title>
+      <link>https://skywind3000.com/blog/archives/1259/</link>
+      <pubDate>Sat, 18 Apr 2015 04:59:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1259/</guid>
+      <description>&lt;p&gt;这个题目本来不想讨论，现实生活中我是一个尊重他人的人，而尊重他人最重要的是尊重他人的选择，尊重他人的价值观和梦想。但是身边太多惨痛的教训，让我有种不吐不快的想法，大家偶尔也该停下忙碌的脚步来想想自己要走的路，也是一件很有意义的事情，所以如果言语中我伤害了你的梦想，请你绕道而行：&lt;/p&gt;
+
+&lt;p&gt;下有地雷，玻璃们请小心绕路：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;观点1：开宝箱&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;游戏更像一个项目，不是一个事业，研发个一两年产品上线，是死是活听天由命。游戏产品成功率已经1%了，很多项目是挂了，即便踩中宝箱了，游戏上线，盈利了，根据现在游戏周期，也就能挣一笔。这完全跟开宝箱一样，上线前对结果毫无把握，几年时间投入进去，宝箱一开所有人就阿弥陀佛。&lt;/p&gt;
+
+&lt;p&gt;即便火了，火完以后能保证下一款产品成的概率有多大？以大公司的5%的高成功率来算，一个团队同时成功两款游戏的数学概率是0.25%。即便你团队人员经验丰富，你能把这个概率提到多高？大部分的团队都是在：“加班 - 开宝箱 - 项目重组 - 加班 - 开宝箱” 这样一个死循环中，把自己一年又一年的青春给浪费了，身边太多人，十年前他们在开宝箱，十年后他们还在开宝箱。&lt;/p&gt;
+
+&lt;p&gt;某几个著名页游公司，产品开发一年周期，项目分成10%，听着挺诱人的，但是盈利后首先要偿还研发和推广成本，然后扣完渠道分成后剩下的才是项目组的，所以很多项目组为了控制成本，只会找一两个好的主策主程，主美，下面带着一堆刚入行的小弟，天天加班。时间一道，不能盈利，那么制作人走人，开发团队打散重新分配。&lt;/p&gt;
+
+&lt;p&gt;所以对于大部分普通员工，都是怀揣着一颗暴发户的心，过着猪狗不如的日子，在常年累月的日子里不断的在 加班和项目重组的死循环里折腾。公司呢？公司只要几十个项目成一个就够吃很长时间了。于是常用的管理手段就是造神运动，发车，发现金给老员工，给他们极高的待遇和荣誉，让所有新人都跟打了鸡血一样燃烧着自己的生命向前冲。&lt;/p&gt;
+
+&lt;p&gt;可以参考最近的文章：&lt;a href=&#34;http://youxiputao.com/articles/4716&#34;&gt;【败局】成都：手游第四城的泡沫与坍缩&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;PS，上面所说的概率很多人不相信有那么低，网上的数据到处都是，身边也有例子。比如，渠道每个月要接300+款产品是很正常的，渠道怎么筛选呢？先每个游戏玩五分钟，删除200款，留下100款，然后深度评测一下，再删除50款，剩下50款深度评测一下，给每个员工玩玩，给每个员工的小孩玩玩，如果小孩能玩懂，那证明这游戏还可以推一下，于是留下那么几十款打分ABCD，D基本没机会，C可以试一下，B可以推一推，A的
+话可以多推一下。最后能成的也就那么3-5款，这不是1%么？这不就是开宝箱么？&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>二十年前是怎样开发游戏的？</title>
+      <link>https://skywind3000.com/blog/archives/1250/</link>
+      <pubDate>Fri, 10 Apr 2015 15:50:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1250/</guid>
+      <description>&lt;p&gt;知乎上有人问：“贴吧都是十五六岁就用引擎写游戏的天才，大家怎么看？”，感觉现在做游戏真实一件幸福的事情呀，不尽想起当年开发游戏的各种艰辛。&lt;/p&gt;
+
+&lt;p&gt;现在做游戏很简单，大把代码给你参考，大把框架给你使用，Windows帮你作完了大部分事情。我们那个年纪写游戏时，家里还没有Internet，什么资料都查不到，什么开源引擎都没有，95年左右你要写一个游戏，你起码面临：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;同显卡打交道，显卡著名的 ModeX显示模式，估计现在没几个人听过了吧，直接写显卡端口，N多trick才能初始化成功。&lt;/li&gt;
+&lt;li&gt;直接访问显存，记得当年有个优化是，((char*)0xa0000L)[x + (y &amp;lt;&amp;lt; 8) + (y &amp;lt;&amp;lt; 6)]=c，把y两次左移相加代替y * 320。&lt;/li&gt;
+&lt;li&gt;用调色板绘图，256色的调色板，建立若干索引表，来快速索引两个颜色混色的结果。&lt;/li&gt;
+&lt;li&gt;保护模式编程，自己初始化GDT和LDT，后来找到 dos4gw，牛逼的 watcom c++。&lt;/li&gt;
+&lt;li&gt;自己实现线程，编程8254时钟控制器，给CPU的IRQ0发中断，来调度不同最多32个任务，到时间靠一条IRET指令实现切换。&lt;/li&gt;
+&lt;li&gt;自己控制声卡，通过220端口控制声卡（估计也没几个人用过吧），再用DMA传送音频，实现声音播放。&lt;/li&gt;
+&lt;li&gt;自己实现混音，同时播放多个音源时，需要重采样成声卡格式，并且每次DMA中断时混音后给声卡。&lt;/li&gt;
+&lt;li&gt;自己播放音乐，利用声卡338端口的 FM Synth合成器来播放MIDI音乐里面不同音轨的乐器音符，并用之前实现的线程系统，在后台线程运行。&lt;/li&gt;
+&lt;li&gt;大量汇编代码，图形拷贝，图块缩放，RLE，显卡控制，多边形填充，键盘中断接管。&lt;/li&gt;
+&lt;li&gt;自己绘制字体，HZK16，估计听过的人也没几个了。&lt;/li&gt;
+&lt;li&gt;自己读取图片，GIF，PCX, BMP。&lt;/li&gt;
+&lt;li&gt;自己播放视频，自己实现解码播放 animator, 3ds输出的 FLC视频格式的视频。&lt;/li&gt;
+&lt;li&gt;自己实现脚本，没有LUA，没有PYTHON，但是你需要给你的游戏实现脚本来描述一些简单的剧情，没见过其他游戏是怎么做的，没有任何参考代码的情况下，意识到开发游戏需要靠脚本来提高效率，然后自己实现一套脚本系统。&lt;/li&gt;
+&lt;li&gt;凭空实现游戏，从来没见过任何一款游戏代码的情况下，自己想想状态机应该怎么写，游戏对象应该怎么同时移动，图像前后遮挡该怎么做，游戏各种逻辑该如何写。&lt;/li&gt;
+&lt;li&gt;学习美术设计，虽然没有美术功底，但得熟练应用当时常用的animator，3ds，等软件，自己制作一些简单的界面和角色，自己能对其他图片进行二次加工，画像素图，合并调色板。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>TINY-GOBANG 最精简的五子棋人机对战</title>
+      <link>https://skywind3000.com/blog/archives/1029/</link>
+      <pubDate>Thu, 08 Nov 2012 10:57:18 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1029/</guid>
+      <description>&lt;p&gt;国庆没事，想看看最少多少行可以写一个人机对战棋类游戏，于是有了这个Python版五子棋人机对战，仅仅几百行。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/gobang1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;再命令行输入横竖坐标就可以和机器人对弈了，多种难度选择。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/skywind3000/gobang&#34;&gt;https://github.com/skywind3000/gobang&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;下面是代码（点击More展开）&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>体育竞技游戏的团队AI</title>
+      <link>https://skywind3000.com/blog/archives/1216/</link>
+      <pubDate>Fri, 05 Aug 2011 07:32:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1216/</guid>
+      <description>&lt;p&gt;很多人问游戏AI该怎么做？随着游戏类型的多元化，非 MMO或者卡牌的游戏越来越多，对AI的需求也越来越强了。而市面上关于 AI的书，网上找得到的文章，也都流于一些只言片语的认识，理论化的套路，和一些简单的 DEMO，离真正的项目差距甚远，无法前后衔接成一条线，更无法真正落地到编码。&lt;/p&gt;
+
+&lt;p&gt;国内真正做过游戏AI的少之又少，东拉西扯的人很多，真正做过项目的人很少，因为国内主要以MMO为主，RTS比较少，体育竞技类游戏更少，而从AI的难度上来看，应该是：MMO &amp;lt; FPS &amp;lt; RTS &amp;lt; 体育竞技。作为实际开发过AI的人，给大家科普一下，什么叫做硬派AI。&lt;/p&gt;
+
+&lt;p&gt;硬派游戏AI，不是虚无缥缈的神经网络，用神经网络其实是一个黑洞，把问题一脚踢给计算机，认为我只要训练它，它就能解决一切问题的懒人想法。更不是遗传算法和模糊逻辑，你想想以前8位机，16位机上就能有比较激烈对抗的足球游戏、篮球游戏，那么差的处理器能做这些计算么？ 硬派游戏AI，就是状态机和行为树。状态机是基本功，行为树可选（早年AI没行为树这东西，大家都是hard code的）。大部分人说到这里也就没了，各位读完还是无法写代码。因为没有把最核心的三个问题讲清楚，即：分层状态机、决策支持系统、以及团队角色分配。下面以我之前做的篮球AI为例，简单叙述一下： &lt;strong&gt;何为分层状态机？&lt;/strong&gt; 每个人物身上，有三层状态机：基础层状态机、行为层状态机、角色层状态机。每一层状态机解决一个层次的复杂度，并对上层提供接口，上层状态机通过设置下层状态机的目标实现更复杂的逻辑。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;基础状态机：直接控制角色动画和绘制、提供基础的动作实现，为上层提供支持。&lt;/li&gt;
+&lt;li&gt;行为状态机：实现分解动作，躲避跑、直线移动、原地站立、要球、传球、射球、追球、打人、跳。&lt;/li&gt;
+&lt;li&gt;角色状态机：实现更复杂的逻辑，比如防射球、篮板等都是由N次直线运动+跳跃或者打人完成。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb8.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[讲稿] ActionScript3 入门讲稿</title>
+      <link>https://skywind3000.com/blog/archives/732/</link>
+      <pubDate>Fri, 22 Apr 2011 08:15:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/732/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb42.png&#34; alt=&#34;image&#34; /&gt; &lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb43.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;若干年前学习 ActionScript的记录，下载地址：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/mw/images/3/3c/ActionScript3.rar&#34;&gt;http://www.skywind.me/mw/images/3/3c/ActionScript3.rar&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[讲稿] CGDC2009 演讲：游戏峡谷地图自动生成</title>
+      <link>https://skywind3000.com/blog/archives/718/</link>
+      <pubDate>Thu, 21 Apr 2011 03:00:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/718/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT1_thumb1.png&#34; alt=&#34;PPT1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;2009年在上海 CGDC的演讲稿《游戏地图自动生成》，该算法主要用来生成山地峡谷地图。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT2_thumb.png&#34; alt=&#34;PPT2&#34; /&gt;&lt;br /&gt;
+&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT3_thumb.png&#34; alt=&#34;PPT3&#34; /&gt;&lt;br /&gt;
+&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT4_thumb.png&#34; alt=&#34;PPT4&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Tiled Map Editor 使用说明</title>
+      <link>https://skywind3000.com/blog/archives/427/</link>
+      <pubDate>Wed, 13 Apr 2011 16:10:03 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/427/</guid>
+      <description>&lt;p&gt;1. 首先下载 Tiled Map Editor： 地图编辑器：&lt;a href=&#34;http://www.skywind.me/mw/images/8/81/TiledMapEditor.7z&#34;&gt;http://www.skywind.me/mw/images/8/81/TiledMapEditor.7z&lt;/a&gt; 资源图片集：&lt;a href=&#34;http://www.skywind.me/mw/images/0/09/Server_in_12h_images.7z&#34;&gt;http://www.skywind.me/mw/images/0/09/Server_in_12h_images.7z&lt;/a&gt; 解压，然后下载资源图片解压，保存在examples目录下面 （点击Read
+more 阅读全文） 我们最终将编辑下图的地图，并用Python读出来： &lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb1.png&#34; alt=&#34;image&#34; /&gt; 2. 图块命名如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/Tile01_thumb.png&#34; alt=&#34;Tile01&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/Tile02_thumb.png&#34; alt=&#34;Tile02&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/Tile04_thumb.png&#34; alt=&#34;Tile04&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Tiled Map Editor</title>
+      <link>https://skywind3000.com/blog/archives/353/</link>
+      <pubDate>Tue, 12 Apr 2011 20:09:11 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/353/</guid>
+      <description>&lt;p&gt;开源二维图块地图编辑器： 点击more阅读全文：&lt;br /&gt;
+&lt;a href=&#34;http://www.skywind.me/mw/images/8/81/TiledMapEditor.7z&#34;&gt;http://www.skywind.me/mw/images/8/81/TiledMapEditor.7z&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;主页： &lt;a href=&#34;http://www.freewarefiles.com/screenshot.php?programid=64372&#34;&gt;http://www.freewarefiles.com/screenshot.php?programid=64372&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/blog/wp-content/uploads/2011/04/tiledmapeditor.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Pygame 读取器： &lt;a href=&#34;http://www.skywind.me/mw/images/4/4f/Tiledtmxloader.7z&#34;&gt;http://www.skywind.me/mw/images/4/4f/Tiledtmxloader.7z&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;主页： &lt;a href=&#34;http://code.google.com/p/pytmxloader/&#34;&gt;http://code.google.com/p/pytmxloader/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.freewarefiles.com/screenshot.php?programid=64372&#34;&gt;http://www.freewarefiles.com/screenshot.php?programid=64372&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[讲义] 游戏客户端十二小时入门</title>
+      <link>https://skywind3000.com/blog/archives/176/</link>
+      <pubDate>Sat, 09 Apr 2011 04:32:27 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/176/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/PPT1_thumb.png&#34; alt=&#34;PPT1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这是我2005-2007年在公司培训时候的讲义，当时现场效果相当热烈：&lt;/p&gt;
+
+&lt;p&gt;可以到下面地址下载：&lt;/p&gt;
+
+&lt;p&gt;课程用例下载：&lt;a href=&#34;http://www.skywind.me/blog/archives/83&#34;&gt;http://www.skywind.me/blog/archives/83&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image0021.gif&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image003.gif&#34; alt=&#34;clip_image003&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[自制开源] 轻量级图形库 PixelLib</title>
+      <link>https://skywind3000.com/blog/archives/137/</link>
+      <pubDate>Sat, 09 Jan 2010 19:24:07 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/137/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;图像：64种不同的像素格式，色彩空间变换，多种图形图像变换。&lt;/li&gt;
+&lt;li&gt;质量：支持3种级别抗锯齿效果，高质量几何图形绘制。&lt;/li&gt;
+&lt;li&gt;实现：轻量级纯软件实现，100% C代码（仅700KB代码）。&lt;/li&gt;
+&lt;li&gt;优化：SSE2/MMX优化 地址：&lt;a href=&#34;https://github.com/skywind3000/pixellib&#34;&gt;https://github.com/skywind3000/pixellib&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 图像变换：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/8/8e/Pixellib_image_transform.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;支持仿射变换和透视变换，提供大量图像变换操作接口。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. 抗锯齿：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/9/9c/Pixellib_anti_aliasing.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;所有图形绘制支持3级不同程度的抗锯齿效果。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. 图像绘制：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/4/41/Pixellib_image_drawing.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;图像任意拉伸，旋转，3D旋转，并且同时进行色彩空间变换。全部采用浮点数坐标，图像移动更为平滑。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4. 几何作图：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/1/1e/Pixellib_geometry.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;全面的抗锯齿几何作图效果。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;5. 图像扭曲：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/c/c9/Pixellib_image_warp.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在源图像上布置若干关键点，然后改变这些关键点在屏幕上的对于位置即可实现图像扭曲。&lt;/p&gt;
+
+&lt;p&gt;**使用 Pixellib 来渲染 iOS 风格的图标 **&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/e/e7/Pixellib_quality.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[游戏演示] ActionScript 鼠标手势识别</title>
+      <link>https://skywind3000.com/blog/archives/173/</link>
+      <pubDate>Mon, 05 Jan 2009 13:32:11 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/173/</guid>
+      <description>&lt;p&gt;学习ActionScript3，画一星期写了个DEMO：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/finalweapon.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;网页地址：&lt;a href=&#34;http://www.skywind.me/weapon&#34;&gt;http://www.skywind.me/weapon&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>影子跟随算法（2007年老文一篇）</title>
+      <link>https://skywind3000.com/blog/archives/1145/</link>
+      <pubDate>Wed, 12 Dec 2007 14:43:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1145/</guid>
+      <description>&lt;h3 id=&#34;算法简述&#34;&gt;算法简述&lt;/h3&gt;
+
+&lt;p&gt;动作类游戏如何在高延迟下实现同步？不同的客户端网络情况，如何实现延迟补偿？十年前开始关注该问题，转眼十年已过，看到大家还在问这类问题，旧文一篇，略作补充（关于游戏同步相关问题还可以见我写于2005年的另外两篇文章，&lt;a href=&#34;http://www.skywind.me/blog/archives/131&#34;&gt;帧锁定算法&lt;/a&gt; 和
+&lt;a href=&#34;http://www.skywind.me/blog/archives/112&#34;&gt;网游同步法则&lt;/a&gt;）：&lt;/p&gt;
+
+&lt;p&gt;影子跟随算法由普通DR（dead reckoning）算法发展而来，我将其称为“影子跟随”意再表示算法同步策略的主要思想：&lt;/p&gt;
+
+&lt;p&gt;1． 屏幕上现实的实体（entity）只是不停的追逐它的“影子”（shadow）。&lt;/p&gt;
+
+&lt;p&gt;2． 服务器向各客户端发送各个影子的状态改变（坐标，方向，速度，时间）。&lt;/p&gt;
+
+&lt;p&gt;3． 各个客户端收到以后按照当前重新插值修正影子状态。&lt;/p&gt;
+
+&lt;p&gt;4． 影子状态是跳变的，但实体追赶影子是连续的，故整个过程是平滑的。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/04/clip_image002_thumb.jpg&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;图 1 算法演示&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>帧锁定同步算法</title>
+      <link>https://skywind3000.com/blog/archives/131/</link>
+      <pubDate>Sat, 10 Feb 2007 07:47:14 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/131/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;帧锁定算法解决游戏同步&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;早期 RTS，XBOX360 LIVE游戏常用同步策略是什么？格斗游戏多人联机如何保证流畅性和一致性？如何才能像单机游戏一样编写网游？敬请观看《帧锁定同步算法》 《帧锁定同步算法》转载请注明出处：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/blog/archives/131&#34;&gt;http://www.skywind.me/blog/archives/131&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;算法概念&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;该算法普遍要求网速RTT要在100ms以内，一般人数不超过8人，在这样的情况下，可以像单机游戏一样编写网络游戏。所有客户端任意时刻逻辑都是统一的，缺点是一个人卡机，所有人等待。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;客户端定时（比如每五帧）上传控制信息。&lt;/li&gt;
+&lt;li&gt;服务器收到所有控制信息后广播给所有客户。&lt;/li&gt;
+&lt;li&gt;客户端用服务器发来的更新消息中的控制信息进行游戏。&lt;/li&gt;
+&lt;li&gt;如果客户端进行到下一个关键帧（5帧后）时没有收到服务器的更新消息则等待。&lt;/li&gt;
+&lt;li&gt;如果客户端进行到下一个关键帧时已经接收到了服务器的更新消息，则将上面的数据用于游戏，并采集当前鼠标键盘输入发送给服务器，同时继续进行下去。&lt;/li&gt;
+&lt;li&gt;服务端采集到所有数据后再次发送下一个关键帧更新消息。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这个等待关键帧更新数据的过程称为“帧锁定”
+应用案例：大部分RTS游戏，街霸II(xbox360)，Callus模拟器。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>学习游戏编程的八大误区</title>
+      <link>https://skywind3000.com/blog/archives/455/</link>
+      <pubDate>Mon, 21 Aug 2006 04:56:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/455/</guid>
+      <description>&lt;p&gt;误区一：很多作品只能叫做 “程序” 而不能称为 “游戏”&lt;br /&gt;
+误区二：执着于各种技巧而忽视了基本素质的培养&lt;/p&gt;
+
+&lt;p&gt;误区三：执着于流行的API，认为：&lt;br /&gt;
+会写游戏 ＝ 掌握一两套API&lt;/p&gt;
+
+&lt;p&gt;误区四：执着于大而全，系统就像一只吞噬了各种化学品的魔兽&lt;br /&gt;
+误区五：执着于引擎创作爱重复劳动：&lt;br /&gt;
+最失败的引擎 ＝ 拿来主义 ＋ 函数改名&lt;/p&gt;
+
+&lt;p&gt;误区六：不消于使用脚本语言，喜欢CPP至上论&lt;br /&gt;
+误区七：缺少科学的测试方法，写出来的程序BUG不断&lt;br /&gt;
+误区八：作品缺乏游戏性，程序设计缺乏美感&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>推荐业余作品 - Hurricane2</title>
+      <link>https://skywind3000.com/blog/archives/613/</link>
+      <pubDate>Wed, 07 Jun 2006 07:27:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/613/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb4.jpg&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Hurricane2&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;给大家介绍这款充满速度感，爽快感，连续性强的动作游戏。游戏里主角需要杀死各类敌人，获得高分，除使用不同招数和连续技外，还能利用各种致命武器，屠杀敌人。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;基本操作：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;用WSAD移动，双击移动键可以快速闪，鼠标左健搏斗，右键打开瞄准器，这时按下左健就可以射击，必杀技和武器希望您在游戏中探索，不过如果您能杀满350人，基本上就没秘密可言了：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>未来三五年游戏研发问题预测</title>
+      <link>https://skywind3000.com/blog/archives/117/</link>
+      <pubDate>Sun, 25 Dec 2005 13:32:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/117/</guid>
+      <description>&lt;p&gt;下面根据以往经验对未来三五年游戏开发问题做一个预测，所论述问题，缺乏严格证明。大家全当看故事，茶余饭后消遣娱乐一下：&lt;/p&gt;
+
+&lt;p&gt;1. 研发瓶颈从技巧演变成为规模，解决复杂度问题将成为国内一流开发者的主要矛盾，而未能进军一流水平的二流开发者将会进一步沦落成软件工厂和外包工作室。&lt;/p&gt;
+
+&lt;p&gt;2. 对于开发游戏，多人视频，新的输入设备，可看不可玩，三年内国内由于该方向知识薄弱，即便国外有大的成就，国内一时也难以效仿。&lt;/p&gt;
+
+&lt;p&gt;3. 日下国内过于注重技巧的世风，在面对突入其来的规模问题，以及国外先进开发工具的双重夹击，会导致诸多游戏项目连续不断的失败，国内将再一次引发游戏开发方法的大讨论，各种为游戏行业量身订制的软件工程及开发理念纷纷出现，目不暇接。&lt;/p&gt;
+
+&lt;p&gt;4. 微软两年内会推出崭新开发平台，为改良DirectX和传统VisualIDE逐渐力不从心的被动，新平台将结合Vista系统优势，也是对1990年MS平台开发战略的再
+一次体现，当时英国记者评论“只有不断降低开发门槛，使未来全世界的开发者都习惯傻瓜编程了，才能有力的压制一切可能形成威胁的力量”这次统一Win/XBOX的编程接口自然不在话下，结合长期捆绑和专利等方面的蚕食，对OpenSource和其他轻量级开发工具实施致命打击。&lt;/p&gt;
+
+&lt;p&gt;5. 数月前微软宣布放弃几年前启动的GAPI的发布转而变出DX10，紧接着又宣布 VS.Net2005 Express的永久免费，现在已暴露出自己越来越大的野心了。三年后，高校合作工程开花结果，等第二，三批微软专家们成为国内研发主力的同时，结合Vista的下一代游戏开发工具的主流化，国内使用DX11/12的从业者必将遭遇类似DOS &amp;gt;Win的门槛面临失业和转变的选择，MS教徒们在2008年末必定会乘虚而入，钻入行业主力研发队伍。&lt;/p&gt;
+
+&lt;p&gt;6. Shockwave等等其他游戏开发工具由于迫于主流平台压力，会进一步在WEB方面发挥自己的优势，WEB平台游戏开发将会再次引起人们重视。&lt;/p&gt;
+
+&lt;p&gt;7. 第一二批开发者离开一线开发阵营，开始反思，一批优秀文化作品将会面世，各种关于游戏开发的故事，程序员文化引发二次回归，成为游戏文化的一个主流。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>网络游戏南北互通问题分析</title>
+      <link>https://skywind3000.com/blog/archives/108/</link>
+      <pubDate>Sat, 11 Jun 2005 01:59:09 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/108/</guid>
+      <description>&lt;p&gt;网络游戏南北互通问题方案&lt;/p&gt;
+
+&lt;p&gt;网络游戏用户按接入分，有多数的电信用户，次多数的网通用户，又有处于教育网的学生用户，造成了互联互通上极大的障碍。又由于当今游戏用户数据的越来越强的集中性和游戏服务器的分散性之间无可避免的矛盾，无法将游戏平台划分成为一个个独立的世界。&lt;/p&gt;
+
+&lt;p&gt;在上次的文档“QQ游戏服务器分布说明”后又补充了一篇“QQ游戏服务器响应速度”，可以发现QQ游戏服务器除去黑龙江，吉林，辽宁三省的大量网通用户外，在各地相对于电信和网通的访问速度都还是比较迅速的。下面是一些分析：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/dddd1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如果我们设计要求最高的实时性游戏的话，本着200ms的基准是完全合理的。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;不同情况和不同游戏对网速的需求&lt;/strong&gt;&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;网络情况\属性&lt;/th&gt;
+&lt;th&gt;响应时间&lt;/th&gt;
+&lt;th&gt;棋牌类游戏&lt;/th&gt;
+&lt;th&gt;竞技类游戏&lt;/th&gt;
+&lt;th&gt;实时性游戏&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;好&lt;/td&gt;
+&lt;td&gt;&amp;lt; 250ms&lt;/td&gt;
+&lt;td&gt;满足&lt;/td&gt;
+&lt;td&gt;满足&lt;/td&gt;
+&lt;td&gt;满足&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;中&lt;/td&gt;
+&lt;td&gt;250ms-450ms&lt;/td&gt;
+&lt;td&gt;满足&lt;/td&gt;
+&lt;td&gt;基本满足&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;差&lt;/td&gt;
+&lt;td&gt;450ms-1000ms&lt;/td&gt;
+&lt;td&gt;基本满足&lt;/td&gt;
+&lt;td&gt;难满足&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;恶劣&lt;/td&gt;
+&lt;td&gt;&amp;gt; 1000ms&lt;/td&gt;
+&lt;td&gt;难满足&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</description>
+    </item>
+    
+    <item>
+      <title>网络游戏同步法则</title>
+      <link>https://skywind3000.com/blog/archives/112/</link>
+      <pubDate>Sat, 11 Jun 2005 01:03:30 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/112/</guid>
+      <description>&lt;p&gt;网路的硬件也有限，而人的创造也无限，在公网平均130ms的Latency下，是不存在“完全的”的同步情况。如何通过消除/隐藏延时，将用户带入快速的交互式实时游戏中，体验完美的互动娱乐呢？&lt;/p&gt;
+
+&lt;p&gt;以下六点，将助你分清楚哪些我们可以努力，哪些我们不值得努力，弄明白实时游戏中同步问题关键之所在，巧妙的化解与规避游戏，最终在适合普遍用户网络环境中(200ms)，实现实时快速互动游戏：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 基本情况：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 网络性能指标一：带宽，限制了实时游戏的人数容量 &lt;br&gt;
+(B) 网络性能指标二：延时，决定了实时游戏的最低反应时间 &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. 两个基本原则：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 让所有的用户屏幕上面表现出完全不同的表象是完全没有问题的。 &lt;br&gt;
+(B) 把这些完全不同表象完全柔和在一个统一的逻辑中也是完全没有问题的。 &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. 同步的十二条应对策略：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 最大可能减少游戏中的数据传输&lt;br&gt;
+(B) 将阻塞通信放到线程池中实现 &lt;br&gt;
+(C) 永远不要为了等待某个数据而不让游戏进行下去 &lt;br&gt;
+(D) 利用预测和插值改进游戏的效果 &lt;br&gt;
+(E) 当使用预测插值的时候传送的数据不仅包括坐标，还需要速度和加速度 &lt;br&gt;
+(F) 将输入数据枷锁或者队列化(例如键盘消息队列)，直到下次发送数据的时刻，传统的方法是在固定的时间(发送数据前)检测键盘，在游戏的原理上隐藏延时 &lt;br&gt;
+(G) 使用事件调度表，将需要在所有用户客户端同时发生的事件，提前广播到所有用户 &lt;br&gt;
+(H) 使用多次攻击来杀死一个精灵，尽量减少一次性的、确定性的、延时敏感的事件 &lt;br&gt;
+(I) 延长子弹或者火箭在空中飞行的时间(在其飞行的同时，在所有客户端进行预测插值) &lt;br&gt;
+(J) 所有物体从一个地方移动到另外一个地方都需要时间，避免诸如“瞬间移动”的设计 &lt;br&gt;
+(K) 尽量使游戏中所有精灵，飞船或者其他物体，都按照可预测的轨迹运行，比如在移动中增加惯性 &lt;br&gt;
+(L) 充分发挥创造力，尽最大可能的合并游戏中前后相关的事件，合并游戏中存在的延时此问题，需要在技术上改进的同时也需要策划有所重视，规避一些影响较大的设计，巧妙的隐藏”延时” &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4. 同步问题现状：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 重视程度不够：很多人尚未意识到此问题的存在，曾有公司花半年时间打算做一款“松鼠大战”的网络版。 &lt;br&gt;
+(B) 技术上无彻底解决方案：对于多数程序员，单机游戏技术善未成熟就匆匆步入网络时代。 &lt;br&gt;
+(C) 研究这个技术需要条件：需要有实力的公司才能提供，无此条件，即便有能力的程序员也无法成功。 &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;5. 目前网游的三大技术难题：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 服务器的响应问题：如何使服务器在支持越来越多的人数的情况下提供最高的响应。 &lt;br&gt;
+(B) 同步问题：如何在有限的网络响应情况下，实现快速实时类游戏，提供最完美的交互。 &lt;br&gt;
+(C) 服务器分布式问题：如何在统一用户数据的情况下，利用分部式将各个分散的“世界”统一到一个“世界”中。 &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;谁能真正解决好以上三个问题，配合策划在设计上的突破，将使其他人在至少两年内无法超越。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;6. 相关补充：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(A) 网格技术现在还是抄作，真正用到游戏中，还有很多技术难点需要突破(比如：目前网格的单位计算时间是以秒计算). &lt;br&gt;
+(B) 其实与很多人想法相反的是现在3D技术早已不是主要的矛盾。而现在国内外对于以上三个问题可以说处于同一个起跑线上，完全有机会取得先机。 &lt;br&gt;
+(C) 现在解决同步问题已经很紧迫，而同时所需要的环境也已经成熟，只要有所关注，半年之内可以得出较成熟的结论 &lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;那么具体怎么解决呢？再下一步怎么办？ &lt;br&gt;
+这就得自己去实践了，我只说这么多了，哈哈，不然又教懒了那些成天再网上搜方案的人。&lt;/p&gt;
+
+&lt;p&gt;转载请著名出处：&lt;a href=&#34;http://www.skywind.me/&#34;&gt;http://www.skywind.me/&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MINI-FOOLTRIS 游戏代码</title>
+      <link>https://skywind3000.com/blog/archives/88/</link>
+      <pubDate>Thu, 14 Apr 2005 07:25:55 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/88/</guid>
+      <description>&lt;p&gt;不到两百行的俄罗斯方块游戏，教学用：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MINI-FOOLFLY 游戏代码</title>
+      <link>https://skywind3000.com/blog/archives/83/</link>
+      <pubDate>Tue, 12 Apr 2005 13:06:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/83/</guid>
+      <description>&lt;p&gt;此程序仅向人说明编写游戏程序的若干功能实现和常用处理方法，编译版本下载：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/resource/oldworks/foolfly.zip&#34;&gt;http://www.skywind.me/resource/oldworks/foolfly.zip&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>艺术化的程序设计</title>
+      <link>https://skywind3000.com/blog/archives/66/</link>
+      <pubDate>Tue, 21 Sep 2004 13:59:58 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/66/</guid>
+      <description>&lt;p&gt;计算机的硬件也有限，而人的创造也无限，程序设计美于思维和行为，记得1997年一个叫做 &amp;ldquo;OMNISCENT&amp;rdquo;的DEMO使人感慨万分，
+作者就像一名艺术家在一粒小小的米粒上雕刻着自己的作品一般。能力虽有不及，仍不妨我校仿，以此挖掘计算机最原始的艺术表现形式：&lt;/p&gt;
+
+&lt;p&gt;（此为自去年九月到现在三次发布中的最终版本: EXFORCE）&lt;/p&gt;
+
+&lt;p&gt;在DOS窗口中运行DEBUG，然后把横线下的内容复制、粘贴到DEBUG窗口中，回车就可以见到了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于路径搜索算法的实用性优化</title>
+      <link>https://skywind3000.com/blog/archives/60/</link>
+      <pubDate>Mon, 30 Sep 2002 04:53:03 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/60/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;关于路径搜索算法的实用性优化&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;UESTC 20013080 林 伟 2002.9.12&lt;/p&gt;
+
+&lt;p&gt;介绍：本文阐述对著名的路径搜索算法 &lt;code&gt;A*&lt;/code&gt; 算法的重要改进，使之更实用于大规模，高效率，多阻塞，模糊求解的任务中。希望本文起一个抛砖引玉的作用，使读者能举一反三。&lt;/p&gt;
+
+&lt;p&gt;这里所提及的 &lt;code&gt;A*&lt;/code&gt; 算法在许多领域内得到广泛的应用，比如我们熟悉的即时战略游戏正是利用这个算法来实现路径搜索的。 但是人工智能的书上只是说，却很少有实现的例子，理论与实际差距太大，一些专业人士也曾经书写过代码，但代码的优点在于说明算法，而在效率与实用性方面就有些欠缺。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;A*&lt;/code&gt; 是启发试搜索加动态规划。具体实现依靠两个队列Open队列和Close队列。从一点开始探走几个相邻的格子如果可以移动且当前移动为起点到哪个格子的历 史最佳方法则把那个格子按照估价值从小到大插入Open队列里面，几个方向试探结素后取出估价值最小的节点放入Close再从这里开始试探几个相邻的方向 同样放入Open队列里面，放入Open的条件是1.这步在地图上面是可以移动的，2.这步所在节点在Open里面并不存在，3.从起点到这步的实际距离 比这点的历史最小距离还短满足这三个条件就把节点放入Open队列。具体的算法网友们已经描述的再清楚不过了大致算法如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;WHILE TRUE BEGIN
+  1. 把S点加入OPEN队列（按该点到E点的距离排序+走过的步数从小到大排序） 
+  2. 排序队列OPEN队列中距离最小的第一个点出列，并保存入CLOSE队列中 
+  3. 从出列的点出发，分别向4个（或8个）方向中的一个各走出一步 
+  4. 估算第3步所走到位置到目标点的距离，并把该位置按估价距离从小到大排序后并放入OPEN中 
+  5. 如果该点从四个方向上都不能移动，则把该点从CLOSE队列中删除 
+  6. 从目标点回溯树，直到树根则可以找到最佳路径，并保存在PATH中 
+END
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;图表1：&lt;code&gt;A*&lt;/code&gt;路径搜索算法流程&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>虚拟机及VmBasic编译引擎说明</title>
+      <link>https://skywind3000.com/blog/archives/91/</link>
+      <pubDate>Thu, 18 Apr 2002 08:33:16 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/91/</guid>
+      <description>&lt;p&gt;2001-2002期间开发的虚拟机/编译器开源项目代码和资料&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;关于虚拟机及其编译器的说明&lt;/li&gt;
+&lt;li&gt;VmBasic开发/调试环境的介绍及说明&lt;/li&gt;
+&lt;li&gt;关于其他&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;所有资料可以从下面地址下载：
+&lt;a href=&#34;http://www.skywind.me/resource/vmbeta.zip&#34;&gt;下载可执行&lt;/a&gt;
+&lt;a href=&#34;http://www.skywind.me/resource/skywind/vmbsrc.zip&#34;&gt;源程序下载&lt;/a&gt;
+&lt;a href=&#34;http://www.skywind.me/maker/VmBasicDesign.pdf&#34;&gt;设计说明书&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;关于虚拟机及其编译器的说明&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;记得3DS/MAX里面实现了一个类似BASIC的脚本，Animator里面实现了一个类C的脚本语言，Autodesk公司的软件对于脚本支持的很出色，好的脚本引擎在乎平台无关性、高效性和扩充性，一个脚本引擎的需要对一个好程序来说非常迫切，于是半年前我写了一款虚拟机，最近又实现了一个类Basic的脚本编译器，特性说明：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;高效性和独立于平台：由于虚拟机运行是解释二进制的字节码因此速度明显快于每次运行及时解释的脚本语言，比如Perl和PHP，而虚拟机的核心程序代码也经过数个C++编译器和平台的测试，可以毫无修改的编译运行于多个操作系统。&lt;/li&gt;
+&lt;li&gt;充分的开放：通过虚拟机的端口I/O技术，要对它进行扩充变得十分容易，VmBeta指令通过输出/输入的方法向用户自己的程序进行通讯，用户通过处理输出输入消息来达到功能的扩充，使它符合你产品的需要，具体的虚拟机实现和设计说明参考文档 vmbeta.txt&lt;/li&gt;
+&lt;li&gt;可设安全级别：通过可设置安全级别，对程序运行状态进行检控&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;通过半年的修改我自己觉得虚拟机够高效开放，就是vmbasic编译器写的没有多高的水准：完全没有对生成代码做优化，弄出许多繁琐的中间代码，不过还是明显快于及时解释语言，通过测试速度大概是DOS自带的QBASIC程序的三倍左右(可以通过目录下的几个算法程序来实验)。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>系统开发 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/</link>
+    <description>Recent content in 系统开发 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 27 Jul 2015 12:26:25 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何设计一个内存分配器？</title>
+      <link>https://skywind3000.com/blog/archives/1480/</link>
+      <pubDate>Mon, 27 Jul 2015 12:26:25 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1480/</guid>
+      <description>&lt;p&gt;通常工程里不推荐自己写内存分配器，因为你费力写一个出来99%可能性没有内置的好，且内存出bug难调试&lt;br /&gt;
+不过看书之余，你也可以动手自己试试，当个玩具写写玩玩：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 实现教科书上的内存分配器：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;做一个链表指向空闲内存，分配就是取出一块来，改写链表，返回，释放就是放回到链表里面，并做好归并。注意做好标记和保护，避免二次释放，还可以花点力气在如何查找最适合大小的内存快的搜索上，减少内存碎片，有空你了还可以把链表换成伙伴算法，写着玩嘛。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. 实现固定内存分配器：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;即实现一个 FreeList，每个 FreeList 用于分配固定大小的内存块，比如用于分配 32字节对象的固定内存分配器，之类的。每个固定内存分配器里面有两个链表，OpenList 用于存储未分配的空闲对象，CloseList用于存储已分配的内存对象，那么所谓的分配就是从 OpenList 中取出一个对象放到 CloseList 里并且返回给用户，释放又是从 CloseList 移回到
+OpenList。分配时如果不够，那么就需要增长 OpenList：申请一个大一点的内存块，切割成比如 64 个相同大小的对象添加到 OpenList中。这个固定内存分配器回收的时候，统一把先前向系统申请的内存块全部还给系统。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

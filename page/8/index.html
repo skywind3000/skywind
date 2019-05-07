@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Skywind Inside | 写自己的代码，让别人猜去吧！</title>
+    <meta property="og:title" content="Skywind Inside | 写自己的代码，让别人猜去吧！">
+    <meta property="og:type" content="website">
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Putty 本无树，MinGW 亦非台">
+    <meta property="og:url" content="https://skywind3000.com/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml+xml" href="https://skywind3000.com/index.xml" title="Skywind Inside" />
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <h1>
+                        <a id="logo" href="https://skywind3000.com/">
+                            Skywind Inside
+                        </a>
+                    </h1>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1015/" title="Windows字体为什么那么难看？" >Windows字体为什么那么难看？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年9月6日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>1）很多字库比如宋体，12号以下都是点阵字体。</p>
+
+<p>2）GDI太老了，只有5级灰度，而且AA是横向的，Y轴方向没有AA。</p>
+
+<p>3）雅黑又不能通用，且小字号时高低不平。</p>
+
+<p>改进：</p>
+
+<p>1）字体SuperSample。</p>
+
+<p>2）勾边。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/09/image_thumb8_thumb.png" alt="image_thumb8" /></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/09/image_thumb13_thumb.png" alt="image_thumb13" /></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/09/image_thumb15_thumb.png" alt="image_thumb15" /></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/09/image_thumb17_thumb.png" alt="image_thumb17" /></p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1015/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/988/" title="【原创】快速除以255的方法" >【原创】快速除以255的方法</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年8月31日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>经过若干次试验修改，研究出下面这个快速/255的宏，可以在 X属于[0，65536]的范围内误差为零：</p>
+
+<pre><code class="language-cpp">#define div_255_fast(x)    (((x) + (((x) + 257) &gt;&gt; 8)) &gt;&gt; 8)
+</code></pre>
+
+<p>传统来说，人们习惯于将 /255改为 &gt;&gt; 8，但是这样误差挺大的，比如先乘以255再除以255，连续做十次，如果用&gt;&gt;8来代替除法，那么十次之后，误差为10. 另外一种常见的近似法是((x) + 255) &gt;&gt; 8，这种累积误差也挺厉害的。 因此&gt;&gt;8代替/255结果是比较粗糙的。而这个宏的开销比起&gt;&gt;8来说成本大12%。 经过测试65536000次计算中，使用/255的时间是325ms,
+使用div_255_fast的时间是70ms，使用&gt;&gt;8的时间是62ms，div_255_fast的时间代价属于可以接受的范围。 下面是测试程序</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/988/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/987/" title="测试了一下：TT达到64" >测试了一下：TT达到64</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年8月18日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB">未分类</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/08/image_thumb.png" alt="image" /></p>
+
+<p>记录一下。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/987/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/979/" title="CYGWIN 环境搭建记录" >CYGWIN 环境搭建记录</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年8月12日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB">未分类</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <h2 id="sshd">[sshd]</h2>
+
+<p>ssh-host-config /var/empty目录的拥有者必须是sshd进程的拥有者, 而且权限必须是700; 如果sshd进程的拥有者不是SYSTEM, 则只有这个拥有者可以通过ssh登录系统, 因为sshd需要执行seteuid, 非系统账户执行seteuid将自己有效id设为其他用户时会被拒绝。 如果是在
+Win7下面需要建立一个独立的用户，这时CYGWIN终端需要以管理员权限运行，否则用户设置失败，无法安装sshd服务。</p>
+
+<h2 id="svnserve">[svnserve]</h2>
+
+<pre><code class="language-bash">cygrunsrv -I svnserve -d &quot;CYGWIN svnserve&quot; --chdir /data/svnroot --path /usr/bin/svnserve \
+	  --args &quot;--foreground --daemon --root=/data/svnroot --listen-port=3690&quot; \
+	  --neverexits --type auto -o 
+</code></pre>
+
+<p>如果发现svnserve.exe无法监听在相应端口, 需要添加额外参数(&ndash;args中): &ndash;listen-host=0.0.0.0 (或监听在特定的ip或主机名上).</p>
+
+<h2 id="passwd">[passwd]</h2>
+
+<p>如果在cygwin中发现自己所在的组变成了&rdquo;mkpaswd&rdquo;,
+这说明/etc/passwd或者/etc/group需要重建了, 运行:</p>
+
+<pre><code class="language-bash">mkpasswd -l &gt;/etc/passwd; mkgroup -l &gt;/etc/group
+</code></pre>
+
+<h2 id="httpd">[httpd]</h2>
+
+<p>启动httpd服务时可能会报告&rdquo;Bad system call&rdquo;错误, 这是由于apache2需要cygserver, 运行: cygserver-config 而且环境变量 <code>$CYGWIN</code> 中包含server,
+参见 [The CYGWIN environment variable].</p>
+
+<h2 id="init">[init]</h2>
+
+<p>配置启动 systemv 的 init 服务，管理员启动cygwin，并运行：</p>
+
+<pre><code class="language-bash">init-config 
+</code></pre>
+
+<p>然后查看 /etc/inittab 和 /etc/rc.d/rc 两个文件，根据需要编辑，首先是 /etc/inittab:</p>
+
+<pre><code class="language-bash"># id:runlevels:action:process
+id:3:initdefault:
+rc::bootwait:/etc/rc
+l0:0:wait:/etc/rc.d/rc 0
+l3:3:wait:/etc/rc.d/rc 3
+#S0:2345:respawn:/sbin/agetty -L -T vt100 -n ttyS0 9600 ttyS0
+</code></pre>
+
+<p>接下来是 /etc/rc.d/rc：</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/979/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1176/" title="美术资源超级压缩方法" >美术资源超级压缩方法</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年8月7日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>如何在质量下降不大的情况下降低一倍的占用？如何让臃肿的美术资源压缩再压缩？</p>
+
+<h3 id="jpeg-wdp-webp">JPEG-&gt;WDP/WEBP</h3>
+
+<p>大部分项目都陆续废掉了JPEG，而最好的代替品是微软的HD Photo，wdp格式，在PSNR差不多的情况下，wdp能比JPEG小一倍多。</p>
+
+<p>（wdp的encoder/decoder不好找的话，我这里有一份微软的库）</p>
+
+<p>观察下面的演示图片不要缩放PDF，用100%显示才看得清楚差别</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb1.png" alt="image" /></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb2.png" alt="image" /></p>
+
+<p>JPEG 16.18 KB，可以看出脸部方块已经很严重，头发等高频部分已经看不清楚，帽子和墙面质量损失严重，而下面这张WDP文件（HDPHOTO，XnView可以转换）只有13.85KB大小，质量却比JPEG好很多。（通常情况下峰值信噪比差不多的话，WDP能够小一倍）：</p>
+
+<p>压缩比从强到弱依次是：WDP&gt;WEBP&gt;JPEG2000&gt;JPEG。因此换用WDP格式能缩小不少资源。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1176/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1216/" title="体育竞技游戏的团队AI" >体育竞技游戏的团队AI</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年8月5日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD">人工智能</a></span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>很多人问游戏AI该怎么做？随着游戏类型的多元化，非 MMO或者卡牌的游戏越来越多，对AI的需求也越来越强了。而市面上关于 AI的书，网上找得到的文章，也都流于一些只言片语的认识，理论化的套路，和一些简单的 DEMO，离真正的项目差距甚远，无法前后衔接成一条线，更无法真正落地到编码。</p>
+
+<p>国内真正做过游戏AI的少之又少，东拉西扯的人很多，真正做过项目的人很少，因为国内主要以MMO为主，RTS比较少，体育竞技类游戏更少，而从AI的难度上来看，应该是：MMO &lt; FPS &lt; RTS &lt; 体育竞技。作为实际开发过AI的人，给大家科普一下，什么叫做硬派AI。</p>
+
+<p>硬派游戏AI，不是虚无缥缈的神经网络，用神经网络其实是一个黑洞，把问题一脚踢给计算机，认为我只要训练它，它就能解决一切问题的懒人想法。更不是遗传算法和模糊逻辑，你想想以前8位机，16位机上就能有比较激烈对抗的足球游戏、篮球游戏，那么差的处理器能做这些计算么？ 硬派游戏AI，就是状态机和行为树。状态机是基本功，行为树可选（早年AI没行为树这东西，大家都是hard code的）。大部分人说到这里也就没了，各位读完还是无法写代码。因为没有把最核心的三个问题讲清楚，即：分层状态机、决策支持系统、以及团队角色分配。下面以我之前做的篮球AI为例，简单叙述一下： <strong>何为分层状态机？</strong> 每个人物身上，有三层状态机：基础层状态机、行为层状态机、角色层状态机。每一层状态机解决一个层次的复杂度，并对上层提供接口，上层状态机通过设置下层状态机的目标实现更复杂的逻辑。</p>
+
+<ul>
+<li>基础状态机：直接控制角色动画和绘制、提供基础的动作实现，为上层提供支持。</li>
+<li>行为状态机：实现分解动作，躲避跑、直线移动、原地站立、要球、传球、射球、追球、打人、跳。</li>
+<li>角色状态机：实现更复杂的逻辑，比如防射球、篮板等都是由N次直线运动+跳跃或者打人完成。</li>
+</ul>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb8.png" alt="image" /></p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/1216/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/978/" title="山寨的GameLoft" >山寨的GameLoft</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年8月5日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB">未分类</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                既山寨又垃圾的GameLoft游戏，吃过亏后，我也长记性了，下游戏之前先看是不是有GameLoft字样，有的话，立马跳过。但前两天，我居然忘了看厂商，花了若干美刀下了个封面漂亮的游戏，打开游戏一看，我立马傻了，下意识的觉得不好！GameLoft!，仔细一看，果不其然。所以说好了伤疤忘了疼，吸取教训呀。……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/978/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/971/" title="生成类苹果图标" >生成类苹果图标</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年6月25日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>修改了半年多的业余作品<a href="http://code.google.com/p/pixellib/">pixellib</a>，基本稳定了。下面是用它生成的一些类似苹果系统的图标：</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/06/image_thumb.png" alt="image" /></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/06/image_thumb1.png" alt="image" /></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/06/image_thumb2.png" alt="image" /></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/06/image_thumb3.png" alt="image" /></p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/971/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/962/" title="参考ZeroMQ改进服务器" >参考ZeroMQ改进服务器</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年6月25日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>今天参考 ZeroMQ的观点为我们的网络模块增加了一个“订阅模式”，及客户端包头用四字节表示，低24位为长度，高八位为“消息分类”。后端连接网络层的若干“频道”可以根据自己的喜好订阅“分类消息”，那么客户端发送该分类消息到网络层的时候，将会被抄送到订阅过该分类的频道。每个频道还可以订阅若干系统消息，比如连接开始、断开、时钟等等。</p>
+
+<p>我们的服务器自2004年底到现在，一直是网络和逻辑分离在不同的进程（主机）中间，网络模块可以连接多个提供服务的“频道”，只是配合休闲游戏的模型，当前只有一个频道可以和特定玩家进行交互。不过其基于多频道的模型使得这次改进很容易，改了三个小时，又跑了几个小时的测试用例，基本通过。</p>
+
+<p>以后交易，聊天，逻辑等，都可以分布在不同的频道里面同时为玩家提供服务了。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/962/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/732/" title="[讲稿] ActionScript3 入门讲稿" >[讲稿] ActionScript3 入门讲稿</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年4月22日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb42.png" alt="image" /> <img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/image_thumb43.png" alt="image" /></p>
+
+<p>若干年前学习 ActionScript的记录，下载地址：</p>
+
+<p><a href="http://www.skywind.me/mw/images/3/3c/ActionScript3.rar">http://www.skywind.me/mw/images/3/3c/ActionScript3.rar</a></p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/732/">阅读全文</a></p>
+                        </article>
+                    
+
+                    
+
+
+<ol class="page-navigator">
+    
+    <li class="prev">
+        <a href="https://skywind3000.com/page/7/">上一页</a>
+    </li>
+    
+
+    
+    <li >
+        <a href="https://skywind3000.com/">1</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/2/">2</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/3/">3</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/4/">4</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/5/">5</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/6/">6</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/7/">7</a>
+    </li>
+    
+    <li  class="current">
+        <a href="https://skywind3000.com/page/8/">8</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/9/">9</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/10/">10</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/11/">11</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/12/">12</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/13/">13</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/14/">14</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="https://skywind3000.com/page/9/">下一页</a>
+    </li>
+    
+</ol>
+
+
+
+                </div>
+            </div>
+
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+
+</body>
+</html>

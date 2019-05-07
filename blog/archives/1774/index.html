@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>计算机底层是如何访问显卡的？ | Skywind Inside</title>
+    <meta property="og:title" content="计算机底层是如何访问显卡的？ - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2016-06-17T10:20:18&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2016-06-17T10:20:18&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="计算机底层是如何访问显卡的？">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/1774/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">计算机底层是如何访问显卡的？</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2016年6月17日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>以前 DOS下做游戏，操作系统除了磁盘和文件管理外基本不管事情，所有游戏都是直接操作显卡和声卡的，用不了什么驱动。</p>
+
+<p>虽然没有驱动，但是硬件标准还是放在那里，VGA, SVGA, VESA, VESA2.0 之类的硬件标准，最起码，你只做320x200x256c的游戏，或者 ModeX 下 320x240x256c 的游戏的话，需要用到VGA和部分 SVGA标准，而要做真彩高彩，更高分辨率的游戏的话，就必须掌握 VESA的各项规范了。</p>
+
+<p>翻几段以前写的代码演示下：</p>
+
+<h3 id="例子1-初始化-vga-vesa-显示模式">例子1： 初始化 VGA/VESA 显示模式</h3>
+
+<p>基本是参考 VGA的编程手册来做：</p>
+
+<pre><code>INT 10,0 - Set Video Mode
+    AH = 00
+    AL = 00  40x25 B/W text (CGA,EGA,MCGA,VGA)
+       = 01  40x25 16 color text (CGA,EGA,MCGA,VGA)
+       = 02  80x25 16 shades of gray text (CGA,EGA,MCGA,VGA)
+       = 03  80x25 16 color text (CGA,EGA,MCGA,VGA)
+       = 04  320x200 4 color graphics (CGA,EGA,MCGA,VGA)
+       = 05  320x200 4 color graphics (CGA,EGA,MCGA,VGA)
+       = 06  640x200 B/W graphics (CGA,EGA,MCGA,VGA)
+       = 07  80x25 Monochrome text (MDA,HERC,EGA,VGA)
+       = 08  160x200 16 color graphics (PCjr)
+       = 09  320x200 16 color graphics (PCjr)
+       = 0A  640x200 4 color graphics (PCjr)
+       = 0B  Reserved (EGA BIOS function 11)
+       = 0C  Reserved (EGA BIOS function 11)
+       = 0D  320x200 16 color graphics (EGA,VGA)
+       = 0E  640x200 16 color graphics (EGA,VGA)
+       = 0F  640x350 Monochrome graphics (EGA,VGA)
+       = 10  640x350 16 color graphics (EGA or VGA with 128K)
+         640x350 4 color graphics (64K EGA)
+       = 11  640x480 B/W graphics (MCGA,VGA)
+       = 12  640x480 16 color graphics (VGA)
+       = 13  320x200 256 color graphics (MCGA,VGA)
+       = 8x  EGA, MCGA or VGA ignore bit 7, see below
+       = 9x  EGA, MCGA or VGA ignore bit 7, see below
+    - if AL bit 7=1, prevents EGA,MCGA &amp; VGA from clearing display
+    - function updates byte at 40:49;  bit 7 of byte 40:87
+      (EGA/VGA Display Data Area) is set to the value of AL bit 7
+</code></pre>
+
+<p>转换成代码的话，类似这样：</p>
+
+<pre><code class="language-cpp">// enter standard graphic mode
+int display_enter_graph(int mode)
+{ 
+	short hr = 0;
+	union REGS r;
+	memset(&amp;r, 0, sizeof(r));
+	if (mode &lt; 0x100) { 
+		r.w.ax = (short)mode;
+		int386(0x10, &amp;r, &amp;r);
+		r.h.ah = 0xf;
+		int386(0x10, &amp;r, &amp;r);
+		if (r.h.al != mode) hr = -1;
+	}   
+	else { 
+		r.w.ax = 0x4f02;
+		r.w.bx = (short)mode;
+		int386(0x10, &amp;r, &amp;r);
+		if (r.w.ax != 0x004f) hr = -1;
+	}
+	return hr;
+}
+</code></pre>
+
+<p>基本就是通过中断指令，调用 INT 0x10的 0x00 方法，初始化VGA显示模式，如果模式号大于256，那么说明是一个 VESA显示模式，调用 VESA的中断函数来进行。</p>
+
+<h3 id="例子2-画点">例子2： 画点</h3>
+
+<p>如果你初始化成功了 320 x 200 x 256 c 模式（INT 0x10, AX=0x13），那么画点就是象显存地址 0xA00000L 里面写一个字节（8位色彩深度）：</p>
+
+<p>我们使用 DOSBOX （DOS开发调试神器）来演示，启动 DOSBOX以后，运行</p>
+
+<pre><code>debug
+</code></pre>
+
+<p>然后写两条进入图形模式的指令：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/vga1.jpg" alt="" /></p>
+
+<p>图中用到的指令为：</p>
+
+<pre><code class="language-asm">mov ax, 13            ; 设置  ah=0（0号函数上面有说明）, al=0x13（0x13模式，320x200）
+int 10                ; 调用显卡中断
+int 20                ; DOS命令：退出程序
+</code></pre>
+
+<p>输入空行后退出编辑模式，然后使用 &lsquo;g&rsquo; 命令运行刚才的这个小程序：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/vga2.jpg" alt="" /></p>
+
+<p>可以看到，显示模式初始化成功了，现在你已经进入了 320x200x256c的显示模式，大量的 DOS游戏是使用这个模式开发出来的（仙剑奇侠传，轩辕剑1/2，C&amp;C）。</p>
+
+<p>接下来我们编辑显存，使用 e命令，进行内存编辑（0xa00000L），注意这里我们还是实模式，显存需要拆分成段地址：0xa000，和偏移0000 来访问：</p>
+
+<pre><code>-e a000:0000
+</code></pre>
+
+<p>出现下面的画面：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/vga3.jpg" alt="" /></p>
+
+<p>用了e 命令，写入了一连串字节，值都是“4”，点击放大上面的窗口，可以看到左上角已经被我写了几个点了，默认调色板下颜色 “4” 是红色。</p>
+
+<p><img src="https://skywind3000.github.io/word/images/vga4.jpg" alt="" /></p>
+
+<p>接着在 A000:0300处（坐标第3行第128列）写入更多颜色，这次更明显些，注意上面中间：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/vga5.jpg" alt="" /></p>
+
+<p>放大些：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/vga6.jpg" alt="" /></p>
+
+<p>这次写入了更多颜色，而且是在第三行中间部分，没挨着dosbox的窗口边缘，看起来更清晰了，是吧？</p>
+
+<p>好了，有了上面的试验后，我们可以写代码了，大概类似这样：</p>
+
+<pre><code class="language-cpp">void putpixel(int x, int y, unsigned char color)
+{
+	static unsigned char far *videobuf = (unsigned char far*)0xa0000000;
+	if (x &gt;= 0 &amp;&amp; y &gt;= 0 &amp;&amp; x &lt; 320 &amp;&amp; y &lt; 200) {
+		videobuf[y * 320 + x] = color;
+	}
+}
+</code></pre>
+
+<p>上面代码可用 TurboC++2.0, Borland C++ 3.1, TurboC2 来编译，当然，当年这么写是不行的，硬件慢的要死，各种 trick当然是能上则上，正确的写法是：</p>
+
+<pre><code class="language-cpp">void putpixel(int x, int y, unsigned char color)
+{
+	static unsigned char far *videobuf = (unsigned char far*)0xa0000000;
+	if (((unsigned)x) &lt; 320 &amp;&amp; ((unsigned)y) &lt; 200) {
+		videobuf[(y &lt;&lt; 6) + (unsigned)(y &lt;&lt; 8) + x] = color;
+	}
+}
+</code></pre>
+
+<p>优化了两处，范围判断改用 unsigned以后，少了两次 &gt;= 0的判断，同时乘法变成了移位和加法，旧式 cpu计算乘法总是那么慢。有了画点，写一个画线画圆画矩形就容易了，再返照写一个图块拷贝（BitBlt）也很容易，有了这些，应该够开发一个传统游戏。</p>
+
+<p>旧游戏里绘制一般都是在系统内存中进行的，在内存中开辟一块模仿显存的区域，进行画点画线，贴图，绘制好以后，一个memcpy，直接拷贝到显存。但实模式下线性地址只有64KB，可用总内存只有差不多640KB，要存储大量的图元是很困难的，稍不注意就内存不够了，因此 DOS下开发游戏，最好都是上 Watcom C++ 或者 Djgpp（dos下的gcc导出）。</p>
+
+<p>Watcom C++ 可以在dos下实现4g内存访问，现在可以下载 OpenWatcom 来编译，我不太喜欢 Djgpp，编译太慢，加上一大堆著名游戏都是 Watcom C++写成的，导致我更加鄙视 Djgpp 因此我之前主要是在 Watcom C++下开发，除去上面的画点外，后面翻到的代码片段基本都是 Watcom C++的。</p>
+
+<h3 id="例子3-设置调色板">例子3：设置调色板</h3>
+
+<p>看到这里，也许你不禁要发问：除了直接写显存外，好像各种初始化工作都是调用 BIOS 里预先设置好的 INT 10h中断来完成啊，这 INT 10h 又是具体怎么操作显卡的呢？</p>
+
+<p>其实 INT10h 也可以画点（AH=0C, AL=颜色, BH=0, DX=纵坐标，CX=横坐标），BIOS的 INT 10h中画点实现其实也是直接写显存，但是执行的很慢，基本没人这么用，都是直接写显存的，操作显卡除了访问显存外，有些功能还需要访问端口来实现。</p>
+
+<p>接下来以初始化调色盘为例，256下同屏每个点只有0-255的调色板索引，具体显示什么颜色需要查找一个：256 x 3 = 768 字节的调色板（每个索引3个字节：RGB）。设置一个颜色的调色盘需要先向 0x03c8端口写入颜色编号，接着在 0x03c9端口依次写入R,G,B三个分量的具体数值，具体指令为：</p>
+
+<pre><code class="language-asm">mov edx, 0x03c7
+mov al, color
+out dx, al
+inc dx
+mov al, R
+out dx, al
+mov al, G
+out dx, al
+mov al, B
+out dx, al
+</code></pre>
+
+<p>我们可以使用 Watcom C++ 的 outp 函数来实现 out指令调用：</p>
+
+<pre><code class="language-cpp">void display_set_palette(unsigned char color, char r, char g, char b)
+{ 
+	short port = 0x03c8;
+	outp(port, color); 
+	port++; 
+	outp(port, r); 
+	outp(port, g); 
+	outp(port, b);
+}
+</code></pre>
+
+<p>这个例子用到的是 OUT指令写端口，x86架构下 OUT 可以向特定端口写入数据，端口你可以理解为和数据总线并立的另外一个 I/O 控制总线，通过北桥南桥映射到各个硬件的 I/O 数据引脚，x86 下通过端口可以方便的操作显卡，软盘，硬盘，8254计时器，键盘缓存，DMA 控制器等周边硬件，后面我们还会频繁使用。</p>
+
+<p>而其他硬件下，并没有端口这样一个控制总线存在，那 GBA / NDS 里没有端口这样的存在，他们是用何种方法访问各种外设呢？答案是内存地址映射，GBA / NDS 下有一段低端内存地址被映射给了 I/O RAM，通过直接读写这些地址，就可以跟x86的 out/in 指令一样控制各硬件，完成：显示模式设置，显示对象，图层，时钟，DMA，手柄，音乐等控制。</p>
+
+<p>好了，现可以通过端口读写调色板了，我们调用一下上面这个函数：display_set_palette (4, 0, 63, 0); 就可以把上面通过直写显存画在左上角的一串红色点（颜色4）改变成绿色而不用重新写显存了，注意，vga的调色盘是 6位的，RGB的最大亮度为63。</p>
+
+<p>传统256色的游戏中需要正确设置调色板才能让图像看起来正确，否则就是花的，使用调色板还有很多用法，比如游戏中常见的 fade in / fade out
+效果，就是定时，每次把所有颜色的调色板读取出来，R,G,B各-1，然后保存回去，就淡出了，还有一些类似调色板流动等用法，可以很方便的制作波浪流动（图片不变，只改变调色板），传统游戏中用它来控制海水效果，不需要每次重绘，比如老游戏中天上闪烁的星星，大部分都是调色板变动一下。</p>
+
+<h3 id="例子4-初始化-modex">例子4：初始化 ModeX</h3>
+
+<p>传统标准显卡有三种显示模式：VGA模式（模式号低于256），VESA模式（模式号高于256，提供更高解析度，真彩高彩等显示模式，以及线性地址访问）此外还有著名的 ModeX，Michael Abrash 提出 ModeX 以后，由于对比其他标准模式具备更好的色彩填充性能，因此在不少游戏中也得到了广泛使用，但是其初始化非常的 trick，主体代码为：</p>
+
+<pre><code class="language-cpp">outpw(0x3C4, 0x0100);                     /* synchronous reset */
+outp(0x3D4, 0x11);                        /* enable crtc regs 0-7 */
+outp(0x3D5, inp(0x3D5) &amp; 0x7F);
+outpw(0x3C4, 0x0604);                     /* disable chain-4 */
+for (reg=mode-&gt;regs; reg-&gt;port; reg++) {  /* set the VGA registers */
+	if (reg-&gt;port == 0x3C0) {
+		inp(0x3DA);
+		outp(0x3C0, reg-&gt;index | 0x20);
+		outp(0x3C0, reg-&gt;value);
+	} 
+	else if (reg-&gt;port == 0x3C2) {
+		outp(reg-&gt;port, reg-&gt;value);
+	}  
+	else {
+		outp(reg-&gt;port, reg-&gt;index); 
+		outp(reg-&gt;port + 1, reg-&gt;value);
+	}
+}
+if (mode-&gt;hrs) {
+	outp(0x3D4, 0x11);  outp(0x3D5, inp(0x3D5) &amp; 0x7F);
+	outp(0x3D4, 0x04);  outp(0x3D5, inp(0x3D5) + mode-&gt;hrs);
+	outp(0x3D4, 0x11);  outp(0x3D5, inp(0x3D5) | 0x80);
+}
+if (mode-&gt;shift) {
+	outp(0x3CE, 0x05); 
+	outp(0x3CF, (inp(0x3CF) &amp; 0x60) | 0x40);
+	inp(0x3DA);         
+	outp(0x3C0, 0x30);
+	outp(0x3C0, inp(0x3C1) | 0x40);
+	for (c=0; c&lt;16; c++) {
+		outp(0x3C0, c);
+		outp(0x3C0, c);
+	}  
+	outp(0x3C0, 0x20);
+}
+if (mode-&gt;repeat) {
+	outp(0x3D4, 0x09);
+	outp(0x3D5, (inp(0x3D5) &amp; 0x60) | mode-&gt;repeat);
+}
+outp(0x3D4, 0x13);                       /* set scanline length */
+outp(0x3D5, width / 8);
+outpw(0x3C4, 0x0300);                    /* restart sequencer */
+</code></pre>
+
+<p>是不是有点天书的感觉？直接控制硬件就是这么琐碎，前面初始化显示模式都是用 int 10h中断完成的，其实 int 10h中断本身也是通过各种写端口来重置垂直扫描频率，水平扫描频率，显存映射方式，开始地址等达到具体设置某一个分辨率的目的，也就是说其实你可以绕开int 10h用自己的方式设置出一个新的显示模式来，ModeX 就是这样初始化的。</p>
+
+<p>不得不说一句今天有驱动程序真幸福，费了我九牛二虎之力才初始化成功的 ModeX，今天一个函数调用就完成了，大家也发现了使用 int 10h中断，调用 BIOS 里面的预设程序控制显卡，只是初级用法，现在基本只用在 grub 等操作系统加载程序上了，进入了操作系统后，就再也不会调用 int 10h，而是赤裸裸的直接和显卡打交到。</p>
+
+<h3 id="例子5-显存分段映射">例子5：显存分段映射</h3>
+
+<p>早期显卡的显存只能按 64KB 大小分成若干个 bank 来映射到特定的物理地址，也就是说你使用 640 x 480 x 32bits 的显示模式时，全屏幕总共需要 1200KB 的显存来表示屏幕上面的每一个点，而由于显存每次只能分段映射一个 64KB 大小的 bank，所以每次写屏前都要把对应位置的显存先映射过来才能写，我们使用下面代码来切换 bank：</p>
+
+<pre><code class="language-cpp">int display_vesa_switch(int window, int bank)
+{
+	union REGS r;
+	r.x.eax = 0x4f05;
+	r.x.ebx = window;
+	r.x.edx = bank;
+	int386(0x10, &amp;r, &amp;r);
+	return 0;
+}
+</code></pre>
+
+<p>注意这里还有个窗口概念，一个窗口可以映射一个bank，大部分显卡只有一个窗口，则只能同时映射一段64KB的显存给cpu访问，而有的显卡有两个窗口（一个读，一个写）。</p>
+
+<p>这个是标准做法，访问中断很慢，在绘制过程中频繁的访问中断是要命的，故 Trident 系列的显卡提供直接访问端口的方法来切换页面（Trident只有一个窗口，同时只能映射一个64KB的bank）：</p>
+
+<pre><code class="language-cpp">int display_trident_switch(unsigned char bank)
+{
+	outp(0x3c4, 0x0e);
+	outp(0x3c5, bank ^ 0x2);
+	return 0;
+}
+</code></pre>
+
+<p>而如果你使用支持 VESA2.0 标准的显卡，在保护模式下，VESA2的接口提供了一系列函数入口供你调用，你可以直接在 Watcom C++ 下面调用这些函数完成页面切换，比调用中断的开销小多了。</p>
+
+<p>听起来十分美妙，但是你想导出这些函数的入口地址来调用的话，你将需要：</p>
+
+<ul>
+<li>分配一块物理内存并锁定地址。</li>
+<li>调用vesa中断，向这个物理地址写入这些函数的代码。</li>
+<li>为该物理内存分配一个 selector 段地址，才能读取这些代码并拷贝到 Watcom C++默认段。</li>
+<li>按照入口表，初始化 Watcom C++ 里面的函数指针，并释放物理内存。</li>
+<li>然后你才可以开心的调用这些函数。</li>
+</ul>
+
+<p>这个函数表，可以理解成就是 VESA 2.0 的一个初级阶段的驱动程序了。</p>
+
+<p>简单一个页面切换，上面就提到了三种做法，你可以选择最保险也是性能最差的中断调用，也可以根据显卡支持选择写端口或者直接调用导出函数。</p>
+
+<p>好在游戏基本都是二级缓存来绘制的，主要的绘制工作在系统内存的二级缓存里面完成，最后只需要在 memcpy搬运到显存显示出来的时候，再去设置页面映射，然后整个 bank一次性拷贝，然后再切换到下一个 bank，这样“设置页面映射” 这个操作的调用次数就会比较少了。</p>
+
+<p>这就是早年访问多于 64KB 显存的基本方法，多用在解析度超过 320x200 的模式中，如果你继续使用流行的 320x200 显示模式，你将不需要考虑这个事情，因为全屏幕只需要 62.5 KB的显存，没有切换 BANK 的需要。</p>
+
+<p>但是早期缺乏统一的编程接口，今天这个显卡扩充一点功能，明天那个品牌又多两个效果，弄得你疲于奔命，因此 Windows 以后，这些工作都统一交给显卡驱动来完成了。</p>
+
+<h3 id="例子6-线性显存映射">例子6：线性显存映射</h3>
+
+<p>由于分辨率越来越高，越来越多的软件用到了 640x480x256以上的显示模式，传统的 bank 映射方式已经显得越来越落后了，因此90年代中期的显卡纷纷开始支持 VESA 2.0 中的 “线性地址映射”，通过一些列初始化工作，将显示模式设置为 “线性地址”，这样在保护模式下，你就可以一整块的访问连续显存而用不着切换 bank了。</p>
+
+<p>这是一种十分简单高效的方式，只要你的游戏用 Watcom C++ / Djgpp 开发，跑在保护模式下，这可以说是最美妙方方式了，可惜，当年并不是所有显卡都支持这样的方式，碰到不兼容的显卡你还得绕回去使用 bank 切换。</p>
+
+<p>所以为了在 640x480x256c 下面正确绘制图形，一共有四种显存访问方式（bank切换3种+线性地址映射），应用程序写的好的话，需要把访问显存统一封装一下，并提供类似这样的接口：</p>
+
+<pre><code class="language-cpp">//---------------------------------------------------------------------
+// Framebuffer Access
+//---------------------------------------------------------------------
+// copy rect from memory to video frame buffer
+void display_bits_set(int sx, int sy, const void *src, long pitch, 
+	int x, int y, int w, int h);
+// get rect from frame buffer to memory
+void display_bits_get(int sx, int sy, void *dst, long pitch, 
+	int x, int y, int w, int h);
+// write row to video frame buffer
+void display_row_write(int x, int y, const void *buffer, int npixels);
+// read row from video frame buffer
+void display_row_read(int x, int y, void *buffer, int npixels);
+</code></pre>
+
+<p>背后则需要判断显卡的特性，普通显卡使用兼容性最好的的方式，而好点的显卡使用更快速的方式，并为上层提供统一的访问 framebuffer 的接口，由于早年的 C++ 编译器优化十分有限，这部分基本都是上千行的汇编代码直接实现，于是你又得捧起486、奔腾优化手册来，慢慢调试一点点计算 u,v 流水线的开销并安排好指令让它们最大程度并行执行。</p>
+
+<p>一直到了 DirectX 时代，整个事情才简单了很多，微软一句话，所有 DirectX 兼容显卡必须支持线性地址映射，因此 DirectX 下面 Lock 一个 Surface 后可以毫无拘束连续访问显存，这样一个简单的操作，对比前面的实现，简直是一件十分幸福的事情。</p>
+
+<h3 id="例子7-dma控制器访问">例子7：DMA控制器访问</h3>
+
+<p>CPU对大部分基础周边设备，都是通过写内存或端口I/O来控制的，比如前面很多显卡控制，比如操作 8254为CPU提供时钟中，比如操作 8237 DMA控制器来实现直接内存访问。</p>
+
+<p>比如使用 DMA CHANNEL 1 传送数据到周边设备的代码类似：</p>
+
+<pre><code class="language-cpp">outp(0x0a, 0x05);    // 禁用 dma channel 1
+outp(0x0b, 0x45);    // 设置读取模式
+outp(0x0c, 0);       // 准备设置地址
+outp(0x02, addr &amp; 0xff);         // 物理地址第一个字节
+outp(0x02, (addr &gt;&gt; 8) &amp; 0xff);  // 物理地址第二个字节
+outp(0x83, (addr &gt;&gt; 16) &amp; 0xff); // 物理地址第三个字节
+outp(0x0c, 0);       // 结束设置地址
+outp(0x03, (size - 1) &amp; 0xff);   // 设置长度
+outp(0x03, ((size - 1) &gt;&gt; 8) &amp; 0xff); // 设置长度高位
+outp(0x0a, 0x01);    // 开始传送 channel 1
+</code></pre>
+
+<p>传统 DMA控制器有 8个通道式对应不同周边设备，且只能访问低端16MB地址空间，保护模下的程序需要在16MB的空间内分配连续的物理内存页面，并映射到当前的进程默认地址空间中，传输 DMA时需要将物理地址（非虚拟地址）传送给 DMA 控制器。</p>
+
+<p>具体端口代表的意思，一般是需要查看硬件手册，并按说明调用。早期部分显卡已经开始支持 DMA传送数据，同时也支持显存传送，PC中 DMA传送数据未必有 CPU快，但是却能和 CPU保持异步，解放 CPU 去做更多的事情。</p>
+
+<p>不同的 DMA 通道对应不同的外设，比如硬盘，声卡，显卡，传输是否完成可以通过中断的方式或者 CPU 查询 DMA控制器端口得知，DMA控制器会用类似锁存器的方式保证你分两次读出的高低字节表示同一个变量。</p>
+
+<p>标准 PC/DMA 无法实现 内存-&gt; 内存的 DMA 异步传输，用起来没 ARM 的 DMA 那么爽，比如 GBA / NDS 下有异步 memcpy 函数 DmaArrayCopy，原理是在特定的物理地址（被映射成 I/O RAM部分）写入数据： <em>((u32</em>)0x40000D4) 写入源地址，<em>((u32</em>)0x40000D8) 写入目标地址，<em>((u32</em>)0x40000DC)
+写入长度后，异步拷贝就开始了，十分飘逸。</p>
+
+<p>连续通过 DMA传输数据的话，一般需要开辟双缓存，一块传输着，一块准备着，交替进行。</p>
+
+<hr />
+
+<p>Windows后，不能让我读写端口曾让我郁闷了很久，但时代变迁，看着今天各种规范的 API 接口，统一的硬件规范，对比以前繁琐的实现，突然有种淡淡的幸福。</p>
+
+<p>先写这么多吧，主要是上补充下其他答案，提供一点具体的感受，顺便也和大家一起怀旧一下。</p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/1683/">超越 SDL/DirectDraw/GDI 性能的位图库</a></li>
+        
+        <li><a href="/blog/archives/137/">[自制开源] 轻量级图形库 PixelLib</a></li>
+        
+        <li><a href="/blog/archives/1587/">内存拷贝优化（3）-深入优化</a></li>
+        
+        <li><a href="/blog/archives/1573/">内存拷贝优化（2）-全尺寸拷贝优化</a></li>
+        
+        <li><a href="/blog/archives/1498/">如何写一个软件渲染器？</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2">图形</a></li>
+                                
+                                <li><a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96">汇编</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

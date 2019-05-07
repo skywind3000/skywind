@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>图形 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/</link>
+    <description>Recent content in 图形 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 18 Aug 2016 08:40:48 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>3D 图形光栅化的透视校正问题</title>
+      <link>https://skywind3000.com/blog/archives/1828/</link>
+      <pubDate>Thu, 18 Aug 2016 08:40:48 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1828/</guid>
+      <description>&lt;p&gt;写了文章《&lt;a href=&#34;http://www.skywind.me/blog/archives/1498&#34;&gt;如何写一个软件渲染器&lt;/a&gt;》以后，不少网友希望进一步解释背后的数学公式，询问以及自己加一个 phong 光照该如何加，本文将对透视纹理映射的插值原理做一个简单的解释，希望能帮助到大家：&lt;/p&gt;
+
+&lt;p&gt;透视纹理绘制发生在最后阶段，坐标已经完成projection，剔除，裁剪了，然后顶点/w，开始批量绘制扫描线之前，这时候开始计算纹理的位置。&lt;/p&gt;
+
+&lt;p&gt;使用w还是用z，关系不大，早年的3d引擎，直接/z的，只是后面标准化了以后，发现w更好用，可以同时表示透视投影和正交投影。同时顶点经过标准的mvp矩阵运算后，w和z是承线性关系的，方便对z/w做 [0,1] 的cvv裁剪。你可以理解成w就是另外一个z。以前屏幕坐标：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;x&#39; = x / z * d + A
+y&#39; = y / z * d + A
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;x&#39; = x / w * d + A
+y&#39; = y / w * d + A
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后绘制纹理前，你需要先证明屏幕上两个点之间，1/w 承线性关系，即屏幕上两个点X1&amp;rsquo;, X2&amp;rsquo;之间任意取一点X3&amp;rsquo;，他们的(1/w)值的变化比例相同，即在 t 取任意值有：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;x3&#39; = x1&#39; + (x2&#39; - x1&#39;) * t
+(1 / w3) = (1 / w1) + ((1 / w2)  - (1 / w1)) * t
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;再根据他们在同一个平面上，证明屏幕上两个点之间，u/w, v/w 承线性关系，即 t 取任意值有：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>计算机底层是如何访问显卡的？</title>
+      <link>https://skywind3000.com/blog/archives/1774/</link>
+      <pubDate>Fri, 17 Jun 2016 10:20:18 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1774/</guid>
+      <description>&lt;p&gt;以前 DOS下做游戏，操作系统除了磁盘和文件管理外基本不管事情，所有游戏都是直接操作显卡和声卡的，用不了什么驱动。&lt;/p&gt;
+
+&lt;p&gt;虽然没有驱动，但是硬件标准还是放在那里，VGA, SVGA, VESA, VESA2.0 之类的硬件标准，最起码，你只做320x200x256c的游戏，或者 ModeX 下 320x240x256c 的游戏的话，需要用到VGA和部分 SVGA标准，而要做真彩高彩，更高分辨率的游戏的话，就必须掌握 VESA的各项规范了。&lt;/p&gt;
+
+&lt;p&gt;翻几段以前写的代码演示下：&lt;/p&gt;
+
+&lt;h3 id=&#34;例子1-初始化-vga-vesa-显示模式&#34;&gt;例子1： 初始化 VGA/VESA 显示模式&lt;/h3&gt;
+
+&lt;p&gt;基本是参考 VGA的编程手册来做：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INT 10,0 - Set Video Mode
+    AH = 00
+    AL = 00  40x25 B/W text (CGA,EGA,MCGA,VGA)
+       = 01  40x25 16 color text (CGA,EGA,MCGA,VGA)
+       = 02  80x25 16 shades of gray text (CGA,EGA,MCGA,VGA)
+       = 03  80x25 16 color text (CGA,EGA,MCGA,VGA)
+       = 04  320x200 4 color graphics (CGA,EGA,MCGA,VGA)
+       = 05  320x200 4 color graphics (CGA,EGA,MCGA,VGA)
+       = 06  640x200 B/W graphics (CGA,EGA,MCGA,VGA)
+       = 07  80x25 Monochrome text (MDA,HERC,EGA,VGA)
+       = 08  160x200 16 color graphics (PCjr)
+       = 09  320x200 16 color graphics (PCjr)
+       = 0A  640x200 4 color graphics (PCjr)
+       = 0B  Reserved (EGA BIOS function 11)
+       = 0C  Reserved (EGA BIOS function 11)
+       = 0D  320x200 16 color graphics (EGA,VGA)
+       = 0E  640x200 16 color graphics (EGA,VGA)
+       = 0F  640x350 Monochrome graphics (EGA,VGA)
+       = 10  640x350 16 color graphics (EGA or VGA with 128K)
+         640x350 4 color graphics (64K EGA)
+       = 11  640x480 B/W graphics (MCGA,VGA)
+       = 12  640x480 16 color graphics (VGA)
+       = 13  320x200 256 color graphics (MCGA,VGA)
+       = 8x  EGA, MCGA or VGA ignore bit 7, see below
+       = 9x  EGA, MCGA or VGA ignore bit 7, see below
+    - if AL bit 7=1, prevents EGA,MCGA &amp;amp; VGA from clearing display
+    - function updates byte at 40:49;  bit 7 of byte 40:87
+      (EGA/VGA Display Data Area) is set to the value of AL bit 7
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;转换成代码的话，类似这样：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>超越 SDL/DirectDraw/GDI 性能的位图库</title>
+      <link>https://skywind3000.com/blog/archives/1683/</link>
+      <pubDate>Thu, 28 Apr 2016 16:00:37 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1683/</guid>
+      <description>&lt;p&gt;开源一个高性能位图库，之前对我的二维图形库 &lt;a href=&#34;https://github.com/skywind3000/pixellib&#34;&gt;pixellib&lt;/a&gt; 进行了精简和重写，最终形成一个只包含两个文件（BasicBitmap.h, BasicBitmap.cpp）的图形基础库。 在今天 GPU 绘制横行天下的时候，任然有很多时候需要使用到纯
+CPU实现的图形库，比如图像处理，视频预处理与合成，界面，以及GPU无法使用的情况（比如某个应用把gpu占满了，或者无法通过gpu做一些十分灵活的事情时），纹理处理，简单图片加载保存等。 支持 SSE2/AVX 优化，比 DirectDraw 快 40%（全系统内存绘制），比 SDL 快 10%，比GDI快 38%。如果你需要一个方便的高性能位图库，足够高性能的同时保证足够紧凑。
+如果你有上述需求，那么你和我一样需要用到 BasicBitmap，只需要把 BasicBitmap.h/.cpp 两个文件拷贝到你的代码中即可。我正是为了这个目的编写了这两个文件。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何写一个软件渲染器？</title>
+      <link>https://skywind3000.com/blog/archives/1498/</link>
+      <pubDate>Sun, 09 Aug 2015 18:52:12 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1498/</guid>
+      <description>&lt;p&gt;实现个简单的固定渲染管线软渲染器不算复杂，差不多700行代码就可以搞定了。之所以很多人用 D3D用的很熟，写软渲染却坑坑洼洼，主要是现在大部分讲图形的书，讲到透视投影时就是分析一下透视变换矩阵如何生成，顶点如何计算就跳到其他讲模型或者光照的部分了。&lt;/p&gt;
+
+&lt;p&gt;因为今天基本上是直接用 D3D 或者 OGL，真正光栅化的部分不了解也不影响使用，所以大部分教材都直接跳过了一大段，摄像机坐标系如何转换？三角形如何生成？CVV边缘如何检测？四维坐标如何裁剪？边缘及步长如何计算？扫描线该如何绘制？透视纹理映射具体代码该怎么写？framebuffer zbuffer 到底该怎么用？z-test 到底是该 test z 还是 w 还是 1/z 还是 1/w
+？这些都没讲。&lt;/p&gt;
+
+&lt;p&gt;早年培训学生时候，我花两天时间写的一个 DEMO，今天拿出来重新调整注释一下，性能和功能当然比不过高大上的软件渲染器。但一般来讲，工程类项目代码不容易阅读，太多边界情况和太多细节优化容易让初学者迷失，这个 mini3d 的项目不做任何优化，主要目的就是为了突出主干：&lt;/p&gt;
+
+&lt;p&gt;源代码：&lt;a href=&#34;https://github.com/skywind3000/mini3d&#34;&gt;skywind3000/mini3d · GitHub&lt;/a&gt;&lt;br /&gt;
+可执行：&lt;a href=&#34;https://github.com/skywind3000/mini3d/releases/download/v1.2/mini3d-src-binary.zip&#34;&gt;mini3d-src-binary&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>游戏中角色变色如何实现？</title>
+      <link>https://skywind3000.com/blog/archives/1391/</link>
+      <pubDate>Sat, 13 Jun 2015 10:05:31 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1391/</guid>
+      <description>来自知乎问题：http://www.zhihu.com/question/31133351
+游戏中的惯用做法叫：调色盘色彩旋转
+1. 调色盘里能变色的颜色总是固定几个位置
+2. 让需要变色的位置的 RGB转换成 HSV，然后旋转 H分量旋转一定角度
+3. 重新将 HSV转换为 RGB保存回调色盘
+在 HSV 色彩空间中，旋转 H 分量
+主要是旋转 H分量，S/V分量也可以微调，但是变色是以旋转 H为主。题主两张图片的八神，除了调色盘前面几个皮肤颜色不参与变色外，后面的衣服整体都参与了色彩旋转：
+看看是不是和我上面模拟的 DEMO 差不多 &amp;mdash; 所有衣服颜色的 H 分量 都差不多旋转了 300 多度 （除了裤子外，观察衣服颜色的变化）。可以看出，拳皇的衣服变色就是这么生成的，当然游戏自动生成好了以后，也可以让你自己微调一下。
+所以这样不但有紫色八神，还能轻松有蓝色，黄色，绿色的八神。好多游戏的头发衣服的即时变色基本都是这个套路。包括 Windows下 好多界面变色也是用色彩旋转实现，只是不用调色盘了：
+现代绘图，没有调色盘，依然要变色，一般是将变色的部件和不变色的部件分为两层来绘制，不变色的是一层，变色的是另外一层：
+比如上面这个按钮，中间两个状态是参与变色的底图，但是还有一些不改变的，比如X和汉字，如果一起参与变色就搞笑了，所以还需要一层不变色的覆盖在上面，就是最左边那个层。所以界面变色，文字和图标不会改变。
+或者根据变色不同拆分成不同的部件，让其中某一个部件变色
+坦克身子：参与变色 （不同的国家会旋转成不同的颜色）
+坦克炮管：不参与变色（都是一样的）
+PS：有些地方也会用 HSL空间色彩旋转代替 HSV色彩空间旋转，差不多，看你喜好。
+更多参考：OpenGL GLSL 实现色彩旋转
+http://stackoverflow.com/questions/9234724/how-to-change-hue-of-a-texture-with-glsl</description>
+    </item>
+    
+    <item>
+      <title>还原被摄像机透视的纹理</title>
+      <link>https://skywind3000.com/blog/archives/1363/</link>
+      <pubDate>Wed, 20 May 2015 11:34:40 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1363/</guid>
+      <description>有人问如何还原被透视纹理？给你一张照片，还原照片上四个点所组成的平面的纹理该怎么做？我们可以从数学上推导一下，为了和三维图形的透视纹理映射对照，我们称照片上四个点在照片上的位置为“屏幕坐标”，那么可以发现：
+空间中，三维坐标（x,y,z）和纹理坐标（u, v）承线性关系。根据该问题描述，可以理解为已知四个点的屏幕投影坐标（xi,yi），和对应纹理坐标（u，v），求整个纹理坐标系到屏幕坐标系的反向映射过程，即根据（u,v）求解（xi，yi）。
+1. 按照纹理隐射的原理，同平面纹理坐标与空间坐标存在线性关系，设 a1-a12为常数，有：
+a1 * x + a2 * y + a3 * z + a4 = u ... 线性关系 a5 * x + a6 * y + a7 * z + a8 = v ... 线性关系 a9 * x + a10 * y + a11 * z + a12 = 0 ... 平面方程  2. 求解上面的方程组，可以得到类似下面的关系，其中b1-b9为常数：
+x = b1 * u + b2 * v + b3 y = b4 * u + b5 * v + b6 z = b7 * u + b8 * v + b9  常数 b1-b9如果展开，就是9个关于a1-a12的等式，太长了，这里不展开，有兴趣可以自己求解。
+3. 屏幕上投影坐标一般是：
+ x xi = D1 * --- + C1 z x yi = D2 * --- + C2 z  因为同样一个透视投影矩阵下，能隐射成屏幕上同样形状纹理的平面，在空间中存在无穷多个，而且还存在不同透视投影矩阵下，同样屏幕投影的平面存在更多无穷多个。这里我们不用去求解每个平面，直接设置 D1 = D2 = 1 且 C1 = C2 = 0 有：
+ x xi = --- z x yi = --- z  4. 展开等式：
+ b1 * u + b2 * v + b3 xi = ---------------------- b7 * u + b8 * v + b9 b4 * u + b5 * v + b6 yi = ---------------------- b7 * u + b8 * v + b9  改变一下，用矩阵 M的各个元素 m00 - m22来代替 b1-b9。
+ m00 * u + m01 * v + m02 xi = ------------------------- m20 * u + m21 * v + m22 m10 * u + m11 * v + m12 yi = ------------------------- m20 * u + m21 * v + m22  5.</description>
+    </item>
+    
+    <item>
+      <title>计算机图形算法中的光滑边缘算法经历了那些变迁？</title>
+      <link>https://skywind3000.com/blog/archives/1541/</link>
+      <pubDate>Sun, 26 Apr 2015 08:26:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1541/</guid>
+      <description>&lt;p&gt;主要有四种方法：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;wupixel：wu xiaolin提出的最早的绘制直线和圆的平滑方法，优点是简单快速，缺点是只有一个方向的像素偏移被考虑了，效果普通，而且只能绘制1个像素宽度的直线，超过一个像素后，两个端点就会非常不自然。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/08/image_thumb5.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;supersampling：解析度扩大数倍绘制，四个或者多个像素合并平滑成一个像素，优点是效果好，缺点是计算量大，多用于显卡加速，cpu基本没发做，显卡负担也大：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/08/image_thumb6.png&#34; alt=&#34;image&#34; /&gt;&lt;br /&gt;
+当然小范围的ss可以用来改进界面字体效果，如windows字体长宽扩大两倍绘制后再平滑down sample成小尺寸，四个像素点均匀合并成一个像素点，会好看很多。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/08/image_thumb7.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>美术资源超级压缩方法</title>
+      <link>https://skywind3000.com/blog/archives/1176/</link>
+      <pubDate>Sun, 07 Aug 2011 13:01:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1176/</guid>
+      <description>&lt;p&gt;如何在质量下降不大的情况下降低一倍的占用？如何让臃肿的美术资源压缩再压缩？&lt;/p&gt;
+
+&lt;h3 id=&#34;jpeg-wdp-webp&#34;&gt;JPEG-&amp;gt;WDP/WEBP&lt;/h3&gt;
+
+&lt;p&gt;大部分项目都陆续废掉了JPEG，而最好的代替品是微软的HD Photo，wdp格式，在PSNR差不多的情况下，wdp能比JPEG小一倍多。&lt;/p&gt;
+
+&lt;p&gt;（wdp的encoder/decoder不好找的话，我这里有一份微软的库）&lt;/p&gt;
+
+&lt;p&gt;观察下面的演示图片不要缩放PDF，用100%显示才看得清楚差别&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb1.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb2.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;JPEG 16.18 KB，可以看出脸部方块已经很严重，头发等高频部分已经看不清楚，帽子和墙面质量损失严重，而下面这张WDP文件（HDPHOTO，XnView可以转换）只有13.85KB大小，质量却比JPEG好很多。（通常情况下峰值信噪比差不多的话，WDP能够小一倍）：&lt;/p&gt;
+
+&lt;p&gt;压缩比从强到弱依次是：WDP&amp;gt;WEBP&amp;gt;JPEG2000&amp;gt;JPEG。因此换用WDP格式能缩小不少资源。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[自制开源] 轻量级图形库 PixelLib</title>
+      <link>https://skywind3000.com/blog/archives/137/</link>
+      <pubDate>Sat, 09 Jan 2010 19:24:07 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/137/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;图像：64种不同的像素格式，色彩空间变换，多种图形图像变换。&lt;/li&gt;
+&lt;li&gt;质量：支持3种级别抗锯齿效果，高质量几何图形绘制。&lt;/li&gt;
+&lt;li&gt;实现：轻量级纯软件实现，100% C代码（仅700KB代码）。&lt;/li&gt;
+&lt;li&gt;优化：SSE2/MMX优化 地址：&lt;a href=&#34;https://github.com/skywind3000/pixellib&#34;&gt;https://github.com/skywind3000/pixellib&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 图像变换：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/8/8e/Pixellib_image_transform.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;支持仿射变换和透视变换，提供大量图像变换操作接口。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. 抗锯齿：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/9/9c/Pixellib_anti_aliasing.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;所有图形绘制支持3级不同程度的抗锯齿效果。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. 图像绘制：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/4/41/Pixellib_image_drawing.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;图像任意拉伸，旋转，3D旋转，并且同时进行色彩空间变换。全部采用浮点数坐标，图像移动更为平滑。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4. 几何作图：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/1/1e/Pixellib_geometry.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;全面的抗锯齿几何作图效果。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;5. 图像扭曲：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/c/c9/Pixellib_image_warp.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在源图像上布置若干关键点，然后改变这些关键点在屏幕上的对于位置即可实现图像扭曲。&lt;/p&gt;
+
+&lt;p&gt;**使用 Pixellib 来渲染 iOS 风格的图标 **&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.skywind.me/mw/images/e/e7/Pixellib_quality.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>ASCII Art Algorithm</title>
+      <link>https://skywind3000.com/blog/archives/194/</link>
+      <pubDate>Wed, 19 Sep 2007 22:57:24 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/194/</guid>
+      <description>&lt;p&gt;因为希望将图片转换成字符以后可以方便的帖到论坛或者BBS上，所以画时间写了这个算法。&lt;/p&gt;
+
+&lt;p&gt;现有很多算法都是将一个点匹配成一个字符，这样转换工作只是简单的将点亮度查表后换成ASCII字符而已，但是其实这样做的效果并不十分好，首先80x25的字符屏幕就只能表示80x25个点，无法充分发挥单个字符的字形特点，而且图片很多精度和细节都丢失了。比如下面这个连接：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.sebastian-r.de/asciiart/exe.php?image=http%3A%2F%2Fwww.sebastian-r.de%2Fasciiart%2Fpng%2Fcatherine.png&amp;amp;resolution=3&amp;amp;mode=1&amp;amp;color=%23000000&amp;amp;font-size=11&amp;amp;line-height=9&amp;amp;letter-spacing=0&amp;amp;fixed_char=W&amp;amp;new_window=on&#34;&gt;www.sebastian-r.de&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;所以我的算法主要是匹配周围一部分点到ASCII字符，这样斜线能够顺利匹配成“/”，其他形状的东西也能够顺利按照字形特点进行匹配，因此同样80x25个点，但是后者所能够表达的像素点更多，细节度更加丰富：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/ascii_art_2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/ascii_art_1.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上面的效果是作了误差扩散的，其实转换成ASCII字符时不做也可以，只是说希望转换前的局部/整体亮度等于转换后亮度，能量守恒一些而已。&lt;/p&gt;
+
+&lt;p&gt;其实如果用同 一种颜色的64个常见字符表达精度和细节度很高，对比度不高的图片还是比较困难的，可以进一步优化的方法也有几种，其一是对照片作拉普拉斯变换，将噪声过
+滤掉再取出轮廓，这样转换出来的就是仅仅包含轮廓的对比度很高的图片了。&lt;/p&gt;
+
+&lt;p&gt;或者将图片频谱中能量不高的，比较弱的频率去掉，留下能量高的频率，这样图片看起 来更干净一些，只是后面这两种方法就无法保证实时渲染了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在现MSN魔法表情</title>
+      <link>https://skywind3000.com/blog/archives/102/</link>
+      <pubDate>Tue, 19 Apr 2005 07:52:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/102/</guid>
+      <description>&lt;p&gt;下面是播放时候的效果图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/magicvv1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;MSN的魔法表情实在是COOL，兴趣之下自己也做了一个特效演示 将FLASH拖到窗口上面，然后点“特效”， 如果桌面是32位的效果非常漂亮，可以拖动图形，现在就下载：&lt;/p&gt;
+
+&lt;p&gt;演示程序 演示程序地址二 (98KB)&lt;/p&gt;
+
+&lt;p&gt;最好笑的事情是那天发现有些聊天软件的魔法表情居然是假的，它是把桌面抓下来然后用IE空间来播放flash， 顺便把抓下来的桌面当背景．或者直接用ColorKey -_-&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

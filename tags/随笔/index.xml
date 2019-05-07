@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>随笔 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/</link>
+    <description>Recent content in 随笔 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 04 Jul 2016 08:03:05 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何禁止 Win7 强制更新到 Windows 10 ?</title>
+      <link>https://skywind3000.com/blog/archives/1799/</link>
+      <pubDate>Mon, 04 Jul 2016 08:03:05 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1799/</guid>
+      <description>&lt;p&gt;岳父岳母，爹妈的 Windows 7 纷纷被自动升级成 Windows 10 各种问题（一台画面变成非全屏，解析度被莫名奇妙降低，占不满显示器、运行卡，另一台台式机无线网卡不能用，还有一台某炒股软件跑不起来，按win键弹出菜单时会顿一下）。&lt;/p&gt;
+
+&lt;p&gt;花费了我两个整天的时间帮他们降级，找了很多方法，网上大部分都不能对新版 Gwx起作用&lt;/p&gt;
+
+&lt;p&gt;终于，找到了并且永久性锁定自动升级的最直接方式了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;regedit：
+HKEY_LOCAL_MACHINE 下面
+SOFTWARE\Policies\Microsoft\Windows 下面新建项目（目录）Gwx
+然后在
+SOFTWARE\Policies\Microsoft\Windows\Gwx 下面新建 DWORD 值：
+DisableGwx=1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;好了，Windows 结扎手术完成，不用当心一不留神弄出个 Windows 10 来给大伙惹麻烦了。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

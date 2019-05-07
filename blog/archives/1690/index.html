@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>更好的使用 Vim 标签（Tab）以及 Alt键映射 | Skywind Inside</title>
+    <meta property="og:title" content="更好的使用 Vim 标签（Tab）以及 Alt键映射 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2016-05-02T15:19:01&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2016-05-02T15:19:01&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="更好的使用 Vim 标签（Tab）以及 Alt键映射">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/1690/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">更好的使用 Vim 标签（Tab）以及 Alt键映射</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2016年5月2日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>更好的使用 Vim7.0以后推出的标签（TAB）功能，同现代编辑器一样用标签（TAB）来管理多文件，代替传统 Buffer List：</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2016/05/vim3.png" alt="" /></p>
+
+<p>让 Minibufexplor/tabbar 这些上个世纪的插件都退场吧，直接使用标准的标签功能会更加舒服。 <strong>快捷键切换 TAB</strong> 第一件事情就是要搞定标签快速切换问题，
+不管是:tabn X还是 Xgt都十分低效，我们需要更快速的在各个文件之间切换。最简单的是设置 0-9 来快速切换tab（默认leader是反斜杠，即先按下\键，再按数字键），不管终端还是GVIM都兼容：</p>
+
+<pre><code>noremap &lt;silent&gt;&lt;tab&gt;m :tabnew&lt;cr&gt;
+noremap &lt;silent&gt;&lt;tab&gt;e :tabclose&lt;cr&gt;
+noremap &lt;silent&gt;&lt;tab&gt;n :tabn&lt;cr&gt;
+noremap &lt;silent&gt;&lt;tab&gt;p :tabp&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;t :tabnew&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;g :tabclose&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;1 :tabn 1&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;2 :tabn 2&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;3 :tabn 3&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;4 :tabn 4&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;5 :tabn 5&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;6 :tabn 6&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;7 :tabn 7&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;8 :tabn 8&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;9 :tabn 9&lt;cr&gt;
+noremap &lt;silent&gt;&lt;leader&gt;0 :tabn 10&lt;cr&gt;
+noremap &lt;silent&gt;&lt;s-tab&gt; :tabnext&lt;CR&gt;
+inoremap &lt;silent&gt;&lt;s-tab&gt; &lt;ESC&gt;:tabnext&lt;CR&gt;
+</code></pre>
+
+<p>其次，GVIM/MacVim 下设置 ALT-0-9 来切换TAB：</p>
+
+<p>&rdquo; keymap to switch table in gui
+    if has(&lsquo;gui_running&rsquo;)
+        set winaltkeys=no
+        set macmeta
+        noremap <silent><c-tab> :tabprev<CR>
+        inoremap <silent><c-tab> <ESC>:tabprev<CR>
+        noremap <silent><m-1> :tabn 1<cr>
+        noremap <silent><m-2> :tabn 2<cr>
+        noremap <silent><m-3> :tabn 3<cr>
+        noremap <silent><m-4> :tabn 4<cr>
+        noremap <silent><m-5> :tabn 5<cr>
+        noremap <silent><m-6> :tabn 6<cr>
+        noremap <silent><m-7> :tabn 7<cr>
+        noremap <silent><m-8> :tabn 8<cr>
+        noremap <silent><m-9> :tabn 9<cr>
+        noremap <silent><m-0> :tabn 10<cr>
+        inoremap <silent><m-1> <ESC>:tabn 1<cr>
+        inoremap <silent><m-2> <ESC>:tabn 2<cr>
+        inoremap <silent><m-3> <ESC>:tabn 3<cr>
+        inoremap <silent><m-4> <ESC>:tabn 4<cr>
+        inoremap <silent><m-5> <ESC>:tabn 5<cr>
+        inoremap <silent><m-6> <ESC>:tabn 6<cr>
+        inoremap <silent><m-7> <ESC>:tabn 7<cr>
+        inoremap <silent><m-8> <ESC>:tabn 8<cr>
+        inoremap <silent><m-9> <ESC>:tabn 9<cr>
+        inoremap <silent><m-0> <ESC>:tabn 10<cr>
+    endif</p>
+
+<p>或者在 MacVim 下还可以用 CMD_0-9 快速切换，按着更舒服：</p>
+
+<pre><code>if has(&quot;gui_macvim&quot;)
+    set macmeta
+    noremap &lt;silent&gt;&lt;c-tab&gt; :tabprev&lt;CR&gt;
+    inoremap &lt;silent&gt;&lt;c-tab&gt; &lt;ESC&gt;:tabprev&lt;CR&gt;
+    noremap &lt;silent&gt;&lt;d-1&gt; :tabn 1&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;d-2&gt; :tabn 2&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;d-3&gt; :tabn 3&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;d-4&gt; :tabn 4&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;d-5&gt; :tabn 5&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;d-6&gt; :tabn 6&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;d-7&gt; :tabn 7&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;d-8&gt; :tabn 8&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;d-9&gt; :tabn 9&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;d-0&gt; :tabn 10&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;d-1&gt; &lt;ESC&gt;:tabn 1&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;d-2&gt; &lt;ESC&gt;:tabn 2&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;d-3&gt; &lt;ESC&gt;:tabn 3&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;d-4&gt; &lt;ESC&gt;:tabn 4&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;d-5&gt; &lt;ESC&gt;:tabn 5&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;d-6&gt; &lt;ESC&gt;:tabn 6&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;d-7&gt; &lt;ESC&gt;:tabn 7&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;d-8&gt; &lt;ESC&gt;:tabn 8&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;d-9&gt; &lt;ESC&gt;:tabn 9&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;d-0&gt; &lt;ESC&gt;:tabn 10&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;d-o&gt; :browse tabnew&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;d-o&gt; &lt;ESC&gt;:browse tabnew&lt;cr&gt;
+endif
+</code></pre>
+
+<p>这下很舒服了，和大部分主流编辑器一样切换tab十分轻松。那终端下 alt没法很好的映射怎么办呢？ <strong>终端下映射 ALT-0-9 快速切换标签</strong> 不推荐把中断里的ALT键设置成ESC+，大部分终端（XShell, SecureCRT, iTerm, gnome-terminal）都提供ALT键改为ESC+的模式，即按下ALT-A，终端会连续发送ESC(27)和
+A(65)两个字节，这样在emacs下挺好用，但是在vim下就糟糕了，比如你映射了<ESC>A来代替 ALT-A，那么当你用ESC退出insert模式时，一秒钟内马上按下A来在行末追加内容，Vim会去触发你之前设置的ALT-A的功能，这就对 Vim 原有的功能造成了扰乱，那终端下如何正确设置 ALT功能键呢？
+我们使用终端自定义按键序列，大部分终端都支持自定义按键发送特定字符串（XShell,SecureCRT,iTerm,gnome-terminal），比如我们可以把ALT-1设置成发送 <code>&lt;ESC&gt;]{0}1~</code> 这个字符串，而 ALT-2设置成发送 <code>&lt;ESC&gt;]{0}2~</code> 这个字符串，于是我们可以在Vim里面建立快捷映射：</p>
+
+<pre><code>&quot; set terminal and map alt+n or alt+shift+n to &quot;&lt;ESC&gt;]{0}n~&quot;
+if !has('gui_running')
+    noremap &lt;silent&gt;&lt;ESC&gt;]{0}1~ :tabn 1&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;ESC&gt;]{0}2~ :tabn 2&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;ESC&gt;]{0}3~ :tabn 3&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;ESC&gt;]{0}4~ :tabn 4&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;ESC&gt;]{0}5~ :tabn 5&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;ESC&gt;]{0}6~ :tabn 6&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;ESC&gt;]{0}7~ :tabn 7&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;ESC&gt;]{0}8~ :tabn 8&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;ESC&gt;]{0}9~ :tabn 9&lt;cr&gt;
+    noremap &lt;silent&gt;&lt;ESC&gt;]{0}0~ :tabn 10&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;ESC&gt;]{0}1~ &lt;ESC&gt;:tabn 1&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;ESC&gt;]{0}2~ &lt;ESC&gt;:tabn 2&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;ESC&gt;]{0}3~ &lt;ESC&gt;:tabn 3&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;ESC&gt;]{0}4~ &lt;ESC&gt;:tabn 4&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;ESC&gt;]{0}5~ &lt;ESC&gt;:tabn 5&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;ESC&gt;]{0}6~ &lt;ESC&gt;:tabn 6&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;ESC&gt;]{0}7~ &lt;ESC&gt;:tabn 7&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;ESC&gt;]{0}8~ &lt;ESC&gt;:tabn 8&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;ESC&gt;]{0}9~ &lt;ESC&gt;:tabn 9&lt;cr&gt;
+    inoremap &lt;silent&gt;&lt;ESC&gt;]{0}0~ &lt;ESC&gt;:tabn 10&lt;cr&gt;
+endif
+</code></pre>
+
+<p>如此由于终端上映射了 ALT-0-9 为 <code>&lt;ESC&gt;]{0}N~</code> 所以在 XShell/SecureCRT/iTerm下按 ALT-0-9 可以发送对应的字符串给 Vim并被上面的配置代码识别。 有人问XShell/SecureCRT下面ALT-0-9是用来快速切换终端标签的，怎么办呢？好办，在终端下把 ALT-
+SHIFT-0-9映射成刚才的字符串即可啊，这样保证不影响终端快捷键的同时，方便的使用<M-S-0/9>来切换标签和很方便，或者用先前的0-9来代替。 <strong>避免按键冲突</strong> 有人说这会不会和<ESC>退出insert后马上按]又发生冲突？其实不用当心，<ESC>后很少有机会按[，即使你按了]也很少有机会继续迅速按下{,0,}三个按键，连终端下F5即被映射为字符串：<code>&lt;ESC&gt;]15~</code>
+所以你放心大胆的用<code>&lt;ESC&gt;]{</code>开头吧，即使你正常使用下按了马上按]，你会发现VIM等待了1秒钟，发现期间没有后续的{0}1~，就马上判断不是该映射，所以正常执行]功能。 这和 Vim中按下F1 的情况一样，xterm终端下被映射为字符串<code>&lt;ESC&gt;OP</code>，你在XShell/iTerm/SecureCRT下面敲下 F1实际会发送：0x1b (ESC), 0x4f(O), 0x50(P)
+三字字节到服务端，所以你在Vim下一秒钟内快速敲入<ESC>OP三个键和F1键的功能相同&ndash;打开帮助。那么你可能会问，如果我想按ESC离开INSERT模式后马上按O在光标上面插入一行，在VIM里到底是被判断成我想要的模式？还是F1的前缀呢？其实是靠超时（help
+timeout），你马上离开插入模式后按了O，VIM会等待一秒钟知道确认没有后续追加按键了，才判断为<code>离开插入模式</code>和<code>向上插入一行</code>两个独立的动作，否则在timeout（默认1秒）内你又按了下P，那VIM就真的以为你按下 F1了。
+如果你想避免退出插入模式马上按O,P被识别成F1，那么你可以先按O，然后等一秒过了真的插入一行了，再按下P，问题不大。或者用ko来代替，又或者直接使用GVIM/MacVim就没这个歧义了。 所以在终端下通过配置键盘映射，当按下ALT-X时，发送<code>&lt;ESC&gt;]{0}X~</code>字符串，可以比直接把ALT键设置成+能更好的减少按键歧义，正常使用很少后紧跟]的。 <strong>设置标签文本</strong>
+默认的标签文本包含文件路径，十分凌乱，需要进一步修改，让它只显示文件名：</p>
+
+<pre><code>&quot; make tabline in terminal mode
+function! Vim_NeatTabLine()
+    let s = ''
+    for i in range(tabpagenr('$'))
+        &quot; select the highlighting
+        if i + 1 == tabpagenr()
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
+        endif
+        &quot; set the tab page number (for mouse clicks)
+        let s .= '%' . (i + 1) . 'T'
+        &quot; the label is made by MyTabLabel()
+        let s .= ' %{Vim_NeatTabLabel(' . (i + 1) . ')} '
+    endfor
+    &quot; after the last tab fill with TabLineFill and reset tab page nr
+    let s .= '%#TabLineFill#%T'
+    &quot; right-align the label to close the current tab page
+    if tabpagenr('$') &gt; 1
+        let s .= '%=%#TabLine#%999XX'
+    endif
+    return s
+endfunc
+&quot; get a single tab name 
+function! Vim_NeatBuffer(bufnr, fullname)
+    let l:name = bufname(a:bufnr)
+    if getbufvar(a:bufnr, '&amp;modifiable')
+        if l:name == ''
+            return '[No Name]'
+        else
+            if a:fullname 
+                return fnamemodify(l:name, ':p')
+            else
+                return fnamemodify(l:name, ':t')
+            endif
+        endif
+    else
+        let l:buftype = getbufvar(a:bufnr, '&amp;buftype')
+        if l:buftype == 'quickfix'
+            return '[Quickfix]'
+        elseif l:name != ''
+            if a:fullname 
+                return '-'.fnamemodify(l:name, ':p')
+            else
+                return '-'.fnamemodify(l:name, ':t')
+            endif
+        else
+        endif
+        return '[No Name]'
+    endif
+endfunc
+&quot; get a single tab label
+function! Vim_NeatTabLabel(n)
+    let l:buflist = tabpagebuflist(a:n)
+    let l:winnr = tabpagewinnr(a:n)
+    let l:bufnr = l:buflist[l:winnr - 1]
+    return Vim_NeatBuffer(l:bufnr, 0)
+endfunc
+&quot; get a single tab label in gui
+function! Vim_NeatGuiTabLabel()
+    let l:num = v:lnum
+    let l:buflist = tabpagebuflist(l:num)
+    let l:winnr = tabpagewinnr(l:num)
+    let l:bufnr = l:buflist[l:winnr - 1]
+    return Vim_NeatBuffer(l:bufnr, 0)
+endfunc
+&quot; setup new tabline, just like %M%t in macvim
+set tabline=%!Vim_NeatTabLine()
+set guitablabel=%{Vim_NeatGuiTabLabel()}
+</code></pre>
+
+<p>在GUI模式下，还可以配置标签的TIPS，鼠标移动到标签上，会自动显示该TIPS：</p>
+
+<pre><code>&quot; get a label tips
+function! Vim_NeatGuiTabTip()
+    let tip = ''
+    let bufnrlist = tabpagebuflist(v:lnum)
+    for bufnr in bufnrlist
+        &quot; separate buffer entries
+        if tip != ''
+            let tip .= &quot; \n&quot;
+        endif
+        &quot; Add name of buffer
+        let name = Vim_NeatBuffer(bufnr, 1)
+        let tip .= name
+        &quot; add modified/modifiable flags
+        if getbufvar(bufnr, &quot;&amp;modified&quot;)
+            let tip .= ' [+]'
+        endif
+        if getbufvar(bufnr, &quot;&amp;modifiable&quot;)==0
+            let tip .= ' [-]'
+        endif
+    endfor
+    return tip
+endfunc
+set guitabtooltip=%{Vim_NeatGuiTabTip()}
+</code></pre>
+
+<p><strong>快速在标签中打开文件</strong> 除了:tabedit 外，Vim自带netrw插件可以浏览目录，是代替nerdtree的好东西，使用:Explore打开netrw的文件浏览器后，选中文件按t键即可以再新标签打开对应文件了。 <strong>快捷键在标签打开新文件</strong> 我们配置按下 ALT-O 的时候在当前位置打开文件浏览器：
+    &ldquo; Open Explore in new tab with current directory
+    function! Open_Explore(where)
+        let l:path = expand(&ldquo;%:p:h&rdquo;)
+        if l:path == &ldquo;
+            let l:path = getcwd()
+        endif
+        if a:where == 0
+            exec &lsquo;Explore &lsquo;.fnameescape(l:path)
+        elseif a:where == 1
+            exec &lsquo;vnew&rsquo;
+            exec &lsquo;Explore &lsquo;.fnameescape(l:path)
+        else
+            exec &lsquo;tabnew&rsquo;
+            exec &lsquo;Explore &lsquo;.fnameescape(l:path)
+        endif
+    endfunc</p>
+
+<p>这样可以把 call Open_Explore(2) 映射成ALT-O，这样如果在编辑一个文件时候按下 ALT-O，那么会在该文件的路径下展开一个新的tab并显示netrw的文件列表。 如果使用 GVIM/MacVim可以更优雅点，直接在当前文件的路径下，使用系统的文件查找窗口，选中文件后在新的Tab里打开：</p>
+
+<pre><code>function! s:Filter_Push(desc, wildcard)
+    let g:browsefilter .= a:desc . &quot; (&quot; . a:wildcard . &quot;)\t&quot; . a:wildcard . &quot;\n&quot;
+endfunc
+let g:browsefilter = ''
+call s:Filter_Push(&quot;All Files&quot;, &quot;*&quot;)
+call s:Filter_Push(&quot;C/C++/Object-C&quot;, &quot;*.c;*.cpp;*.cc;*.h;*.hh;*.hpp;*.m;*.mm&quot;)
+call s:Filter_Push(&quot;Python&quot;, &quot;*.py;*.pyw&quot;)
+call s:Filter_Push(&quot;Text&quot;, &quot;*.txt&quot;)
+call s:Filter_Push(&quot;Vim Script&quot;, &quot;*.vim&quot;)
+function! Open_Browse(where)
+    let l:path = expand(&quot;%:p:h&quot;)
+    if l:path == '' | let l:path = getcwd() | endif
+    if exists('g:browsefilter') &amp;&amp; exists('b:browsefilter')
+        if g:browsefilter != ''
+            let b:browsefilter = g:browsefilter
+        endif
+    endif
+    if a:where == 0
+        exec 'browse e '.fnameescape(l:path)
+    elseif a:where == 1
+        exec 'browse vnew '.fnameescape(l:path)
+    else
+        exec 'browse tabnew '.fnameescape(l:path)
+    endif
+endfunc
+</code></pre>
+
+<p>然后把 <code>call Open_Browse(2)</code> 映射成 ALT-O。</p>
+
+<p><strong>寻找Tag时在新标签打开</strong> 以前寻找tag时使用<C-]>，现在改为<c-w><c-]>即可在新标签打开tag定义。 <strong>Quickfix中在新标签打开文件</strong> 编译或者 grep 的时候，信息输出到 Quickfix窗口中，按回车就容易把buf给切换走，使用标签后设置下面一项，即可更改quickfix行为为：如果有已打开文件，先复用，没有的话使用标签：
+    set switchbuf=useopen,usetab,newtab</p>
+
+<p>如此Tab已经很好用了，再配置一些快捷键按ALT-方向键来tabmove，ALT-w来关闭标签，基本上和其他现代编辑器行为很类似了。</p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/1683/">超越 SDL/DirectDraw/GDI 性能的位图库</a></li>
+        
+        <li><a href="/blog/archives/1681/">后端工程师招聘启示</a></li>
+        
+        <li><a href="/blog/archives/1675/">使用 Markdown 写 Wordpress</a></li>
+        
+        <li><a href="/blog/archives/1652/">ATOM 同 Vim/Emacs/Sublime 的深度比较</a></li>
+        
+        <li><a href="/blog/archives/1638/">Atom 编辑器的插件开发</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/vim">Vim</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

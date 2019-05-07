@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>MINI-FOOLTRIS 游戏代码 | Skywind Inside</title>
+    <meta property="og:title" content="MINI-FOOLTRIS 游戏代码 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2005-04-14T07:25:55&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2005-04-14T07:25:55&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="MINI-FOOLTRIS 游戏代码">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/88/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">MINI-FOOLTRIS 游戏代码</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2005年4月14日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a></span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>不到两百行的俄罗斯方块游戏，教学用：</p>
+
+<pre><code class="language-cpp">/*=====================================================================
+// FOOLTRS.C: Fool tetris game v1.0 by skywind
+// 最简俄罗斯，游戏设计入门傻瓜版，林伟 1999年8月11日
+//
+// 游戏并无任何扩展，仅以最简单的方式向人说明俄罗斯方块的基本功能实现
+// 程序运行于MS-DOS，虽然现在写游戏的平台早已变化了许多，
+// 但是我尽量容入了一些不变理论，希望才入门的游戏设计者能得到一些帮助
+// 用方向键/空格游戏，代码不超过两百行，初学C者皆能读懂，请用TC20编译
+//
+//=====================================================================*/
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;dos.h&gt;
+ 
+/*---------------------------------------------------------------------
+// 基本定义：地图和砖块
+//---------------------------------------------------------------------*/
+int map[26][10]; /* 游戏地图定义: 所有砖块将被描述在地图中 ............*/
+ 
+typedef struct { int d[4][4]; } Block;  /* 砖块结构定义 ...............*/
+int BlockList[7][4][4] = {      /* 七种传统的方块定义 .................*/
+  { { 0, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 1, 0, 0 }, { 0, 1, 1, 0 } },
+  { { 0, 0, 0, 0 }, { 0, 0, 2, 0 }, { 0, 0, 2, 0 }, { 0, 2, 2, 0 } },
+  { { 0, 3, 0, 0 }, { 0, 3, 0, 0 }, { 0, 3, 0, 0 }, { 0, 3, 0, 0 } },
+  { { 0, 4, 0, 0 }, { 0, 4, 4, 0 }, { 0, 0, 4, 0 }, { 0, 0, 0, 0 } },
+  { { 0, 0, 5, 0 }, { 0, 5, 5, 0 }, { 0, 5, 0, 0 }, { 0, 0, 0, 0 } },
+  { { 0, 6, 6, 6 }, { 0, 0, 6, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } },
+  { { 0, 0, 0, 0 }, { 0, 7, 7, 0 }, { 0, 7, 7, 0 }, { 0, 0, 0, 0 } }};
+unsigned char cmap[]={0,0x72,0x30,0x47,0x57,0x27,0x60,0x74}; /* 颜色表 */
+long GameMode = 0, GameSpeed = -1, GameScore = 0; /* 全局定义：各状态 .*/
+ 
+/*---------------------------------------------------------------------
+// 视频相关数据定义
+//---------------------------------------------------------------------*/
+char far* TextBuf = (char far*)0xb8000000l; /* 文本状态的显存地址 .....*/
+char TextBck[20][10];                       /* 文本状态的二级缓存 .....*/
+#define SCREEN(x,y) (TextBuf[((y) * 160) + ((x) * 2)])   /* 显存中字符 */
+#define SCOLOR(x,y) (TextBuf[((y) * 160) + ((x) * 2) + 1]) /* 屏幕颜色 */
+ 
+/*---------------------------------------------------------------------
+// 基本砖块操作函数
+//---------------------------------------------------------------------*/
+void Rotate(const Block* src, Block* dest)  /* 旋转砖块src到dest ......*/
+{
+    int i, j;
+    for (j = 0; j &lt; 4; j++) for (i = 0; i &lt; 4; i++)
+    dest-&gt;d[i][j] = src-&gt;d[j][3 - i];
+}
+ 
+int MapCheck(int x, int y) /* 检测地图中某坐标是否有砖块 ..............*/
+{
+    if (x &lt; 0 || x &gt;=10 || y &lt; 0 || y &gt;= 26) return -1;
+    return map[y][x];
+}
+ 
+int BlockCheck(int x, int y, const Block* src) /* 检测砖块位置合法性 ..*/
+{
+    int i, j;
+    for (j = 0; j &lt; 4; j++) for (i = 0; i &lt; 4; i++)
+        if (MapCheck(x + j, y - i) &amp;&amp; src-&gt;d[i][j]) return 0;
+    return 1;
+}
+ 
+void CreateBlock(Block* src) /* 随机创建一个砖块，然后保存到src .......*/
+{
+    int i,j,k = rand() % 7;
+    Block t;
+    for (i = 0; i &lt; 4; i++) for (j = 0; j &lt; 4; j++)
+        src-&gt;d[i][j] = BlockList[k][i][j];
+    for (i = rand() % 4; i &gt; 0; i--, *src = t) Rotate(src, &amp;t);
+}
+ 
+long TimePass = 0, TimeExit = -1, GameTime = -1, w;
+void GameMain(void);
+/*---------------------------------------------------------------------
+// 程序入口函数
+//---------------------------------------------------------------------*/
+void main(void)
+{
+    clrscr();                               /* 初始化：清屏 ...........*/
+    randomize();                            /* 初始化：随机数种子 .....*/
+    for (w = 0; w &lt; 26; w++) memset(map[w], 0, sizeof(int) * 10);
+    for (w = 0; w &lt; 22; w++)                /* 初始化：绘制边框 .......*/
+        SCREEN(w,0)=254, SCOLOR(w,0)=8, SCREEN(w,21)=254, SCOLOR(w,21)=8,
+        SCREEN(0,w)=254, SCOLOR(0,w)=8, SCREEN(21,w)=254, SCOLOR(21,w)=8;
+    GameSpeed = 2;                          /* 初始化：设置速度 .......*/
+ 
+    GameMain();                             /* 进入游戏主程序 .........*/
+}
+ 
+int readkey(void)           /* 无等待的接收一个键盘消息 ...............*/
+{
+    if (!kbhit()) return 0; /* 如果当前没有按键消息则直接返回 .........*/
+    if ((w = getch()) == 0) return getch();   /* 返回非控制键 .........*/
+    return (int)w;
+}
+ 
+int SpeedX[10] = { 17, 15, 13, 11, 9, 7, 5, 4, 3, 2 }; /* 速度级别 ....*/
+int x = 3, y = 20, v = 0, level;    /* 全局定义：砖块的坐标，速度 .....*/
+Block A, B, C;                      /* 全局定义：A, B, C三个活动砖块 ..*/
+ 
+void GameDriver(void);
+void GameView(void);
+ 
+/*---------------------------------------------------------------------
+// 游戏逻辑核心(重要): 每秒循环18.2次，处理砖块移动/下落/消除等逻辑
+//---------------------------------------------------------------------*/
+void GameMain(void)
+{
+    long key, i, j, m, n, old_time = 0;         /* 定义各变量 .........*/
+    CreateBlock(&amp;A); CreateBlock(&amp;C);           /* 初始化砖块 .........*/
+ 
+    for (GameMode = 0, v = SpeedX[GameSpeed]; GameMode == 0; TimePass++)
+    {
+        while (clock() == old_time);   /* 速度控制，clock()为 18.2Hz ..*/
+        old_time = clock();
+        nosound();
+        key = readkey();               /* 读入一个键盘消息 ............*/
+        if (key == 75) if (BlockCheck(x - 1, y, &amp;A)) x--;   /* 左移 ...*/
+        if (key == 77) if (BlockCheck(x + 1, y, &amp;A)) x++;   /* 右移 ...*/
+        if (key == 80) v = 0;                   /* 下落: SET v = 0 ....*/
+        if (key == ' ') {                       /* 直接下落 ...........*/
+            for (i = y; i &gt;= 0; i--) if (!BlockCheck(x, i - 1, &amp;A)) break;
+            y = i; v = 0;
+        }
+        if (key == 27) GameMode = 1;            /* ESC: 退出游戏 ......*/
+        if (key == 72) {                        /* UP: 转动砖块 .......*/
+            Rotate(&amp;A, &amp;B);
+            if (BlockCheck(x, y, &amp;B)) A = B;
+        }
+        if (--v &lt;= 0) {                     /* 到达了下落的时间 .......*/
+            v = SpeedX[GameSpeed];          /* 重置砖块速度 ...........*/
+            if (BlockCheck(x, y - 1, &amp;A) == 0) {/* 如果到达map底部 ....*/
+                for (i=0, m=y; i&lt;4; i++,m--) for (j=0,n=x; j&lt;4; j++,n++) 
+                    if (MapCheck(n,m)==0 &amp;&amp; A.d[i][j]) /* 将A复制到map */
+                        map[m][n] = A.d[i][j];
+                A = C;                          /* 将C复制到A .........*/
+                CreateBlock(&amp;C);                /* 创建新的C砖块 ......*/
+                if (y &gt;= 20) GameMode = -1;     /* 判断死亡 ...........*/
+                else y = 20, x = 3;
+                GameDriver();                   /* 消除完成的行 .......*/
+            }   else y--;                       /* 否则：下降 .........*/
+        }
+        GameView();                             /* 显示: 更新屏幕 .....*/
+    }
+    while (kbhit()) getch();                    /* 按任意键结束 .......*/
+    while (!kbhit());
+    nosound();                                  /* 关闭扬声器 .........*/
+}
+ 
+void GameDriver(void)      /* 处理消除行 ..............................*/
+{
+    int inc[5]={10,100,300,600,1000}, count = 0, x, y, k, i, j;
+ 
+    for (y = 0; y &lt; 25; y++) for (; ; count++) { /* 扫描map测试消行 ...*/
+        for (x = 0, k = 0; x &lt; 10; x++) k += (map[y][x])? 1 : 0;
+        if (k &lt; 10) break;              /* 计算一行是否可以消去 .......*/
+        for (j = y; j &lt; 25; j++) memcpy(map[j], map[j+1], 10 * sizeof(int));
+    }
+    if ((GameScore / 10000) != ((GameScore + inc[count]) / 10000))
+    GameSpeed = (GameSpeed + 1) % 10;       /* 计算速度升级 ...........*/
+    GameScore += inc[count];                /* 计算新的分数 ...........*/
+    sound((count == 0)? 75 : 900);
+}
+ 
+void GameView(void)        /* 绘制：将map里面的砖块绘制到屏幕 .........*/
+{
+    int i, j, m, n;
+ 
+    for (i=0; i&lt;10; i++) for (j=0; j&lt;20; j++) /* 更新TextBck二级缓存 ..*/
+        TextBck[j][i] = map[j][i];
+    for (i=0, n=x; i&lt;4; i++, n++) for (j = 0, m=y; j &lt; 4; j++, m--)
+        if (m&gt;=0&amp;&amp;m&lt;20 &amp;&amp; n&gt;=0&amp;&amp;n&lt;10 &amp;&amp; A.d[j][i]) TextBck[m][n] = A.d[j][i];
+ 
+    for (i = 0; i &lt; 10; i++) for (j = 0; j &lt; 20; j++) { /* 显示地图 ...*/
+        m = TextBck[19 - j][i], n = i * 2;
+        SCREEN(n+1,j+1) = (m)? '[':'.', SCOLOR(n+1,j+1) = (m)? cmap[m] : 8;
+        SCREEN(n+2,j+1) = (m)? ']':'.', SCOLOR(n+2,j+1) = (m)? cmap[m] : 8;
+    }
+    for (j = 0; j &lt; 4; j++) for (i = 0; i &lt; 4; i++) {   /* 显示下个砖块*/
+        m = C.d[j][i], n = 160 * (j + 8) + 4 * i + 58;
+        TextBuf[n+0] = (m)? '[':'.', TextBuf[n+1] = (m)? cmap[m] : 8;
+        TextBuf[n+2] = (m)? ']':'.', TextBuf[n+3] = (m)? cmap[m] : 8;
+    }
+    if (TimePass &amp; 3) return;
+    textcolor(0xa-8);
+    gotoxy(30,1); printf(&quot;POSITION: [%2d,%2d]&quot;, x, y);  /* 显示分数等 .*/
+    gotoxy(30,2); printf(&quot;SPEED: %d&quot;, GameSpeed);
+    gotoxy(30,6); printf(&quot;SCORE: &quot;); cprintf(&quot;%ld&quot;, GameScore);
+    gotoxy(30,5); printf(&quot;TIME:  &quot;);                    /* 显示时间 ...*/
+    m = (int)(TimePass / 18.2) / 60, n = (int)(TimePass / 18.2) % 60;
+    cprintf(&quot;%d%d:%d%d&quot;, (m/10), (m%10), (n/10), (n%10));
+    gotoxy(1, 23);
+}
+</code></pre>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/83/">MINI-FOOLFLY 游戏代码</a></li>
+        
+        <li><a href="/blog/archives/66/">艺术化的程序设计</a></li>
+        
+        <li><a href="/blog/archives/60/">关于路径搜索算法的实用性优化</a></li>
+        
+        <li><a href="/blog/archives/91/">虚拟机及VmBasic编译引擎说明</a></li>
+        
+        <li><a href="/blog/archives/71/">PL0 编译程序Turbo Pascal代码</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/dos">Dos</a></li>
+                                
+                                <li><a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F">小游戏</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

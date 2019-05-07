@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>闲聊 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/</link>
+    <description>Recent content in 闲聊 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 14 Mar 2016 12:26:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Atom 编辑器的插件开发</title>
+      <link>https://skywind3000.com/blog/archives/1638/</link>
+      <pubDate>Mon, 14 Mar 2016 12:26:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1638/</guid>
+      <description>&lt;p&gt;老王卖瓜，自卖自夸，Atom 比较方便的地方是可以用 javascript/coffee 给 Atom写插件，并且写起来很简单，我刚按说明给 Atom 写了一个插件： &lt;a href=&#34;https://atom.io/packages/atom-shell-commands&#34;&gt;atom-shell-commands&lt;/a&gt; 用户自定义 Shell 命令，类似 NotePad++ 中的 &amp;ldquo;Run
+Commands”，EditPlus/UltraEdit里面的&amp;rdquo;User Tool&amp;rdquo;，以及 GEdit 中的 &amp;ldquo;External Tool&amp;rdquo; 和 TextMate 里的 “Shell Command”。 1. 用户可以自定义工具，并且配置到 Atom 中，比如一键调用编译器，一键运行， 2. 输出结果会显示再底部的 bottom panel 中 3.
+点击错误输出可以跳转到对应有错误的文件上去 4. 自定义正则表达式匹配错误输出中包含的文件名和行号。 5. 全平台支持，再 Mac/Ubuntu/Windows 下充分的测试过。 初始化时，再你的用户配置中（Atom File-&amp;gt;Open Your Config或者 ~/.atom/config.cson），写入类似：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[转载] 《论语》魔兽版</title>
+      <link>https://skywind3000.com/blog/archives/705/</link>
+      <pubDate>Wed, 20 Apr 2011 08:14:44 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/705/</guid>
+      <description>&lt;p&gt;曾子曰：吾日三省吾身。&lt;br /&gt;
+曾子墨说：我一天要检查三次装备、药水和道具&lt;/p&gt;
+
+&lt;p&gt;曾子曰：君子思不出其位。&lt;br /&gt;
+曾子墨说：牧师专心加血，不要乱跑。&lt;/p&gt;
+
+&lt;p&gt;子曰：父母在，不远游。游必有方。&lt;br /&gt;
+孔子说：奶妈奶爸在后面，战士不要跑太远，即使要走也是带着盾牌走。&lt;/p&gt;
+
+&lt;p&gt;子曰：以约失之者，鲜矣。&lt;br /&gt;
+孔子说：因为公会活动而下副本跑掉，听着都新鲜。&lt;/p&gt;
+
+&lt;p&gt;子曰：德不孤，必有邻。&lt;br /&gt;
+孔子说：德鲁依单干不好，必须有同伴。&lt;/p&gt;
+
+&lt;p&gt;子曰：吾未见刚者。&lt;br /&gt;
+孔子说：我连一件甲板都没有。&lt;/p&gt;
+
+&lt;p&gt;子曰：兴于诗，立于礼。成于乐。&lt;br /&gt;
+孔子说：联盟的优点在于有爱唱诗的牧师英雄和彬彬有礼的骑士，大功告成自然众人高兴了。&lt;/p&gt;
+
+&lt;p&gt;子曰：吾自卫反鲁，然后乐正。&lt;br /&gt;
+孔子说：有个德鲁依在野外偷袭我，我快乐的原因是因为我打跑了他。&lt;/p&gt;
+
+&lt;p&gt;子曰：吾未见好德如好色者也。&lt;br /&gt;
+孔子说：我还从来没见过像色狼一样喜欢德鲁伊的人。&lt;/p&gt;
+
+&lt;p&gt;子曰：后生可畏，焉知来者之不如今也？四十、五十而无闻焉，斯亦不足畏也已。&lt;br /&gt;
+子曰：新来的玩家似乎很牛b，你怎么知道他不是用钱买的？有的战士四五十级还不会嘲讽，下副本根本不鸟他。&lt;/p&gt;
+
+&lt;p&gt;子曰：不患人之不己知，患其不能也。&lt;br /&gt;
+孔子说：我不怕你看我的装备，就怕你近不了身。&lt;/p&gt;
+
+&lt;p&gt;子曰：由！知德者鲜矣。&lt;br /&gt;
+孔子说：哟，知道怎么善用德鲁依很少。&lt;/p&gt;
+
+&lt;p&gt;子曰：工欲善其事，必先利其器。&lt;br /&gt;
+孔子说：你想要去燃烧，还不快去找把像样的武器。&lt;/p&gt;
+
+&lt;p&gt;子曰：性相近也，习相远也。&lt;br /&gt;
+孔子说：职业相同，天赋配点会相差很远。&lt;/p&gt;
+
+&lt;p&gt;子曰：唯上知与下愚不移。&lt;br /&gt;
+孔子说：只要超级高手和初级菜鸟，pk的时候才不怎么动。&lt;/p&gt;
+
+&lt;p&gt;子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？”&lt;br /&gt;
+孔子说：玩魔兽要多学习，这还用说么？有部落的朋友来较量武艺，不也是很开心的事么？&lt;/p&gt;
+
+&lt;p&gt;子曰：“吾十有五而志于学，三十而立，四十而不惑，五十而知天命，六十而耳顺，七十而从心所欲不逾矩。”&lt;br /&gt;
+孔子说：我15级了还想着继续学习，30级开始出去闯，40级可还是什么都没捞到，50级才学会复活术，60级等了大半年，70级终于可以随心所欲去燃烧了。&lt;/p&gt;
+
+&lt;p&gt;子曰：“攻乎异端，斯害也已。”&lt;br /&gt;
+孔子说：副本里面乱引怪，这会害了自己的。&lt;/p&gt;
+
+&lt;p&gt;孔子谓季氏，“八佾舞于庭，是可忍，孰不可忍也！”&lt;br /&gt;
+孔子对季氏 “对方八个60级都跑到你们新手区杀人了，这都可以忍受，还有什么不能忍受呢”&lt;/p&gt;
+
+&lt;p&gt;子曰：“苟志于仁矣，无恶也。”&lt;br /&gt;
+孔子说：喜欢外形美观的玩家一般喜欢联盟，不喜欢部落&lt;/p&gt;
+
+&lt;p&gt;子曰：“唯仁者能好人，能恶人。”&lt;br /&gt;
+孔子说：只有追求游戏技术的高手，才既用联盟，又用部落&lt;/p&gt;
+
+&lt;p&gt;子曰：“朝闻道，夕死可矣。”&lt;br /&gt;
+孔子说：“想45分钟dk就要知道路，迟了人质就要死了”&lt;/p&gt;
+
+&lt;p&gt;子曰：“德之不修，学之不讲，闻义不能徙，不善不能改，是吾忧也。”&lt;br /&gt;
+孔子说：德鲁依肉搏不强，魔法一般，看到有好的野兵不能做宠物，玩了这么久又不能换职业，我真郁闷啊&lt;/p&gt;
+
+&lt;p&gt;子曰：“回也非助我者也，于吾言无所不说。”&lt;br /&gt;
+老师说：被别人逼着无敌加回城，其实我一点也不爽。&lt;/p&gt;
+
+&lt;p&gt;季路问事鬼神。子曰：“未能事人，焉能事鬼？”曰：“敢问死。”曰：“未知生，焉知死？”&lt;br /&gt;
+季路来问怎么玩鬼族。老师说：“人族都没玩好玩什么鬼？”季路又问：“怎么打败对方？”老师说：“怎么保命都不知道，学什么打败别人？”&lt;/p&gt;
+
+&lt;p&gt;子曰: 二三子以我为隐乎 吾无隐乎尔&lt;br /&gt;
+孔子说: 你们以为我要隐身么，对付你们两三个菜鸟还用隐身？&lt;/p&gt;
+
+&lt;p&gt;子曰：邦有道，危言危行。&lt;br /&gt;
+孔子说：下副本有规则，不要刷屏，小心行动&lt;/p&gt;
+
+&lt;p&gt;子在川上，曰：“逝者如斯夫！不舍昼夜。&lt;br /&gt;
+孔子边上厕所边说：时间过得好快，排队排了一天一夜还进不去&lt;/p&gt;
+
+&lt;p&gt;子曰：朽木不可雕也。&lt;br /&gt;
+孔子说：拿着这个烂盾牌还想做MT？&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>今天要上课</title>
+      <link>https://skywind3000.com/blog/archives/3/</link>
+      <pubDate>Sat, 09 Apr 2011 21:11:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/3/</guid>
+      <description>周日周一要参加《绩效管理》培训，周二要给新人讲《服务端开发》，现在新版本的讲义还没有改好，累呀。</description>
+    </item>
+    
+    <item>
+      <title>断点-C语言</title>
+      <link>https://skywind3000.com/blog/archives/199/</link>
+      <pubDate>Sat, 09 Apr 2011 21:02:20 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/199/</guid>
+      <description>&lt;p&gt;看着那密密麻麻的反汇编，&lt;/p&gt;
+
+&lt;p&gt;连眼睛红了都没有发现，&lt;/p&gt;
+
+&lt;p&gt;听到你说错误很难重现，&lt;/p&gt;
+
+&lt;p&gt;人数还一点一点再往下减；&lt;/p&gt;
+
+&lt;p&gt;我转过我的脸，&lt;/p&gt;
+
+&lt;p&gt;不和你争辩，&lt;/p&gt;
+
+&lt;p&gt;未检测边界肯定，&lt;/p&gt;
+
+&lt;p&gt;非常的危险；&lt;/p&gt;
+
+&lt;p&gt;发誓从今天，&lt;/p&gt;
+
+&lt;p&gt;不再用 C语言，&lt;/p&gt;
+
+&lt;p&gt;我真想改用脚本重构好几遍！&lt;/p&gt;
+
+&lt;p&gt;我点上一根烟，&lt;/p&gt;
+
+&lt;p&gt;在这个需求善变的年代，&lt;/p&gt;
+
+&lt;p&gt;再好的程序员也不能幸免；&lt;/p&gt;
+
+&lt;p&gt;打开的源文件，&lt;/p&gt;
+
+&lt;p&gt;设满很多断点，&lt;/p&gt;
+
+&lt;p&gt;只想在睡前让程序能够，&lt;/p&gt;
+
+&lt;p&gt;撑到明天。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[转载] 二十六史 - 毛太祖本纪</title>
+      <link>https://skywind3000.com/blog/archives/626/</link>
+      <pubDate>Tue, 19 Feb 2008 09:25:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/626/</guid>
+      <description>&lt;p&gt;本朝太祖毛姓讳泽东字润之，湖南湘潭人氏。其寿诞之日为西夷之圣诞日。帝少有大志。未冠之时即作咏蛙诗，以述其志。及少壮，游学长沙，师从杨昌济，后入京，供职于京师太学藏书阁，问学于鸿儒陈仲甫、胡适之、李守常等。适之昔日留学于美夷，恃才傲物，因帝未忝科名，适之甚轻之。适之门生傅斯年、罗家纶之辈亦甚轻帝。后帝一统天下，欲灭群儒，盖因此三人故耳。帝受仲甫命，返湘结党，得仲甫提携，得以拜见于前朝太祖，官侍读学士
+。前朝太祖崩，时，前朝武厉帝为大司马大将军，阴结其党，欲灭帝党人。帝谏以兵击之，仲甫不许，武厉得以蓄积羽翼，民朝十六年武厉于松沪，前朝摄政王汪公于江夏，大杀帝党人。八月帝与诸党人会于汉口议事，帝曰：枪杆子里面出政权！众皆异之，后受命返湘，策反南军卢尔德铭部，九月九日兴兵起事，围长沙，不克，败走江西。军次三弯，帝重编余部，至队官皆有帝之党人监军。帝据井岗，与朱武胜公所部合兵，屡败官军，威名远扬，号朱
+毛军。武厉怒，令江西巡府鲁涤平统兵十万进剿，帝诱敌深入，引兵击之，涤平败，帝擒官军先锋总兵张辉瓒。武厉闻信，令兵部尚书何应钦统兵二十万进剿，帝大败之。武厉益恐，统兵三十万再战，又败于帝。一载余，武厉又率五十万劲旅进剿。时帝因党争，被削兵权，虚职赋闲。官军犯境红朝震恐，朱武公与周文正公掌兵权，问计于帝，帝授奇计再破官军。武厉败绩，再整旗鼓，以西夷部番将参赞军机，以百万之众犯境。时自俄狄归国之儒生博古
+辈摄政，番将李德与周文正公参赞军机，博古一儒生耳，挟俄狄酋斯大林之威，夺帝兵权，唯俄狄之命是从，事无巨细，皆听命于李德。李德辈纸上谈兵，屡战屡败。引兵西走，兵渡湘水，不足三万，众将皆恶李德，兵次遵义，诸将议政，帝之威众人咸服，周文正、朱武胜公皆附之，夺博古、李德兵权，帝得以再统雄兵。帝帅余部，转战滇、黔、川诸省。过雪山，与张国焘部合兵，国焘忌帝之官居其右，欲害帝，大将军叶剑英闻信，间道驰告帝，帝得
+脱。国焘部将陈昌浩欲引兵击帝，大将军徐向前拍案而起，国焘、昌浩乃罢。民朝二十四年入陕，据陕北以抗官军。官军进剿屡败于帝。帝令徐向前率所部西征，败于西北回军，丧师数万，向前等仅以身脱。丙子双十二，帝策反满洲王张公、陕西镇守使杨公兵谏，囚武厉，帝使周文正公谒武厉，晓以大义，武厉罢兵。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>春运生存手册</title>
+      <link>https://skywind3000.com/blog/archives/202/</link>
+      <pubDate>Thu, 10 Jan 2008 04:05:01 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/202/</guid>
+      <description>&lt;p&gt;在书写正文之前，笔者将使用推理手法，预测春运的规模、环境和潜在危机，并给出自己的分析结果，在此判断的基础上，以春运的各个阶段为分界线书写手册正文。再次说明笔者并非专业人士，文中的各种结论和推导过程仅供参考。&lt;/p&gt;
+
+&lt;p&gt;必要储备与使用方法&lt;/p&gt;
+
+&lt;p&gt;1. 水
+没有食物，一个人可以生存1-2个月；但是没有水，生命最多只能支撑10天。一个成人在正常情况下日消耗2-3升水，限量供应下一天至少需要500毫升水。（大瓶可乐为1.25升，冰红茶为500毫升，缺乏量具时可代替使用。）水可以在春运开始前，确定等车地点所处环境即将缺水时储存。届时把家中所有可以存水的大型器皿全部盛满水（黑色、很结实的塑料袋也可以存水，注意把袋口封好，避光储存），并采取定量供应，有机会就外出采水。&lt;/p&gt;
+
+&lt;p&gt;2. 食物&lt;/p&gt;
+
+&lt;p&gt;所有食物都应在阴凉、干燥、通风处保存，贴上标签、写明储存日期和保质期，先存的先用，并在春运时实行定量配给，以吃到半饱为准（不会饿死的）。因为笔者无法预测春运会持续多长时间，所以请各位自行决定储备的种类和数量。&lt;/p&gt;
+
+&lt;p&gt;盐：盐份为人体所必需，按年纪、身体状况、气温、和劳动强度不同，一个人平均每天消耗10-15克盐，储备时应选择加碘盐。注意，不能干吞盐粒，那会损伤肾脏，应用开水溶解后饮用或做进菜里（如果那时候你还能弄到新鲜食物）。&lt;/p&gt;
+
+&lt;p&gt;白糖、醋、烧烤用的各种调料粉：
+白糖为身体提供热量，水一冲就能喝，也是不错的调味品；醋可以为储备的干肉之类食物增加味道（吃起来别有风味），也可以用来消毒和预防疾病；烧烤用的调味料中含盐份和各种香料，可以撒在食物上或者做汤，储备它的目的也就是让春运时饭菜的口味看起来并不那么糟糕。&lt;/p&gt;
+
+&lt;p&gt;芥末：芥末有很好的消毒杀菌止泻作用，买牙膏状的芥末需冷藏，推荐芥末粉。&lt;/p&gt;
+
+&lt;p&gt;干肉、鱼干、虾干或虾皮：
+干肉类首推咸牛肉和牛肉干，它们营养丰富、口味一流、保存时间长、可在天冷时提供大量热量；鱼干类首推海鱼干，它们种类繁多、价格便宜、容易保存；虾干或虾皮中含有丰富的营养及矿物质，可在做汤时加入。&lt;/p&gt;
+
+&lt;p&gt;罐头食品：种类繁多，口味不错，保存时间非常长，但是价格昂贵。如有多余的钱，那可以储备一些。&lt;/p&gt;
+
+&lt;p&gt;维生素片：犹豫了很久，还是把维生素片列为食物一类，因为在春运时很难弄到新鲜食物，而人体在紧张状态下维生素消耗得非常快，因此要把它当作食物那样储存它。不悔推荐的是21金维他（安利的太贵了），80多元6瓶，每瓶可以供一个成人一月的消耗量，细算下来还是比较便宜的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>比尔·云风传奇</title>
+      <link>https://skywind3000.com/blog/archives/204/</link>
+      <pubDate>Tue, 11 Sep 2007 21:06:09 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/204/</guid>
+      <description>&lt;p&gt;1. 比尔·云风刚出生便会说话，邻居描述，刚落地时他就向东南方向走了七步，每走一步地上就出现一个“@”符号，只见他七步之后，伸左手指天，伸右手指地，开口说道：“2D/3D唯我独尊”。。。。&lt;/p&gt;
+
+&lt;p&gt;2. 《徐庶走马荐比尔，刘玄德三顾茅庐》：徐庶：“主公不必难过，五步之内必有芳草，远来的和尚，未必念得了真经，蜀国如要上市，庶愿保举一人”，刘备：“知道是你好朋友诸葛孔明，这人人品不行，我面试过。他要我联伊
+抗美，与基地组织共出奇兵占领NASDAQ机房，奉股市而令不臣，控制所有上市公司。靠！备乃仁义之团队，向来讲求信誉，强调共赢，怎忍心做此等伤天害理之事”，徐庶：“是是是，主公是讲求信誉，力主双赢的仁义团队，但是我要推荐的另有其人”， “哦，应届生？现在何处？开口多少？”，“这人复姓比尔，双名云风，家住荆州长沙郡，现在幽州雪碧九游戏当差。”，备：“哦，没听过”，庶：“这位好汉十八般语言门门精通，上能构
+架操作系统；下能设计嵌入芯片！”，备：“有这种怪人？”，庶：“不当如此，比尔·云风左手提一百二十斤混铁鼠标，右手抱三百五十斤工学键盘，竞争对手虽有千军万马，近不得他办公桌前一步！三十六小时持续编码依旧气定神闲，体力耐力无人能及。”，刘备：“赞！是块加班的好料，想起来了，水镜先生也向我推荐过，说他‘手握设计无数种，胸中代码千万行’，备若得此一人，何患《汉室》30万在线！他在雪碧九拿多少？”徐庶：“X
+XX”，刘备：“大伯如何？”徐庶：“至少再多500元”，刘备：“恩，只要他证明他的能力，再多600都不在乎，我们向来尊重人才，QQ，MSN，MAIL统统给我”，徐庶：“听说他最近ADSL欠费，手机停机，就连email都发不出去，主公要见，恐怕只有亲自前往”，刘备：“如此说来，备当前往看看”。。。。 （未完，待续）&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>学习游戏编程的八大误区</title>
+      <link>https://skywind3000.com/blog/archives/455/</link>
+      <pubDate>Mon, 21 Aug 2006 04:56:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/455/</guid>
+      <description>&lt;p&gt;误区一：很多作品只能叫做 “程序” 而不能称为 “游戏”&lt;br /&gt;
+误区二：执着于各种技巧而忽视了基本素质的培养&lt;/p&gt;
+
+&lt;p&gt;误区三：执着于流行的API，认为：&lt;br /&gt;
+会写游戏 ＝ 掌握一两套API&lt;/p&gt;
+
+&lt;p&gt;误区四：执着于大而全，系统就像一只吞噬了各种化学品的魔兽&lt;br /&gt;
+误区五：执着于引擎创作爱重复劳动：&lt;br /&gt;
+最失败的引擎 ＝ 拿来主义 ＋ 函数改名&lt;/p&gt;
+
+&lt;p&gt;误区六：不消于使用脚本语言，喜欢CPP至上论&lt;br /&gt;
+误区七：缺少科学的测试方法，写出来的程序BUG不断&lt;br /&gt;
+误区八：作品缺乏游戏性，程序设计缺乏美感&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于“面向显示器编程”</title>
+      <link>https://skywind3000.com/blog/archives/114/</link>
+      <pubDate>Thu, 05 Jan 2006 04:05:03 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/114/</guid>
+      <description>&lt;p&gt;最近吃饭的时候听公司两位同事聊起“面向显示器编程”（screen oriented programming）。sop这个东西我虽偶有所闻，却未有什么了解。这两位同事跟我说AOP其实是退化了的SOP，这个说法让我觉得SOP会有点意思。 个人觉得，OOP完成了对数据的重用，AOP完成了对算发的重用，而SOP则完成了对显示器的重用。&lt;/p&gt;
+
+&lt;p&gt;基于对SOP的应用，我们只需要在电脑前多加一把凳子，就可以通过工作空间上的复用，和项目时间上的压缩，达到了为公司节省资源，提高工作效率的目的。。。。&lt;/p&gt;
+
+&lt;p&gt;Life is :-(&lt;/p&gt;
+
+&lt;p&gt;Life is :-)&lt;/p&gt;
+
+&lt;p&gt;呵呵，哈哈&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>未来三五年游戏研发问题预测</title>
+      <link>https://skywind3000.com/blog/archives/117/</link>
+      <pubDate>Sun, 25 Dec 2005 13:32:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/117/</guid>
+      <description>&lt;p&gt;下面根据以往经验对未来三五年游戏开发问题做一个预测，所论述问题，缺乏严格证明。大家全当看故事，茶余饭后消遣娱乐一下：&lt;/p&gt;
+
+&lt;p&gt;1. 研发瓶颈从技巧演变成为规模，解决复杂度问题将成为国内一流开发者的主要矛盾，而未能进军一流水平的二流开发者将会进一步沦落成软件工厂和外包工作室。&lt;/p&gt;
+
+&lt;p&gt;2. 对于开发游戏，多人视频，新的输入设备，可看不可玩，三年内国内由于该方向知识薄弱，即便国外有大的成就，国内一时也难以效仿。&lt;/p&gt;
+
+&lt;p&gt;3. 日下国内过于注重技巧的世风，在面对突入其来的规模问题，以及国外先进开发工具的双重夹击，会导致诸多游戏项目连续不断的失败，国内将再一次引发游戏开发方法的大讨论，各种为游戏行业量身订制的软件工程及开发理念纷纷出现，目不暇接。&lt;/p&gt;
+
+&lt;p&gt;4. 微软两年内会推出崭新开发平台，为改良DirectX和传统VisualIDE逐渐力不从心的被动，新平台将结合Vista系统优势，也是对1990年MS平台开发战略的再
+一次体现，当时英国记者评论“只有不断降低开发门槛，使未来全世界的开发者都习惯傻瓜编程了，才能有力的压制一切可能形成威胁的力量”这次统一Win/XBOX的编程接口自然不在话下，结合长期捆绑和专利等方面的蚕食，对OpenSource和其他轻量级开发工具实施致命打击。&lt;/p&gt;
+
+&lt;p&gt;5. 数月前微软宣布放弃几年前启动的GAPI的发布转而变出DX10，紧接着又宣布 VS.Net2005 Express的永久免费，现在已暴露出自己越来越大的野心了。三年后，高校合作工程开花结果，等第二，三批微软专家们成为国内研发主力的同时，结合Vista的下一代游戏开发工具的主流化，国内使用DX11/12的从业者必将遭遇类似DOS &amp;gt;Win的门槛面临失业和转变的选择，MS教徒们在2008年末必定会乘虚而入，钻入行业主力研发队伍。&lt;/p&gt;
+
+&lt;p&gt;6. Shockwave等等其他游戏开发工具由于迫于主流平台压力，会进一步在WEB方面发挥自己的优势，WEB平台游戏开发将会再次引起人们重视。&lt;/p&gt;
+
+&lt;p&gt;7. 第一二批开发者离开一线开发阵营，开始反思，一批优秀文化作品将会面世，各种关于游戏开发的故事，程序员文化引发二次回归，成为游戏文化的一个主流。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>庐山旅游</title>
+      <link>https://skywind3000.com/blog/archives/474/</link>
+      <pubDate>Sat, 12 Nov 2005 08:26:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/474/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image001_thumb.jpg&#34; alt=&#34;clip_image001&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;只原生在此山中（庐山小路上）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb.jpg&#34; alt=&#34;clip_image002&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;山顶湖&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image003_thumb.jpg&#34; alt=&#34;clip_image003&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;江西&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image004_thumb.jpg&#34; alt=&#34;clip_image004&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;腾王阁&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image005_thumb.jpg&#34; alt=&#34;clip_image005&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;渔舟唱晚，响穷彭蠡之滨（赣江）&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

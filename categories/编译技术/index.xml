@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>编译技术 on Skywind Inside</title>
+    <link>https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/</link>
+    <description>Recent content in 编译技术 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 16 Jun 2015 04:00:18 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>什么时候用C而不用C&#43;&#43;？</title>
+      <link>https://skywind3000.com/blog/archives/1407/</link>
+      <pubDate>Tue, 16 Jun 2015 04:00:18 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1407/</guid>
+      <description>知乎问题《什么时候用C而不用C++？》：
+ 前两天不是有一个问题是“什么时候用C++而不用C”，我一直觉得问错了，难道不是“能用C++就不用C”么？那么当然就要讨论什么时候用C而不用C++啦。
+一直以来都严格遵循OO的原则来进行开发（用的工具是C#和Qt），直到最近，开始接手某同事的代码，整个项目20多个小工程（代码量并不多），除了界面部分用了MFC这种不伦不类的OO以外，所有的代码都是C写的。但是模块化做的非常好。后来跟他讨论为何不用C++，他说其实没有什么特别的，就是习惯和爱好而已，后又补充：
+如果不用多态的话，其实不管怎么写，不管用那种语言写，都算不上真正的OO
+忽然觉得很有道理……
+ 其实这是一个好问题，
+题主开始欣赏到纯 C代码所带来的 “美感” 了，即简单性和可拆分性。代码是自底向上构造，一个模块只做好一个模块的事情，任意拆分组合。对于有参考的 OOP系统建模，自顶向下的构造代码抽象方法是有效率的，是方便的，对于新领域，没有任何参考时，刻意抽象会带来额外负担，并进一步增加系统耦合性，设计调整，往往需要大面积修改代码。
+有兴趣你可以读读《Unix编程艺术》，OOP的思维模式，是大一统的；C的思维模式，是分离的。前者方便但容易造成高耦合，后者灵活但开发开发太累。用 C开发，应该刻意强调 “简单” 和 “可拆分”。一个个象搭积木一样的把基础系统搭建出来，哪个模块出问题，局部替换即可。
+自底向上的开发模式，并不是从不站在大局考虑问题，而是从某个子系统具体实现开始，从局部迭代，逐步反思全局设计，刻意保持低偶合，一个模块一个模块的来，再逐步尝试组合。
+自底向上强调先有实践，再总结理论，理论反过来指导实践，又从实践中迭代修正理论。这和人类认识世界的顺序是一样的，先捕猎筑巢，反思自然是怎么回事，又发现可以生火，又思考自然到底怎么回事情。
+它的反面，是指大一统设计，你一开始用 UML画出整套系统的类结构，然后再开工设计。这种思维习惯，如果是参考已有系统做一个类似的设计，问题不大，全新设计的话，他总有一个前提，就是 “你能完整认识整个大自然”，就像人类一开始就要认识捕猎和筑巢还有取火一样。否则每次对世界有了新认识，OOP的自顶向下设计方法都能给你带来巨大的负担。
+所以有些人才会说：OOP设计习惯会依赖一系列设计灵巧的 BaseObject，然而过段时间后再来看你的项目，当其中某个基础抽象类出现问题是，往往面临大范围的代码调整。这其实就是他们使用自顶向下思维方法，在逐步进入新世界时候，所带来的困惑。
+当然也有人批判这种强调简单性和可拆分性的 Unix思维。认为世界不是总能保持简单和可拆分的，他们之间是有各种千丝万缕联系的，你一味的保持简单性和可拆分性，你会让别人很累。这里给你个药方，底层系统，基础组建，尽量用 C的方法，很好的设计成模块，随着你编程的积累，这些模块象积木一样越来越多，而彼此都无太大关系，甚至不少 .c文件都能独立运行，并没有一个一统天下的 common.h让大家去 include，接口其他语言也方便。
+然后在你做到具体应用时根据不同的需求，用C++或者其他语言，将他们象胶水一样粘合起来。这时候，再把你的 common.h，写到你的 C++或者其他语言里面去。当然，作为胶水的语言不一定非要是 C++了，也可以是其他语言。
+-&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+PS: 这里主要在探讨 OOP存在的问题，并没有讨论嵌入式这种资源限制的情况，以及操作系统和底层等需要精确控制硬件和内存的情况，更没有讨论 C++在语言设计层面的事情。
+-&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+转部分答疑：（点击more展开）
+Q：“实际上是，如果你能清晰的知道你要做什么事情，那C很好。但如果你只能确定流程基本是对的，而很多系列可能在后续维护中不断更改，或者增加更多的支持，那c的overhead就很大了。当工程非常庞大的时候会很难维护。比如开发一个数学算法库，其实跟数学没有关系，就是一个大数（任意精度）的一系列计算程序。这个程序可以是没有GUI的。开始自己设计一个大数的运算内核，然后还有很多更高级的计算算法。将来有一天想 把内核替换成GMP库，或者用户可以动态替换自己的内核”
+A：就以你说的大数计算为例，大数计算底层驱动根据CPU更换函数指针是个不错的选择，见polarssl openssl，我还真建议你用C来写大数的底层，因为你今天要算个求幂取模，明天要算个gcd，后天要生成质数，你无法预测你的大整数里面究竟有多少个接口，这时候用c的分治思想就很合适。大数不是一辆飞机，它会飞，会降落，会拐弯，这都是飞机的主动行为，主动行为是有限的，确定的，适合oo的。而一个数字，它几 乎没有啥主动行为，相反全是无限的，不可控的被动行为，正合适塞到不同的.c文件中。这种时候你想刻意在一个大数类里设置满无限的方法是不合适的，不该oo的。况且你要夸语言，大数基础库用c接口到其他语言方便。所以你会看到openssl polarssl到其他语言的很多绑定，可你从来不会看到crypto++除了c++外被导出到其它任何语言了。在你用C实现了大整数基础功能并导给其它语言接口后，针对c++用户， 专门包个class的壳，选择一些基础方法放进去，给cpp用户提供点方便。下面核心算法变了，比如你实现了一个sse版本的乘法，运行时换函数指针即可，外层完全不可见，多好！polarssl中还用了一些宏来代替为数不多的几处用模版很方便的地方。</description>
+    </item>
+    
+    <item>
+      <title>转换 Intel汇编格式到 AT&amp;T 汇编风格</title>
+      <link>https://skywind3000.com/blog/archives/1244/</link>
+      <pubDate>Fri, 10 Apr 2015 11:33:09 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1244/</guid>
+      <description>&lt;p&gt;常用 MSVC写内嵌汇编需要兼容 GCC是一件头疼的事情，不是说你不会写 GCC的 AT&amp;amp;T风格汇编，而是说同一份代码写两遍，还要调试两遍，是一件头疼的事情，特别是汇编写了上百行的时候。于是五年前写过一个小工具，可以方便的进行转换，能把 MSVC/MASM的汇编转成纯 AT&amp;amp;T风格汇编，或者 GCC
+Inline风格汇编，自动识别寄存器和变量，还有跳转地址，并且自动导出。今天把他放上来，或许有用到的人吧。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/skywind3000/Intel2GAS/master/images/intel2gas_1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;项目下载：&lt;a href=&#34;https://github.com/skywind3000/Intel2GAS&#34;&gt;https://github.com/skywind3000/Intel2GAS&lt;/a&gt;。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[业余土制] Build工具 EasyMake</title>
+      <link>https://skywind3000.com/blog/archives/153/</link>
+      <pubDate>Sat, 24 Jul 2010 01:50:31 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/153/</guid>
+      <description>&lt;p&gt;用最简单的方法描述工程信息，简化gnumake的繁琐操作，让不会用gnumake的同学们彻底解脱：&lt;/p&gt;
+
+&lt;p&gt;项目地址：&lt;a href=&#34;http://code.google.com/p/easymake/&#34;&gt;http://code.google.com/p/easymake/&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[业余土制] 实时汇编编译器</title>
+      <link>https://skywind3000.com/blog/archives/154/</link>
+      <pubDate>Sun, 05 Jul 2009 13:32:10 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/154/</guid>
+      <description>&lt;p&gt;实时动态在内存中编译汇编代码，并返回函数调用指针，可用于JIT系统的后端：&lt;/p&gt;
+
+&lt;p&gt;项目地址：&lt;a href=&#34;https://github.com/skywind3000/asmpure&#34;&gt;https://github.com/skywind3000/asmpure&lt;/a&gt; 例子：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;const char *AlphaBlendAsm =
+&amp;quot;PROC C1:DWORD, C2:DWORD, A:DWORD\n&amp;quot;
+&amp;quot;    movd mm0, A\n&amp;quot;
+&amp;quot;    punpcklwd mm0, mm0\n&amp;quot;
+&amp;quot;    punpckldq mm0, mm0\n&amp;quot;
+&amp;quot;    pcmpeqb mm7, mm7\n&amp;quot;
+&amp;quot;    psubw mm7, mm0\n&amp;quot;
+&amp;quot;    \n&amp;quot;
+&amp;quot;    punpcklbw mm1, C1\n&amp;quot;
+&amp;quot;    psrlw mm1, 8\n&amp;quot;
+&amp;quot;    punpcklbw mm2, C2\n&amp;quot;
+&amp;quot;    psrlw mm2, 8\n&amp;quot;
+&amp;quot;    \n&amp;quot;
+&amp;quot;    pmullw mm1, mm7\n&amp;quot;
+&amp;quot;    pmullw mm2, mm0\n&amp;quot;
+&amp;quot;    paddw mm1, mm2\n&amp;quot;
+&amp;quot;    \n&amp;quot;
+&amp;quot;    psrlw mm1, 8\n&amp;quot;
+&amp;quot;    packuswb mm1, mm1\n&amp;quot;
+&amp;quot;    movd eax, mm1\n&amp;quot;
+&amp;quot;    emms\n&amp;quot;
+&amp;quot;    ret\n&amp;quot;
+&amp;quot;ENDP\n&amp;quot;;
+
+void testAlphaBlend(void)
+{
+		CAssembler *casm;
+		int c;
+		int (*AlphaBlendPtr)(int, int, int);
+		// create assembler
+		casm = casm_create();
+		// append assembly source
+		casm_source(casm, AlphaBlendAsm);
+		AlphaBlendPtr = (int (*)(int, int, int))casm_callable(casm, NULL);
+		if (AlphaBlendPtr == NULL) {
+				printf(&amp;quot;error: %s\n&amp;quot;, casm-&amp;gt;error);
+				casm_release(casm);
+				return;
+		}
+		printf(&amp;quot;==================== Alpha Blend ====================\n&amp;quot;);
+		casm_dumpinst(casm, stdout);
+		printf(&amp;quot;\nExecute code (y/n)?\n\n&amp;quot;);
+		do
+		{
+				c = getch();
+		}
+		while(c != &#39;y&#39; &amp;amp;&amp;amp; c != &#39;n&#39;);
+		if(c == &#39;y&#39;)
+		{
+				int x = AlphaBlendPtr(0x00FF00FF, 0xFF00FF00, 128);
+				printf(&amp;quot;output: %.8X\n\n&amp;quot;, x);
+		}
+		free(AlphaBlendPtr);
+		casm_release(casm);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;**output: 7f7f7f7f **&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>虚拟机及VmBasic编译引擎说明</title>
+      <link>https://skywind3000.com/blog/archives/91/</link>
+      <pubDate>Thu, 18 Apr 2002 08:33:16 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/91/</guid>
+      <description>&lt;p&gt;2001-2002期间开发的虚拟机/编译器开源项目代码和资料&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;关于虚拟机及其编译器的说明&lt;/li&gt;
+&lt;li&gt;VmBasic开发/调试环境的介绍及说明&lt;/li&gt;
+&lt;li&gt;关于其他&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;所有资料可以从下面地址下载：
+&lt;a href=&#34;http://www.skywind.me/resource/vmbeta.zip&#34;&gt;下载可执行&lt;/a&gt;
+&lt;a href=&#34;http://www.skywind.me/resource/skywind/vmbsrc.zip&#34;&gt;源程序下载&lt;/a&gt;
+&lt;a href=&#34;http://www.skywind.me/maker/VmBasicDesign.pdf&#34;&gt;设计说明书&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;关于虚拟机及其编译器的说明&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;记得3DS/MAX里面实现了一个类似BASIC的脚本，Animator里面实现了一个类C的脚本语言，Autodesk公司的软件对于脚本支持的很出色，好的脚本引擎在乎平台无关性、高效性和扩充性，一个脚本引擎的需要对一个好程序来说非常迫切，于是半年前我写了一款虚拟机，最近又实现了一个类Basic的脚本编译器，特性说明：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;高效性和独立于平台：由于虚拟机运行是解释二进制的字节码因此速度明显快于每次运行及时解释的脚本语言，比如Perl和PHP，而虚拟机的核心程序代码也经过数个C++编译器和平台的测试，可以毫无修改的编译运行于多个操作系统。&lt;/li&gt;
+&lt;li&gt;充分的开放：通过虚拟机的端口I/O技术，要对它进行扩充变得十分容易，VmBeta指令通过输出/输入的方法向用户自己的程序进行通讯，用户通过处理输出输入消息来达到功能的扩充，使它符合你产品的需要，具体的虚拟机实现和设计说明参考文档 vmbeta.txt&lt;/li&gt;
+&lt;li&gt;可设安全级别：通过可设置安全级别，对程序运行状态进行检控&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;通过半年的修改我自己觉得虚拟机够高效开放，就是vmbasic编译器写的没有多高的水准：完全没有对生成代码做优化，弄出许多繁琐的中间代码，不过还是明显快于及时解释语言，通过测试速度大概是DOS自带的QBASIC程序的三倍左右(可以通过目录下的几个算法程序来实验)。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>PL0 编译程序Turbo Pascal代码</title>
+      <link>https://skywind3000.com/blog/archives/71/</link>
+      <pubDate>Tue, 10 Apr 2001 07:04:52 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/71/</guid>
+      <description>&lt;p&gt;麻雀虽小，五脏具全，对编译原理的代码以TPASCAL格式重新整理和排版，还原最原版的代码。&lt;/p&gt;
+
+&lt;p&gt;使用 Turbo Pascal 编译：&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

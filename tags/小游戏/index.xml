@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>小游戏 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/</link>
+    <description>Recent content in 小游戏 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 14 Apr 2005 07:25:55 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MINI-FOOLTRIS 游戏代码</title>
+      <link>https://skywind3000.com/blog/archives/88/</link>
+      <pubDate>Thu, 14 Apr 2005 07:25:55 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/88/</guid>
+      <description>&lt;p&gt;不到两百行的俄罗斯方块游戏，教学用：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MINI-FOOLFLY 游戏代码</title>
+      <link>https://skywind3000.com/blog/archives/83/</link>
+      <pubDate>Tue, 12 Apr 2005 13:06:17 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/83/</guid>
+      <description>&lt;p&gt;此程序仅向人说明编写游戏程序的若干功能实现和常用处理方法，编译版本下载：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/resource/oldworks/foolfly.zip&#34;&gt;http://www.skywind.me/resource/oldworks/foolfly.zip&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>[转载] 本人在cygwin下完整工作环境的搭建(备忘) | Skywind Inside</title>
+    <meta property="og:title" content="[转载] 本人在cygwin下完整工作环境的搭建(备忘) - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2011-07-03T07:43:08&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2011-07-03T07:43:08&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="[转载] 本人在cygwin下完整工作环境的搭建(备忘)">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/973/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">[转载] 本人在cygwin下完整工作环境的搭建(备忘)</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2011年7月3日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99">大浪淘沙</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <nav>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#1-基本环境">1.基本环境</a></li>
+<li><a href="#2-文字阅读-编辑-处理">2.文字阅读/编辑/处理</a></li>
+<li><a href="#3-文本模式的web浏览器">3.文本模式的Web浏览器</a></li>
+<li><a href="#4-安装配置cygwin-x环境">4.安装配置Cygwin X环境</a></li>
+<li><a href="#5-添加ssh登录支持-并且支持通过putty访问cygwin-x">5.添加ssh登录支持(并且支持通过putty访问Cygwin X)</a></li>
+<li><a href="#6-c-c-fortran77-python完整的开发环境">6.C/C++/fortran77/Python完整的开发环境</a></li>
+<li><a href="#7-java基本开发环境">7.JAVA基本开发环境</a></li>
+<li><a href="#8-tcl-tk开发环境">8.TCL/TK开发环境</a></li>
+<li><a href="#9-google-appengine开发环境">9.Google AppEngine开发环境</a></li>
+<li><a href="#10-googlecl">10.googlecl</a></li>
+<li><a href="#11-版本控制器">11.版本控制器</a></li>
+<li><a href="#12-数学工具套件">12.数学工具套件</a></li>
+<li><a href="#总结">总结：</a></li>
+<li><a href="#附录-遇到的问题及解决方案">附录：遇到的问题及解决方案：</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+<p>这算是一个变态的嗜好：力求在纯文本模式下完成一切可能的工作，并且还要在windows下工作。 下面的配置未特意说明的地方，要么是太简单不值得说明，要么是顺应了对应软件的默认配置行为。</p>
+
+<h6 id="1-基本环境">1.基本环境</h6>
+
+<p>从 <a href="http://www.cygwin.com">http://www.cygwin.com</a> 下载 cygwin.exe ,按其默认选择安装即可。以后逐步根据需要添加软件包。</p>
+
+<p>根据本人需求，额外添加软件包：unzip，zip，attr，shutdown</p>
+
+<h6 id="2-文字阅读-编辑-处理">2.文字阅读/编辑/处理</h6>
+
+<p>从cygwin选择下载安装： vim , xpdf , texmacs</p>
+
+<h6 id="3-文本模式的web浏览器">3.文本模式的Web浏览器</h6>
+
+<p>从cygwin选择下载安装： w3m ， 这是款类似vim的Web浏览器。</p>
+
+<h6 id="4-安装配置cygwin-x环境">4.安装配置Cygwin X环境</h6>
+
+<p>详见：<a href="http://x.cygwin.com/docs/ug/setup.html#setup-cygwin-x-installing">http://x.cygwin.com/docs/ug/setup.html#setup-cygwin-x-installing</a><br />
+通过cygwin选择安装:</p>
+
+<p>必选： xorg-server , xinit<br />
+建议选择：xorg-docs , X-start-menu-icons</p>
+
+<p>启动X11环境:</p>
+
+<p>可以从Windows的开始菜单启动Cygwin X</p>
+
+<h6 id="5-添加ssh登录支持-并且支持通过putty访问cygwin-x">5.添加ssh登录支持(并且支持通过putty访问Cygwin X)</h6>
+
+<p>可以用putty.exe等远程控制系统访问本地cygwin. 哦，这不是多此一举？用cygwin.bat直接启动不就得了？ 原因有三：</p>
+
+<p>1）在cygwin.bat启动模式下，用户视觉感受没有通过putty.exe登录访问的感受好，你试试便知。</p>
+
+<p>2）在cygwin.bat启动模式下，无法进行屏幕取词，而通过putty.exe登录访问可以屏幕取词，这点对英文不太好的人很重要。</p>
+
+<p>3）在cygwin.bat启动模式下，输入法提示框总下左下角，并且是纯黑白模式，感受不好，但是在putty.exe登录访问时，输入法提示框是跟随的。</p>
+
+<p>首先在cygwin中选择安装openssh</p>
+
+<p>然后用命令 ssh-host-config 配置SSH 注意配置过程中一定要将sshd安装成Windows服务，已方便开机自动启动</p>
+
+<p>生成ssh1的公钥和密钥： ssh-keygen -t rsa1</p>
+
+<p>生成ssh2的公钥和密钥：<br />
+生成公钥： ssh-keygen -t rsa<br />
+生成密钥： ssh-keygen -t dsa</p>
+
+<p>启动sshd服务（如果你需要重启机器的话，此步可免）<br />
+cygrunsrv -S sshd</p>
+
+<p>为配置为putty.exe支持X11而做的配置服务端：<br />
+在/etc/sshd_config中配置为：X11Forwarding yes<br />
+在/etc/profile 中添加配置： export DISPLAY=:0.0</p>
+
+<p>在客户端putty中配置：<br />
+window -&gt; Translation 中 character set 选为UTF-8<br />
+在Connection -&gt; X11 中勾选上：Enable X11 forwarding<br />
+在X display location 中填入：localhost:0.0</p>
+
+<p>这样你就可以用类似putty.exe功能远程登录访问本地cygwin系统。以后的操作也就都是通过putty.exe登录操作的。</p>
+
+<p>最后说明一点：你可以在putty登录后，在需要用到X11环境的程序前，临时启动Cygwin X 服务。</p>
+
+<p>卸载方式：</p>
+
+<p>依次执行 cygrunsrv -E sshd cygrunsrv -R sshd</p>
+
+<p>然后删除： rm /etc/ssh*</p>
+
+<p>然后在 /etc/passwd 中删除 新创建的两个用户： sshd , cyg_server</p>
+
+<h6 id="6-c-c-fortran77-python完整的开发环境">6.C/C++/fortran77/Python完整的开发环境</h6>
+
+<p>在cygwin中选择安装：autobuild ，autoconf ，automake ，binutils ，cmake ，gcc-core ，gcc,gcc-g77 ，gcc-g++ ，gcc-java ，gcc4-core ，gcc4,gcc4-fortran ，gcc4-g++ ,gcc4-java ,make ,makedepend ,pkg-config,bashdb,ddd,python</p>
+
+<h6 id="7-java基本开发环境">7.JAVA基本开发环境</h6>
+
+<p>我采用的是首先从JAVA官网上下载安装普通的windows版本的JDK.</p>
+
+<p>然后在cygwin的/opt目录下，建立一个名为jdk的链接到JDK在Window下实际的安装目录。</p>
+
+<p>ln -sf <JDK在windows下实际的安装目录> /opt/jdk</p>
+
+<p>在cygwin中设置JAVA环境变量（比如可在/etc/profile 中设置）</p>
+
+<p>最后，下载解压apache-ant和apache-maven在/opt目录下，并在/etc/profile设置好它们的PATH路径。</p>
+
+<h6 id="8-tcl-tk开发环境">8.TCL/TK开发环境</h6>
+
+<p>cygwin自带的好像有问题,不全？，建议到<a href="http://www.tcl.tk">http://www.tcl.tk</a> 上分别下载tcl 和 tk 的源码安装包 依次编译安装)</p>
+
+<p>先装 tcl 后装 tk 。</p>
+
+<p>都是： ./configure , make , make install</p>
+
+<h6 id="9-google-appengine开发环境">9.Google AppEngine开发环境</h6>
+
+<p>从<a href="http://code.google.com/appengine">http://code.google.com/appengine</a>中下载，并且解压在/opt/appengine 中, 并且在/opt/profile中设置PATH环境变量.</p>
+
+<h6 id="10-googlecl">10.googlecl</h6>
+
+<p>google开发的一个试图通过cmd/shell 访问google所有服务的工具。见链接：<a href="http://blog.chaoskey.com/2011/03/1/201103011210">http://blog.chaoskey.com/2011/03/1/201103011210</a></p>
+
+<p><strong>或者</strong>从cygwin中选择安装： python-gdata ,googlecl</p>
+
+<h6 id="11-版本控制器">11.版本控制器</h6>
+
+<p>从 cygwin中选择安装：cvs ，cvs3svn , subversion ，git ，git-completion ，git-gui ，git-svn ，mercurial</p>
+
+<h6 id="12-数学工具套件">12.数学工具套件</h6>
+
+<p>1)<strong>数学绘图软件</strong>：gnuplot （从 cygwin中选择安装）<a href="http://www.gnuplot.info">http://www.gnuplot.info</a></p>
+
+<p>2)<strong>数值计算软件</strong>：octave （从 cygwin中选择安装）<a href="http://www.octave.org">http://www.octave.org</a></p>
+
+<p>3)<strong>统计分析软件</strong>：R <a href="http://www.R-project.org">http://www.R-project.org</a></p>
+
+<p>采用下载源代码编译安装的方法。当前采用的源码版本是：R-2.12.2.tar.gz</p>
+
+<p>前置需求：<br />
+<a href="http://ftp.ctex.org/mirrors/CRAN/doc/manuals/R-admin.html#Essential-and-useful-other-programs-under-a-Unix_002dalike">http://ftp.ctex.org/mirrors/CRAN/doc/manuals/R-admin.html#Essential-and-useful-other-programs-under-a-Unix_002dalike</a><br />
+主要有：<br />
+1）需要gcc,g77(fortran 77)的开发编译环境<br />
+2）X11支持环境<br />
+3) tcl/tk<br />
+4) libX11(-dev) ,libXt(-dev),readline,iconv,cairo(-dev) ,pango ,zlib(-dev) ,xz,libxmu(-dev) ,icu(-dev) ,ghostscript,,libjpeg(-dev) ,libpng12(-dev) ,libtiff(-dev) ,<br />
+tar -xf R-2.12.1.tar.gz<br />
+编译<br />
+./configure &ndash;disable-nls &ndash;enable-R-shlib R_BROWSER=w3m R_PDFVIEWER=xpdf<br />
+(原因见：<a href="http://ftp.ctex.org/mirrors/CRAN/doc/manuals/R-admin.html#Cygwin%29">http://ftp.ctex.org/mirrors/CRAN/doc/manuals/R-admin.html#Cygwin)</a><br />
+make<br />
+测试：<br />
+make check<br />
+生成手册文档：<br />
+make dvi<br />
+make pdf<br />
+make info<br />
+安装：<br />
+make install<br />
+make install-dvi<br />
+make install-info<br />
+make install-pdf</p>
+
+<p>4)<strong>符号演算软件</strong>：maxima （<a href="http://maxima.sourceforge.net/">http://maxima.sourceforge.net/</a>）</p>
+
+<p>当前采用的源码版本：maxima-5.23.2.tar.gz<br />
+需求软件包：clisp ，bison ,libgd(-dev) ,plotutils ,libggi(-dev) ,xz ,lapack(-dev) ,curl(-dev) ,magick ,libGLU(-dev)</p>
+
+<p>./configure make make install</p>
+
+<p>5)<strong>数学排版软件</strong>：texmacs</p>
+
+<p>1）解决texmacs启动时找不到gs的问题：<br />
+ln -sf /usr/bin/gs /usr/X11R6/bin/gs</p>
+
+<p>2）maxima集成：<br />
+vim /usr/sbin/TeXmacs/bin/tm_maxima 添加当前版本的条件分支，执行代码暂时和已有的版本执行代码一致。<br />
+从 <a href="http://riemann.math.nccu.edu.tw/%7Eyenlung/share/texmacs-maxima-5.10.0.lisp">http://riemann.math.nccu.edu.tw/~yenlung/share/texmacs-maxima-5.10.0.lisp</a>
+下载文件后，将其复制到：/usr/share/TeXmacs/plugins/maxima/lisp</p>
+
+<p>3) octave集成：（暂时未解决）</p>
+
+<p>4）R集成：（暂时未解决）</p>
+
+<p>5）gnuplot集成：已自动支持。</p>
+
+<h6 id="总结">总结：</h6>
+
+<p>首先，在cygwin默认选择基础上，附加选择如下软件包：unzip ,zip ,attr ,shutdown ,vim ,xpdf ,texmacs ,w3m ,xorg-server ,xinit ,xorg-docs ,X-start-menu-icons ,openssh ,autobuild ,autoconf ,automake ,binutils ,cmake ,gcc,gcc-
+core ,gcc-g77 ,gcc-g++ ,gcc-java ,gcc4,gcc4-core ,gcc4-fortran ,gcc4-g++ ,gcc4-java ,make ,makedepend ,pkg-config ,python ,python-gdata ,googlecl ,cvs ,subversion ,git ,git-completion ,git-gui ,git-
+svn ,mercurial ,gnuplot ,octave ,libX11(-dev) ,libXt(-dev) ,readline ,iconv ,cairo(-dev) ,pango ,libjpeg(-dev) ,libpng12(-dev) ,libtiff(-dev) ,zlib(-dev) ,libxmu(-dev) ,icu(-dev) ,ghostscript ,clisp
+,bison ,libgd(-dev) ,plotutils ,libggi(-dev) ,xz ,lapack(-dev) ,curl(-dev) ,magick ,libGLU(-dev),tex相关，基本数学库</p>
+
+<p>然后依第5步：“添加ssh登录支持”所提到的配置。</p>
+
+<p>依第7步：“配置Java基本开发环境”</p>
+
+<p>依第8步：从源码安装TCL/TK</p>
+
+<p>依第9步: 安装配置google appengine开发环境</p>
+
+<p>依第12步之3）： 安装统计分析软件R</p>
+
+<p>依第12步之4）： 安装符号演算软件maxima</p>
+
+<p>依第12步之5）： 配置数学排版软件texmacs以集成：gnuplot , octave ,R ,maxima</p>
+
+<h6 id="附录-遇到的问题及解决方案">附录：遇到的问题及解决方案：</h6>
+
+<p>1）试图解决”Exception: STATUS_ACCESS_VIOLATION“ 的问题<br />
+<a href="http://x.cygwin.com/docs/faq/cygwin-x-faq.html#q-status-access-violation">http://x.cygwin.com/docs/faq/cygwin-x-faq.html#q-status-access-violation</a><br />
+a)选择安装Cygwin软件包时，必须确保停止所有的Cygwin进程（包括Cygwin的Windows服务进程）<br />
+b)确保cygwin1.dll在你的系统中只能存在一份。<br />
+c)注意杀毒软件或防火墙对Cygwin的限制，必要的话将其加入其信任区域。<br />
+d)防止在Cygwin&rsquo;s的fork()模拟器中出现的DLL的基本地址冲突。<br />
+安装rebase包<br />
+阅读：/usr/share/doc/Cygwin/rebase-n.n.n.README<br />
+然后安装说明指示运行：rebaseall<br />
+简单的说就是: 在停止Cygwin的所有进程（包括已经安装的Windows服务）的前提下,在Windows下启动cmd.exe, 在这个Windows命令行下，执行ash, 然后在ahs启动的shell 中执行：/bin/rebaseall -v。<br />
+e)如果还有这个问题，则对出现这个问题的程序执行：<br />
+peflags &ndash;tsaware=true /usr/bin/w3m.exe （范例）<br />
+f)如果通过cygwin选择重新安装或升级程序后，可能这个问题又会复现。我们又需要按a),b),c),d),e)依次执行。</p>
+
+<p>2）cygwin环境下，maxima无法调用 gnuplot的问题：（非完美的解决方案）<br />
+a) ln -sf /usr/bin/gnuplot.exe /usr/binwgnuplot</p>
+
+<p>b) 在每个新的maxima的窗口n中，预先执行:<br />
+set_plot_option([gnuplot_default_term_command,&ldquo;set term x11&rdquo;]);<br />
+注意：<br />
+每次执行一次绘图操作时，都会进入gnuplot的Shell，需要手工退出，才能返回maxima的Shell，该问题不知如何解决。<br />
+离开maxima后，上述设置会失效。 如何永久存储该设置的方法，暂时为找到。<br />
+<strong>2011-03-13 附注：此问题已经解决</strong>，在你常用的maxima工作目录下，创建如下文件： /home/chaoskey/maxima/maxima-init.mac</p>
+
+<blockquote>
+<p>/* this is /home/chaoskey/maxima/maxima-init.mac <em>/<br />
+/</em> last edit 2011-03-13 */</p>
+
+<p>maxima_userdir : &ldquo;/home/chaoskey/maxima&rdquo; $<br />
+maxima_tempdir : &ldquo;/home/chaoskey/maxima/.tmp&rdquo; $<br />
+/<em>file_search_maxima : append(file_search_maxima ) $</em>/<br />
+/<em>file_search_lisp : append(file_search_lisp) $</em>/<br />
+set_plot_option([gnuplot_default_term_command,&ldquo;set term x11&rdquo;])$<br />
+/* disp(&ldquo;Maxima is the Future.&rdquo;) $ */</p>
+</blockquote>
+
+<p>说明，你常用的maxima的工作目录可任意选择，maxima 启动时会自动探测出 maxima-init.mac的目录。</p>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/971/">生成类苹果图标</a></li>
+        
+        <li><a href="/blog/archives/962/">参考ZeroMQ改进服务器</a></li>
+        
+        <li><a href="/blog/archives/732/">[讲稿] ActionScript3 入门讲稿</a></li>
+        
+        <li><a href="/blog/archives/721/">[转载] Why I Love Python – Thinking in C&#43;&#43; 作者用Python后的想法</a></li>
+        
+        <li><a href="/blog/archives/718/">[讲稿] CGDC2009 演讲：游戏峡谷地图自动生成</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            没有标签
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(12)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(45)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(57)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+</body>
+</html>

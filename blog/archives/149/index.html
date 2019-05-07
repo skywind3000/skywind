@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>SlabPlus 内存分配算法 | Skywind Inside</title>
+    <meta property="og:title" content="SlabPlus 内存分配算法 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2008-03-08T02:15:50&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2008-03-08T02:15:50&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="SlabPlus 内存分配算法">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/149/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">SlabPlus 内存分配算法</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2008年3月8日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE">开源项目</a></span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <h3 id="原理叙述">原理叙述：</h3>
+
+<p>我也来介绍一种内存管理方面的优化算法：怎样才能根除内存碎片？有且只有如下办法：1. 只分配不释放，2. 只分配固定大小内存，3. 不分配内存，虽然，仍不妨碍我们再一次回顾各种常用的分配策略，以发掘一些新的思路：</p>
+
+<p>前提：下面提及的分配技巧并不能说是“最快的”，也不能说是“最小碎片的”，但是可以保证，不管系统运行多长时间，不管分配多大内存，碎片比例趋于恒定，同时分配时间为常数（unit interval）：</p>
+
+<p>最后将讨论一些更进一步的优化技巧（如果愿意大量增加代码行数的话），看看在分配内存方面，哪些我们值得努力，哪些不值得我们努力。</p>
+
+<p>现代的内存分配算法，需要顾及以下几个特性：</p>
+
+<p>1） 缓存命中：现今的计算机体系，优秀的缓存策略对一个系统而言异常重要，一些写的不太注意的分配器，容易忽略该特性，前分配一块内存，后分配一块内存，大大增加了缓存的失效。</p>
+
+<p>2） 总线平衡：大部分缓存管理都是提供 2^n字节大小的内存机制，并且所分配地址也是以 2^n字节进行对齐，比如我们有一个 packfile对象有400多个字节，将使用 512字节的缓存分配器，并且按照 512字节进行对齐，但是问题在于，大部分时候我们都在访问该对象的头30个字节，因此在(0-30) mod 512的地方，也就是在以512字节为分割的缓存线周围集中了大量的压力，在现今的大部分普通的缓存芯片上将出现总线失衡bus-overbalance。</p>
+
+<p>3） 页面归还：何时向系统请求页面，何时归还系统页面，很多分配器只向系统不停的申请页面，却并不考虑提供保证能够正常不断的归还系统页面的机制。</p>
+
+<p>4） 多核优化：尽管多核技术现在才逐渐在PC上推广，但我们的服务器很早就已经开始使用双核或者四核的架构，分配器如何尽量避免在不同核间产生的等待，是分配器效率优化的一个前提。</p>
+
+<p>以下几点内容有助于优化我们的分配器：</p>
+
+<p>1）菲波拉契 vs 等比数列：</p>
+
+<p>我们可能习惯于使用 2^n字节的多级缓存管理器来进行内存分配，就是针对 8, 16, 32, 64 … 1k, 2k…大小的缓存提供对应的分配策略，由于按照大小的 2^n字节对齐后再进行分配，因此有 50%的内存白白浪费，其实就统计上来看，使用 2^n增长的多级分配器不如使用菲波拉契方式排列的方式：8, 16, 24, 40 …. 大部分情况，后者能更有效的利用内存。</p>
+
+<p>2）三层页面链表：</p>
+
+<p>通常分配器缓存为空时便向系统请求一个新页面，然后进行分配，那怎么比较有效的保证持续归还系统空闲的页面呢？通常使用三层双向页面链表：A, B, C</p>
+
+<p>链表-A：保存完全没有分配过的页面队列
+链表-B：保存分配过但是还有空闲块的页面队列
+链表-C：保存完全分配完了的页面</p>
+
+<p>需要分配内存的时候我们会先查找B中有无还没有分配干净的页面，有就在该页面上进行分配，如果该页面刚好被分配完了，那么就把它从B中转移到C，如果B中为空，那么我们就该向系统请求新的页面了。</p>
+
+<p>当释放的时候判断内存块所处页面的情况，如果之后该页面还有部分内容没释放干净，那么放入B中，如果释放干净了，那么放入A中。B链表使用FIFO策略，等待一个页面上已经分配出去的内存块能够有充分的时间释放回来。</p>
+
+<p>随着内存的释放，当达到一定规模时候，我们将A中存在的页面归还给os</p>
+
+<p>3）地址着色：</p>
+
+<p>在一个页面上的所有待分配对象，最好不要都从偏移为0的地方进行划分，为了避免bus-overbalance，我们可以根据不同的页面，对起始对象地址进行有规律的偏移（coloring），比如一个管理N字节对象的分配器，当请求到新页面的时候，第一次按照 0, N, 2N, …划分，那么第二次按照 8, 8 + N, 8 + 2N, …第三次按照16, 16 + N, 16 + 2N，进行划分，如此类推，以保证我们分配出来的对象不会总卡在某些地址线的固定位置。</p>
+
+<p>4）前端LRU：</p>
+
+<p>分配器前端可以挂接长度为2N的LRU队列，初始的时候，我们分配 N个对象给 LRU队列，外部请求新对象的时候，直接从 LRU中取出，释放就直接放回 LRU，如果 N个新对象都用完了，那么再次向队列中填充 N个新分配出来的对象，如果不停的释放，导致长度 2N的LRU都填充满了，那么一次性归还一半（N个）对象到分配器。</p>
+
+<p>5）多核优化：</p>
+
+<p>出于对多核情况下减少锁定带来的开销，我们可以为不同的 CPU提供多个 LRU，比如我们如果为分配器前端提供N个LRU的话，那么可以用 n = CPUID mod N来确定，当代吗运行于编号为 i的cpu上，我们选择用编号为 n的 LRU队列，如此，互斥锁的开销将会大大降低，同时根据 LRU“一次性分配/释放N个对象”的情况，我们的内存分配器也可以进行一些优化，将N次批量请求的互斥锁开销进一步降低。</p>
+
+<p>上面所提及的5种方法，各种操作系统内核分配策略，近些年也在不断创新，上面这些经验策略在各种操作系统的实践中都取得了很好的效果。但是我们应用层开发却有别于系统层的开发，因为内核程序可以方便的将一个个离散的页面隐射在连续的地址空间上，但是应用层开发在不做页面隐射的条件下，当我们需要分配大小接近或者超过一个页面的时候就会出现问题。</p>
+
+<h3 id="应用层问题">应用层问题：</h3>
+
+<p>比如我们在4K页面上分配1100字节的对象，那么最多一个页面只能分配三个对象，利用率仅有：3300/4096=80%，有 4096 – 3300 = 796个字节被浪费掉了，而如果我们每次只分配8个字节的对象，那么一个页面最多有 4096 / 8 = 512个对象供分配，问题在于一个页面上分布的待分配对象越多，那么该页面归还系统的几率就越小，因为我们起码要等到这512个对象都归还回这个页面了，才能将这一整页归还给系统。比起在4K页面上分配 64字节大小对象的情况，后者一个页面有更多几率是前者的 p ^ 8倍。</p>
+
+<p>但是，虽然我们在应用层不做页面-地址映射，但是我们还是能够使用一些新的页面管理技术，解决应用层分配器的页面限制，以下的解决方案我不知道有没有人用过，原自之前对服务器内存管理优化时得出的一种方案：</p>
+
+<h4 id="gfp-tree">GFP-Tree</h4>
+
+<p>之前2004年底开发服务器代码时，通过强制内存使用最频繁的部分只分配三种固定大小的内存，使用了3个分配器两个用于分配结构体，一个用来分配大小为4K的页面，当缓存要求大于4K时都使用4K进行链表串接，并专门为这种基于4k页面的缓存提供了常用读写访问接口，其上实现了各种“缓存”，“流”变长字符串的操作接口。用限制应用层逻辑的代价，实现单位时间分配与零碎片。</p>
+
+<p>要冲破这个限制就需要对我们的页面管理器 — GFP（Get Free Pages）在应用层作进一步的改进，传统的内存分配器与 GFP的关系如下：</p>
+
+<p>GFP(4K或者8K,16K等)
++–  8字节分配器
++– 16字节分配器
++– 32字节分配器
+……
++– 2 ^ n 字节分配器</p>
+
+<p>所有的分配器都向唯一的 GFP请求页面，这其实又回到前面提到的困扰上，将使我们对选择页面的大小犹豫不决：小了，大对象无法分配，大了，小对象分配却又难回收，浪费大。</p>
+
+<p>其实问题的本源在于我们默认了系统的页面只能是固定的 4K或者其他，如果抛开计算机硬件页面固定大小对我们暗示的限制，转而思考，如果提供不同大小页面的GFP，情况将会如何？</p>
+
+<p>所谓的 GFP-Tree就是让所有分配器都具备 GFP的功能，也就是说，除去最原始的固定大小的GFP，我们所有建立在该GFP之上的内存分配器除了向该 GFP请求释放内存外，他同时提供GFP功能，比如建立在4KGFP上的1K分配器，除了提供 1K大小对象的分配功能外，本身也可以作为 GFP提供 1k大小的页面管理，供下一级分配器进行页面请求。由此从最初的GFP开始，一级级创接分配器，新的分配器又提供对应的 GFP接口供更小内存的分配器使用，从而形成了一个树形结构，称之为 GFP-Tree，见下图示例:</p>
+
+<pre><code class="language-text">GFP(4M)
+  |
+  +----+
+2M     1M
+       |
+  +----+------+------+
+ 512K  256K  128K   64K
+                     |
+  +----+------+------+
+ 32K  16K     8K    4K
+                     |
+  +----+------+------+------+--------+
+  2K   1K    512    256    128       64
+       |
+  +----+----+
+  32   16   8
+</code></pre>
+
+<h4 id="分配策略">分配策略：</h4>
+
+<p>上面的图中表述出在固定页面 4MB的GFP下面，逐级挂接的不同大小分配器的组织方式，当我们创建一个分配器的接口中，都必须增加 GFP的指针，指明页面提供者，这样生成了这个多级 GFP-Tree，当我们请求8字节大小的内存时，8字节分配器发现没有页面了，它就会请求它的GFP(1K分配器)，而上一级1K的分配器如果没有页面了，又会请求4k,4k请求64K，64K请求1MB，而1MB请求最终的 4MB GFP。</p>
+
+<h4 id="回收策略">回收策略：</h4>
+
+<p>参考前面提到的“三层页面链表”方式，将页面分为“干净的，部分的，用完的”三个队列，并使用FIFO策略使得“部分的”页面链表中的页面有足够的时间等到对象释放回来，变成“干净的”页面，而“干净”的页面超过一定阀值时将会被释放给 GFP，那么当我们释放了 8字节内存的时候如果该内存所处页面刚好变成空页面那么如果 8字节分配器中空页面的数量超过阀值，将会有一半1K字节的页面释放给他们的上级GFP–1K分配器。</p>
+
+<h4 id="评估策略">评估策略：</h4>
+
+<p>一个页面的最佳使用情况是，只分配该页面大小1/32 – 1/8之间的对象，这样页面利用率是最好效果，当我们创建一个新的分配器（比如大小不是 n ^ 2的），我们就需在“分配器池”中为他寻找最佳的 GFP，方式是不但需要考虑是否在 <sup>1</sup>&frasl;<sub>32</sub> – 1/8之间，还需要考虑空间浪费情况，这个空间浪费将会按照递归的方式一直计算到根节点GFP，再求和，最后寻找出最优的 GFP作为该分配器的父节点。</p>
+
+<h4 id="变动策略">变动策略：</h4>
+
+<p>加入新分配器节点时，首先在现有的GFP-Tree中寻找出最佳父节点后，作为子节点插入 GFP-Tree，然后更新用于查找分配器的sizemap（多级数组，分别用来查询0-1K, 1K-64K, 64K-1M, 1M-64M的各个大小分配应该由哪个分配器完成）</p>
+
+<p>删除新分配器时并不能马上删除，只是记录而已，直到该分配器没有子节点，引用计数为零的时候才执行，如果确实删除了一个节点，那么将减少其父节点的引用计数，递归向上，最后更新sizemap。</p>
+
+<p>优化方式可以设置一个开关，在申请增加一个大小为N的分配器时，可以浏览 GFP-Tree，找到一个大小和它差不多的给他，前提是那个分配器比N大，但是误差在10%以内即可，这样大大提高了整棵 GFP-Tree的利用率。</p>
+
+<h3 id="观点总结">观点总结</h3>
+
+<p>上面图中的 GFP-Tree节点还是按照 2^n大小的，这是为了方便阅读和说明问题，实际我在应用中使用的是2^n与菲波拉契大小的若干分配器，因为三层页面链表保证了持续的向上级归还空闲页面，所以我们的初始 GFP页面大小可以选择稍微大些的，比如 64K, 1MB, 4MB或者更大，整个 GFP-Tree的上下协调机制提供了初始GFP页面大小以内的所有内存分配机制，使用前面所提及的所有技巧，解决了应用层页面管理问题，整个分配工作没有任何一个循环，没有任何一次搜索，都能以单位时间完成分配/释放。</p>
+
+<p>不敢说时间就是很快，但是至少可以保证不管系统运行多长时间，不论多大面积的分配操作，其开销是 unitinterval，多次试验中，冗余内存基本徘徊在 30%-65%之间。</p>
+
+<h3 id="更多发展">更多发展</h3>
+
+<p>其实下一步还可以尝试在应用层进行页面映射，利用mmap或者win的FileMapping来模拟操作系统的页面映射将离散的页面映射在连续的物理空间下，当分配器得知操作系统支持应用层映射的时候将启动更高级的页面管理逻辑，提供更高效的实现。</p>
+
+<p>再进一步可以针对各个平台进行多线程技术优化，再进行地址对齐优化，多核优化。。。。。</p>
+
+<p>PS: 如果不怕成倍增加代码行数，还可以尝试更多的优化策略，基于上面的实现，我开始重构之前的流系统，就是一个类似 Python的 StringIO的实现，在实验中取得了很好的效果。<S-Insert></p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/191/">超越 STL-map/hash_map性能的DICT</a></li>
+        
+        <li><a href="/blog/archives/626/">[转载] 二十六史 - 毛太祖本纪</a></li>
+        
+        <li><a href="/blog/archives/202/">春运生存手册</a></li>
+        
+        <li><a href="/blog/archives/1145/">影子跟随算法（2007年老文一篇）</a></li>
+        
+        <li><a href="/blog/archives/450/">年度旅游-2007（日本）</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95">算法</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

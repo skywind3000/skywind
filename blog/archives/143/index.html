@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>内存拷贝优化（1）-小内存拷贝优化 | Skywind Inside</title>
+    <meta property="og:title" content="内存拷贝优化（1）-小内存拷贝优化 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2011-03-04T19:34:39&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2011-03-04T19:34:39&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="内存拷贝优化（1）-小内存拷贝优化">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/143/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">内存拷贝优化（1）-小内存拷贝优化</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2011年3月4日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>相信大家代码里有很多地方用到memcpy这个函数，相信这个函数的占用是不小的，有时优化了memcpy，能使整个项目的运行效率提升。通过适当的编码技巧，让我们的内存拷贝速度超过memcpy两倍，是可以实现的。  有人说memcpy还能优化么？不就是rep movsd么？CPU和内存之间的带宽是固定的，怎么可能优化呢？其实是普通的内存拷贝并没有发挥全部的带宽，很多被浪费掉了，比如要等到数据完全读取成功后再去写入，然后要写入成功后再去读取新的。而优化本身就是使这两者尽量的并行，发挥最大的带宽。</p>
+
+<p>现代的内存拷贝都需要判断内存大小，并按照大小选择不同策略进行拷贝，比如大内存拷贝（超过cache大小），那么最好使用并行若干读取指令和写入指令，然后再并行写入，使得CPU前后结果依赖得以大大降低，并且使用缓冲预取，再CPU处理数据之前，就把数据放到离CPU最近的CACHE。这样已经可以比memcpy快很多了，如果再加上一些新指令的帮助，大内存拷贝会大大提速。</p>
+
+<p>但是用同样的代码去拷贝小内存，因为额外的开销，难对齐的内存，准备工作一大堆，如果实际要拷贝的内存很小的话，这样的工作开销还比直接按照 dword复制慢很多。在VC10的memcpy实现中将内存按照128个字节大小进行区分，小于该大小的使用普通拷贝，大于该大小的使用普通SSE指令拷贝，而现在我们就要来挑战VC10的memcpy，本篇先叙述小内存拷贝部分。</p>
+
+<p>适合拷贝64字节以内的数据量。原理很简单，LOOP UNROLL。rep movsb/movsd是靠不住的，小内存拷贝还是得展开循环。</p>
+
+<p>废话不多说，代码贴上：</p>
+
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;mmsystem.h&gt;
+
+#ifdef _MSC_VER
+#pragma comment(lib, &quot;winmm.lib&quot;)
+#endif
+
+void *memcpy_tiny(void *dst, const void *src, size_t len)
+{
+	if (len &lt;= 63) {
+		register unsigned char *dd = (unsigned char*)dst + len;
+		register const unsigned char *ss = (const unsigned char*)src + len;
+		switch (len)
+		{
+		case 68:	*((int*)(dd - 68)) = *((int*)(ss - 68));
+		case 64:	*((int*)(dd - 64)) = *((int*)(ss - 64));
+		case 60:	*((int*)(dd - 60)) = *((int*)(ss - 60));
+		case 56:	*((int*)(dd - 56)) = *((int*)(ss - 56));
+		case 52:	*((int*)(dd - 52)) = *((int*)(ss - 52));
+		case 48:	*((int*)(dd - 48)) = *((int*)(ss - 48));
+		case 44:	*((int*)(dd - 44)) = *((int*)(ss - 44));
+		case 40:	*((int*)(dd - 40)) = *((int*)(ss - 40));
+		case 36:	*((int*)(dd - 36)) = *((int*)(ss - 36));
+		case 32:	*((int*)(dd - 32)) = *((int*)(ss - 32));
+		case 28:	*((int*)(dd - 28)) = *((int*)(ss - 28));
+		case 24:	*((int*)(dd - 24)) = *((int*)(ss - 24));
+		case 20:	*((int*)(dd - 20)) = *((int*)(ss - 20));
+		case 16:	*((int*)(dd - 16)) = *((int*)(ss - 16));
+		case 12:	*((int*)(dd - 12)) = *((int*)(ss - 12));
+		case  8:	*((int*)(dd - 8)) = *((int*)(ss - 8));
+		case  4:	*((int*)(dd - 4)) = *((int*)(ss - 4));
+					break;
+		case 67:    *((int*)(dd - 67)) = *((int*)(ss - 67));
+		case 63:    *((int*)(dd - 63)) = *((int*)(ss - 63));
+		case 59:    *((int*)(dd - 59)) = *((int*)(ss - 59));
+		case 55:    *((int*)(dd - 55)) = *((int*)(ss - 55));
+		case 51:    *((int*)(dd - 51)) = *((int*)(ss - 51));
+		case 47:    *((int*)(dd - 47)) = *((int*)(ss - 47));
+		case 43:    *((int*)(dd - 43)) = *((int*)(ss - 43));
+		case 39:    *((int*)(dd - 39)) = *((int*)(ss - 39));
+		case 35:    *((int*)(dd - 35)) = *((int*)(ss - 35));
+		case 31:    *((int*)(dd - 31)) = *((int*)(ss - 31));
+		case 27:    *((int*)(dd - 27)) = *((int*)(ss - 27));
+		case 23:    *((int*)(dd - 23)) = *((int*)(ss - 23));
+		case 19:    *((int*)(dd - 19)) = *((int*)(ss - 19));
+		case 15:    *((int*)(dd - 15)) = *((int*)(ss - 15));
+		case 11:    *((int*)(dd - 11)) = *((int*)(ss - 11));
+		case  7:    *((int*)(dd - 7)) = *((int*)(ss - 7));
+					*((int*)(dd - 4)) = *((int*)(ss - 4));
+					break;
+		case  3:    *((short*)(dd - 3)) = *((short*)(ss - 3));
+					dd[-1] = ss[-1];
+					break;
+		case 66:    *((int*)(dd - 66)) = *((int*)(ss - 66));
+		case 62:    *((int*)(dd - 62)) = *((int*)(ss - 62));
+		case 58:    *((int*)(dd - 58)) = *((int*)(ss - 58));
+		case 54:    *((int*)(dd - 54)) = *((int*)(ss - 54));
+		case 50:    *((int*)(dd - 50)) = *((int*)(ss - 50));
+		case 46:    *((int*)(dd - 46)) = *((int*)(ss - 46));
+		case 42:    *((int*)(dd - 42)) = *((int*)(ss - 42));
+		case 38:    *((int*)(dd - 38)) = *((int*)(ss - 38));
+		case 34:    *((int*)(dd - 34)) = *((int*)(ss - 34));
+		case 30:    *((int*)(dd - 30)) = *((int*)(ss - 30));
+		case 26:    *((int*)(dd - 26)) = *((int*)(ss - 26));
+		case 22:    *((int*)(dd - 22)) = *((int*)(ss - 22));
+		case 18:    *((int*)(dd - 18)) = *((int*)(ss - 18));
+		case 14:    *((int*)(dd - 14)) = *((int*)(ss - 14));
+		case 10:    *((int*)(dd - 10)) = *((int*)(ss - 10));
+		case  6:    *((int*)(dd - 6)) = *((int*)(ss - 6));
+		case  2:    *((short*)(dd - 2)) = *((short*)(ss - 2));
+					break;
+		case 65:    *((int*)(dd - 65)) = *((int*)(ss - 65));
+		case 61:    *((int*)(dd - 61)) = *((int*)(ss - 61));
+		case 57:    *((int*)(dd - 57)) = *((int*)(ss - 57));
+		case 53:    *((int*)(dd - 53)) = *((int*)(ss - 53));
+		case 49:    *((int*)(dd - 49)) = *((int*)(ss - 49));
+		case 45:    *((int*)(dd - 45)) = *((int*)(ss - 45));
+		case 41:    *((int*)(dd - 41)) = *((int*)(ss - 41));
+		case 37:    *((int*)(dd - 37)) = *((int*)(ss - 37));
+		case 33:    *((int*)(dd - 33)) = *((int*)(ss - 33));
+		case 29:    *((int*)(dd - 29)) = *((int*)(ss - 29));
+		case 25:    *((int*)(dd - 25)) = *((int*)(ss - 25));
+		case 21:    *((int*)(dd - 21)) = *((int*)(ss - 21));
+		case 17:    *((int*)(dd - 17)) = *((int*)(ss - 17));
+		case 13:    *((int*)(dd - 13)) = *((int*)(ss - 13));
+		case  9:    *((int*)(dd - 9)) = *((int*)(ss - 9));
+		case  5:    *((int*)(dd - 5)) = *((int*)(ss - 5));
+		case  1:    dd[-1] = ss[-1];
+					break;
+		case 0:
+		default: break;
+		}
+		return dd;
+	}	else {
+		return memcpy(dst, src, len);
+	}
+}
+
+typedef void *(*MemCpyProc)(void *dst, const void *src, size_t size);
+
+void benchmark(MemCpyProc memcpy1, MemCpyProc memcpy2, int x1, int x2)
+{
+	static unsigned char card1[0x20015];
+	static unsigned char card2[0x20015];
+	char *align1 = (char*)card1 + ((16 - ((size_t)card1 &amp; 15)) &amp; 15);
+	char *align2 = (char*)card2 + ((16 - ((size_t)card2 &amp; 15)) &amp; 15);
+	long totalsize = 0x20000000;
+	int size, t1, t2, i;
+	for (size = 64; size &gt;= 8; size = size * 2 / 3) {
+		int times = totalsize / size;
+		printf(&quot;memcpy: size=%6d\t times=%8d:\t &quot;, size, times);
+		Sleep(50);
+		t1 = timeGetTime();
+		for (i = 0; i &lt; times; i++)
+			memcpy1(align1 + x1, align2 + x2, size);
+		t1 = timeGetTime() - t1;
+		Sleep(50);
+		t2 = timeGetTime();
+		for (i = 0; i &lt; times; i++)
+			memcpy2(align1 + x1, align2 + x2, size);
+		t2 = timeGetTime() - t2;
+		printf(&quot;t1=%4d\t t2=%4d\n&quot;, t1, t2);
+	}
+}
+
+//! flag: -O3
+//! exe:
+int main(void)
+{
+	printf(&quot;\ndst: aligned  src: aligned\n&quot;);
+	benchmark(memcpy, memcpy_tiny, 0, 0);
+	printf(&quot;\ndst: un-aligned  src: aligned\n&quot;);
+	benchmark(memcpy, memcpy_tiny, 1, 0);
+	printf(&quot;\ndst: aligned  src: un-aligned\n&quot;);
+	benchmark(memcpy, memcpy_tiny, 0, 1);
+	printf(&quot;\ndst: un-aligned  src: un-aligned\n&quot;);
+	benchmark(memcpy, memcpy_tiny, 3, 1);
+	return 0;
+}
+</code></pre>
+
+<p>该代码展开了循环，效率比rep movsd之类的高2-3倍，比memcpy平均快2倍，下面是测试数据，t1代表memcpy, t2代表memcpy_tiny，使用VC2010最大优化模式编译:</p>
+
+<pre><code>dst: aligned src: aligned
+memcpy: size= 64 times= 8388608: t1= 239 t2= 243
+memcpy: size= 42 times=12782640: t1= 341 t2= 170
+memcpy: size= 28 times=19173961: t1= 225 t2= 205
+memcpy: size= 18 times=29826161: t1= 363 t2= 232
+memcpy: size= 12 times=44739242: t1= 448 t2= 294
+memcpy: size= 8 times=67108864: t1= 699 t2= 406
+
+dst: un-aligned src: aligned
+memcpy: size= 64 times= 8388608: t1= 255 t2= 256
+memcpy: size= 42 times=12782640: t1= 369 t2= 269
+memcpy: size= 28 times=19173961: t1= 289 t2= 165
+memcpy: size= 18 times=29826161: t1= 421 t2= 203
+memcpy: size= 12 times=44739242: t1= 493 t2= 279
+memcpy: size= 8 times=67108864: t1= 956 t2= 354
+
+dst: aligned src: un-aligned
+memcpy: size= 64 times= 8388608: t1= 241 t2= 257
+memcpy: size= 42 times=12782640: t1= 303 t2= 218
+memcpy: size= 28 times=19173961: t1= 258 t2= 181
+memcpy: size= 18 times=29826161: t1= 319 t2= 261
+memcpy: size= 12 times=44739242: t1= 448 t2= 325
+memcpy: size= 8 times=67108864: t1= 646 t2= 401
+
+dst: un-aligned src: un-aligned
+memcpy: size= 64 times= 8388608: t1= 243 t2= 257
+memcpy: size= 42 times=12782640: t1= 329 t2= 273
+memcpy: size= 28 times=19173961: t1= 276 t2= 193
+memcpy: size= 18 times=29826161: t1= 336 t2= 249
+memcpy: size= 12 times=44739242: t1= 529 t2= 332
+memcpy: size= 8 times=67108864: t1= 915 t2= 368
+</code></pre>
+
+<p>可见平均在64,42,28,18,12,8等几个大小的测试中，平均速度是memcpy的两倍。主要是依靠跳转表来实现的（VC INLINE ASM不能描述跳转表，因此该部分无法写成inline asm模式，索幸switch /case在大部分C编译器中都是用跳转表来实现的，因此我们可以用switch/case来模拟基于汇编指令跳转表的内存拷贝）。该部分反编译的结果：</p>
+
+<pre><code class="language-cpp">    ; 18   : 		switch (len)
+      00016	8d 71 ff	 lea	 esi, DWORD PTR [ecx-1]
+      00019	03 c1		 add	 eax, ecx
+      0001b	83 fe 43	 cmp	 esi, 67			; 00000043H
+      0001e	0f 87 fd 01 00
+    	00		 ja	 $LN2@memcpy_tin
+      00024	ff 24 b5 00 00
+    	00 00		 jmp	 DWORD PTR $LN77@memcpy_tin[esi*4]
+    $LN70@memcpy_tin:
+    ; 19   : 		{
+    ; 20   : 		case 68:	*((int*)(dd - 68)) = *((int*)(ss - 68));
+      0002b	8b 74 0a bc	 mov	 esi, DWORD PTR [edx+ecx-68]
+      0002f	89 70 bc	 mov	 DWORD PTR [eax-68], esi
+    $LN69@memcpy_tin:
+    ; 21   : 		case 64:	*((int*)(dd - 64)) = *((int*)(ss - 64));
+      00032	8b 74 0a c0	 mov	 esi, DWORD PTR [edx+ecx-64]
+      00036	89 70 c0	 mov	 DWORD PTR [eax-64], esi
+    $LN68@memcpy_tin:
+    ; 22   : 		case 60:	*((int*)(dd - 60)) = *((int*)(ss - 60));
+      00039	8b 74 0a c4	 mov	 esi, DWORD PTR [edx+ecx-60]
+      0003d	89 70 c4	 mov	 DWORD PTR [eax-60], esi
+    $LN67@memcpy_tin:
+    ; 23   : 		case 56:	*((int*)(dd - 56)) = *((int*)(ss - 56));
+      00040	8b 74 0a c8	 mov	 esi, DWORD PTR [edx+ecx-56]
+      00044	89 70 c8	 mov	 DWORD PTR [eax-56], esi
+    $LN66@memcpy_tin:
+    .................................
+    $LN77@memcpy_tin:
+    ; 105  : 	}
+    ; 106  : }
+      0022c	00 00 00 00	 DD	 $LN3@memcpy_tin
+      00230	00 00 00 00	 DD	 $LN20@memcpy_tin
+      00234	00 00 00 00	 DD	 $LN37@memcpy_tin
+      00238	00 00 00 00	 DD	 $LN54@memcpy_tin
+      0023c	00 00 00 00	 DD	 $LN4@memcpy_tin
+      00240	00 00 00 00	 DD	 $LN21@memcpy_tin
+      00244	00 00 00 00	 DD	 $LN38@memcpy_tin
+      00248	00 00 00 00	 DD	 $LN55@memcpy_tin
+      0024c	00 00 00 00	 DD	 $LN5@memcpy_tin
+      00250	00 00 00 00	 DD	 $LN22@memcpy_tin
+      00254	00 00 00 00	 DD	 $LN39@memcpy_tin
+      00258	00 00 00 00	 DD	 $LN56@memcpy_tin
+      0025c	00 00 00 00	 DD	 $LN6@memcpy_tin
+      00260	00 00 00 00	 DD	 $LN23@memcpy_tin
+      00264	00 00 00 00	 DD	 $LN40@memcpy_tin
+      00268	00 00 00 00	 DD	 $LN57@memcpy_tin
+      0026c	00 00 00 00	 DD	 $LN7@memcpy_tin
+      00270	00 00 00 00	 DD	 $LN24@memcpy_tin
+      00274	00 00 00 00	 DD	 $LN41@memcpy_tin
+      00278	00 00 00 00	 DD	 $LN58@memcpy_tin
+      0027c	00 00 00 00	 DD	 $LN8@memcpy_tin
+      00280	00 00 00 00	 DD	 $LN25@memcpy_tin
+      00284	00 00 00 00	 DD	 $LN42@memcpy_tin
+      00288	00 00 00 00	 DD	 $LN59@memcpy_tin
+</code></pre>
+
+<p>大家发现诀窍没有？好了，其实在大部分情况下，比如脚本处理等，很多是64个字节以内的内存拷贝，所以小内存拷贝的优化是比较实在的，请大家继续关注“内存拷贝优化（2）-大内存拷贝优化”。</p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/166/">[业余土制] 简易网络库 easenet</a></li>
+        
+        <li><a href="/blog/archives/163/">[业余土制] Python P2P模块</a></li>
+        
+        <li><a href="/blog/archives/153/">[业余土制] Build工具 EasyMake</a></li>
+        
+        <li><a href="/blog/archives/699/">欧洲旅游-2010</a></li>
+        
+        <li><a href="/blog/archives/137/">[自制开源] 轻量级图形库 PixelLib</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96">优化</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

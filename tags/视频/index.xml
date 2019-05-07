@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>视频 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/</link>
+    <description>Recent content in 视频 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 24 Dec 2015 11:43:12 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何写一个视频编码器演示篇</title>
+      <link>https://skywind3000.com/blog/archives/1609/</link>
+      <pubDate>Thu, 24 Dec 2015 11:43:12 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1609/</guid>
+      <description>&lt;p&gt;先前写过《&lt;a href=&#34;http://www.skywind.me/blog/archives/1566&#34;&gt;视频编码原理简介&lt;/a&gt;》，有朋友问光代码和文字不太真切，能否补充几张图片，今天我们演示一下：&lt;/p&gt;
+
+&lt;p&gt;这是第一帧画面：P1（我们的参考帧）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/12/output1_thumb.png&#34; alt=&#34;output1&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这是第二帧画面：P2（需要编码的帧）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/12/output2_thumb.jpg&#34; alt=&#34;output2&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;从视频中截取的两张间隔1-2秒的画面，和实际情况类似，下面我们参考P1进行几次运动搜索：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>视频编码原理简介</title>
+      <link>https://skywind3000.com/blog/archives/1566/</link>
+      <pubDate>Tue, 24 Nov 2015 10:45:24 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1566/</guid>
+      <description>&lt;p&gt;要彻底理解视频编码原理，看书都是虚的，需要实际动手，实现一个简单的视频编码器：&lt;/p&gt;
+
+&lt;p&gt;知识准备：基本图像处理知识，信号的时域和频域问题，熟练掌握傅立叶正反变换，一维、二维傅立叶变换，以及其变种，dct变换，快速dct变换。&lt;/p&gt;
+
+&lt;p&gt;来自知乎问题：&lt;a href=&#34;http://www.zhihu.com/question/22567173/answer/73610451&#34;&gt;http://www.zhihu.com/question/22567173/answer/73610451&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;第一步-实现有损图像压缩和解压&#34;&gt;第一步：实现有损图像压缩和解压&lt;/h3&gt;
+
+&lt;p&gt;参考 JPEG原理，将RGB-&amp;gt;YUV，然后Y/U/V看成三张不同的图片，将其中一张图片分为 8x8的block进行 dct变换（可以直接进行二维dct变换，或者按一定顺序将8x8的二维数组整理成一个64字节的一维数组），还是得到一个8x8的整数频率数据。于是表示图像大轮廓的低频信号（人眼敏感的信号）集中在 8x8的左上角；表示图像细节的高频信号集中在右下角。&lt;/p&gt;
+
+&lt;p&gt;接着将其量化，所谓量化，就是信号采样的步长，8x8的整数频率数据块，每个数据都要除以对应位置的步长，左上角相对重要的低频信号步长是1，也就是说0-255，是多少就是多少。而右下角是不太重要的高频信号，比如步长取10，那么这些位置的数据都要/10，实际解码的时候再将他们*10恢复出来，这样经过编码的时候/10和解码的时候*10，那么步长为10的信号1, 13, 25, 37就会变成规矩的：0,
+10, 20, 30, 对小于步长10的部分我们直接丢弃了，因为高频不太重要。&lt;/p&gt;
+
+&lt;p&gt;经过量化以后，8x8的数据块左上角的数据由于步长小，都是比较离散的，而靠近右下角的高频数据，都比较统一，或者是一串0，因此图像大量的细节被我们丢弃了，这时候，我们用无损压缩方式，比如lzma2算法（jpeg是rle + huffman）将这64个byte压缩起来，由于后面高频数据步长大，做了除法以后，这些值都比较小，而且比较靠近，甚至右下部分都是一串0，十分便于压缩。&lt;/p&gt;
+
+&lt;p&gt;JPEG图像有个问题就是低码率时 block边界比较严重，现代图片压缩技术往往要配合一些de-block算法，比如最简单的就是边界部分几个像素点和周围插值模糊一下。&lt;/p&gt;
+
+&lt;p&gt;做到这里我们实现了一个同 jpeg类似的静态图片有损压缩算法。在视频里面用来保存I帧数据。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

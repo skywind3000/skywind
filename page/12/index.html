@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Skywind Inside | 写自己的代码，让别人猜去吧！</title>
+    <meta property="og:title" content="Skywind Inside | 写自己的代码，让别人猜去吧！">
+    <meta property="og:type" content="website">
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Putty 本无树，MinGW 亦非台">
+    <meta property="og:url" content="https://skywind3000.com/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml+xml" href="https://skywind3000.com/index.xml" title="Skywind Inside" />
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <h1>
+                        <a id="logo" href="https://skywind3000.com/">
+                            Skywind Inside
+                        </a>
+                    </h1>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/131/" title="帧锁定同步算法" >帧锁定同步算法</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2007年2月10日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a></span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B">网络编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p><strong>帧锁定算法解决游戏同步</strong></p>
+
+<p>早期 RTS，XBOX360 LIVE游戏常用同步策略是什么？格斗游戏多人联机如何保证流畅性和一致性？如何才能像单机游戏一样编写网游？敬请观看《帧锁定同步算法》 《帧锁定同步算法》转载请注明出处：</p>
+
+<p><a href="http://www.skywind.me/blog/archives/131">http://www.skywind.me/blog/archives/131</a></p>
+
+<p><strong>算法概念</strong></p>
+
+<p>该算法普遍要求网速RTT要在100ms以内，一般人数不超过8人，在这样的情况下，可以像单机游戏一样编写网络游戏。所有客户端任意时刻逻辑都是统一的，缺点是一个人卡机，所有人等待。</p>
+
+<ol>
+<li>客户端定时（比如每五帧）上传控制信息。</li>
+<li>服务器收到所有控制信息后广播给所有客户。</li>
+<li>客户端用服务器发来的更新消息中的控制信息进行游戏。</li>
+<li>如果客户端进行到下一个关键帧（5帧后）时没有收到服务器的更新消息则等待。</li>
+<li>如果客户端进行到下一个关键帧时已经接收到了服务器的更新消息，则将上面的数据用于游戏，并采集当前鼠标键盘输入发送给服务器，同时继续进行下去。</li>
+<li>服务端采集到所有数据后再次发送下一个关键帧更新消息。</li>
+</ol>
+
+<p>这个等待关键帧更新数据的过程称为“帧锁定”
+应用案例：大部分RTS游戏，街霸II(xbox360)，Callus模拟器。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/131/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/338/" title="PY2EXE的启动步奏参考－科学的发布" >PY2EXE的启动步奏参考－科学的发布</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2006年10月13日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>周末读了一下Py2Exe的代码，偶然发现Py2Exe的实现，是一套很成熟的客户端发布方式，不限于只有 Python项目可以参考，Py2exe启动步奏如下： Py2exe启动步奏方式参考：</p>
+
+<ol>
+<li>主程序启动，尝试在本EXE的资源中找到zip过后的PythonXX.dll的数据</li>
+<li>如果找到 PythonXX.dll数据则unzip后以memory dll方式加载并导出接口</li>
+<li>初始化 memoryimporter，给python提供在内存中import一个pyc或者dll的功能</li>
+<li>利用memoryimporter加载 ctypes.pyd模块</li>
+<li>利用py2exe_util.c中的方法，加载程序所需要的资源：ICON等</li>
+<li>在资源中初始化 zlib.pyd等必要模块</li>
+<li>在资源中找到初始化，以 <code>__main__</code> 的命名开始转入Python脚本</li>
+</ol>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/338/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/455/" title="学习游戏编程的八大误区" >学习游戏编程的八大误区</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2006年8月21日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>误区一：很多作品只能叫做 “程序” 而不能称为 “游戏”<br />
+误区二：执着于各种技巧而忽视了基本素质的培养</p>
+
+<p>误区三：执着于流行的API，认为：<br />
+会写游戏 ＝ 掌握一两套API</p>
+
+<p>误区四：执着于大而全，系统就像一只吞噬了各种化学品的魔兽<br />
+误区五：执着于引擎创作爱重复劳动：<br />
+最失败的引擎 ＝ 拿来主义 ＋ 函数改名</p>
+
+<p>误区六：不消于使用脚本语言，喜欢CPP至上论<br />
+误区七：缺少科学的测试方法，写出来的程序BUG不断<br />
+误区八：作品缺乏游戏性，程序设计缺乏美感</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/455/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/613/" title="推荐业余作品 - Hurricane2" >推荐业余作品 - Hurricane2</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2006年6月7日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91">游戏开发</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb4.jpg" alt="clip_image002" /></p>
+
+<p><strong>Hurricane2</strong></p>
+
+<p>给大家介绍这款充满速度感，爽快感，连续性强的动作游戏。游戏里主角需要杀死各类敌人，获得高分，除使用不同招数和连续技外，还能利用各种致命武器，屠杀敌人。</p>
+
+<p><strong>基本操作：</strong></p>
+
+<p>用WSAD移动，双击移动键可以快速闪，鼠标左健搏斗，右键打开瞄准器，这时按下左健就可以射击，必杀技和武器希望您在游戏中探索，不过如果您能杀满350人，基本上就没秘密可言了：</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/613/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/120/" title="Python少打字小技巧" >Python少打字小技巧</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2006年6月7日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>说明：增加代码的描述力，可以成倍减少你的LOC，做到简单，并且真切有力
+观点：少打字＝多思考＋少出错，10代码行比50行更能让人明白，以下技巧有助于提高5倍工作效率</p>
+
+<h4 id="1-交换变量值时避免使用临时变量-cookbook1-1">1. 交换变量值时避免使用临时变量：(cookbook1.1)</h4>
+
+<p>老代码：我们经常很熟练于下面的代码</p>
+
+<pre><code>temp = x
+x = y
+y = temp
+</code></pre>
+
+<p>代码一：</p>
+
+<pre><code>u, v, w = w, v, u
+</code></pre>
+
+<p>有人提出可以利用赋值顺序来简化上面的三行代码成一行</p>
+
+<p>代码二：</p>
+
+<pre><code>u, v = v, u
+</code></pre>
+
+<p>其实利用Python元组赋值的概念，可更简明 — 元组初始化 + 元组赋值</p>
+
+<h4 id="2-读字典时避免判断键值是否存在-cookbook1-2">2. 读字典时避免判断键值是否存在：(cookbook1.2)</h4>
+
+<pre><code>d = { 'key': 'value' }
+</code></pre>
+
+<p>老代码：</p>
+
+<pre><code>if 'key' in d: print d['key']
+else: print 'not find'
+</code></pre>
+
+<p>新代码：</p>
+
+<pre><code>print d.get('key', 'not find')
+</code></pre>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/120/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/610/" title="文莱旅游-SINPLAY" >文莱旅游-SINPLAY</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2006年3月15日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image001_thumb2.jpg" alt="clip_image001" /></p>
+
+<p>我们是红旗下成长的少年&mdash;-愿乘长风，破巨浪，帮助他乡人民早日得解放。。。。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb2.jpg" alt="clip_image002" /></p>
+
+<p>苏丹王宫&ndash;世界上最大的屋子（占地两公顷多的一栋房屋）</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image003_thumb2.jpg" alt="clip_image003" /></p>
+
+<p>王徽</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image004_thumb2.jpg" alt="clip_image004" /></p>
+
+<p>苏丹纪念官</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/610/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/458/" title="游戏高手的境界" >游戏高手的境界</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2006年3月12日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>游戏高手也分三流九等，随着游戏软件已经越来越复杂，而人和人之间的竞技性也越来越白热化。</p>
+
+<p>我是一个有十七年游戏经验的老玩家了，从世嘉八位机到现在的网游，虽然不敢说有什么高深的见地，但，在大多数游戏中，我所碰到的对手，都经不起我两三个回合的摧残。深刻相信“游戏，是人的本性”的我不太喜欢打一些慢节奏的游戏，觉得只有格斗和即时战略才能体现竞争的残酷，成王败寇的铁则跟现实没什么两样。而我说到我最纯熟的当数格斗和星际，星际成都第二，格斗成都第三的都死在我的键盘之下，这几年打这两个游戏的玩家少了，
+所以我旦逢一遇到对手，听说“某某某格斗打的还可以，谁谁谁星际还挺行”我就会异常激动，不远千里请他过来过一招半式，我要声东击西，指南打北，用变化无穷的战术和他比个高下，但是一次次的我失望了，看着对手低头离去，我仰头看着他的背影，心中一片胜利过后的空虚，一个人提着键盘站在电脑旁，茫然四顾，试问天下之大，尽难逢我的对手。</p>
+
+<p>星际里我凭借无穷的战术，运筹帷幄决胜千里；格斗中我拳打北山猛虎，脚踢南海威龙。我有座右铭：“凭你先选人物，再凭你让我选”。一般高手的能在一个游戏上出类拔萃，但除此之外都平平无奇；顶极高手在许多游戏中都能至人于死地，虽然，在我看来他们都根本达不到所谓达人的境界。真正的高手，凭借的不是再某款游戏上精湛技巧，而是凭借自己惊人的学习能力和触类旁通的天性。一个游戏，我可以输给你，但是我保证，数盘之后你再没有
+可能赢我。</p>
+
+<p>星际四川省第一的人曾经说过“打星际最重要的控制节奏”，就是说丝毫不能慌乱，该怎么着就怎么着，我觉得每个游戏都是这个道理。三流高手比技巧，二流高手比反应，一流高手比心性。不管局势如何，哪怕我只剩最后几个兵，只有最后一丝血，心里面一定不能出乱子，一定要沉住性子。首先要顺应自身的规律，其次要顺应游戏的规律，最后做到以自身的规律配合游戏的规律，人的左右手和眼睛随着游戏的变化而变化，但是人的心不能变只有做到
+心如止水，才能以不变应万变。打游戏是这个道理，做人做事同样是这个道理。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/458/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/501/" title="文莱沙巴旅游照片" >文莱沙巴旅游照片</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2006年3月12日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image001_thumb1.jpg" alt="clip_image001" /></p>
+
+<p>项目团队</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb1.jpg" alt="clip_image002" /></p>
+
+<p>系统结构图</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image003_thumb1.jpg" alt="clip_image003" /></p>
+
+<p>The Empire Hotel – 1</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image004_thumb1.jpg" alt="clip_image004" /></p>
+
+<p>The Empire Hotel - 2</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image005_thumb1.jpg" alt="clip_image005" /></p>
+
+<p>文莱25世苏丹修的清真寺</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/501/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/456/" title="两次结对开发尝试" >两次结对开发尝试</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2006年1月20日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99">大浪淘沙</a></span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>前段时间，项目三个开发者主要忙于确定一些具体技术，工作效率很低，两个同事一个负责服务器进程间通信模块的制作，一个负责数据库的线程池访问。这些知识他们都有，只是不够熟练，这些地方都是很容易耽误时间的，一位同事调整一个线程池，三天一下就投进去了，有时就是漫无目的的查资料，我当时看着干着急。</p>
+
+<p>那天晚上回家，突然想起来，唉，干脆试试结对开发怎么样，连夜总结了一下问题和要点，于是连续几天的XP就开始了，起得了一些好的效果。回顾一下自己一直以来认同XP却异或结对开发，主要有几个阶段：</p>
+
+<p>好奇阶段：早在一年前的事情了，一样和大家好奇的查阅资料，抽时间的认真尝试了几回，自己就先疑惑起来，同时通过查阅资料我也找到了很多负面报道，比如国外已经跳出人来说结对开发有问题，又比如中科院有家研究所，花了半年测试XP，得出结对开发不行的结论，七八条专家理由，自已也怀疑了。</p>
+
+<p>排斥阶段：觉得结对开发有打压开发者的效果，首先是一个人写一个人看，写的那个人再高明难免犯错看的人抓住口实后和你争论，你一边写代码一边想问题，自然言语落下风，轻者散失声誉，重者没了自信。“平等、妥协”难以单方面强求，所以当时认为开发者应该适当保持距离的同时做一定的重复劳动满足自我价值实现。觉得挨得那么近结对开发，似乎对个人成就感是种磨灭，因为剥夺了代码的个人所有权，大家觉得价值得不到体现了，所以当时
+的心态比较极端。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/456/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/459/" title="治安问题闲扯" >治安问题闲扯</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2006年1月5日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>前段时间关于个人所得税改革，升高了低收入的收税起征点，有专家反驳，说：“剥夺了大部分人上税的合法权利” 有人骂专家，说“再收税，恐怕就出陈胜吴广了”，我在广州这点感触深啊，公司东边是飞车党，西边是砍手党，北面是背包党，南面是踩脚党。</p>
+
+<p>在广州，2/3的上班女性都有被抢的经历：砍手党就是抢你东西，你不给就砍你的手；踩脚党是故意把脚放在你面前，你只要踩了他，他就找茬。治安问题，珠江三角已经提前迈了一步了，从前几年的流动人口为主的乱，发展到现在的地下组织形式为主的乱了。</p>
+
+<p>何新：“我曾经研究中国秦汉以下两千年的中国历史&hellip;结论是，除了外族入侵，基本上中国发生天下大乱的原因只有一个，就是土地兼并导致大量农民失去土地，无业可就，成为流民，从而揭竿而起。 现在人们似乎忘记了历史。目前中国的社会失业问题严重到已接近可怕的程度。无数青年人失去了机会，铤而走险。&hellip; ”</p>
+
+<p>前两久听评书，曾国藩处理天津教案，说道黑龙会蛊惑群众烧教堂，太象了，和现在一些形式。<br />
+参考天津教案的情况，下面是关系图：</p>
+
+<pre><code>农民失去土地 + 政治问题 -&gt; 无业人口 -(涌入城市)-&gt; 黑社会(黑龙会) -&gt; 团结底层人民  
+无业游民增加 + 知识分子失业 -&gt; 城市边缘人口增加 -&gt; 城市边缘文化成为主流  
+黑龙会 + 官商勾结 -&gt; 产生老百姓自己解决“公正”的“地下公堂” -&gt; 政府信誉下降  
+地下公堂 + 突发事件 -(政府处理不当)-&gt; 法国公使桥头开枪 -&gt; 火烧教堂 -&gt; 乱
+</code></pre>
+
+<p>原来全国地痞流氓都很均匀，但现在他们都来南方混了，虽然说他们目前这样是不会有出息的，后期拥有群众基础和政治组织能力会获胜，虽然这些人多是一群无赖而已，但怕就怕读书人和无赖呆一起。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://skywind3000.com/blog/archives/459/">阅读全文</a></p>
+                        </article>
+                    
+
+                    
+
+
+<ol class="page-navigator">
+    
+    <li class="prev">
+        <a href="https://skywind3000.com/page/11/">上一页</a>
+    </li>
+    
+
+    
+    <li >
+        <a href="https://skywind3000.com/">1</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/2/">2</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/3/">3</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/4/">4</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/5/">5</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/6/">6</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/7/">7</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/8/">8</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/9/">9</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/10/">10</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/11/">11</a>
+    </li>
+    
+    <li  class="current">
+        <a href="https://skywind3000.com/page/12/">12</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/13/">13</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/page/14/">14</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="https://skywind3000.com/page/13/">下一页</a>
+    </li>
+    
+</ol>
+
+
+
+                </div>
+            </div>
+
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Android on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/android/</link>
+    <description>Recent content in Android on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 25 Aug 2015 10:54:21 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Android Arm 编译优化选项评测</title>
+      <link>https://skywind3000.com/blog/archives/1550/</link>
+      <pubDate>Tue, 25 Aug 2015 10:54:21 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1550/</guid>
+      <description>&lt;p&gt;用不同测试用例具体测试 softfp, armv7-a, cortax 等优化选项，看选项不同性能差别多大。首先设计下面几个测试用例，包含字符串处理、复杂逻辑、整数运算、浮点运算几个方面：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;compress：进行 LZO/LZW 大规模压缩，测试搜索，字符串匹配，复杂分支等性能&lt;/li&gt;
+&lt;li&gt;resample：进行一系列整数 DSP 运算，包括 resample 和 fir low pass&lt;/li&gt;
+&lt;li&gt;int add：一亿次整数加法&lt;/li&gt;
+&lt;li&gt;int mul：一亿次整数乘法&lt;/li&gt;
+&lt;li&gt;int div：一亿次整数除法&lt;/li&gt;
+&lt;li&gt;float add：一亿次浮点加法&lt;/li&gt;
+&lt;li&gt;float mul：一亿次浮点乘法&lt;/li&gt;
+&lt;li&gt;float div：一亿次浮点除法&lt;/li&gt;
+&lt;li&gt;const div：一亿次整数除以常数255&lt;/li&gt;
+&lt;li&gt;matrix：若干次矩阵乘法运算，同时考察浮点数乘法加法&lt;/li&gt;
+&lt;li&gt;normalize：若干次矢量归一化运算，同时考察浮点数乘法，除法，加法，sqrt&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Android 命令行调试 C/C&#43;&#43;  程序</title>
+      <link>https://skywind3000.com/blog/archives/1545/</link>
+      <pubDate>Tue, 25 Aug 2015 06:24:36 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1545/</guid>
+      <description>&lt;p&gt;传统方式调试 NDK 开发的程序比较麻烦，先要编译成 JNI，又要导出 java接口，还要再写一个 java 工程，改一个地方又要连续改几处，这样效率是很低的。最频繁使用的关键工作路径（编译/调试环节）如果能极致简化，那么可以带来开发效率的成倍提升。其实安卓官方是提供了命令行调试方法的，将你需要调试的 C代码用 NDK直接编译成可执行，然后到设备上执行：&lt;/p&gt;
+
+&lt;p&gt;使用 NDK 导出独立工具链，方便以后使用，在 cygwin 下面，将 $NDK 环境变量代表的路径设置好，然后：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd $NDK  
+chmod -R 755 *  
+build/tools/make-standalone-toolchain.sh --ndk-dir=$NDK --platform=android-9 --arch=arm --install-dir=/...../path-to-android-9
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

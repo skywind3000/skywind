@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>图形编程 | Skywind Inside</title>
+    <meta property="og:title" content="图形编程 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="图形编程">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml+xml" href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/index.xml" title="Skywind Inside" />
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    
+                    <h3 class="archive-title">
+                        分类
+                        <span class="keyword">图形编程</span>
+                        中的文章
+                    </h3>
+                    
+
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1828/">3D 图形光栅化的透视校正问题</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年8月18日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>写了文章《<a href="http://www.skywind.me/blog/archives/1498">如何写一个软件渲染器</a>》以后，不少网友希望进一步解释背后的数学公式，询问以及自己加一个 phong 光照该如何加，本文将对透视纹理映射的插值原理做一个简单的解释，希望能帮助到大家：</p>
+
+<p>透视纹理绘制发生在最后阶段，坐标已经完成projection，剔除，裁剪了，然后顶点/w，开始批量绘制扫描线之前，这时候开始计算纹理的位置。</p>
+
+<p>使用w还是用z，关系不大，早年的3d引擎，直接/z的，只是后面标准化了以后，发现w更好用，可以同时表示透视投影和正交投影。同时顶点经过标准的mvp矩阵运算后，w和z是承线性关系的，方便对z/w做 [0,1] 的cvv裁剪。你可以理解成w就是另外一个z。以前屏幕坐标：</p>
+
+<pre><code>x' = x / z * d + A
+y' = y / z * d + A
+</code></pre>
+
+<p>现在是</p>
+
+<pre><code>x' = x / w * d + A
+y' = y / w * d + A
+</code></pre>
+
+<p>然后绘制纹理前，你需要先证明屏幕上两个点之间，1/w 承线性关系，即屏幕上两个点X1&rsquo;, X2&rsquo;之间任意取一点X3&rsquo;，他们的(1/w)值的变化比例相同，即在 t 取任意值有：</p>
+
+<pre><code>x3' = x1' + (x2' - x1') * t
+(1 / w3) = (1 / w1) + ((1 / w2)  - (1 / w1)) * t
+</code></pre>
+
+<p>再根据他们在同一个平面上，证明屏幕上两个点之间，u/w, v/w 承线性关系，即 t 取任意值有：</p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1828/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1774/">计算机底层是如何访问显卡的？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年6月17日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>以前 DOS下做游戏，操作系统除了磁盘和文件管理外基本不管事情，所有游戏都是直接操作显卡和声卡的，用不了什么驱动。</p>
+
+<p>虽然没有驱动，但是硬件标准还是放在那里，VGA, SVGA, VESA, VESA2.0 之类的硬件标准，最起码，你只做320x200x256c的游戏，或者 ModeX 下 320x240x256c 的游戏的话，需要用到VGA和部分 SVGA标准，而要做真彩高彩，更高分辨率的游戏的话，就必须掌握 VESA的各项规范了。</p>
+
+<p>翻几段以前写的代码演示下：</p>
+
+<h3 id="例子1-初始化-vga-vesa-显示模式">例子1： 初始化 VGA/VESA 显示模式</h3>
+
+<p>基本是参考 VGA的编程手册来做：</p>
+
+<pre><code>INT 10,0 - Set Video Mode
+    AH = 00
+    AL = 00  40x25 B/W text (CGA,EGA,MCGA,VGA)
+       = 01  40x25 16 color text (CGA,EGA,MCGA,VGA)
+       = 02  80x25 16 shades of gray text (CGA,EGA,MCGA,VGA)
+       = 03  80x25 16 color text (CGA,EGA,MCGA,VGA)
+       = 04  320x200 4 color graphics (CGA,EGA,MCGA,VGA)
+       = 05  320x200 4 color graphics (CGA,EGA,MCGA,VGA)
+       = 06  640x200 B/W graphics (CGA,EGA,MCGA,VGA)
+       = 07  80x25 Monochrome text (MDA,HERC,EGA,VGA)
+       = 08  160x200 16 color graphics (PCjr)
+       = 09  320x200 16 color graphics (PCjr)
+       = 0A  640x200 4 color graphics (PCjr)
+       = 0B  Reserved (EGA BIOS function 11)
+       = 0C  Reserved (EGA BIOS function 11)
+       = 0D  320x200 16 color graphics (EGA,VGA)
+       = 0E  640x200 16 color graphics (EGA,VGA)
+       = 0F  640x350 Monochrome graphics (EGA,VGA)
+       = 10  640x350 16 color graphics (EGA or VGA with 128K)
+         640x350 4 color graphics (64K EGA)
+       = 11  640x480 B/W graphics (MCGA,VGA)
+       = 12  640x480 16 color graphics (VGA)
+       = 13  320x200 256 color graphics (MCGA,VGA)
+       = 8x  EGA, MCGA or VGA ignore bit 7, see below
+       = 9x  EGA, MCGA or VGA ignore bit 7, see below
+    - if AL bit 7=1, prevents EGA,MCGA &amp; VGA from clearing display
+    - function updates byte at 40:49;  bit 7 of byte 40:87
+      (EGA/VGA Display Data Area) is set to the value of AL bit 7
+</code></pre>
+
+<p>转换成代码的话，类似这样：</p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1774/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1683/">超越 SDL/DirectDraw/GDI 性能的位图库</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2016年4月28日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>开源一个高性能位图库，之前对我的二维图形库 <a href="https://github.com/skywind3000/pixellib">pixellib</a> 进行了精简和重写，最终形成一个只包含两个文件（BasicBitmap.h, BasicBitmap.cpp）的图形基础库。 在今天 GPU 绘制横行天下的时候，任然有很多时候需要使用到纯
+CPU实现的图形库，比如图像处理，视频预处理与合成，界面，以及GPU无法使用的情况（比如某个应用把gpu占满了，或者无法通过gpu做一些十分灵活的事情时），纹理处理，简单图片加载保存等。 支持 SSE2/AVX 优化，比 DirectDraw 快 40%（全系统内存绘制），比 SDL 快 10%，比GDI快 38%。如果你需要一个方便的高性能位图库，足够高性能的同时保证足够紧凑。
+如果你有上述需求，那么你和我一样需要用到 BasicBitmap，只需要把 BasicBitmap.h/.cpp 两个文件拷贝到你的代码中即可。我正是为了这个目的编写了这两个文件。</p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1683/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1564/">多平台下录屏方式</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年11月15日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>随便记录下，想得起来的多少写多少：</p>
+
+<p>Windows：</p>
+
+<pre><code>GDI 全屏：fullscreen desktop BitBlt 速度是 20ms / 帧  
+GDI 窗口：Win7+可以录制游戏和非游戏，XP以前只能录制普通界面，截不到游戏窗口  
+DirectDraw 全屏：full screen primary surface 异步到 offscreen-surface XP下闪电速度 1ms / 帧  
+D3D9: render target -&gt; offscreen surface XP下 16ms Win7 下 10ms  
+D3D Hook: Hook Device::Present -&gt; 保存 StateBlock -&gt; 截屏 -&gt; 恢复 StateBlock 极速！
+</code></pre>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1564/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1498/">如何写一个软件渲染器？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年8月9日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>实现个简单的固定渲染管线软渲染器不算复杂，差不多700行代码就可以搞定了。之所以很多人用 D3D用的很熟，写软渲染却坑坑洼洼，主要是现在大部分讲图形的书，讲到透视投影时就是分析一下透视变换矩阵如何生成，顶点如何计算就跳到其他讲模型或者光照的部分了。</p>
+
+<p>因为今天基本上是直接用 D3D 或者 OGL，真正光栅化的部分不了解也不影响使用，所以大部分教材都直接跳过了一大段，摄像机坐标系如何转换？三角形如何生成？CVV边缘如何检测？四维坐标如何裁剪？边缘及步长如何计算？扫描线该如何绘制？透视纹理映射具体代码该怎么写？framebuffer zbuffer 到底该怎么用？z-test 到底是该 test z 还是 w 还是 1/z 还是 1/w
+？这些都没讲。</p>
+
+<p>早年培训学生时候，我花两天时间写的一个 DEMO，今天拿出来重新调整注释一下，性能和功能当然比不过高大上的软件渲染器。但一般来讲，工程类项目代码不容易阅读，太多边界情况和太多细节优化容易让初学者迷失，这个 mini3d 的项目不做任何优化，主要目的就是为了突出主干：</p>
+
+<p>源代码：<a href="https://github.com/skywind3000/mini3d">skywind3000/mini3d · GitHub</a><br />
+可执行：<a href="https://github.com/skywind3000/mini3d/releases/download/v1.2/mini3d-src-binary.zip">mini3d-src-binary</a></p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1498/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1391/">游戏中角色变色如何实现？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年6月13日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                来自知乎问题：http://www.zhihu.com/question/31133351
+游戏中的惯用做法叫：调色盘色彩旋转
+1. 调色盘里能变色的颜色总是固定几个位置
+2. 让需要变色的位置的 RGB转换成 HSV，然后旋转 H分量旋转一定角度
+3. 重新将 HSV转换为 RGB保存回调色盘
+在 HSV 色彩空间中，旋转 H 分量
+主要是旋转 H分量，S/V分量也可以微调，但是变色是以旋转 H为主。题主两张图片的八神，除了调色盘前面几个皮肤颜色不参与变色外，后面的衣服整体都参与了色彩旋转：
+看看是不是和我上面模拟的 DEMO 差不多 &mdash; 所有衣服颜色的 H 分量 都差不多旋转了 300 多度 （除了裤子外，观察衣服颜色的变化）。可以看出，拳皇的衣服变色就是这么生成的，当然游戏自动生成好了以后，也可以让你自己微调一下。
+所以这样不但有紫色八神，还能轻松有蓝色，黄色，绿色的八神。好多游戏的头发衣服的即时变色基本都是这个套路。包括 Windows下 好多界面变色也是用色彩旋转实现，只是不用调色盘了：
+现代绘图，没有调色盘，依然要变色，一般是将变色的部件和不变色的部件分为两层来绘制，不变色的是一层，变色的是另外一层：
+比如上面这个按钮，中间两个状态是参与变色的底图，但是还有一些不改变的，比如X和汉字，如果一起参与变色就搞笑了，所以还需要一层不变色的覆盖在上面，就是最左边那个层。所以界面变色，文字和图标不会改变。
+或者根据变色不同拆分成不同的部件，让其中某一个部件变色
+坦克身子：参与变色 （不同的国家会旋转成不同的颜色）
+坦克炮管：不参与变色（都是一样的）
+PS：有些地方也会用 HSL空间色彩旋转代替 HSV色彩空间旋转，差不多，看你喜好。
+更多参考：OpenGL GLSL 实现色彩旋转
+http://stackoverflow.com/questions/9234724/how-to-change-hue-of-a-texture-with-glsl……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1391/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1363/">还原被摄像机透视的纹理</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年5月20日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                有人问如何还原被透视纹理？给你一张照片，还原照片上四个点所组成的平面的纹理该怎么做？我们可以从数学上推导一下，为了和三维图形的透视纹理映射对照，我们称照片上四个点在照片上的位置为“屏幕坐标”，那么可以发现：
+空间中，三维坐标（x,y,z）和纹理坐标（u, v）承线性关系。根据该问题描述，可以理解为已知四个点的屏幕投影坐标（xi,yi），和对应纹理坐标（u，v），求整个纹理坐标系到屏幕坐标系的反向映射过程，即根据（u,v）求解（xi，yi）。
+1. 按照纹理隐射的原理，同平面纹理坐标与空间坐标存在线性关系，设 a1-a12为常数，有：
+a1 * x + a2 * y + a3 * z + a4 = u ... 线性关系 a5 * x + a6 * y + a7 * z + a8 = v ... 线性关系 a9 * x + a10 * y + a11 * z + a12 = 0 ... 平面方程  2. 求解上面的方程组，可以得到类似下面的关系，其中b1-b9为常数：
+x = b1 * u + b2 * v + b3 y = b4 * u + b5 * v + b6 z = b7 * u + b8 * v + b9  常数 b1-b9如果展开，就是9个关于a1-a12的等式，太长了，这里不展开，有兴趣可以自己求解。
+3. 屏幕上投影坐标一般是：
+ x xi = D1 * --- + C1 z x yi = D2 * --- + C2 z  因为同样一个透视投影矩阵下，能隐射成屏幕上同样形状纹理的平面，在空间中存在无穷多个，而且还存在不同透视投影矩阵下，同样屏幕投影的平面存在更多无穷多个。这里我们不用去求解每个平面，直接设置 D1 = D2 = 1 且 C1 = C2 = 0 有：
+ x xi = --- z x yi = --- z  4. 展开等式：
+ b1 * u + b2 * v + b3 xi = ---------------------- b7 * u + b8 * v + b9 b4 * u + b5 * v + b6 yi = ---------------------- b7 * u + b8 * v + b9  改变一下，用矩阵 M的各个元素 m00 - m22来代替 b1-b9。
+ m00 * u + m01 * v + m02 xi = ------------------------- m20 * u + m21 * v + m22 m10 * u + m11 * v + m12 yi = ------------------------- m20 * u + m21 * v + m22  5.……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1363/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1541/">计算机图形算法中的光滑边缘算法经历了那些变迁？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2015年4月26日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>主要有四种方法：</p>
+
+<ul>
+<li>wupixel：wu xiaolin提出的最早的绘制直线和圆的平滑方法，优点是简单快速，缺点是只有一个方向的像素偏移被考虑了，效果普通，而且只能绘制1个像素宽度的直线，超过一个像素后，两个端点就会非常不自然。</li>
+</ul>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/08/image_thumb5.png" alt="image" /></p>
+
+<ul>
+<li>supersampling：解析度扩大数倍绘制，四个或者多个像素合并平滑成一个像素，优点是效果好，缺点是计算量大，多用于显卡加速，cpu基本没发做，显卡负担也大：</li>
+</ul>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/08/image_thumb6.png" alt="image" /><br />
+当然小范围的ss可以用来改进界面字体效果，如windows字体长宽扩大两倍绘制后再平滑down sample成小尺寸，四个像素点均匀合并成一个像素点，会好看很多。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2015/08/image_thumb7.png" alt="image" /></p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1541/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1059/">使用 GlowFilter实现字体沟边与发光</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2013年4月18日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>如果你正在使用 Flash，那么实现下面一个字体效果是一件十分简单的事情：</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2013/04/image_thumb.png" alt="image" /></p>
+
+<p>textfield.filters = [ new GlowFilter(0, 1， 2， 2， 10) ];</p>
+
+<p>这样就可以了，接着把字体设置成宋体12号，颜色是0xffff99，就成了。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2013/04/image_thumb1.png" alt="image" /></p>
+
+<p>如果要实现上面类似QQ面板的发光效果，也只需要一行：</p>
+
+<p>textfield.filters = [ new GlowFilter(0xffffffff, 1, 6, 6, 0.9) ];</p>
+
+<p>看起来这个 GlowFilter是无所不能呀，那么如果你在使用C++的话，如何用C++来实现一个Glow效果呢？</p>
+
+<p>而且如果你正在使用3D引擎的话，如何用GPU来实现上面的效果呢？详细见下文：</p>
+
+<p>TO BE CONTINUE….</p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1059/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://skywind3000.com/blog/archives/1015/">Windows字体为什么那么难看？</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2011年9月6日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B">图形编程</a>
+                                
+                                    <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF">编程技术</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>1）很多字库比如宋体，12号以下都是点阵字体。</p>
+
+<p>2）GDI太老了，只有5级灰度，而且AA是横向的，Y轴方向没有AA。</p>
+
+<p>3）雅黑又不能通用，且小字号时高低不平。</p>
+
+<p>改进：</p>
+
+<p>1）字体SuperSample。</p>
+
+<p>2）勾边。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/09/image_thumb8_thumb.png" alt="image_thumb8" /></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/09/image_thumb13_thumb.png" alt="image_thumb13" /></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/09/image_thumb15_thumb.png" alt="image_thumb15" /></p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/09/image_thumb17_thumb.png" alt="image_thumb17" /></p>……
+                                <p class="readmore"><a href="https://skywind3000.com/blog/archives/1015/">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+
+                    
+
+
+<ol class="page-navigator">
+    
+
+    
+    <li  class="current">
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">1</a>
+    </li>
+    
+    <li >
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/page/2/">2</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/page/2/">下一页</a>
+    </li>
+    
+</ol>
+
+
+
+                </div>
+            </div>
+
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+
+</body>
+</html>

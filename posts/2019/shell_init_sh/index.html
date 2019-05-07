@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>提高效率从编写 init.sh 开始 | Skywind Inside</title>
+    <meta property="og:title" content="提高效率从编写 init.sh 开始 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2019-04-10T16:08:23&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2019-04-10T16:08:23&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="提高效率从编写 init.sh 开始">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/posts/2019/shell_init_sh/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">提高效率从编写 init.sh 开始</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2019年4月10日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB">未分类</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>有部分人不太愿意定制自己的终端配置，因为：“服务器太多，怎么可能每台都去定制，所以都用默认配置，习惯了就好”。其实道理很简单，算笔账就清楚了，除非你是 SA 每天管理上千台服务器，程序员的话，每天接触的开发服务器也就五台以内。既然 90% 的利益都在那三五台机器上，还在纠结 10% 的事情，这就叫不明智。</p>
+
+<p>还有人担心这 10% 的时间偶尔到裸环境下不适应了，所以拒绝 90% 的时间使用高级配置。这是我听过最荒谬的理由，我天天自己开车上下班，偶尔骑下自行车我也不会忘记怎么骑车。更不因为偶尔需要时怕不会骑了而把汽车卖了每天都坚持骑单车，或者干脆就拒绝学汽车驾驶，拒绝提高自己的车技。我路由器上连 bash 都没有，只有个 busybox 的残缺 shell ，照着理由我要去迁就路由器么？这种说法要不就是看不清楚自己核心利益在哪里，要不就是没体验过汽车快起来可以比单车快几倍。</p>
+
+<p>何况不管是程序员还是 SA，做好配置的同步工作也就行了。如果可以花固定的时间，让终端工作效率提升一倍以上，这种一次性的投资为何不做呢？所以接下来讨论下终端环境下各种配置应该如何管理，如何同步的。</p>
+
+<h2 id="原则-1-托管你的配置">原则-1：托管你的配置</h2>
+
+<p>配置需要反复锤炼和迭代，迭代就需要持久化的文件托管和版本控制，不能说每次都凭借记忆从头写一次，这样你的配置永远积累不下来。</p>
+
+<p>所以从 Github 上新建个 config 项目开始，把各种：编辑器，shell，readline，tmux 配置一点点的放上去，新环境中克隆下来，放到一个安全的位置，比如 <code>~/.local/config</code> 下面。</p>
+
+<h2 id="原则-2-同步到常用服务器即可">原则-2：同步到常用服务器即可</h2>
+
+<p>如果新登陆一台新服务器，只是为了临时操作一下，那大可不必同步你的配置。只有你判断今后一段时间会反复的在这台服务器上工作，那么就花两分钟同步一下，你甚至可以把你配置的克隆和部署写到一个 <code>bootstrap.sh</code> 文件上，curl 下来一执行，一句话的事情：</p>
+
+<pre><code class="language-bash">sh -c &quot;$(curl -fsSL https://。。。/bootstrap.sh)&quot;
+</code></pre>
+
+<p>这个脚本将会建立必要的目录，克隆你的配置，再做一些必要的初始化，来到一台新机器就跑这么一行代码，还有人觉得比你部署其他程序复杂么？</p>
+
+<h2 id="原则-3-尽量少用软连接">原则-3：尽量少用软连接</h2>
+
+<p>那么最基本的 <code>.bashrc</code> 文件应该怎么同步呢？第一种方法是将该文件做成一个软连接指向你仓库里的实际的 <code>bashrc</code> 文件；第二种做法是在配置仓库中写一个 <code>update.sh</code> 脚本，自动拷贝仓库里的 bashrc 过去覆盖 <code>~/.bashrc</code> 。</p>
+
+<p>前一种方式的问题是本地想做一些临时修改就容易改动到仓库里的源文件把仓库弄脏，这样你后面更新的时候就需要 merge，或者选择先提交。第二种方式的问题是每次更新了仓库，运行 <code>update.sh</code> 就会把原来的 <code>~/.bashrc</code> 给覆盖掉了，所有本地化配置和临时修改也就全部都没了。</p>
+
+<h2 id="如何同步配置呢">如何同步配置呢？</h2>
+
+<p>更合理的做法是新建一个：init.sh 用仓库托管起来，而本地 <code>~/.bashrc</code> 末尾加一句话：</p>
+
+<pre><code class="language-bash">source ~/.local/xxx/init.sh 
+</code></pre>
+
+<p>即可，这个给文件末尾追加一句话的事情，可以让前面的 bootstrap.sh 来承担。</p>
+
+<p>这样你的通用配置被放到了仓库里的 init.sh 里面，而本地化的一些临时配置，还可以接着在 <code>~/.bashrc</code> 其他部分写，同时改写 <code>~/.bashrc</code> 不会把 config 仓库弄脏；而更新 config 仓库也不会把本地配置覆盖没。</p>
+
+<p>更重要的是，init.sh 可以写成同时兼容：sh, bash, zsh, dash 的模式，每个 shell的配置里面只要 source 它一下就行了，那么 init.sh 里面即可写通用所有 shell 的一些初始化工作，又可以针对不同的 shell 写一些初始化配置。</p>
+
+<p>对于实验性的新配置，写到本地配置里即可，等你用一段时间，觉得好用了，再把它挪到公共配置仓库里固化起来。这样随着时间的积累，你的 init.sh 积累的配置越来越多，shell 越来越顺手。</p>
+
+<p>所以你并不需要托管你的 bashrc，你需要的是一个有版本管理的，可以四处同步的 init.sh。有恒产才能有恒心，如果你每换一个环境都要从头写你的配置，但当然没什么心情写下去；而如果你把配置固化托管到 github 上，四处都能同步使用，你才会隔三岔五的想着去优化迭代。</p>
+
+<h2 id="文末参考">文末参考</h2>
+
+<p>初期建议全部写在 init.sh 里面的，后面复杂了可以进行模块化拆分，现在我的 init.sh 现在基本就是一个入口。可以到 github 上搜索 bash 类型，星星最高的配置，或者按名字 dotfiles 搜索，我的就不拿出来献丑了，写的比我好的多的是。</p>
+
+<p>Shell 方面我唯一可以一看的项目是我的 《Bash 中文速查表》：</p>
+
+<pre><code>https://github.com/skywind3000/awesome-cheatsheets/blob/master/languages/bash.sh
+</code></pre>
+
+<p>目前全网最全的 bash 简明帮助，或许在你写配置时可以参考用到。</p>
+
+<p>附：我当前的 init.sh （其实没啥内容了，已经被拆分成只剩一个入口了）</p>
+
+<pre><code class="language-bash"># 交互式模式的初始化脚本
+# 防止被加载两次
+if [ -z &quot;$_INIT_SH_LOADED&quot; ]; then
+    _INIT_SH_LOADED=1
+else
+    return
+fi
+
+# 如果是非交互式则退出，比如 bash test.sh 这种调用 bash 运行脚本时就不是交互式
+# 只有直接敲 bash 进入的等待用户输入命令的那种模式才成为交互式，才往下初始化
+case &quot;$-&quot; in
+    *i*) ;;
+    *) return
+esac
+
+# 将个人 ~/.local/bin 目录加入 PATH
+if [ -d &quot;$HOME/.local/bin&quot; ]; then
+    export PATH=&quot;$HOME/.local/bin:$PATH&quot;
+fi
+
+# 判断 ~/.local/etc/config.sh 存在的话，就 source 它一下
+if [ -f &quot;$HOME/.local/etc/config.sh&quot; ]; then
+    . &quot;$HOME/.local/etc/config.sh&quot;
+fi
+
+# 判断 ~/.local/etc/local.sh 存在的话，就 source 它一下
+if [ -f &quot;$HOME/.local/etc/local.sh&quot; ]; then
+    . &quot;$HOME/.local/etc/local.sh&quot;
+fi
+
+# 整理 PATH，删除重复路径
+if [ -n &quot;$PATH&quot; ]; then
+    old_PATH=$PATH:; PATH=
+    while [ -n &quot;$old_PATH&quot; ]; do
+        x=${old_PATH%%:*}      
+        case $PATH: in
+           *:&quot;$x&quot;:*) ;;         
+           *) PATH=$PATH:$x;;  
+        esac
+        old_PATH=${old_PATH#*:}
+    done
+    PATH=${PATH#:}
+    unset old_PATH x
+fi
+
+export PATH
+
+# 如果是 bash/zsh 的话，source 一下 ~/.local/etc/function.sh
+if [ -n &quot;$BASH_VERSION&quot; ] || [ -n &quot;$ZSH_VERSION&quot; ]; then
+    # run script for interactive mode of bash/zsh
+    if [[ $- == *i* ]] &amp;&amp; [ -z &quot;$_INIT_SH_NOFUN&quot; ]; then
+        if [ -f &quot;$HOME/.local/etc/function.sh&quot; ]; then
+            . &quot;$HOME/.local/etc/function.sh&quot;
+        fi
+    fi
+fi
+
+# 如果是登陆模式，那么 source 一下 ~/.local/etc/login.sh
+if [ -n &quot;$BASH_VERSION&quot; ]; then
+    if shopt -q login_shell; then
+        if [ -f &quot;$HOME/.local/etc/login.sh&quot; ] &amp;&amp; [ -z &quot;$_INIT_SH_NOLOG&quot; ]; then
+            . &quot;$HOME/.local/etc/login.sh&quot;
+        fi
+    fi
+elif [ -n &quot;$ZSH_VERSION&quot; ]; then
+    if [[ -o login ]]; then
+        if [ -f &quot;$HOME/.local/etc/login.sh&quot; ] &amp;&amp; [ -z &quot;$_INIT_SH_NOLOG&quot; ]; then
+            . &quot;$HOME/.local/etc/login.sh&quot;
+        fi
+    fi
+fi
+</code></pre>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/about/">About</a></li>
+        
+        <li><a href="/posts/intro/">个人主页搬迁到新系统</a></li>
+        
+        <li><a href="/blog/archives/2250/">如何实现和优化 SVM（支持向量机）？</a></li>
+        
+        <li><a href="/blog/archives/2229/">别让 cd 浪费你的时间</a></li>
+        
+        <li><a href="/blog/archives/2193/">VimScript 五分钟入门（翻译）</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/shell">shell</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

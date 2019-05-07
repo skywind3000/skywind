@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>翻译 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/</link>
+    <description>Recent content in 翻译 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 01 May 2007 20:18:38 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[翻译] MUD玩家分类理论</title>
+      <link>https://skywind3000.com/blog/archives/171/</link>
+      <pubDate>Tue, 01 May 2007 20:18:38 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/171/</guid>
+      <description>&lt;p&gt;游戏设计需要基础性理论，Richard A. Bartle，第一款MUD（被称为MUD1）的开发者，该文章起于1990年，经作者多次整理而成。在游戏设计“难有统一理论”的情况下，该文论点受到了决大多数开发者的一致接受和好评。可见基础性理论不但有利于我们的分析与设计，更重要的是大家能在同一层面上用同样的术语进行更有效的沟通：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/resource/hcdsc.htm&#34;&gt;http://www.skywind.me/resource/hcdsc.htm&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;最近在阅读 XBOX360 Live方面的文档，作为其中提及的一个重要概念“Bartle&amp;rsquo;s player type”的论文，似乎影响了整个第四代Live的设计，恰巧最近我也在整理一些Live相关资料，就顺带将这个基础理论进行了翻译。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[翻译] 成就系统最佳实践</title>
+      <link>https://skywind3000.com/blog/archives/346/</link>
+      <pubDate>Fri, 27 Apr 2007 20:44:20 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/346/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Achievements and Gamerscore: Best Practices&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;-&amp;mdash; By Jeff Sullivan, Developer Relations Manager, Microsoft Game Technology Group&lt;/p&gt;
+
+&lt;p&gt;-- 翻译（参与先后）：skywind,cjx,ltt,fanlix,jericho&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skywind.me/blog/archives/346&#34;&gt;http://www.skywind.me/blog/archives/346&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;成就为谁提供&lt;/li&gt;
+&lt;li&gt;何时授予成就&lt;/li&gt;
+&lt;li&gt;拓展玩家实践&lt;/li&gt;
+&lt;li&gt;成就演示&lt;/li&gt;
+&lt;li&gt;游戏演示&lt;/li&gt;
+&lt;li&gt;内容回顾&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Xbox 360的&lt;strong&gt;“玩家成就（achievements）”&lt;/strong&gt;和&lt;strong&gt;“成就积分（gamerscore）”&lt;/strong&gt;重新激起了玩家的游戏兴趣，玩家将更多的时间和精力投入到游戏中，不断尝试更高的难度设置。整个游戏行业，一夜之间涌现出各种业余的、专业的积分站点，开始讨论游戏成就，以及怎么获得更多的成就分。游戏设计者们也从中受益匪浅，有史以来第一次，他们可以分析玩家在多个游戏
+中的表现。成千上万的人都在问这两个问题：“你的成就分是多少？你最喜欢的成就是什么？”&lt;/p&gt;
+
+&lt;p&gt;成就系统的价值和吸引力是无可否认的，关键是怎么充分利用它们来提高你的游戏品质。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,1124 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>[翻译] 成就系统最佳实践 | Skywind Inside</title>
+    <meta property="og:title" content="[翻译] 成就系统最佳实践 - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2007-04-27T20:44:20&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2007-04-27T20:44:20&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="[翻译] 成就系统最佳实践">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/346/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+
+	<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/monokai.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/django.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/vim.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/yaml.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/gradle.min.js"></script>
+	<script src="https://cdn.bootcss.com/highlight.js/9.15.6/languages/tex.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">[翻译] 成就系统最佳实践</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2007年4月27日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99">大浪淘沙</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p><strong>Achievements and Gamerscore: Best Practices</strong></p>
+
+<p>-&mdash; By Jeff Sullivan, Developer Relations Manager, Microsoft Game Technology Group</p>
+
+<p>-- 翻译（参与先后）：skywind,cjx,ltt,fanlix,jericho</p>
+
+<p><a href="http://www.skywind.me/blog/archives/346">http://www.skywind.me/blog/archives/346</a></p>
+
+<ol>
+<li>成就为谁提供</li>
+<li>何时授予成就</li>
+<li>拓展玩家实践</li>
+<li>成就演示</li>
+<li>游戏演示</li>
+<li>内容回顾</li>
+</ol>
+
+<p>Xbox 360的<strong>“玩家成就（achievements）”</strong>和<strong>“成就积分（gamerscore）”</strong>重新激起了玩家的游戏兴趣，玩家将更多的时间和精力投入到游戏中，不断尝试更高的难度设置。整个游戏行业，一夜之间涌现出各种业余的、专业的积分站点，开始讨论游戏成就，以及怎么获得更多的成就分。游戏设计者们也从中受益匪浅，有史以来第一次，他们可以分析玩家在多个游戏
+中的表现。成千上万的人都在问这两个问题：“你的成就分是多少？你最喜欢的成就是什么？”</p>
+
+<p>成就系统的价值和吸引力是无可否认的，关键是怎么充分利用它们来提高你的游戏品质。</p>
+
+<p>在挖掘怎样更好地利用成就系统之前，让我们先来看看成就系统到底是什么。一个成就由两个要素组成：在游戏中完成某一特定动作而获得的“成就（Achievement/勋章）”，以及与该成就相关的一个分值――“成就分（Gamerscore）”。 玩家在所有游戏中积累的成就分，被放在他的玩家卡片（gamer card）的显著位置。玩家卡片可以在全球范围内通过各种途径被其他玩家看到，例如Xbox 360
+Guide、 xbox.com、 游戏开发者和发行商建立的网站、论坛、留言版、手机应用程序等等。通过翻阅玩家卡片中的玩家profile, 就可以了解该玩家在玩过的游戏中获得的所有成就。</p>
+
+<p>作为一个奖励系统，成就和成就分的价值来源于普遍的社会成功指数和限量商品。每个游戏至多能发放50个成就、1000成就分, 在Xbox Live Arcade游戏中，至多为12个成就，200 成就分。</p>
+
+<p>成就和成就分构成了一个游戏经济体系，为了保护这个体系，并确保玩家得到一种受到嘉奖的体验，我们建议你仅仅根据玩家在游戏中的技能、坚定性和参与度来授予成就和成就分，强烈反对为了市场动机或“frequent flyer miles” 而给玩家成就和成就分。（frequent flyer
+miles：翻译成中文的意思是航空积分里程，由于经常使用某一航空公司或航空联合集团的服务而获得的积分奖励。它通常是以总的飞行里程来计算的。这些里程可以折成免费机票和礼物，用在这里我猜它的意思是指成就不是那种玩家玩游戏的时间长就给的赠品，而应该是玩家游戏技能高低的一个标志。）</p>
+
+<p>游戏设计过程中，成就系统是个优秀的工具。它们能吸引不同类型的玩家，通过永久性奖励(lasting rewards)提高游戏品质，可用来设置玩家期望值，引导玩家进入游戏中一些有趣地方，而这些地方可能是玩家自己不易察觉的。结合成就、成就分和Xbox360、Xbox Live的其它特性，可以创造一个更强的游戏和更好的全面价值。</p>
+
+<p>然而，作为游戏的一部分，成就系统对每个游戏来说都是独特的，我们不想干扰设计它们这一创造性的过程。只需确保你的设计不偏离成就和成就分总的体系方向即可，看一下这两个有关成就系统的录像（<a href="https://xds.xbox.com/BPProgInfo2.asp?page=scripts/tcr/tcr.asp&amp;Release=2005-10-06&amp;TCR=73">#73</a> and
+<a href="https://xds.xbox.com/BPProgInfo2.asp?page=scripts/tcr/tcr.asp&amp;Release=2005-10-06&amp;TCR=74">#74</a>）有助于你做好这件事情，达到要求其实是相当容易的。</p>
+
+<p>当然，基于我们迄今已有的实现，我们的确提供了一些让成就系统发挥最好效果的指导原则。</p>
+
+<h2 id="成就为谁提供">成就为谁提供</h2>
+
+<p>推荐阅读：<a href="http://www.mud.co.uk/richard/hcds.htm">Richard Bartle&rsquo;s player types</a> [www.mud.co.uk]</p>
+
+<p>成就系统能吸引很多人，有趣的是它们能吸引那些以前在游戏世界中没有获得过社交和持续性鼓励（social or lasting rewards）的玩家。</p>
+
+<ul>
+<li>玩家分类</li>
+<li>需要避免的成就类型</li>
+<li>最佳实践的成就类型</li>
+</ul>
+
+<h3 id="玩家分类">玩家分类</h3>
+
+<p>下一节参考了Richard Bartle 的玩家原型分类研究，尽管他的目标是将MUD（Multi-User Dungeon）的玩家进行分类（如图1），但他的研究也适用于现在Xbox Live上的玩家。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image002_thumb6.jpg" alt="clip_image002" />
+图1 Richard Bartle 的MUD玩家分类（杀手型，成就型，社交型，探险型）</p>
+
+<p>这四种类型大致对应4个区域，玩家可以在玩家profile中选择他的所属区域：杀手=地下的，社交者＝家庭的，探索者＝娱乐的，以及 职业选手＝看重成就的。</p>
+
+<p>从历史上来说，Xbox游戏曾经做过很多有效果的工作来鼓励Bartle玩家分类中所谓的“杀手型”玩家，例如：等级系统、排行榜（leaderboard）、在线决斗、以及对“谩骂诋毁”（trash talk, 我觉得这里应该类似古代打仗时对阵双方互相叫阵的意思）的支持。</p>
+
+<p>后来，Xbox 360和Xbox Live开始将受众拓宽到所有类型的玩家，逐步加入玩家区域和名誉来达到这个目标。区域将不同原型的玩家粗略地隔离开，用名声系统（Reputation，其实就是玩家互相评级也叫User Feedback系统）鼓励玩家的在游戏中做到受人欢迎。Xbox360通过个性化、观战模式、玩家自定义内容、持续聊天频道和丰富的在线信息来吸引社会性的玩家。（rich presence:
+<a href="http://www.gamasutra.com/features/20050831/carless_01.shtml">这里</a>有微软对这一概念的解释，大致是说可以看到好友的在线状态、以及他正在玩什么游戏等，吸引其它玩家去了解和玩那个游戏） 排名系统（ranked）和玩家匹配系统给了玩家可以选择他喜欢和哪些人，不喜欢和哪些人玩游戏的控制权。</p>
+
+<p><img src="https://skywind3000.github.io/images/blog/wp-content/2011/04/clip_image0025_thumb.jpg" alt="clip_image002\[5\]" />
+图2 XBOX Live 各个系统与四种类型玩家之间的需求关系</p>
+
+<p>成就系统同样也适用于这个分区体系，嘉奖那些以前没有因为他们的行为获得明确的社会奖励的玩家，从而吸引Bartle玩家分类图（见图一）右侧的那些玩家。成就系统还可为单人和离线模式提供积极的反馈，从平台的观点来看，以往奖励多数是给了多人竞技的那些玩家。但成就可以也应该偏向图的左侧。</p>
+
+<p>将成就瞄准图的右侧，游戏设计者可以向这些类型的玩家表明游戏支持、鼓励他们玩游戏的方式。这样可以将游戏的受众扩展到以往未重视过的玩家。</p>
+
+<h3 id="需要避免的成就类型">需要避免的成就类型</h3>
+
+<ul>
+<li>避免成就位于玩家分类图的四个死角上（左上、左下、右下、右上），这样限定了只能够吸引一个种类的玩家，我们需要的是四类玩家都能在这个成就中取得乐趣。</li>
+<li>避免“减分类”成就，“杀手型”玩家可能会喜欢通过输掉一定比赛局数来获得成就或者输掉一次生死比赛而获得一个成就，仅仅因为他们希望能获得这些建立在“输掉”的成就上。这样会妨碍到其他类型的玩家来玩这些游戏模式。因为他们不想在自己的分数上出现污点。解决方案：用“幽默”的成就设定替代“规矩”的成就设定。通过一次幽默的失误而获得的成就远比其他不具备竞技性的成就设定更为有趣，这样能帮助“杀手型”玩家通过获得这些成就从而慢慢的转变而回到“探索型玩家”与“成就型玩家”。</li>
+<li>避免“排名类”成就，在Leaderboard中取得一个高排名或者赢得一次锦标赛，<strong>从定义上说</strong>，永远只会有一小群人能够取得这样的成就，玩家数量逐渐增多，随着时间的推移，获取这些成就变得越来越困难，这样会刺激玩家想方设法去破解系统来刷分。解决方案：用一张特殊的头像取代该类成就是一个不错的选择，这也是一个最简单的方式让玩家展示他们的技能。</li>
+<li>避免“秘密成就”（secret achievements）。设计成就秘密成就的最初目的是为了避免玩家破解系统，同时避免一味为了追求成就而忽视了游戏本身。缺点是玩家不会积极的追求那些他们不知道怎么获得的成就的情况下，而不是去浏览众多的网站以图知道取得这些成就的方式。这样会对一些糟糕的玩家形成困惑。只有探索型与成就型玩家能坚持不破解游戏而获得这些成就。</li>
+</ul>
+
+<p>解决方案：尝试使用含糊的成就说明避免玩家破解游戏，但是需要给玩家一些如何获得成就的提示。</p>
+
+<h3 id="最佳实践的成就类型">最佳实践的成就类型</h3>
+
+<p>我们在包括所有类型玩家的基础上，将重点放在“成就型”与“探索型”玩家身上。</p>
+
+<ul>
+<li>杀手型玩家，在排名比赛（ranked matches）中，需要为他们提供一些竞赛性/对抗性的成就。作为经验性的言论，尽量设计一些相对排名（避免绝对排名）决定的成就，这样不通类型的玩家能够在一起很好的配合去取得这些成就。</li>
+<li>社交型玩家，为他们提供一些通过与其他玩家建立联系（community-building）或者协作才能取得的成就。比如玩家与100个以上的对手较量后能取得一个成就，进一步设计一个“与具有XX成就的玩家玩一局游戏”的成就。可以设想一下当我们的游戏到达一定在线（比如同时1万人在线时），这类社交性的成就所能带来的影响。</li>
+<li>成就型玩家，确保我们提供的成就点能够覆盖游戏的各个主要部分和难度。指出那些围绕游戏核心玩法而设计的成就点。</li>
+<li>探索型玩家，需要成就点散布于各个游戏模式。尝试让玩家在游戏世界中停下来闻一朵路边的玫瑰获得成就。尝试《Easter Egg》游戏中那些使用含糊其辞告诉玩家如何获得的成就，并在玩家发现一个隐秘道具或者NPC的时候让他们取得这些道具。</li>
+<li>考虑玩家在一款游戏中能够取得成就的百分比平均值。对于大部分玩家取得游戏中70%-90%的成就是一个不错的选择，留一部分成就给那些技术高的玩家，再留更少的一部分（1-2 个成就）给那些技术非常高的玩家。</li>
+</ul>
+
+<h2 id="成就的节奏">成就的节奏</h2>
+
+<p>推荐阅读：Hopson’s Behavioral Game Design [gamesutra.com, 免费注册]</p>
+
+<ul>
+<li>授予成就的时机</li>
+<li>激励时机中需要避免什么</li>
+<li>激励时机中的最佳实践</li>
+</ul>
+
+<h3 id="授予成就的节奏">授予成就的节奏</h3>
+
+<p>成就的授予应严格参考其它经典的游戏模型：</p>
+
+<p><strong>激励节奏</strong>（reward scheduling）。虽然它过去有许多种叫法，<strong>激励节奏</strong>是一门研究怎样实施奖励，从正面鼓励玩家的上进心，或避免消极精神状态的学科。并且影响他们的决定对或继续游戏或者退出游戏。简而言之，提供频繁奖励是好的；无休止地要求玩家在游戏中越来越努力的持续得获得奖励是不好的。同时最有可能让玩家离开游戏的时间点，存在于玩家取得一个成就之后，在需要花太长时间才能取得的下一个成就之前。</p>
+
+<p>故此，提供易变的和无规律的奖励周期能将玩家的活跃性保持在一定的水平，不太可能让玩家们选择放弃游戏。理想的情况是玩家在游戏中努力数个小时总能取到下一个成就。</p>
+
+<p>由于成就之间需要保持特殊性，所以大量建立在某一特殊行动上的成就不是非常实用。换句话说，不好的设计是让玩家杀死特定数量的NPC就给他一个成就，并且玩家只要持续杀死NPC就能持续获得成就。</p>
+
+<p>反而, 使用易变和重叠的奖励是降低游戏门槛的最佳工具。玩家能够通过几次胜利同时获得两三个成就是一个不错的设计。如果玩家赢得一个成就后，只要他们在经过一半努力就能获得另一种类型的成就，玩家总能找到继续玩下去的理由。</p>
+
+<p>同时，尝试将成就设计建立在游戏已有的激励点上增加对玩家的鼓励。每个游戏都有它特定的“激励节奏”— 比如每当玩家打败一个敌人时能得到一个较小的奖励，每当玩家胜利通过一个完整的关卡后，便能得到一个较大的奖励，当玩家打穿游戏时，能得到一个更大的奖励。按照这样的奖励原则来设计我们的成就是个不错的选择，因为这能让玩家游戏时得到更多的乐趣 —
+换句话说，这是一种额外的鼓励。例如，在一个很长的关卡结束之前的整个过程中，你能获得成就，或者半路上为了“让玩家在得到某东西之前一直朝山洞深处走下去”。这将成为构建整座游戏大厦一个不可缺少的工具。</p>
+
+<h3 id="激励节奏中需要避免什么">激励节奏中需要避免什么</h3>
+
+<ul>
+<li>避免激励时机不连贯：玩家需要太长时间才能获得下一个成就。</li>
+<li>避免让玩家大量重复做某件事情而获得成就，比如做某个动作100次。这样会让玩家觉得他是在跑步机上跑步而不是在玩游戏。</li>
+<li>避免让玩家自始至终仅仅为了取得某个成就而反复进入游戏里面的一个场景。例如，如果玩家仅仅在Chapter 3中遗漏了一个隐藏成就，那么玩家只需要重玩一遍Chapter 3就可以“取得所有隐藏成就”了。</li>
+<li>避免太多前期成就，否则，你在前期设定了太多成就的话，后期就没什么可给了。这样的交互方式等于给了那些刚打传游戏的玩家一个好主意，让他们放下手柄，并且永不会来。更坏的是更多人只愿意从朋友那借来游戏拷贝而不是去自己买来反复玩下去。</li>
+<li>避免太多后期成就，否则，你将让玩家在获得下一个成就之前忍受相当长一段时间，这使得玩家更容易觉得自己是在“工作”而不是在“游戏”，玩家们也许认为这样的游戏不致的努力或者看不到成功的机会，无论如何也不值得人尝试下去。</li>
+<li>避免成就数量太少，这回增加玩家取得成就的门槛，为玩家放弃游戏提供了很多机会。</li>
+<li>避免玩家花越来越多的时间去取得下一个成就。无止尽的提高成就获得的要求将会损害玩家的积极性。单纯为了成就而加长游戏时间的做法，最终将事与愿违。</li>
+</ul>
+
+<h3 id="激励节奏的最佳实践">激励节奏的最佳实践</h3>
+
+<ul>
+<li>自始至终持续并连贯的给玩家以激励</li>
+<li>尽可能多的横跨不同的游戏模式，难度水平，不同的玩家类型</li>
+<li>使得到区间具备重叠性，得到一个成就后玩家只需很少努力就可取得下一个</li>
+<li>使用成就系统补充现在游戏的激励机制，考虑在游戏的疲劳点上给玩家以成就</li>
+<li>提示玩家如何获得下个成就，如果只差几步就能获得一个成就，那他们应该意识到</li>
+<li>一个好主意是各个难度等级都有对应成就，比如玩家在中等难度取得了某个成就他一定会想到到简单难度去获取对应的成就。玩家总会迫不及待并心神不宁的去做一件如果他们认为具有价值的事情，尽管他必须回到另一个难度重新玩一遍。</li>
+<li>考虑平均情况中玩家第一次打穿游戏应该获得百分之几的成就，1/3-1/2值得考虑。</li>
+<li>如果游戏出现外挂，警告玩家该游戏的成就将被冻结，同时提供他们会滚回没有用外挂前的状态的机会，使用玩家Profile快照，对玩家数据进行定期备份，玩家能够恢复到早期的一个存档并继续获得成就。</li>
+<li>在XContentCreate的时候使用XCONTENT_NOPROFILE_TRANSFER标志来锁定存档状态，避免同步互斥操作。</li>
+</ul>
+
+<h2 id="扩展玩家实践">扩展玩家实践</h2>
+
+<p>现在，你已经把你的成就系统，锁定到很多不同的玩家，而且你也思考了很久，哪些是玩家需要的。但是这还不够。为了让成就系统，更好的融入到游戏中，还有很多事情你可以做。</p>
+
+<ul>
+<li>使用有趣的图标</li>
+<li>游戏中提供显示</li>
+<li>显示进度</li>
+<li>结合额外的数据</li>
+<li>创造附加的价值</li>
+</ul>
+
+<h3 id="使用有趣的图标">使用有趣的图标</h3>
+
+<p>要让没有成就或者没有玩过该游戏的玩家，对游戏成就系统感兴趣，最直接的办法，就是为成就系统做一些有趣的图标。那些无趣的图片或者是copy来的图片，基本不可能吸引玩家，或者说不可煽动其他玩家来尝试玩你的游戏。相反，利用一些诱惑人的或者古怪的或者幽默的图标则能很好的吸引玩家。成就图标虽然只有64x64像素大小，但已经能够让很多有艺术细胞的人创造出很多东东来了。</p>
+
+<h3 id="游戏中提供显示">游戏中提供显示</h3>
+
+<p>多亏了Xbox 360 Guide，成就能够在所有游戏中，以相同的样式显示出来。但是为了进一步把成就系统融入到游戏本身中，为何不考虑在游戏中有一个独特的显示呢？游戏能够为成就提供更丰富的内容和更有效的炫耀。比如在游戏，用3D的冠军图标来表示每个成就。这样，玩家不离开游戏，也能很容易的知道他们自己的成就了。</p>
+
+<h3 id="显示进度">显示进度</h3>
+
+<p>一个使玩家继续参与到游戏中的很好的办法，是让玩家知道他离还没有得到的成就有多远。让玩家知道，他是多么的接近那个成就，他们很可能就会坚持玩下去直到得到他！如果玩家不知道自己离那个成就有多远，那么成就系统就不象一个成就系统了。比如，如果玩家的任务是做100下Foo，但是玩家不知道他已经做了多少下、还要做多少下才能得到那个成就，那他只能无奈的继续做Foo，直到成就非常偶然的突然出现。相反，如果玩家每次停
+止游戏的时候，就给他显示最近获得的几个成就，并告诉他，他离下一个成就有多远。如果玩家停止游戏的时候，发现原来他只要再玩几分钟就可以获得下一个成就了，他很可能就继续玩下去，而不离开了。</p>
+
+<h3 id="结合额外的数据">结合额外的数据</h3>
+
+<p>当一个成就被获得的时候，给这个成就更丰富的数据。比如，你可以查到你花了多少时间或者尝试了多少次，才获得这个成就。这些数据，能让一个有潜力的玩家或者玩家群，更加积极的参与到成就系统，并给了他们有更多的挑战。</p>
+
+<h3 id="创造附加价值-看不懂">创造附加价值（看不懂）</h3>
+
+<p>考虑让成就系统结合真实的价值，考虑让奖励与玩家的能力挂钩。让玩家知道，在这里，有很多的机会。一些例子：</p>
+
+<p>在成就中，显示新的服饰</p>
+
+<p>显示游戏的幕后制作</p>
+
+<p>让成就的数量与某种形式的购买力相等</p>
+
+<p>让有经验的玩家在在线游戏中扮演指挥官的角色。</p>
+
+<p>创建一个“Heroes Only”club，挂出那些有Heroes成就的人</p>
+
+<p>根据成就匹配不同游戏的玩家</p>
+
+<p>要求有Good成就的玩家和有Evil成就的玩家合作，去赢得更大的成就</p>
+
+<p>l NPC的时候让他们取得这些道具。</p>
+
+<h2 id="成就演示">成就演示</h2>
+
+<p>下面是一些已发售游戏的成就设定例子。基于前面的考虑，我们能够比较出各个游戏成就设计的好坏。</p>
+
+<ul>
+<li>Teachers</li>
+<li>Carrots</li>
+<li>Mode Exploration</li>
+<li>Socials</li>
+<li>Hidden Treasures</li>
+<li>Grinders</li>
+<li>Mission Impossible</li>
+<li>Trophies</li>
+<li>Scarlet Letter</li>
+</ul>
+
+<h3 id="teachers">Teachers</h3>
+
+<p>评价: J</p>
+
+<p>Teachers游戏要求玩家完善游戏中的各个器械，如此教会玩家各种有价值的技能。包括清除某个特定的种族，在某个登记得到一个经验加倍，得到一个 10 x
+组合攻击，使用有限的技能和资源通过特定的关卡，把花朵制作成一颗星，等等。这些都是一些令人兴奋的成就，因为他教会玩家如何成功，如此驱动玩家无孔不入的体验到游戏中美一个设定的细节，同时总是为引导玩家如何，为玩家提供一种玩家可能之前想象不到的，新的有趣的方式来玩这个游戏。如果打算设计这种成就类型，那么考虑限制玩家对资源的取得。</p>
+
+<h3 id="carrots">Carrots</h3>
+
+<p>评价：J</p>
+
+<p>Carrots是一款建立在通关或者完成任务上的游戏。这是目前最为简单的成就规则，设定为如何和何时被奖励，这很容易被应用到更简单或更复杂的难度上。他们保持“获奖途径”足够短小和有乐趣 ——
+在下一个转弯总有些东西需要被顺利的完成。并且他们很可能是不同玩家类型都能广泛引发出兴趣的设计。Carrots成就设计唯一的危险在于，他们可能被滥用于游戏“激励时机”的设计上。尝试在现有游戏成就中增加这类成就，能够增强他们的效果。</p>
+
+<h3 id="mode-exploration">Mode Exploration</h3>
+
+<p>评价：J</p>
+
+<p>“探索类”成就用于激励玩家去逐一尝试游戏中的所有设定。他们通常以如下形式表现出来：“玩这个模式X分钟”，“做一些这个模式中有价值的事情”，或简单到“撞击一些小彩蛋来证明你能射中它们”。这些都是扩展游戏价值及魅力的一个很好的方法。相对于可玩性更强的“玩这个模式X分钟”的各式变种，“做些有价值的事情”的成就或许是更好的选择。例如，在竞技游戏中成功的夺取一面旗帜和成功的保卫一面旗帜，在10分钟内完成限时
+进攻模式（10分钟大约是中等完成时间）。</p>
+
+<h3 id="socials">Socials</h3>
+
+<p>评价:：J</p>
+
+<p>Scoials是鼓励社会行为。例如包括以下成就：创建自定义内容的游戏；或建立最大上限人数的游戏/服务器；或赠送道具给别人；或帮助其他玩家通关；或协助玩家积极地增加游戏体验。思考一些可以注入创造力的方法。例如引进病毒性的成就，只有通过和获得该成就的玩家进行游戏才能得到。或考虑运用些已被他人证实成功可行的办法以制定一个规则系统。</p>
+
+<h3 id="hidden-treasures">Hidden Treasures</h3>
+
+<p>评价:：J</p>
+
+<p>Hidden Treasures成就是通过寻找隐藏物品，有趣的复活节彩蛋，100%的收藏度等等。Hidden Treasures鼓励玩家遍寻游戏世界的每一个角落，而这样会提高评价和要求探索原型(as such will enhance value (and replay value) and will generally appeal to the Explorer
+archetype)。给予含糊不清的描述，而不是把成就完全隐秘起来，否则玩家根本不知道怎么寻找。例如：找到所有的隐藏包裹（可以分成若干个小成就，10个包裹、25个包裹、所有50个包裹的成就），发现隐蔽在哥伦布小河上的瀑布妖怪，获得自己角色的所有服装等等。</p>
+
+<h3 id="grinders">Grinders</h3>
+
+<p>评价：K</p>
+
+<p>Grinders是一些需要到达一定次数的成就。理论上，它们常常用来鼓励人们对模型或者游戏机制作深层次的探索研究。而实际上，这是非常适合游戏的，而且在演绎如同Foo函数的行为中得到乐趣。因为玩家会数着完成的次数，退一步说，怎样能尽快地到达系统预定的某个数值。为了更好利用grinder成就，成就和行动之间要增加一个层次(consider adding at least one level of
+abstraction between the achievement and the action itself.)。举例来说，不要获得1000金币就奖励成就，而是指出拥有1000金币能做什么才奖励成就。如果你是一名grinder，确保无论什么行为或道具都能被玩家明显地计算、跟踪。</p>
+
+<h3 id="mission-impossible">Mission Impossible</h3>
+
+<p>评价: K</p>
+
+<p>Mission Impossible成就用于奖励游戏里的英勇行为。最好的情况下，它奖励挑战极限，并且让玩家不用太多地重复游戏，如果让玩家可以打乱游戏进程而游戏，并且又提供足够的存盘点的话，那么“以最高难度通关”就是最好的例子。（这句不会翻译: Mission impossible achievements could also be used well in context as teachers.）举个例子，“保持无损伤并在大规模袭击（Juggernaut Assault）中存活下来”（游戏中一个虽短但难于完成的片段），该成就糟糕的地方是，它打击了玩家玩游戏的乐趣，因为玩家会认为这种挑战是不能克服的。例如，“一命通关”就是过度地挑战玩家的能力，特别是它要求玩家为了证明自己的实力，一遍遍地玩早期的关卡，从而忽略了以后的关卡。这种成就应该渐进地提供，并且现实一点，让大部分玩家都能达成。如果使用Mission impossible的目的，只是人工地延长游戏寿命，一定会失败。如果运用适当，这种形式的奖励，会是玩家游戏过程中的好伙伴，并提供一种公平的办法让玩家去炫耀他们的成就。</p>
+
+<h3 id="trophies">Trophies</h3>
+
+<p>评价: L</p>
+
+<p>本质上说，Trophies成就，只能被世界上少数几个高级玩家获得。例如在排行榜上排在高位，或赢取了一个网上竞技比赛等。这些成就对大多数玩家来说，都是可望而不可及的，这就减损了你本应能给与玩家的游戏积分。与此相反，可以考虑另外的奖励形式，比如在公共场合突出玩家，或者奖励他们一张独一无二的图片。获得Trophies成就，对于有能力获得的玩家来说，只是一个可有可无的补充。而其他大部分玩家，却因此获得了不
+成比例的挫折感。如果你非要提供这些成就，就把获得成就的门槛设低吧，这样你就不必损害其他玩家的游戏乐趣。</p>
+
+<h3 id="scarlet-letter">Scarlet Letter</h3>
+
+<p>评价: L</p>
+
+<p>Scarlet Letters用来奖励游戏中的消极行为，比如失败了或被羞辱。虽然这些事件没有对游戏成绩产生负面影响（这句不是太确定While it is impossible to negatively affect gamerscore）,
+但还是会妨碍玩家继续游戏，甚至妨碍其对游戏续费。玩家经受这些事件时，已经有了负面情绪。如果你要使用这种成就，必须让它们看起来有幽默感，以抵消玩家挫折感。比如，给予一个“splat”成就（or falling more than a thousand feet, accompanied by a humorous
+icon），远比直接告诉玩家他游戏玩得不好更有娱乐性。这会逆转杀手型玩家和探险型玩家的游戏诉求。（原句是：This can reverse the appeal of the achievement from one that appeals only to Extreme Killers to one that would appeal to Explorers as
+well.这里的翻译有疑问）</p>
+
+<h2 id="游戏演示">游戏演示</h2>
+
+<p>下面有些关于传统类型游戏如何授予游戏成就的例子，这些例子趋向于描述游戏该如何根据规则设置成就，而不是说明如何定义一个真实游戏成就的方法。每个游戏成就的权衡都会有所轻微的变化，取决于如何在该游戏中获取成就的动机，此外，一些能够进一步改善游戏成就设定的方法也迫切需要被提出来。传统类型游戏有以下三种：</p>
+
+<ul>
+<li>第一人称射击游戏</li>
+<li>竞技游戏</li>
+<li>角色扮演游戏</li>
+</ul>
+
+<h3 id="第一人称设计游戏">第一人称设计游戏</h3>
+
+<p>单一玩家故事情节模式和多玩家互动模式。故事情节模式分为10个阶段，每个阶段都有三种不同难度等级的玩法，所有阶段可以在一种难度等级下玩，也可以在不同难度等级下协调起来玩；多玩家模式可以表现为：单个玩家的死亡比赛、整个团队的死亡比赛、夺取旗帜、通过随机匹配或等级匹配在一起的玩家有目的性的比赛。</p>
+
+<p>出发点有几个：</p>
+
+<ul>
+<li>鼓励一个玩家在游戏中的技巧提高</li>
+<li>鼓励玩家尝试所有的游戏模式</li>
+<li>鼓励游戏中的社交行为</li>
+</ul>
+
+<p>在三种难度中任何一种的10个阶段的每一个阶段都设立一个成就，由此将产生30个成就（如果总成就为50，则技能成就占了60％），简单的技能成就应该被抛弃，1-20号成就作为游戏的基本奖赏成就，21号成就为完成每件困难的任务，考虑到可能有1－2个级别非常的难，所以奖励21号成就比较合理，游戏也可以为取得21号成就的玩家授予一个特殊图片，于是玩家可以容易地向世界展示他的游戏技能。</p>
+
+<p>22-25号成就鼓励玩家通过掌握核心游戏玩法机制来提高他们的技能，玩家也可以通过号召其他一些玩家做一些事情来提高自己的成就，因为如果他们不号召这些玩家，这些玩家是不会做这些事情的，这些玩家可以在游戏的不同阶段来完成这些事情。</p>
+
+<p>26–30号成就是专门为那些探索型的玩家准备的，这些玩家十分熟悉游戏的整个流程，他们知道什么时候可以开始寻找这些成就，但是他们不能确定在什么地方可以找到这些成就。</p>
+
+<p>31–37号成就是用来鼓励玩家结合成一个团队来玩游戏和鼓励玩家去重点宣传游戏的某种特殊玩法。</p>
+
+<p>35号成就（创建一个玩家自定义的游戏模式）鼓励玩家与其他玩家分享他们的游戏模式，但是，我们的目标不是鼓励玩家创建疯狂的、潜在平衡性较差的游戏模式，保留4个成就以供将来可以下载的玩法所用。</p>
+
+<p>改进方面：</p>
+
+<p>第一次正常通过整个游戏将获得大概150－250的游戏成就分，这个低于整个游戏成就分的1/3，这种现象就是去除简单的成就后所导致的负面影响。减少从游戏关卡特定的终结点获取成就可能是比较理想的，在多玩家模式下，有连贯的不断深入的授予玩家技能进步的方法的游戏将是一个赢者。</p>
+
+<p>Table 1. Achievements for First Person Shooter X</p>
+
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Achievement</th>
+<th>Gamerscore</th>
+<th>Total</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1</td>
+<td>Complete Level 1 on Medium</td>
+<td>15</td>
+<td>15</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>Complete Level 1 on Hard</td>
+<td>25</td>
+<td>40</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>Complete Level 2 on Medium</td>
+<td>15</td>
+<td>55</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>Complete Level 2 on Hard</td>
+<td>25</td>
+<td>80</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>Complete Level 3 on Medium</td>
+<td>15</td>
+<td>95</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>Complete Level 3 on Hard</td>
+<td>25</td>
+<td>120</td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>Complete Level 4 on Medium</td>
+<td>15</td>
+<td>135</td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>Complete Level 4 on Hard</td>
+<td>25</td>
+<td>160</td>
+</tr>
+
+<tr>
+<td>9</td>
+<td>Complete Level 5 on Medium</td>
+<td>15</td>
+<td>175</td>
+</tr>
+
+<tr>
+<td>10</td>
+<td>Complete Level 5 on Hard</td>
+<td>25</td>
+<td>200</td>
+</tr>
+
+<tr>
+<td>11</td>
+<td>Complete Level 6 on Medium</td>
+<td>15</td>
+<td>215</td>
+</tr>
+
+<tr>
+<td>12</td>
+<td>Complete Level 6 on Hard</td>
+<td>25</td>
+<td>240</td>
+</tr>
+
+<tr>
+<td>13</td>
+<td>Complete Level 7 on Medium</td>
+<td>15</td>
+<td>255</td>
+</tr>
+
+<tr>
+<td>14</td>
+<td>Complete Level 7 on Hard</td>
+<td>25</td>
+<td>280</td>
+</tr>
+
+<tr>
+<td>15</td>
+<td>Complete Level 8 on Medium</td>
+<td>15</td>
+<td>295</td>
+</tr>
+
+<tr>
+<td>16</td>
+<td>Complete Level 8 on Hard</td>
+<td>25</td>
+<td>320</td>
+</tr>
+
+<tr>
+<td>17</td>
+<td>Complete Level 9 on Medium</td>
+<td>15</td>
+<td>335</td>
+</tr>
+
+<tr>
+<td>18</td>
+<td>Complete Level 9 on Hard</td>
+<td>25</td>
+<td>360</td>
+</tr>
+
+<tr>
+<td>19</td>
+<td>Complete Level 10 on Medium</td>
+<td>15</td>
+<td>375</td>
+</tr>
+
+<tr>
+<td>20</td>
+<td>Complete Level 10 on Hard</td>
+<td>25</td>
+<td>400</td>
+</tr>
+
+<tr>
+<td>21</td>
+<td>Complete every level on Hard</td>
+<td>40</td>
+<td>440</td>
+</tr>
+
+<tr>
+<td>22</td>
+<td>Use the laser in combination with the EMP Grenade to create a dispersion field</td>
+<td>20</td>
+<td>460</td>
+</tr>
+
+<tr>
+<td>23</td>
+<td>Use only alternate fire to beat a level</td>
+<td>20</td>
+<td>480</td>
+</tr>
+
+<tr>
+<td>24</td>
+<td>Keep the target reticule locked on to a Flyer for 10 seconds</td>
+<td>20</td>
+<td>500</td>
+</tr>
+
+<tr>
+<td>25</td>
+<td>Master the crouch-jump by jumping ten feet</td>
+<td>20</td>
+<td>520</td>
+</tr>
+
+<tr>
+<td>26</td>
+<td>Discover the hidden weapons cache (Level 4)</td>
+<td>20</td>
+<td>540</td>
+</tr>
+
+<tr>
+<td>27</td>
+<td>Discover the Well of Eons (Level 8)</td>
+<td>20</td>
+<td>560</td>
+</tr>
+
+<tr>
+<td>28</td>
+<td>Find all 10 Golden Armor pieces (one each level)</td>
+<td>20</td>
+<td>580</td>
+</tr>
+
+<tr>
+<td>29</td>
+<td>Find all 5 missing colonists (one every other level)</td>
+<td>20</td>
+<td>600</td>
+</tr>
+
+<tr>
+<td>30</td>
+<td>Climb to the highest spot in the game</td>
+<td>20</td>
+<td>620</td>
+</tr>
+
+<tr>
+<td>31</td>
+<td>Complete a level in co-op with someone that hasn&#39;t previously completed it</td>
+<td>20</td>
+<td>640</td>
+</tr>
+
+<tr>
+<td>32</td>
+<td>Complete a level with a stranger in co-op</td>
+<td>10</td>
+<td>650</td>
+</tr>
+
+<tr>
+<td>33</td>
+<td>Play Level 2 from both perspectives in co-op</td>
+<td>15</td>
+<td>665</td>
+</tr>
+
+<tr>
+<td>34</td>
+<td>Play Level 6 from both perspectives in co-op</td>
+<td>15</td>
+<td>680</td>
+</tr>
+
+<tr>
+<td>35</td>
+<td>Create a custom game type and play it with at least 7 friends</td>
+<td>20</td>
+<td>700</td>
+</tr>
+
+<tr>
+<td>36</td>
+<td>Be a part of something big – play online at the same time as 10,000 other players</td>
+<td>10</td>
+<td>710</td>
+</tr>
+
+<tr>
+<td>37</td>
+<td>6 Degrees – a viral achievement that starts with the first 100 hundred players online</td>
+<td>10</td>
+<td>720</td>
+</tr>
+
+<tr>
+<td>38</td>
+<td>Place in the top half on a Death Match (ranked)</td>
+<td>10</td>
+<td>730</td>
+</tr>
+
+<tr>
+<td>39</td>
+<td>Place #1 in a Death Match (ranked)</td>
+<td>30</td>
+<td>760</td>
+</tr>
+
+<tr>
+<td>40</td>
+<td>Contribute your share of the kills in a winning Team Death Match (ranked)</td>
+<td>10</td>
+<td>770</td>
+</tr>
+
+<tr>
+<td>41</td>
+<td>Leading contributor of kills in a winning Team Death Match (ranked)</td>
+<td>30</td>
+<td>800</td>
+</tr>
+
+<tr>
+<td>42</td>
+<td>Your team captures and successfully defends the flag in a CTF game (ranked)</td>
+<td>10</td>
+<td>810</td>
+</tr>
+
+<tr>
+<td>43</td>
+<td>You capture a flag and kill an enemy flag carrier in a single CTF game (ranked)</td>
+<td>30</td>
+<td>840</td>
+</tr>
+
+<tr>
+<td>44</td>
+<td>Your team destroys and successfully defends the objective in an Objective game (ranked)</td>
+<td>10</td>
+<td>850</td>
+</tr>
+
+<tr>
+<td>45</td>
+<td>You destroy the objective and defuse a bomb in a single Objective game (ranked)</td>
+<td>30</td>
+<td>880</td>
+</tr>
+
+<tr>
+<td>46</td>
+<td>Win a game on every map (ranked) and acquire all other multiplayer achievements</td>
+<td>40</td>
+<td>920</td>
+</tr>
+
+<tr>
+<td>47</td>
+<td>Reserved for DLC: a new single-player level on Medium?</td>
+<td>20</td>
+<td>940</td>
+</tr>
+
+<tr>
+<td>48</td>
+<td>Reserved for DLC: a new single-player level on Hard?</td>
+<td>20</td>
+<td>960</td>
+</tr>
+
+<tr>
+<td>49</td>
+<td>Reserved for DLC: a new multiplayer map?</td>
+<td>20</td>
+<td>980</td>
+</tr>
+
+<tr>
+<td>50</td>
+<td>Reserved for DLC: a new multiplayer map?</td>
+<td>20</td>
+<td>1000</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="内容回顾">内容回顾</h2>
+
+<p>成就系统是游戏设计与开发中的一个强大工具。它可以提高游戏的吸引力及游戏的价值感，使用这种工具来创造良好的游戏效果，吸引更多的玩家。尽快为你的游戏引入该机制，根据你的游戏的整体设计，将其发挥到最好效果。</p>
+
+<p>认真考虑你想鼓励的玩家类型。一项项考察，是否你的每项成就设定都按照你的目的去鼓励一类玩家，或者去打击一类万家，即使如此，如何通过调整他们来使得游戏体验更加有趣。</p>
+
+<h2 id="延伸阅读">延伸阅读</h2>
+
+<p><a href="http://www.top360tag.com/">http://www.top360tag.com</a> – Contains lots of good pivots for how many people have earned each achievement in each game. Great for finding out which achievements are too
+hard or too easy.</p>
+
+<p><a href="http://www.mygamercard.net/leaderboard.php">http://www.mygamercard.net/leaderboard.php</a> – Find out who has the most achievements/gamerscore across the board or in a particular game. Great for tracking how quickly top players earn achievements
+in each game, and which ones they go after first.</p>
+
+<p><a href="http://www.achieve360points.com/">http://www.achieve360points.com</a> – The most complete listing of achievements and how to earn them (especially the trickier ones).</p>
+
+<p><a href="http://www.nickyee.com/">http://www.nickyee.com</a> – Presents a lot of interesting analysis about why players do what they do in games. Start here for things relevant to achievements:
+<a href="http://www.nickyee.com/daedalus/archives/001300.php">http://www.nickyee.com/daedalus/archives/001300.php</a></p>
+
+<p><a href="http://www.lostgarden.com/">http://www.lostgarden.com</a> – Contains lots of interesting meta–game-design information. Start here for content relevant to achievements:
+<a href="http://www.lostgarden.com/essay_genreaddict.htm">http://www.lostgarden.com/essay_genreaddict.htm</a></p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/457/">现实主义题材需要拯救</a></li>
+        
+        <li><a href="/blog/archives/131/">帧锁定同步算法</a></li>
+        
+        <li><a href="/blog/archives/338/">PY2EXE的启动步奏参考－科学的发布</a></li>
+        
+        <li><a href="/blog/archives/455/">学习游戏编程的八大误区</a></li>
+        
+        <li><a href="/blog/archives/613/">推荐业余作品 - Hurricane2</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92">策划</a></li>
+                                
+                                <li><a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91">翻译</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(11)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(44)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(55)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+	var script = document.createElement('script');
+	script.src = 'http://cdn.bootcss.com/viz.js/1.8.0/viz.js'; 
+	script.onload = function() {
+		var vizPrefix = "language-viz-";
+		Array.prototype.forEach.call(document.querySelectorAll("code"), function(x){
+			var engine = null;
+			x.getAttribute("class").split(" ").forEach(function(cls){
+				if (cls.startsWith(vizPrefix)) {
+					engine = cls.substr(vizPrefix.length);
+				}
+			});
+			if (engine != null) {
+				var image = new DOMParser().parseFromString(Viz(x.innerText, {format:"svg", engine:engine}), "image/svg+xml");
+				x.parentNode.insertBefore(image.documentElement, x);
+				x.style.display = 'none';
+				x.parentNode.style.backgroundColor = "white";
+				x.parentNode.style.border = "none";
+			}
+		});
+	};
+
+	document.body.appendChild(script);
+
+	</script>
+
+
+
+</body>
+</html>

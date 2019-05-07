@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法 on Skywind Inside</title>
+    <link>https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 算法 on Skywind Inside</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 08 Apr 2019 06:50:39 +0000</lastBuildDate>
+    
+	<atom:link href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何实现和优化 SVM（支持向量机）？</title>
+      <link>https://skywind3000.com/blog/archives/2250/</link>
+      <pubDate>Mon, 08 Apr 2019 06:50:39 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2250/</guid>
+      <description>&lt;p&gt;学习 SVM 的最好方法是实现一个 SVM，可讲理论的很多，讲实现的太少了。&lt;/p&gt;
+
+&lt;p&gt;假设你已经读懂了 SVM 的原理，并了解公式怎么推导出来的，比如到这里：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/svm1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;SVM 的问题就变成：求解一系列满足约束的 alpha 值，使得上面那个函数可以取到最小值。然后记录下这些非零的 alpha 值和对应样本中的 x 值和 y 值，就完成学习了，然后预测的时候用：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/svm2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上面的公式计算出 f(x) ，如果返回值 &amp;gt; 0 那么是 +1 类别，否则是 -1 类别，先把这一步怎么来的，为什么这么来找篇文章读懂，不然你会做的一头雾水。&lt;/p&gt;
+
+&lt;p&gt;那么剩下的 SVM 实现问题就是如何求解这个函数的极值。方法有很多，我们先找个起点，比如 Platt 的 SMO 算法，它后面有伪代码描述怎么快速求解 SVM 的各个系数。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;第一步：实现传统的 SMO 算法&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;现在大部分的 SVM 开源实现，源头都是 platt 的 smo 算法，读完他的文章和推导，然后照着伪代码写就行了，核心代码没几行：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>基础优化-最不坏的哈希表</title>
+      <link>https://skywind3000.com/blog/archives/2006/</link>
+      <pubDate>Fri, 08 Dec 2017 11:14:03 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/2006/</guid>
+      <description>&lt;p&gt;哈希表性能优化的方法有很多，比如：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用双 hash 检索冲突&lt;/li&gt;
+&lt;li&gt;使用开放+封闭混合寻址法组织哈希表&lt;/li&gt;
+&lt;li&gt;使用跳表快速定位冲突&lt;/li&gt;
+&lt;li&gt;使用 LRU 缓存最近访问过的键值，不管表内数据多大，短时内访问的总是那么几个&lt;/li&gt;
+&lt;li&gt;使用更好的分配器来管理 key_value_pair 这个节点对象&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上面只要随便选两条你都能得到一个比 unordered_map 快不少的哈希表，类似的方法还有很多，比如使用除以质数来归一化哈希值（x86下性能最好，整数除法非常快，但非x86就不行了，arm还没有整数除法指令，要靠软件模拟，代价很大）。&lt;/p&gt;
+
+&lt;p&gt;哈希表最大的问题就是过分依赖哈希函数得到一个正态分布的哈希值，特别是开放寻址法（内存更小，速度更快，但是更怕哈希冲突），一旦冲突多了，或者 load factor 上去了，性能就急剧下降。&lt;/p&gt;
+
+&lt;p&gt;Python 的哈希表就是开放寻址的，速度是快了，但是面对哈希碰撞攻击时，挂的也是最惨的，早先爆出的哈希碰撞漏洞，攻击者可以通过哈希碰撞来计算成千上万的键值，导致 Python / Php / Java / V8 等一大批语言写成的服务完全瘫痪。&lt;/p&gt;
+
+&lt;p&gt;后续 Python 推出了修正版本，解决方案是增加一个哈希种子，用随机数来初始化它，这都不彻底，开放寻址法对hash函数的好坏仍然高度敏感，碰到特殊的数据，性能下降很厉害。&lt;/p&gt;
+
+&lt;p&gt;经过最近几年的各种事件，让人们不得不把目光从“&lt;strong&gt;如何实现个更快的哈希表&lt;/strong&gt;”转移到 “&lt;strong&gt;如何实现一个最不坏的哈希表&lt;/strong&gt;”来，以这个新思路重新思考 hash 表的设计。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>AVL/RBTREE 实际比较</title>
+      <link>https://skywind3000.com/blog/archives/1987/</link>
+      <pubDate>Fri, 08 Dec 2017 10:37:04 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1987/</guid>
+      <description>&lt;p&gt;网上对 AVL被批的很惨，认为性能不如 rbtree，这里给 AVL 树平反昭雪。最近优化了一下我之前的 AVL 树，总体跑的和 linux 的 rbtree 一样快了：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/word/images/avl/compare.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;他们都比 std::map 快很多（即便使用动态内存分配，为每个新插入节点临时分配个新内存）。&lt;/p&gt;
+
+&lt;p&gt;项目代码在：&lt;a href=&#34;https://github.com/skywind3000/avlmini&#34;&gt;skywind3000/avlmini&lt;/a&gt; 其他 AVL/RBTREE 评测也有类似的结论，见：&lt;a href=&#34;http://stlavlmap.sourceforge.net/&#34;&gt;STL AVL Map&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;谣言1：RBTREE的平均统计性能比 AVL 好&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;统计下来一千万个节点插入 AVL 共旋转 7053316 次（先左后右算两次），RBTREE共旋转 5887217 次，RBTREE看起来少是吧？应该很快？但是别忘了 RBTREE 再平衡的操作除了旋转外还有再着色，每次再平衡噼里啪啦的改一片颜色，父亲节点，叔叔，祖父，兄弟节点都要访问一圈，这些都是代价，再者平均树高比 AVL 高也成为各项操作的成本。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;谣言2：RBTREE 一般情况只比 AVL 高一两层，这个代价忽略不计&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何实现移动设备的通用手势识别？</title>
+      <link>https://skywind3000.com/blog/archives/1062/</link>
+      <pubDate>Fri, 19 Apr 2013 14:06:48 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1062/</guid>
+      <description>&lt;p&gt;移动设备多用手势进行输入，用户通过手指在屏幕上画出一个特定符号，计算机识别出来后给予响应的反应，要比让用户点击繁琐的按钮为直接和有趣，而如果为每种手势编写一段识别代码的话是件得不偿失的事情。如何设计一种通用的手势识别算法来完成上面的事情呢？ 我们可以模仿笔记识别方法，实现一个简单的笔画识别模块，流程如下：&lt;/p&gt;
+
+&lt;h4 id=&#34;第一步-手势归一化&#34;&gt;第一步：手势归一化&lt;/h4&gt;
+
+&lt;p&gt;1. 手指按下时开始记录轨迹点，每划过一个新的点就记录到手势描述数组guesture中，直到手指离开屏幕。
+2. 将gesture数组里每个点的x,y坐标最大值与最小值求出中上下左右的边缘，求出该手势路径点的覆盖面积。
+3. 手势坐标归一化：以手势中心点为原点，将gesture里顶点归一化到 -1&amp;lt;=x&amp;lt;=1, -1&amp;lt;=y&amp;lt;=1空间中。
+4. 数组长度归一化：将手势路径按照长度均匀划分成32段，用共32个新顶点替换guestue里的老顶点。&lt;/p&gt;
+
+&lt;h4 id=&#34;第二步-手势相似度&#34;&gt;第二步：手势相似度&lt;/h4&gt;
+
+&lt;p&gt;1. 手势点乘：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;g1 * g2 = g1.x1*g2.x1 + g1.y1*g2.y1 + … + g1.x32*g2.x32 + g1.y32*g2.y32 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2. 手势相似：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;相似度(g1, g2) = g1 * g2 / sqrt(g1 * g1 + g2 * g2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;由此我们可以根据两个手势的相似度算成一个分数score。用户输入了一个手势g，我们回合手势样本中的所有样本g1-gn打一次相似度分数，然后求出相似度最大的那个样本gm并且该分数大于某个特定阀值（比如0.8），即可以判断用户输入g相似于手势样本 gm !&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>快速可靠协议-KCP</title>
+      <link>https://skywind3000.com/blog/archives/1048/</link>
+      <pubDate>Sat, 22 Dec 2012 03:42:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1048/</guid>
+      <description>&lt;h3 id=&#34;简介&#34;&gt;简介&lt;/h3&gt;
+
+&lt;p&gt;KCP是一个快速可靠协议，能以比 TCP浪费10%-20%的带宽的代价，换取平均延迟降低 30%-40%，且最大延迟降低三倍的传输效果。纯算法实现，并不负责底层协议（如UDP）的收发，需要使用者自己定义下层数据包的发送方式，以 callback的方式提供给 KCP。 连时钟都需要外部传递进来，内部不会有任何一次系统调用。&lt;/p&gt;
+
+&lt;p&gt;整个协议只有 ikcp.h, ikcp.c两个源文件，可以方便的集成到用户自己的协议栈中。也许你实现了一个P2P，或者某个基于 UDP的协议，而缺乏一套完善的ARQ可靠协议实现，那么简单的拷贝这两个文件到现有项目中，稍微编写两行代码，即可使用。&lt;/p&gt;
+
+&lt;h3 id=&#34;技术特性&#34;&gt;技术特性&lt;/h3&gt;
+
+&lt;p&gt;TCP是为流量设计的（每秒内可以传输多少KB的数据），讲究的是充分利用带宽。而 KCP是为流速设计的（单个数据包从一端发送到一端需要多少时间），以10%-20%带宽浪费的代价换取了比 TCP快30%-40%的传输速度。TCP信道是一条流速很慢，但每秒流量很大的大运河，而KCP是水流湍急的小激流。KCP有正常模式和快速模式两种，通过以下策略达到提高流速的结果：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;RTO翻倍vs不翻倍：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;TCP超时计算是RTOx2，这样连续丢三次包就变成RTOx8了，十分恐怖，而KCP启动快速模式后不x2，只是x1.5（实验证明1.5这个值相对比较好），提高了传输速度。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;选择性重传 vs 全部重传：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;TCP丢包时会全部重传从丢的那个包开始以后的数据，KCP是选择性重传，只重传真正丢失的数据包。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;快速重传：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;发送端发送了1,2,3,4,5几个包，然后收到远端的ACK: 1, 3, 4, 5，当收到ACK3时，KCP知道2被跳过1次，收到ACK4时，知道2被跳过了2次，此时可以认为2号丢失，不用等超时，直接重传2号包，大大改善了丢包时的传输速度。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;延迟ACK vs 非延迟ACK：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;TCP为了充分利用带宽，延迟发送ACK（NODELAY都没用），这样超时计算会算出较大 RTT时间，延长了丢包时的判断过程。KCP的ACK是否延迟发送可以调节。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;UNA vs ACK+UNA：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;ARQ模型响应有两种，UNA（此编号前所有包已收到，如TCP）和ACK（该编号包已收到），光用UNA将导致全部重传，光用ACK则丢失成本太高，以往协议都是二选其一，而 KCP协议中，除去单独的 ACK包外，所有包都有UNA信息。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;非退让流控：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;KCP正常模式同TCP一样使用公平退让法则，即发送窗口大小由：发送缓存大小、接收端剩余接收缓存大小、丢包退让及慢启动这四要素决定。但传送及时性要求很高的小数据时，可选择通过配置跳过后两步，仅用前两项来控制发送频率。以牺牲部分公平性及带宽利用率之代价，换取了开着BT都能流畅传输的效果。&lt;/p&gt;
+
+&lt;h3 id=&#34;基本使用&#34;&gt;基本使用&lt;/h3&gt;</description>
+    </item>
+    
+    <item>
+      <title>体育竞技游戏的团队AI</title>
+      <link>https://skywind3000.com/blog/archives/1216/</link>
+      <pubDate>Fri, 05 Aug 2011 07:32:00 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/1216/</guid>
+      <description>&lt;p&gt;很多人问游戏AI该怎么做？随着游戏类型的多元化，非 MMO或者卡牌的游戏越来越多，对AI的需求也越来越强了。而市面上关于 AI的书，网上找得到的文章，也都流于一些只言片语的认识，理论化的套路，和一些简单的 DEMO，离真正的项目差距甚远，无法前后衔接成一条线，更无法真正落地到编码。&lt;/p&gt;
+
+&lt;p&gt;国内真正做过游戏AI的少之又少，东拉西扯的人很多，真正做过项目的人很少，因为国内主要以MMO为主，RTS比较少，体育竞技类游戏更少，而从AI的难度上来看，应该是：MMO &amp;lt; FPS &amp;lt; RTS &amp;lt; 体育竞技。作为实际开发过AI的人，给大家科普一下，什么叫做硬派AI。&lt;/p&gt;
+
+&lt;p&gt;硬派游戏AI，不是虚无缥缈的神经网络，用神经网络其实是一个黑洞，把问题一脚踢给计算机，认为我只要训练它，它就能解决一切问题的懒人想法。更不是遗传算法和模糊逻辑，你想想以前8位机，16位机上就能有比较激烈对抗的足球游戏、篮球游戏，那么差的处理器能做这些计算么？ 硬派游戏AI，就是状态机和行为树。状态机是基本功，行为树可选（早年AI没行为树这东西，大家都是hard code的）。大部分人说到这里也就没了，各位读完还是无法写代码。因为没有把最核心的三个问题讲清楚，即：分层状态机、决策支持系统、以及团队角色分配。下面以我之前做的篮球AI为例，简单叙述一下： &lt;strong&gt;何为分层状态机？&lt;/strong&gt; 每个人物身上，有三层状态机：基础层状态机、行为层状态机、角色层状态机。每一层状态机解决一个层次的复杂度，并对上层提供接口，上层状态机通过设置下层状态机的目标实现更复杂的逻辑。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;基础状态机：直接控制角色动画和绘制、提供基础的动作实现，为上层提供支持。&lt;/li&gt;
+&lt;li&gt;行为状态机：实现分解动作，躲避跑、直线移动、原地站立、要球、传球、射球、追球、打人、跳。&lt;/li&gt;
+&lt;li&gt;角色状态机：实现更复杂的逻辑，比如防射球、篮板等都是由N次直线运动+跳跃或者打人完成。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://skywind3000.github.io/images/blog/wp-content/2015/04/image_thumb8.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[业余土制] 简易网络库 easenet</title>
+      <link>https://skywind3000.com/blog/archives/166/</link>
+      <pubDate>Sat, 11 Dec 2010 20:04:07 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/166/</guid>
+      <description>&lt;p&gt;1. 跨平台网络库&lt;/p&gt;
+
+&lt;p&gt;2. 异步事件：kevent, iocp, epoll, poll, select封装&lt;/p&gt;
+
+&lt;p&gt;3. 内存管理：SlabPlus&lt;/p&gt;
+
+&lt;p&gt;4. 可靠协议：类tcp纯协议实现，包括重传机制，窗口管理，流量控制，拥塞处理。&lt;/p&gt;
+
+&lt;p&gt;5. 多种工具：缓存池，环状缓存，高性能hashmap等。&lt;/p&gt;
+
+&lt;p&gt;代码贴上：  项目地址：&lt;a href=&#34;http://code.google.com/p/easenet/&#34;&gt;http://code.google.com/p/easenet/&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>SlabPlus 内存分配算法</title>
+      <link>https://skywind3000.com/blog/archives/149/</link>
+      <pubDate>Sat, 08 Mar 2008 02:15:50 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/149/</guid>
+      <description>&lt;h3 id=&#34;原理叙述&#34;&gt;原理叙述：&lt;/h3&gt;
+
+&lt;p&gt;我也来介绍一种内存管理方面的优化算法：怎样才能根除内存碎片？有且只有如下办法：1. 只分配不释放，2. 只分配固定大小内存，3. 不分配内存，虽然，仍不妨碍我们再一次回顾各种常用的分配策略，以发掘一些新的思路：&lt;/p&gt;
+
+&lt;p&gt;前提：下面提及的分配技巧并不能说是“最快的”，也不能说是“最小碎片的”，但是可以保证，不管系统运行多长时间，不管分配多大内存，碎片比例趋于恒定，同时分配时间为常数（unit interval）：&lt;/p&gt;
+
+&lt;p&gt;最后将讨论一些更进一步的优化技巧（如果愿意大量增加代码行数的话），看看在分配内存方面，哪些我们值得努力，哪些不值得我们努力。&lt;/p&gt;
+
+&lt;p&gt;现代的内存分配算法，需要顾及以下几个特性：&lt;/p&gt;
+
+&lt;p&gt;1） 缓存命中：现今的计算机体系，优秀的缓存策略对一个系统而言异常重要，一些写的不太注意的分配器，容易忽略该特性，前分配一块内存，后分配一块内存，大大增加了缓存的失效。&lt;/p&gt;
+
+&lt;p&gt;2） 总线平衡：大部分缓存管理都是提供 2^n字节大小的内存机制，并且所分配地址也是以 2^n字节进行对齐，比如我们有一个 packfile对象有400多个字节，将使用 512字节的缓存分配器，并且按照 512字节进行对齐，但是问题在于，大部分时候我们都在访问该对象的头30个字节，因此在(0-30) mod 512的地方，也就是在以512字节为分割的缓存线周围集中了大量的压力，在现今的大部分普通的缓存芯片上将出现总线失衡bus-overbalance。&lt;/p&gt;
+
+&lt;p&gt;3） 页面归还：何时向系统请求页面，何时归还系统页面，很多分配器只向系统不停的申请页面，却并不考虑提供保证能够正常不断的归还系统页面的机制。&lt;/p&gt;
+
+&lt;p&gt;4） 多核优化：尽管多核技术现在才逐渐在PC上推广，但我们的服务器很早就已经开始使用双核或者四核的架构，分配器如何尽量避免在不同核间产生的等待，是分配器效率优化的一个前提。&lt;/p&gt;
+
+&lt;p&gt;以下几点内容有助于优化我们的分配器：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>超越 STL-map/hash_map性能的DICT</title>
+      <link>https://skywind3000.com/blog/archives/191/</link>
+      <pubDate>Fri, 23 Nov 2007 10:54:42 +0000</pubDate>
+      
+      <guid>https://skywind3000.com/blog/archives/191/</guid>
+      <description>&lt;p&gt;最近用纯C作了一个dict，根据试验，比 stl的 map快 2.3-2.5倍，比 hash_map快 1.3倍，主要用到的优化策略如下：&lt;/p&gt;
+
+&lt;p&gt;1. skiplist：&lt;/p&gt;
+
+&lt;p&gt;传统hash-bucket中，使用链表靠 next, 指针记录同一个 bucket中的各个节点，查找时候 需要一个一个的搜索，而改进以后的 bucket节点，使用 next, next4,
+next8三级指针，分别指向后一个节点，后四个节点，后八个节点，如此保证链表有序的情况下，如果要搜索，就直接考虑 next8的值和当前值大小，如果小于当前值，直接跳过八个节点，如果大于那再一次判断 next4与next。如此有序链表的遍历速度提高了 8倍。&lt;/p&gt;
+
+&lt;p&gt;2. 双hash：&lt;/p&gt;
+
+&lt;p&gt;使用两次hash，开辟一个长度为 64的 LRU数组，记录最近访问过的节点，使用 hash2来定位 LRU数组的位置，当搜索发生时，首先根据 hash2在 LRU数组中查找是否最近访问过该节点，如果访问过就直接返回，如果没有访问过则继续用 hash1在 bucket中查找，如果查找到的话，就按照 hash2的值覆盖一下 LRU中该位置的数据。 再加上一些内存管理方面的优化，以及一些编码方式的改进，对 key/value分别取 string或 int，四种情况下，平均比 stl的 map快
+2.3-2.5倍，比 hash_map快 1.3倍。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

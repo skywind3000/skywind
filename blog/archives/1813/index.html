@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Vim 异步编译插件 vimmake | Skywind Inside</title>
+    <meta property="og:title" content="Vim 异步编译插件 vimmake - Skywind Inside">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2016-07-16T12:48:08&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2016-07-16T12:48:08&#43;08:00">
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,飞雪无情,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Vim 异步编译插件 vimmake">
+        
+    <meta name="author" content="skywind">
+    <meta property="og:url" content="https://skywind3000.com/blog/archives/1813/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://skywind3000.com/">
+                        Skywind Inside
+                    </a>
+                
+                <p class="description">写自己的代码，让别人猜去吧！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://skywind3000.com/">首页</a>
+                    
+                    <a  href="https://skywind3000.com/categories/" title="文章分类">文章分类</a>
+                    
+                    <a  href="https://skywind3000.com/tags/" title="标签">标签</a>
+                    
+                    <a  href="https://skywind3000.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://skywind3000.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">Vim 异步编译插件 vimmake</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2016年7月16日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94">随笔</a></span>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-meta">
+                            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span> 阅读</span></span>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>推荐下自己写的用了好几年的编程插件：vimmake ？完美支持 vim的异步模式： <a href="https://github.com/skywind3000/vimmake">GitHub - skywind3000/vimmake: Customize shell commands in vim</a></p>
+
+<p>让用户自定义各种不同的编译或运行任务，并且在 Vim 中执行他们。类似 NotePad++的自定义 Commands 和 EditPlus/UltraEdit 的 &lsquo;User Tool&rsquo; 或者 GEdit中的 External Tool 以及 TextMate 中的 Shell Command。完美支持 vim 7.4.1829 后已经稳定成熟的异步任务机制，不需要写任何 Vim Script
+也可以很容易的体验到 vim 的异步任务机制，并且使用它来执行各种艰巨的编译任务，让你一边编辑代码，一边跑编译任务。</p>
+
+<p>安装：拷贝 vimmake.vim 到你的 ~/.vim/plugin 或用 vundle 指向 skywind3000/vimmake .</p>
+
+<p><strong>简单使用：异步编译 &amp; 运行 C/C++ 代码</strong></p>
+
+<p>首先每个 “用户自定义工具” 使用一个独立的 shell脚本来描述（Windows下是.cmd的批处理文件），我们将首先编写 vimmake可以使用的 gcc编译工具脚本， &ldquo;~/.vim/vimmake.gcc&rdquo;:</p>
+
+<pre><code>#! /bin/sh
+gcc &quot;$VIM_FILEPATH&quot; -o &quot;$VIM_FILEDIR/$VIM_FILENOEXT&quot;
+</code></pre>
+
+<p>就这么短短的两行，当你把它设置成 0755的权限时，就可以在 Vim中通过下面语句运行了：</p>
+
+<pre><code>:VimTool gcc
+</code></pre>
+
+<p>命令 <code>:VimTool {name}</code> 命令会在 Vim里面直接调用 ~/.vim/ 目录下，名为 &ldquo;vimmake.{name}&rdquo; 的脚本来完成各种类似编译或者执行的任务，所以用<code>:VimTool gcc</code> 就可以运行前面定义的名为 vimmake.gcc 的工具脚本来编译当前的源代码了。</p>
+
+<p>现在编辑 &ldquo;~/.vim/&rdquo; 下面名为 &ldquo;vimmake.run&rdquo; 的脚本，以便用 <code>:VimTool run</code> 来运行当前代码：</p>
+
+<pre><code>#! /bin/sh
+&quot;$VIM_FILEDIR/$VIM_FILENOEXT&quot;
+</code></pre>
+
+<p>记得将 vimmake.run 的模式设置成 0755，如今有了两个可以直接在 Vim里通过 VimTool命令启动的工具（gcc 和 run），接下来我们需要设置 run 这个工具的模式为默认运行模式，而 gcc 为 quickfix模式（输出会被捕获并重定向到 quickfix窗口），现在打开 .vimrc 添加一行：</p>
+
+<pre><code>let g:vimmake_mode = { 'gcc':'quickfix', 'run':'normal' }
+</code></pre>
+
+<p>而如果我们能够使用到较新版本的 vim（7.4.1829或者更高），我们就可以使用异步方式在后台启动 gcc，并且将后台进程的输出实时重定向到界面下端的 quickfix 窗口：</p>
+
+<pre><code>let g:vimmake_mode = { 'gcc':'async', 'run':'normal' }
+</code></pre>
+
+<p>在这之后，将 &lsquo;gcc&rsquo;的运行模式设置成 &lsquo;async&rsquo; 后，<code>:VimTool gcc</code> 就可以以异步的方式运行名为 vimmake.gcc 的脚本然后在后台执行编译任务了，就像传统 IDE编译任务一样。</p>
+
+<p>以往使用 Vim 的 :make 之类的命令编译项目时，往往无法异步，编译任务一运行，你就无法编辑了，只有等到编译结束，才能返回编辑状态，大项目时，不得不另外开一个终端来进行编译，这是很痛苦的事情，有了异步任务以后，你能在同一个屏幕下编辑并且实时在 quickfix窗口查看编译的进度。</p>
+
+<p>vimmake 可以让你在不需要掌握晦涩的 VimScript 和繁琐的异步编程接口的情况下，直接方便的使用vim 异步功能来完成各种长时间编译任务。同时为了加快你的：编译-编辑-编译 工作流的流畅度，我们需要配置一两个热键来调用 <code>:VimTool</code> 命令：</p>
+
+<pre><code>noremap &lt;F7&gt; :VimTool gcc&lt;cr&gt;
+noremap &lt;F5&gt; :VimTool run&lt;cr&gt;
+inoremap &lt;F7&gt; &lt;ESC&gt;:VimTool gcc&lt;cr&gt;
+inoremap &lt;F5&gt; &lt;ESC&gt;:VimTool run&lt;cr&gt;
+</code></pre>
+
+<p>在 .vimrc里面加入上面的几行代码，你就可以方便的按 F7编译当前文件，F5运行之了。和GEdit 类似，VimTool命令在运行具体工具脚本前会设置若干环境变量来记录当前编辑的文件名，路径，当前vim工作目录等一系列信息，然后在工具脚本里面可以直接取出这些值来调用需要的外部工具链： 如上图，后台运行工具脚本进行编译，并且编译器的输出会被实时显示到下面的
+quickfix窗口，选中错误的那行输出，会直接跳转：</p>
+
+<p><img src="https://raw.githubusercontent.com/skywind3000/vimmake/master/images/screen1.gif" alt="" /></p>
+
+<p><strong>命令解释：VimTool - 执行用户自定义工具</strong></p>
+
+<p>下面这条命令会运行名为 &ldquo;~/.vim/vimmake.{name}&rdquo; 的脚本：</p>
+
+<pre><code>:VimTool {name}
+</code></pre>
+
+<p>在 Windows下的话，会运行名为： &ldquo;C:\Users\yourname.vim\vimmake.{name}.cmd&rdquo; 的批处理。</p>
+
+<p>{name} 后面还可以跟随一个名为 {target} 的参数：</p>
+
+<pre><code>:VimTool {name} {target}
+</code></pre>
+
+<p><code>{target}</code> 的内容会作为环境变量：$VIM_TARGET 传入到 <code>vimmake.{name}</code> 的脚本中。工具脚本可以使用这个值作为 make target 当作第一个参数传给 make程序。<code>:VimTool</code> 命令在调用每个工具脚本前，会初始化下面一些系统环境变量供脚本使用：</p>
+
+<p>Environment Variable Description</p>
+
+<p>$VIM_FILEPATH</p>
+
+<p>File name of current buffer with full path</p>
+
+<p>$VIM_FILENAME</p>
+
+<p>File name of current buffer without path</p>
+
+<p>$VIM_FILEDIR</p>
+
+<p>Full path of current buffer without the file name</p>
+
+<p>$VIM_FILEEXT</p>
+
+<p>File extension of current buffer</p>
+
+<p>$VIM_FILENOEXT</p>
+
+<p>File name of current buffer without path and extension</p>
+
+<p>$VIM_CWD</p>
+
+<p>Current directory</p>
+
+<p>$VIM_RELDIR</p>
+
+<p>File path relativize to current directory</p>
+
+<p>$VIM_RELNAME</p>
+
+<p>File name relativize to current directory</p>
+
+<p>$VIM_CWORD</p>
+
+<p>Current word under cursor in the buffer</p>
+
+<p>$VIM_GUI</p>
+
+<p>Is it running in gui ?</p>
+
+<p>$VIM_VERSION</p>
+
+<p>Value of v:version</p>
+
+<p>$VIM_MODE</p>
+
+<p>Execute via 0:bang(!), 1:makeprg, 2:system(), &hellip;</p>
+
+<p>$VIM_SCRIPT</p>
+
+<p>Home path of tool scripts</p>
+
+<p>$VIM_TARGET</p>
+
+<p>Target given after name as &ldquo;:VimTool {name} {target}&rdquo;</p>
+
+<p>$VIM_COLUMNS</p>
+
+<p>How many columns in vim&rsquo;s screen</p>
+
+<p>$VIM_LINES</p>
+
+<p>How many lines in vim&rsquo;s screen</p>
+
+<p>在工具脚本中使用上面这些环境变量，你可以自由的编译当前的 Makefile，或者编译和运行单个文件，或者编译你的 latex，或者在当前目录下异步执行一下grep，或者把当前光标下的单词传递给外部的 man 帮助 、命令行字典程序并把结果取回来显示到 quickfix窗口中。或者对当前编辑文件简单运行一下 svn diff指令并同样也把结果显示到quickfix里。</p>
+
+<p><strong>命令解释：VimStop</strong></p>
+
+<p>停止当前后台任务（如果使用async模式运行的话），VimStop! 可以发送-9号信号强制杀死后台进程，一般很少用。</p>
+
+<p><strong>参数配置：</strong></p>
+
+<p>g:vimmake_mode (dictionary) - 运行模式</p>
+
+<p>g:vimmake_mode 是一个字典，你可以在 .vimrc中这样初始化不同工具的运行模式：</p>
+
+<pre><code>let g:vimmake_mode = {}
+let g:vimmake_mode['gcc'] = 'async'
+let g:vimmake_mode['run'] = 'normal'
+</code></pre>
+
+<p>运行模式可以有下面几种:</p>
+
+<pre><code>normal   默认模式，运行工具并等待结束后返回vim（win下弹出窗口运行，不必等待）
+quickfix 运行工具并等待结束后返回vim，把结果输出到 quickfix
+bg       在后台运行工具，并且忽略任何输出。
+async    异步任务方式在后台运行工具，并且把输出实时显示在 quickfix中
+</code></pre>
+
+<p>上面四种运行模式，只有 async模式需要 vim 7.4.1829 以上支持，其他三种 7.0以后都支持，如果不设置的话，将会启用默认的 normal模式。如果你需要打开一个新的窗口的模式运行一个脚本，那么你在工具脚本中需要自己调用 gnome-terminal 或者 xterm之类的工具来完成，如果在 Mac下面的话，可以用 open 命令来打开新终端窗口并运行你的程序。</p>
+
+<p>模式 quickfix 和 async 都会把脚本的输出导向 quickfix窗口，如果你不知道怎么在 vim下面打开quickfix窗口的话，可以用 <code>:copen 8</code> 命令 或者 <code>:botright copen 8</code> 命令在不同位置打开 quickfix窗口，具体quickfix的操作细节见：<code>:help quickfix</code>。</p>
+
+<p>g:vimmake_path (string) - 设置工具脚本路径</p>
+
+<p>默认工具脚本都是保存在 ~/.vim/ 目录下面，你可以通过修改这个变量更改成其他位置：</p>
+
+<pre><code>let g:vimmake_path = '/home/myname/github/config/tools'
+</code></pre>
+
+<p>这样 <code>:VimTool {name}</code> 就会在新的路径下 运行 vimmake.{name} 这个脚本了，如此，你可以方便的把你的一系列工具脚本放到你的 github 仓库中，并且在不同的地方愉快的同步了。</p>
+
+<p>g:vimmake_save (int) - 是否保存当前文件 ? 如果设置成1，那么 VimTool 运行工具脚本前会保存当前正在编辑的文件。</p>
+
+<p>g:vimmake_build_scroll (int) - 是否自动滚动 quickfix 窗口 ? 在使用async模式运行编译任务时，如果这个值被设置成1，那么随着编译器的输出被不断的显示到 quickfix窗口，quickfix会自动滚动到最下面那行，保证你能实时查看最新的输出。</p>
+
+<p>g:vimmake_build_post (string) - 异步任务结束后会触发什么命令？ 当异步任务执行完后, g:vimmake_build_post 中保存的 VimScript 会被自动执行，可以被用来调用外部工具，比如在编译结束后调用 afplay来播放一个wav文件:</p>
+
+<pre><code>let g:vimmake_build_post = &quot;silent call system('afplay ~/.vim/notify.wav &amp;')&quot;
+</code></pre>
+
+<p>这样当你眼镜盯着代码看的时候就不必当心编译结束了你还不知道，afplay是 mac os x 下命令行播放 wav文件的程序，Windows下你可以使用：</p>
+
+<p><a href="https://github.com/skywind3000/support/blob/master/tools/playwav.exe">https://github.com/skywind3000/support/blob/master/tools/playwav.exe</a></p>
+
+<p>这个工具来播放音效：</p>
+
+<pre><code>let g:vimmake_build_post = 'silent !start playwav.exe &quot;C:/Windows/Media/Windows Error.wav&quot; 200'
+</code></pre>
+
+<p>Gvim中 !start 可以无需等待的运行外部命令，通过播放悦耳的音效，可以让你的：编译-编辑-编译 工作流更加高效，在你潜意识里让你心情愉悦，哪怕你为了找恶心的 bug而抓狂时，选择一个动听的音效能鼓励你不断的继续下去。</p>
+
+<p>使用案例：更好的运行当前文件</p>
+
+<p>在 ~/.vim 路径下创建新版本的 vimmake.run 文件，并编辑：</p>
+
+<pre><code>#! /bin/sh
+cd &quot;$VIM_FILEDIR&quot;
+case &quot;$VIM_FILEEXT&quot; in 
+    \.c|\.cpp|\.cc|\.cxx)
+        &quot;$VIM_FILEDIR/$VIM_FILENOEXT&quot;
+        ;;
+    \.py|\.pyw)
+        python &quot;$VIM_FILENAME&quot;
+        ;;
+    \.pl)
+        perl &quot;$VIM_FILENAME&quot;
+        ;;
+    \.lua)
+        lua &quot;$VIM_FILENAME&quot;
+        ;;
+    \.js)
+        node &quot;$VIM_FILENAME&quot;
+        ;;
+    \.php)
+        php &quot;$VIM_FILENAME&quot;
+        ;;
+    *)
+        echo &quot;unexpected file type: $VIM_FILEEXT&quot;
+        ;;
+esac
+</code></pre>
+
+<p>这是上面那个简单的 vimmake.run 的高级版本，它能够根据环境变量 $VIM_FILEEXT自动判断文件的类型，并且调用不同的方法来运行当前文件。</p>
+
+<p>工具脚本可以用 bash来写，也可以用其他你喜欢的 perl 或者 python 来完成，只需要修改下第一行的：“#! &ldquo; 指定一个新的解释器即可，记得将 vimmake.run 这个文件设置成 0755的模式，以便有权限运行它，然后把 <code>:VimTool run</code> 命令隐射到 F5上面，每次你按 F5就触发这个脚本，智能的运行你的文件。</p>
+
+<p>使用案例：异步方式跑 Makefile</p>
+
+<p>十分简单，把下面的脚本保存成：~/.vim/vimmake.make 然后用 <code>:VimTool make</code> 触发即可：</p>
+
+<pre><code>#! /bin/sh
+make $VIM_TARGET
+</code></pre>
+
+<p>记得把运行模式配制成 async （低版本 vim的话配制成 quickfix）。</p>
+
+<p>使用案例：在 man手册中查询当前的字符</p>
+
+<p>把下面脚本保存成 ~/.vim/vimmake.man ，然后用 <code>:VimTool man</code> 来触发（最好绑定热键）。</p>
+
+<pre><code>#! /bin/sh
+WIDTH=`expr $VIM_COLUMNS - 10`
+man -S 3:2:1 -P cat &quot;$VIM_CWORD&quot; | fold -w $WIDTH
+</code></pre>
+
+<p>这个也不难，同样设置成 async模式，按下热键，就会用man查询当前光标下的命令，并且在quickfix中显示出来，是不是很爽？你还可以配置一个命令行字典（有很多命令行字典程序）， 服务器上用 Vim 查看文档时一个快捷键，就显示出当前单词的翻译了。</p>
+
+<p><strong>使用案例：编译 golang 源代码</strong></p>
+
+<p>我们经常会碰到新的语言和新的工具链，这时以其苦苦等待该语言的vim插件，不如直接用vimmake自己动手设置下，即可编译 go代码，编辑脚本：~/.vim/vimmake.go：</p>
+
+<pre><code>#! /bin/sh
+go build &quot;$VIM_FILEPATH&quot;
+</code></pre>
+
+<p>同样很简单，使用 <code>:VimTool go</code> 来编译当前go代码，并将输出导向 quickfix，一个新的工具链就这么简单几下设置好了，最后别忘记记再仿照前面设置一下我们的热键：</p>
+
+<pre><code>noremap &lt;F7&gt; :VimTool gcc&lt;cr&gt;
+noremap &lt;F5&gt; :VimTool run&lt;cr&gt;
+noremap &lt;F8&gt; :VimTool go&lt;cr&gt;
+inoremap &lt;F7&gt; &lt;ESC&gt;:VimTool gcc&lt;cr&gt;
+inoremap &lt;F5&gt; &lt;ESC&gt;:VimTool run&lt;cr&gt;
+inoremap &lt;F8&gt; &lt;ESC&gt;:VimTool go&lt;cr&gt;
+</code></pre>
+
+<p><strong>使用案例：热键打开/关闭 quickfix 窗口</strong></p>
+
+<p>由于大量使用 quickfix 来查看工具输出，我们需要直接用 来切换显示：</p>
+
+<pre><code>noremap &lt;F10&gt; :silent call vimmake#Toggle_Quickfix()&lt;cr&gt;
+inoremap &lt;F10&gt; &lt;ESC&gt;:silent call vimmake#Toggle_Quickfix()&lt;cr&gt;
+</code></pre>
+
+<p>因为高频使用，所以我在 vimmake 里面提供了这个切换函数，直接配置到你喜欢的热键上，使用即可。</p>
+
+<p><strong>使用案例：Windows下更好的执行文件</strong></p>
+
+<p>如果在 Windows下，我们可以用编写 “vimmake.run.cmd” 这个批处理来完成：</p>
+
+<pre><code>@ECHO OFF
+if &quot;%VIM_FILENAME%&quot; == &quot;&quot; GOTO ERROR_NO_FILE
+CD /D &quot;%VIM_FILEDIR%&quot;
+if &quot;%VIM_FILEEXT%&quot; == &quot;.c&quot; GOTO RUN_MAIN
+if &quot;%VIM_FILEEXT%&quot; == &quot;.cpp&quot; GOTO RUN_MAIN
+if &quot;%VIM_FILEEXT%&quot; == &quot;.cc&quot; GOTO RUN_MAIN
+if &quot;%VIM_FILEEXT%&quot; == &quot;.cxx&quot; GOTO RUN_MAIN
+if &quot;%VIM_FILEEXT%&quot; == &quot;.py&quot; GOTO RUN_PY
+if &quot;%VIM_FILEEXT%&quot; == &quot;.pyw&quot; GOTO RUN_PY
+if &quot;%VIM_FILEEXT%&quot; == &quot;.bat&quot; GOTO RUN_CMD
+if &quot;%VIM_FILEEXT%&quot; == &quot;.cmd&quot; GOTO RUN_CMD
+if &quot;%VIM_FILEEXT%&quot; == &quot;.js&quot; GOTO RUN_NODE
+echo unsupported file type %VIM_FILEEXT%
+GOTO END
+:RUN_MAIN
+&quot;%VIM_FILENOEXT%&quot;
+GOTO END
+:RUN_PY
+python &quot;%VIM_FILENAME%&quot;
+GOTO END
+:RUN_CMD
+cmd /C &quot;%VIM_FILENAME%&quot;
+GOTO END
+:RUN_NODE
+node.exe &quot;%VIM_FILENAME%&quot;
+GOTO END
+:ERROR_NO_FILE
+echo missing filename
+GOTO END
+:END
+</code></pre>
+
+<p>批处理的位置需要放置在：C:\Users\用户名.vim 下面（当然你可以通过 g:vimmake_path 配置修改这个位置）。</p>
+
+<p>使用案例：Windows 下调用 mingw 来编译</p>
+
+<p>在 &ldquo;C:\Users\YourName.vim&rdquo; 下面新建批处理文件 vimmake.gcc.cmd：</p>
+
+<pre><code>@ECHO OFF
+if &quot;%VIM_FILENAME%&quot; == &quot;&quot; GOTO ERROR_NO_FILE
+d:\dev\mingw32\bin\gcc -Wall -O3 -std=c++11 &quot;%VIM_FILEPATH%&quot; -o &quot;%VIM_FILEDIR%/%VIM_FILENOEXT%&quot; -lwinmm -lstdc++ -lgdi32 -lws2_32 -msse3 -static
+GOTO END
+:ERROR_NO_FILE
+echo missing file name
+:END
+</code></pre>
+
+<p>这样即可，记得把 g:vimmake_mode[&lsquo;gcc&rsquo;] 的值设置成 async 或者 quickfix，这样编译错误才能保证输出到 quickfix 窗口。</p>
+
+<p>前面说了很多 unix下的用法，所以补充几段 Windows 的，记得 gvim 用官方的 daily build： <a href="https://github.com/vim/vim-win32-installer/releases">Releases · vim/vim-win32-installer · GitHub</a></p>
+
+<p><strong>使用案例：在状态栏显示编译状态</strong></p>
+
+<p>异步任务有三种状态: running, success 和 failure。可以编辑 .vimrc 在 quickfix的 statusline上面显示编译的状态：</p>
+
+<pre><code>augroup QuickfixStatus
+    au! BufWinEnter quickfix setlocal 
+        \ statusline=%t\ [%{g:vimmake_build_status}]\ %{exists('w:quickfix_title')?\ '\ '.w:quickfix_title\ :\ ''}\ %=%-15(%l,%c%V%)\ %P
+augroup END
+</code></pre>
+
+<p>全局变量 g:vimmake_build_status 用来实时表示异步任务状态:</p>
+
+<pre><code>running: 异步任务开始时被设置
+success: 异步任务成功时被设置（工具脚本返回 0的进程结束码）
+failure: 异步任务失败时被设置（工具脚本返回非 0的进程结束码）
+</code></pre>
+
+<p>这样你就可以在 quickfix 窗口的 statusline上实时查看编译进度了，返回值不用特异处理，调用完 gcc后正常结束你的工具脚本即可，bash 或者批处理会自动继承上一次外部进程的返回值作为自己进程结束的返回值，gcc在成功后会自动返回0，失败自动返回非零，这样会正确的影响到我们的 g:vimmake_build_status 变量。</p>
+
+<p><strong>使用案例：在新窗口中运行程序</strong></p>
+
+<p>如果你在非终端下开发一些长时间运行的程序（比如一个简单的 HttpServer demo），往往你需要再开一个终端来运行它，这样的你可以一边编写代码，一边查看运行状态，但是现在我们有更好的方式：直接从vim里面打开一个新的终端窗口来运行它。</p>
+
+<p>当你在 windows 的 gvim里面下使用 vimmake 来运行工具的话，默认的 normal模式每次都会打开一个新窗口来运行（使用 gvim里面的 <code>:!start</code>命令，而不是 windows 下面弱智的 <code>:!</code>命令）：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/screen2.gif" alt="" /></p>
+
+<p>但如果你跑在 ubuntu 下，就需要写几行代码了，新建并编辑脚本 &ldquo;~/.vim/vimmake.1&rdquo;：</p>
+
+<pre><code>#! /usr/bin/python
+import sys, os
+VIM_FILEDIR=os.environ.get('VIM_FILEDIR', '')
+VIM_FILENAME=os.environ.get('VIM_FILENOEXT', '')
+cmd = &quot;cd \&quot;%s\&quot;; %s/%s; read -n1 -rsp press\ any\ key\ to\ continue\ ...&quot;
+cmd = cmd%(VIM_FILEDIR, VIM_FILEDIR, VIM_FILENAME)
+cmd = cmd.replace('\\', '\\\\').replace('&quot;', &quot;\\\&quot;&quot;).replace(&quot;'&quot;, &quot;\\\'&quot;)
+cmd = 'bash -c \&quot;%s\&quot;'%cmd
+cmdline = 'gnome-terminal --command=\'%s\''%cmd
+os.system(cmdline)
+</code></pre>
+
+<p>为了使用 Python 脚本来实现 &lsquo;新窗口中运行程序&rsquo;，我们需要用正确的参数来调用 gnome-terminal。把上面的脚本设置成 0755 以后记得 .vimrc里把工具 1 的启动模式设置成 bg:</p>
+
+<pre><code>let g:vimmake_mode['1']='bg'
+</code></pre>
+
+<p>运行模式 ‘bg&rsquo; 的意思前面意境提到过，vimmake.1 这个 python脚本会在后台执行并且忽略任何输出（并不需要新版本vim支持，只是使用传统的 system(&lsquo;&hellip;&amp;&lsquo;) 实现），这样你运行它时从vim的界面上就不会看到任何变化，只是弹出了我们需要的 gnome-terminal 窗口并运行给定的命令，当然你也可以设置成 async 模式，然后输出一行：xxxx 正在
+running的文字到 quickfix窗口：</p>
+
+<p><img src="https://skywind3000.github.io/word/images/screen3.jpg" alt="" /></p>
+
+<p>嗯，这样把 <code>:VimTool 1</code> 命令 map 到 F6后，我们就可以在 ubuntu 的 vim 里直接 F6弹出新的 gnome-terminal 来跑我们的程序了，就和 Visual Studio 运行控制台程序一样，即便是长时间运行的程序，也不需要额外再开一个终端窗口，然后每次重新输入运行命令那么笨重。</p>
+
+<p>在不同平台下（Windows, Cygwin, Ubuntu, Mac OS X）打开终端窗口运行特定命令是一件有点琐碎的事情，我写过一个脚本来专门干这事，或许对你有帮助：</p>
+
+<p><a href="http://www.skywind.me/blog/archives/1745">Skywind Inside - 如何在不同平台下打开新窗口运行程序？</a></p>
+
+<p>有需要的话，可以把里面的 terminal.py 脚本复制到你的 vim 配置文件夹内，随时在 vim里打开新窗口运行程序。</p>
+
+<hr />
+
+<p>如今 Vim 的异步任务机制已经很稳定，并且大部分系统自带的 Vim都已经高于 7.4.1829：</p>
+
+<ul>
+<li>FreeBSD 10自带的 Vim是 7.4.1832（请用 FreeBSD 的 pkg upgrade 更新到最新的 vim），</li>
+<li>Mac 上 brew可以更新到 7.4.1993，</li>
+<li>MacVim已经包含7.4.1831的版本，</li>
+<li>Windows下的 gvim 有每日最新的 Daily build （目前是 7.4.2032）</li>
+<li>Cygwin 的 vim 是 7.4.1999</li>
+<li>Debian 下 vim 是 7.4.576，需要自己编译一下最新版（注：1829已经进入test）。</li>
+</ul>
+
+<hr />
+
+<p>上半年 vim async job 发布不久，我就试着给 vimmake 加入了 async 模式，随着4月份若干 job/channel 的边角问题被解决后，如今这部分功能已经很长时间没有碰到中等优先级以上的新bug了，我自己也用了三个月时间，觉得 vim 的异步机制如今完全可以一战了。</p>
+
+<p>使用 vimmake 可以灵活的添加各种编译器运行工具，比单独为某种语言特化的插件灵活很多，我基本上把什么 SingleCompile, c.vim, vimgo 里类似的功能抛弃掉了，何况他们还不支持异步任务，你可以发挥你的想想用 vimmake 来做更多非编译运行的事情，比如 gvim 下编辑 html 的话，配置一下，一键直接打开 chrome 来显示当前的 html 文件之类的，或者调用
+cppcheck来做静态代码检查，或者异步跑一个很大项目的 cscope 更新任务。</p>
+
+<p>各位可以试试，喜欢的话，请为我在 <a href="http://vim.org">http://vim.org</a> 上投一票： <a href="http://www.vim.org/scripts/script.php?script_id=5418">vimmake - Customize shell tools for project building</a></p>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/blog/archives/1745/">如何在不同平台下打开新窗口运行程序？</a></li>
+        
+        <li><a href="/blog/archives/1731/">Vim异步编译工程</a></li>
+        
+        <li><a href="/blog/archives/1708/">GVim 中更好的运行程序</a></li>
+        
+        <li><a href="/blog/archives/1690/">更好的使用 Vim 标签（Tab）以及 Alt键映射</a></li>
+        
+        <li><a href="/blog/archives/1799/">如何禁止 Win7 强制更新到 Windows 10 ?</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://skywind3000.com/tags/vim">Vim</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "skywind3000/skywind3000.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://skywind3000.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/posts/2019/shell_init_sh/" title="提高效率从编写 init.sh 开始">提高效率从编写 init.sh 开始</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/posts/intro/" title="个人主页搬迁到新系统">个人主页搬迁到新系统</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2250/" title="如何实现和优化 SVM（支持向量机）？">如何实现和优化 SVM（支持向量机）？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2229/" title="别让 cd 浪费你的时间">别让 cd 浪费你的时间</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2193/" title="VimScript 五分钟入门（翻译）">VimScript 五分钟入门（翻译）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2173/" title="Windows 10 - 1803 更新又给我出幺蛾子">Windows 10 - 1803 更新又给我出幺蛾子</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2084/" title="Vim 8 下 C/C&#43;&#43; 开发环境搭建">Vim 8 下 C/C&#43;&#43; 开发环境搭建</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2071/" title="Bash 中文速查表/Cheatsheet （全网最全）">Bash 中文速查表/Cheatsheet （全网最全）</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2060/" title="为什么说 zsh 是 shell 中的极品？">为什么说 zsh 是 shell 中的极品？</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/blog/archives/2051/" title="Vim 中文速查表/Cheatsheet（全网最完善）">Vim 中文速查表/Cheatsheet（全网最完善）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%9B%BE%E5%BD%A2%E7%BC%96%E7%A8%8B/">图形编程(20)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%A4%A7%E6%B5%AA%E6%B7%98%E6%B2%99/">大浪淘沙(12)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发(27)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术(45)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/">编译技术(6)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程(14)</a>
+    </li>
+    
+    <li>
+        <a href="https://skywind3000.com/categories/%E9%9A%8F%E7%AC%94/">随笔(57)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://skywind3000.com/tags/ai/">ai</a>
+    
+    <a href="https://skywind3000.com/tags/android/">android</a>
+    
+    <a href="https://skywind3000.com/tags/as3/">as3</a>
+    
+    <a href="https://skywind3000.com/tags/c&#43;&#43;/">c&#43;&#43;</a>
+    
+    <a href="https://skywind3000.com/tags/cygwin/">cygwin</a>
+    
+    <a href="https://skywind3000.com/tags/dos/">dos</a>
+    
+    <a href="https://skywind3000.com/tags/kcp/">kcp</a>
+    
+    <a href="https://skywind3000.com/tags/linux/">linux</a>
+    
+    <a href="https://skywind3000.com/tags/p2p/">p2p</a>
+    
+    <a href="https://skywind3000.com/tags/python/">python</a>
+    
+    <a href="https://skywind3000.com/tags/shell/">shell</a>
+    
+    <a href="https://skywind3000.com/tags/vim/">vim</a>
+    
+    <a href="https://skywind3000.com/tags/win32/">win32</a>
+    
+    <a href="https://skywind3000.com/tags/%E4%BC%98%E5%8C%96/">优化</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%90%8C%E6%AD%A5/">同步</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+    
+    <a href="https://skywind3000.com/tags/%E5%B0%8F%E6%B8%B8%E6%88%8F/">小游戏</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%8A%97%E9%94%AF%E9%BD%BF/">抗锯齿</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://skywind3000.com/tags/%E6%BC%94%E7%A4%BA/">演示</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A2%E9%87%8F%E4%BD%9C%E5%9B%BE/">矢量作图</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%9F%A5%E4%B9%8E/">知乎</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AD%96%E5%88%92/">策划</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/">系统开发</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://skywind3000.com/tags/%E7%BF%BB%E8%AF%91/">翻译</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%A7%86%E9%A2%91/">视频</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AE%B2%E4%B9%89/">讲义</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/">词法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/">语法分析</a>
+    
+    <a href="https://skywind3000.com/tags/%E8%B6%B3%E8%BF%B9/">足迹</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%97%B2%E8%81%8A/">闲聊</a>
+    
+    <a href="https://skywind3000.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://skywind3000.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://skywind3000.com/">Skywind Inside By skywind</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+<script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+</body>
+</html>
